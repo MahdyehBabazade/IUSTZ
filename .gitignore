@@ -7,3 +7,4 @@ cmake-build-debug/
 ../Cpps/*.iml
 ../Cpps/cmake-build-debug/
 ../Cpps/*.txt
+Cpps/CMakeLists.txt
