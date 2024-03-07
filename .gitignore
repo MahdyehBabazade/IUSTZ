@@ -1,0 +1,10 @@
+# Ignore CLion files
+.idea/
+*.iml
+cmake-build-debug/
+
+../Cpps/.idea/
+../Cpps/*.iml
+../Cpps/cmake-build-debug/
+../Cpps/*.txt
+Cpps/CMakeLists.txt
