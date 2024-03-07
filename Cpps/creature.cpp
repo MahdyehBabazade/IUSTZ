@@ -3,6 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include <random>
+#include <cmath>
 using namespace std;
 
 Player :: Player(string Name, int HP, int MaxHP, double Armor, int BackPackCapacity , int Energy , int Coin){
@@ -84,3 +85,81 @@ HumanEnemy :: ~HumanEnemy(){
     cout << EnemyDeathQuotes[0] << endl;
 }
 
+Zombie :: Zombie(int HP , int MaxHP , double Armor , string Type): Enemy(HP , MaxHP , Armor){
+    this-> Type = Type; 
+}
+
+Zombie :: ~Zombie(){
+    vector<string> ZombieDeathQuotes = {"Aaauugh!!!!" , "Haaauugh!!!" , "Blauugh!" , "Guaargh!!" , "Bluargh!!!"};
+    random_device rd;
+    mt19937 gen(rd());
+    shuffle(ZombieDeathQuotes.begin(), ZombieDeathQuotes.end(), gen);
+    cout << ZombieDeathQuotes[0] << endl;
+}
+
+string Zombie :: getType(){return Type;}
+
+// void Zombie :: Attack(Player player){}
+
+Shopkeeper :: Shopkeeper(string Name){this->Name = Name;}
+
+string Shopkeeper :: getName(){return Name;}
+
+void Shopkeeper :: HiDialogue(){
+    vector<string> ShopkeeperHi = {"Salute soldier! How can I help?" , "Hi commander! Is there anything I can provide?" , "Welcome to my shop!"};
+    random_device rd;
+    mt19937 gen(rd());
+    shuffle(ShopkeeperHi.begin(), ShopkeeperHi.end(), gen);
+    cout << ShopkeeperHi[0] << endl;
+}
+
+void Shopkeeper :: ByeDialogue(){
+    cout << "Good luck , Soldier." << endl;
+}
+
+void Shopkeeper :: SellDialogue(){} // items to be included
+
+void Shopkeeper :: BuyDialogue(){} // items to be included
+
+void Shopkeeper :: NoMoneyDialogue(){
+    vector<string> poorsoldier = {"You don't have enough coins!" , "Poor soldier!!!" , "Can't get you that!" , "So little for so much?!" , "..." ,
+    "You don't have enough coins!" , "Poor soldier!!!" , "Can't get you that!" , "So little for so much?!"};
+    random_device rd;
+    mt19937 gen(rd());
+    shuffle(poorsoldier.begin(), poorsoldier.end(), gen);
+    cout << poorsoldier[0] << endl;
+}
+
+Medic :: Medic(string Name){this->Name = Name};
+
+string Medic :: getName(){return Name;}
+
+void Medic :: HiDialogue(){
+    vector<string> MedicSayHi = {"Hi, Soldier." , "Salute soldier! How can I help?" , "Hi commander! Are you hurt anywhere?"};
+    random_device rd;
+    mt19937 gen(rd());
+    shuffle(MedicSayHi.begin(), MedicSayHi.end(), gen);
+    cout << MedicSayHi[0] << endl;
+}
+
+void Medic :: ByeDialogue(){cout << "Have a safe journy.";}
+
+void Medic :: HealDialogue(){cout << "I've patched you up!";}
+
+void Medic :: NoMoneyDialogue(){
+    vector<string> poorsoldier = {"You don't have enough coins!" , "Poor soldier!" , "Can't Heal you with that much coin!" , "So little for so much?!" , "..." ,
+    "You don't have enough coins!" , "Poor soldier!!!" , "Can't heal you with that much coin" , "So little for so much?!"};
+    random_device rd;
+    mt19937 gen(rd());
+    shuffle(poorsoldier.begin(), poorsoldier.end(), gen);
+    cout << poorsoldier[0] << endl;
+}
+
+void Medic :: Heal(Player player){
+    player.setHP(min(player.getMaxHP() , (int)(player.getHP() + player.getMaxHP() * 0.5)));
+    HealDialogue();
+}
+
+void Medic :: MaxHPIncrease(Player player){
+    player.setMaxHP((int)player.getMaxHP() * 1.1);
+}

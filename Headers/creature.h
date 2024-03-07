@@ -92,29 +92,26 @@ private:
 
 public:
     Shopkeeper(string Name);
-    ~Shopkeeper();
     string getName();
-    void HiDialogue(Player player);
-    void ByeDialogue(Player player);
+    void HiDialogue();
+    void ByeDialogue();
     void SellDialogue(); // item to be included
     void BuyDialogue(); // item to be included
-    void NoMoneyDialogue(Player player);
+    void NoMoneyDialogue();
 };
 
-class Priest{
+class Medic{
 
 private:
     string Name;
+    void ByeDialogue();
+    void HealDialogue();
 
 public:
-    Priest(string Name);
-    ~Priest();
+    Medic(string Name);
     string getName();
-    void HiDialogue(Player player);
-    void ByeDialogue(Player player);
-    void HealDialogue(Player player);
-    void MaxHPDialogue(Player player);
-    void NoMoneyDialogue(Player player);
+    void HiDialogue();
+    void NoMoneyDialogue();
     void Heal(Player player);
-    void MaxHP(Player player);
+    void MaxHPIncrease(Player player);
 };
