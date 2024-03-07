@@ -12,10 +12,11 @@ private:
     int Armor;
     int BackPackCapacity;
     int Energy;
+    int Coin;
     // items to be included
 
 public:
-    Player(string Name, int HP, int MaxHp, int Armor, int BackPackCapacity , int Energy);
+    Player(string Name, int HP, int MaxHp, int Armor, int BackPackCapacity , int Energy , int Coin); // items to be included
     ~Player();
     void Attack(Enemy* enemy); // can't fully develop yet?!
     string getName();
@@ -78,3 +79,18 @@ public:
     ~Zombie(); //cout << "Aaauugh";
     // random bullshit to be included
 };
+
+class Shopkeeper{
+private:
+    string Name;
+public:
+    Shopkeeper(string Name);
+    string getName();
+    void HiDialogue();
+    void ByeDialogue();
+    void SellDialogue();
+    void BuyDialogue();
+    void NoMoneyDialogue();
+};
+
+class 
