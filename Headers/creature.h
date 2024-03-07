@@ -9,14 +9,14 @@ private:
     string Name;
     int HP;
     int MaxHP;
-    int Armor;
+    double Armor;
     int BackPackCapacity;
     int Energy;
     int Coin;
     // items to be included
 
 public:
-    Player(string Name, int HP, int MaxHP, int Armor, int BackPackCapacity , int Energy , int Coin); // items to be included
+    Player(string Name, int HP, int MaxHP, double Armor, int BackPackCapacity , int Energy , int Coin); // items to be included
     ~Player();
     void Attack(Enemy* enemy); // can't fully develop yet?!
     void takeDamage(int damagetaken); // items should be included
@@ -25,14 +25,14 @@ public:
     int getHP();
     void setMaxHP(int MaxHP);
     int getMaxHP();
-    void setArmor(int Armor);
+    void setArmor(double Armor);
     int getArmor();
     void setBackPackCapacity(int BackPackCapacity);
     int getBackPackCapacity();
     void setEnergy(int Energy);
     int getEnergy();
-    void addCoin(int coin);
-    void removeCoin(int coin);
+    void addCoin(int CoinToBeAdded);
+    void removeCoin(int CoinToBeAdded);
     int getCoin();
     // add/remove items to be included
     // consume function to be added
@@ -43,19 +43,19 @@ class Enemy{
 private:
     int HP;
     int MaxHP;
-    int Armor;
+    double Armor;
     // items to be included
 
 public:
+    Enemy(int HP , int MaxHP , double Armor);
     // constructors to add?! (factory?!!!!!)
     virtual void Attack(Player player) = 0; // can't fully develop yet?!
-    void takeDamage(); // items should be included
-    void Death();
+    void takeDamage(int damagetaken); // items should be included
     void setHP(int HP);
     int getHP();
     void setMaxHP(int MaxHP);
     int getMaxHP();
-    void setArmor(int Armor);
+    void setArmor(double Armor);
     int getArmor();
 };
 
@@ -65,11 +65,11 @@ private:
     string Name;
 public:
     string getName();
-    HumanEnemy(int HP , int MaxHP , int Armor , string Name); //items to add?!
+    HumanEnemy(int HP , int MaxHP , double Armor , string Name); //items to add?!
     void Attack(Player player) override; // can't fully develop yet?!
     // consume function to be added
     // rajaz khani to be included
-    ~HumanEnemy(); // cout << "I can't believe this is  how it ends";
+    ~HumanEnemy();
 };
 
 class Zombie: public Enemy{
@@ -80,7 +80,7 @@ private:
 public:
     string getType();
     void Attack(Player player) override; // can't fully develop yet?!
-    Zombie(int HP , int MaxHP , int Armor , string Type);
+    Zombie(int HP , int MaxHP , double Armor , string Type);
     ~Zombie(); //cout << "Aaauugh";
     // random bullshit to be included
 };
