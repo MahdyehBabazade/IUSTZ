@@ -114,7 +114,7 @@ public:
     Armor(string name,int capacity,int price,int amount);
     void setAmount(int amount);
     int getAmount();
-    void setAmount(int amount);
+    void setAmount(int amount); //this one has to be deletted
 };
 //------------------------------
 

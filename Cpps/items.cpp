@@ -128,5 +128,37 @@ Relic::Relic(std::string name, int capacity, int price, int amount)
 : Item( name, capacity, price){}
 
 void Relic ::Ability() {
+    /*vector<string> choose = {"Armor","Heal","WeaponDamage","Energy"}
+    int getRandomNumber()
+    {
+        int number = rand() % 6 + 1;
+        number = number * 5;
+        return number;
+    }
+    string getRandomElement(vector<string>&choose) 
+    {
+        srand(time(0));
+        int randomIndex = rand() % choose.size();
+        return choose[randomIndex];
+    }
+    void relicAbiliry(vector<string> items,int number)
+    {
+        if (getRandomElement(items) == "Armor")
+        {
+            
+        }
+        else if (getRandomElement(items) == "Heal") 
+        {
 
+        }
+        else if (getRandomElement(items) == "WeaponDamage")
+        {
+
+        }
+        else if (getRandomElement(items) == "Energy")
+        {
+
+        }*/
+    }
+    
 }
