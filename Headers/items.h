@@ -1,5 +1,5 @@
 #pragma once
-
+#include <string>
 class Item {
 protected:
     string Name;
@@ -24,7 +24,7 @@ protected:
 public:
     Weapon(string name,int capacity,int damage,int price,int energyNeed,int attackRange);
 
-    void Attack() override; // takes an enemy and calls its TakeDamage function
+    void Attack(); // takes an enemy and calls its TakeDamage function
     void decreaseEnergy(); //decreases player's energy
 
     void setDamage(int damage);
@@ -37,7 +37,7 @@ public:
 
 };
 
-class Punch: Weapon{
+class Punch: public Weapon{
 public:
     void Attack();
 };
@@ -102,7 +102,7 @@ public:
 
 class Energizer: public Consumable{
 public:
-    Energize(); // increases player's energy
+    void Energize(); // increases player's energy
     Energizer(string name,int capacity,int price , int amount);
 };
 //------------------------------
@@ -121,5 +121,5 @@ public:
 class Relic: Item{
 public:
     Relic(string name,int capacity,int price,int amount); // remember capacity=0
-    void Ability() override;
+    void Ability();
 };

@@ -1,4 +1,7 @@
 #pragma once
+#include "../Headers/items.h"
+#include <vector>
+#include <string>
 using namespace std;
 
 // explainings to be included
@@ -11,15 +14,16 @@ private:
     int MaxHP;
     double Armor;
     int BackPackCapacity;
+    int BackPackWeight;
     int Energy;
     int Coin;
-    // items to be included
+    vector<Item*> Items;
 
 public:
-    Player(string Name, int HP, int MaxHP, double Armor, int BackPackCapacity , int Energy , int Coin); // items to be included
+    Player(string Name, int HP, int MaxHP, double Armor, int BackPackCapacity , int BackPackWeight , int Energy , int Coin , vector<Item*> items); // items to be included
     ~Player();
-    void Attack(Enemy* enemy); // can't fully develop yet?!
-    void takeDamage(int damagetaken); // items should be included
+    // void Attack(Enemy* enemy); // can't fully develop yet?!
+    void takeDamage(int damagetaken);
     string getName();
     void setHP(int HP);
     int getHP();
@@ -29,13 +33,15 @@ public:
     int getArmor();
     void setBackPackCapacity(int BackPackCapacity);
     int getBackPackCapacity();
+    void setBackPackWeight(int BackPackWeight);
+    int getBackPackWeight();
     void setEnergy(int Energy);
     int getEnergy();
     void addCoin(int CoinToBeAdded);
     void removeCoin(int CoinToBeAdded);
     int getCoin();
-    // add/remove items to be included
-    // consume function to be added
+    void addItem(Item* item);
+    void removeItem(Item* item);
 };
 
 class Enemy{

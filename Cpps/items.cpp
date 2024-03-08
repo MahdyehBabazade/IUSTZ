@@ -2,8 +2,7 @@
 #include "../Headers/items.h"
 using namespace std;
 
-Item :: Item(string name,int capacity,int price)
-    : Name(name), Capacity(capacity),Price(price){}
+Item :: Item(string name,int capacity,int price) : Name(name), Capacity(capacity),Price(price){}
 
 void Item :: setCapacity(int capacity){
     Capacity=capacity;

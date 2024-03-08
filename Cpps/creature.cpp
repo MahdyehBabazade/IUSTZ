@@ -6,15 +6,17 @@
 #include <cmath>
 using namespace std;
 
-Player :: Player(string Name, int HP, int MaxHP, double Armor, int BackPackCapacity , int Energy , int Coin){
+Player :: Player(string Name, int HP, int MaxHP, double Armor, int BackPackCapacity , int BackPackWeight , int Energy , int Coin , vector<Item*> Items){
     this -> Name = Name;
     this -> HP = HP;
     this -> MaxHP = MaxHP;
     this -> Armor = Armor;
     this -> BackPackCapacity = BackPackCapacity;
+    this -> BackPackWeight = BackPackWeight;
     this -> Energy = Energy;
     this -> Coin = Coin;
-} // items to be included
+    this -> Items = Items;
+} 
 
 Player :: ~Player(){
     cout << "Not good enough" << endl << "Defeated!!!" << endl << "Welcome to hellmos";
@@ -40,6 +42,10 @@ void Player :: setBackPackCapacity(int BackPackCapacity){this -> BackPackCapacit
 
 int Player :: getBackPackCapacity(){return BackPackCapacity;}
 
+void Player :: setBackPackWeight(int BackPackWeight){this-> BackPackWeight = BackPackWeight;}
+
+int Player :: getBackPackWeight(){return BackPackWeight;}
+
 void Player :: setEnergy(int Energy){this -> Energy = Energy;}
 
 int Player :: getEnergy(){return Energy;}
@@ -50,6 +56,19 @@ void Player :: removeCoin(int CoinToBeRemoved){this -> Coin -= CoinToBeRemoved;}
 
 int Player :: getCoin(){return Coin;}
 
+void Player :: addItem(Item* item){
+    if(BackPackWeight + item->getCapacity() <= BackPackCapacity){
+    Items.push_back(item);
+    BackPackWeight += item->getCapacity();
+    }
+    else{
+        cout << "You can't handle this";
+    }
+}
+
+void Player :: removeItem(Item* item){
+
+}
 Enemy :: Enemy(int HP , int MaxHP , double Armor){
     this->HP = HP;
     this->MaxHP = MaxHP;
@@ -130,7 +149,7 @@ void Shopkeeper :: NoMoneyDialogue(){
     cout << poorsoldier[0] << endl;
 }
 
-Medic :: Medic(string Name){this->Name = Name};
+Medic :: Medic(string Name){this->Name = Name;}
 
 string Medic :: getName(){return Name;}
 
