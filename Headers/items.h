@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include "../Headers/creature.h"
 
 class Item {
 protected:
@@ -27,8 +28,8 @@ protected:
 public:
     Weapon(string name,int capacity,int damage,int price,int energyNeed,int attackRange);
 
-    virtual void Attack(); // takes an enemy and calls its TakeDamage function
-    void decreaseEnergy(); //decreases player's energy
+    virtual void Attack(vector<Enemy*> &enemies,vector<pair<Item*, int>> &items); // takes an enemy and calls its TakeDamage function
+    void decreaseEnergy(Player* player); //decreases player's energy
 
     void setDamage(int damage);
     void setAttackRange(int attackRange);
@@ -38,6 +39,7 @@ public:
     int getEnergyNeeded();
     int getAttackRange();
 
+    string GetStat();
 };
 
 class Punch: public Weapon{

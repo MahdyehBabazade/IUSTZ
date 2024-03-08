@@ -1,5 +1,8 @@
 #include <iostream>
+#include <vector>
+#include <string>
 #include "../Headers/items.h"
+
 using namespace std;
 
 Item :: Item(string name,int capacity,int price) : Name(name), Capacity(capacity),Price(price){}
@@ -43,7 +46,23 @@ void Weapon::setAttackRange(int attackRange) {
 void Weapon::setEnergyNeeded(int energy) {
     EnergyNeeded = energy;
 }
-void Weapon ::decreaseEnergy() {
+string Weapon::GetStat() {
+    string outPut = Name+"(Damage: " + to_string(Damage) + "Attack Range: " + to_string(AttackRange) +")";
+    return outPut;
+}
+
+void Weapon::Attack(vector<Enemy*> &enemies,vector<pair<Item*, int>> &items) {
+    cout << "choose your weapon: \n";
+    int x = 0;
+    for(pair<Item*, int> &z:  items){
+        x++;
+        cout << x << ". " << static_cast<Weapon*>(z.first)
+    }
+
+
+}
+void Weapon ::decreaseEnergy(Player* player) {
+    player->setEnergy(player->getEnergy() - getEnergyNeeded());
 }
 //............
 Punch :: Punch(string name, int capacity, int damage, int price, int energyNeed, int attackRange)
