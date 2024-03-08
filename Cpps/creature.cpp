@@ -4,11 +4,12 @@
 #include <algorithm>
 #include <random>
 #include <cmath>
+#include <string>
 using namespace std;
 
-void Shuffle(vector<string> QuotesGenerator){
+string ShuffleQuotes(vector<string> QuotesGenerator){
     int i = rand() % QuotesGenerator.size();
-    cout << QuotesGenerator[i];
+    return QuotesGenerator[i];
 } 
 Player :: Player(string Name, int HP, int MaxHP, double Armor, int BackPackCapacity , int BackPackWeight , int Energy , int Coin , int Shield ,vector<pair<Item* , int>> Items , vector<Relic*> Relics){
     this -> Name = Name;
@@ -95,12 +96,18 @@ void Player :: addItem(Item* item){
         cout << "You can't handle this";
 }
 
-void Player :: removeItem(int index){
-    BackPackWeight -= Items[index].first->getCapacity();
-    if(Items[index].second == 1)
-        Items.erase(Items.begin()+index);
-    else
-        Items[index].second--;
+void Player :: removeItem(Item* item){
+    for (int i = 0; i < Items.size(); i++)
+    {
+        if (item->getName() == Items[i].first->getName())
+        {
+            BackPackWeight -= Items[i].first->getCapacity();
+            if(Items[i].second == 1)
+                Items.erase(Items.begin()+i);
+            else
+                Items[i].second--;
+        }   
+    }
 }
 
 vector<Relic*> Player :: getRelic(){return Relics;}
@@ -147,11 +154,11 @@ HumanEnemy :: ~HumanEnemy(){
     vector<string> EnemyDeathQuotes = { "I can't believe this is how it all ends!", "You fucking bastard!", "Wasted!", 
     "Nooo, I can't die yet!" , "My child , take care o..." , "I'll damn you" , "My brother will get my revenge!!!" , "I'll be waiting , you SoB" , 
     "That was a fun fight" , "See you on the other side"};
-    random_device rd;
-    mt19937 gen(rd());
-    shuffle(EnemyDeathQuotes.begin(), EnemyDeathQuotes.end(), gen);
-    cout << EnemyDeathQuotes[0] << endl;
+    cout << ShuffleQuotes(EnemyDeathQuotes);
+    
 }
+
+//void HumanEnemy :: Consume(Consumable* consumable){}
 
 void HumanEnemy :: removeItem(Item* item){
     for (int i = 0; i < items.size(); i++)
@@ -164,14 +171,13 @@ void HumanEnemy :: removeItem(Item* item){
 }
 
 void HumanEnemy :: RajazKhani(){
-    vector<string> curse ={"MOTHER FUCKER" , "BITCH" , }
-    
-    vector<string> Rajaz = {"Loser" , "Almos there!"};
-    random_device rd;
-    mt19937 gen(rd());
-    shuffle(Rajaz.begin(), Rajaz.end(), gen);
-    if(rand() % 5 == 0)
-    cout << Rajaz[0] << endl;
+    vector<string> curse ={"MOTHER FUCKER" , "BITCH" , "Asshole" };
+    string RazajKhani = "Got u, " + ShuffleQuotes(curse);
+    vector<string> Rajaz = {RajazKhani , "Loser" , "Almost there!" , ""};
+    if (rand() % 5 == 0)
+    {
+        cout << ShuffleQuotes(Rajaz);
+    }
 }
 
 Zombie :: Zombie(int HP , int MaxHP , double Armor , string Type , Item* item , int Shield): Enemy(HP , MaxHP , Armor , item , Shield){
@@ -180,10 +186,7 @@ Zombie :: Zombie(int HP , int MaxHP , double Armor , string Type , Item* item , 
 
 Zombie :: ~Zombie(){
     vector<string> ZombieDeathQuotes = {"Aaauugh!!!!" , "Haaauugh!!!" , "Blauugh!" , "Guaargh!!" , "Bluargh!!!"};
-    random_device rd;
-    mt19937 gen(rd());
-    shuffle(ZombieDeathQuotes.begin(), ZombieDeathQuotes.end(), gen);
-    cout << ZombieDeathQuotes[0] << endl;
+    ShuffleQuotes(ZombieDeathQuotes);
 }
 
 string Zombie :: getType(){return Type;}
@@ -196,27 +199,27 @@ string Shopkeeper :: getName(){return Name;}
 
 void Shopkeeper :: HiDialogue(){
     vector<string> ShopkeeperHi = {"Salute soldier! How can I help?" , "Hi commander! Is there anything I can provide?" , "Welcome to my shop!"};
-    random_device rd;
-    mt19937 gen(rd());
-    shuffle(ShopkeeperHi.begin(), ShopkeeperHi.end(), gen);
-    cout << ShopkeeperHi[0] << endl;
+    cout << ShuffleQuotes(ShopkeeperHi) << endl;
 }
 
 void Shopkeeper :: ByeDialogue(){
     cout << "Good luck , Soldier." << endl;
 }
 
-void Shopkeeper :: SellDialogue(){} // items to be included
+void Shopkeeper :: SellDialogue(Item* item){
+    vector<string> ShopkeeperSell = {"So you bought " + item->getName() , "You choosed one of the best items." ,
+     "Wish " + item->getName() + "make you win.";}
+} // items to be included
 
-void Shopkeeper :: BuyDialogue(){} // items to be included
+void Shopkeeper :: BuyDialogue(Item* item){
+    double NewPrice = 0.8*item->getPrice();
+    vector ShopkeeperBuy = {"I can buy that for"};
+} // items to be included
 
 void Shopkeeper :: NoMoneyDialogue(){
-    vector<string> poorsoldier = {"You don't have enough coins!" , "Poor soldier!!!" , "Can't get you that!" , "So little for so much?!" , "..." ,
+    vector<string> PoorSoldier = {"You don't have enough coins!" , "Poor soldier!!!" , "Can't get you that!" , "So little for so much?!" , "..." ,
     "You don't have enough coins!" , "Poor soldier!!!" , "Can't get you that!" , "So little for so much?!"};
-    random_device rd;
-    mt19937 gen(rd());
-    shuffle(poorsoldier.begin(), poorsoldier.end(), gen);
-    cout << poorsoldier[0] << endl;
+    cout << ShuffleQuotes(PoorSoldier);
 }
 
 Medic :: Medic(string Name){this->Name = Name;}
@@ -225,10 +228,7 @@ string Medic :: getName(){return Name;}
 
 void Medic :: HiDialogue(){
     vector<string> MedicSayHi = {"Hi, Soldier." , "Salute soldier! How can I help?" , "Hi commander! Are you hurt anywhere?"};
-    random_device rd;
-    mt19937 gen(rd());
-    shuffle(MedicSayHi.begin(), MedicSayHi.end(), gen);
-    cout << MedicSayHi[0] << endl;
+    cout << ShuffleQuotes(MedicSayHi);
 }
 
 void Medic :: ByeDialogue(){cout << "Have a safe journy.";}
@@ -236,12 +236,9 @@ void Medic :: ByeDialogue(){cout << "Have a safe journy.";}
 void Medic :: HealDialogue(){cout << "I've patched you up!";}
 
 void Medic :: NoMoneyDialogue(){
-    vector<string> poorsoldier = {"You don't have enough coins!" , "Poor soldier!" , "Can't Heal you with that much coin!" , "So little for so much?!" , "..." ,
+    vector<string> PoorSoldier = {"You don't have enough coins!" , "Poor soldier!" , "Can't Heal you with that much coin!" , "So little for so much?!" , "..." ,
     "You don't have enough coins!" , "Poor soldier!!!" , "Can't heal you with that much coin" , "So little for so much?!"};
-    random_device rd;
-    mt19937 gen(rd());
-    shuffle(poorsoldier.begin(), poorsoldier.end(), gen);
-    cout << poorsoldier[0] << endl;
+    cout << ShuffleQuotes(PoorSoldier);
 }
 
 void Medic :: Heal(Player player){
