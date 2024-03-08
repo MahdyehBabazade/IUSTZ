@@ -6,6 +6,10 @@
 #include <cmath>
 using namespace std;
 
+void Shuffle(vector<string> QuotesGenerator){
+    int i = rand() % QuotesGenerator.size();
+    cout << QuotesGenerator[i];
+} 
 Player :: Player(string Name, int HP, int MaxHP, double Armor, int BackPackCapacity , int BackPackWeight , int Energy , int Coin , int Shield ,vector<pair<Item* , int>> Items , vector<Relic*> Relics){
     this -> Name = Name;
     this -> HP = HP;
@@ -106,10 +110,12 @@ void Player :: addRelic(Relic* relic){
     Relics.push_back(relic);
 }
 
-Enemy :: Enemy(int HP , int MaxHP , double Armor){
+Enemy :: Enemy(int HP , int MaxHP , double Armor , Item* item , int Shield){
     this->HP = HP;
     this->MaxHP = MaxHP;
-    this->Armor = Armor; 
+    this->Armor = Armor;
+    this->item = item;
+    this->Shield = Shield; 
 }
 
 void Enemy :: takeDamage(int damagetaken){setHP(getHP() - damagetaken * (100 - Armor) / 100);}
@@ -126,9 +132,14 @@ void Enemy :: setArmor(double Armor){this -> Armor = Armor;}
 
 int Enemy :: getArmor(){return Armor;}
 
+void Enemy :: setShield(int shield){this -> Shield = Shield;}
+
+int Enemy :: getShield(){return Shield;}
+
 string HumanEnemy :: getName(){return Name;}
 
-HumanEnemy :: HumanEnemy(int HP , int MaxHP , double Armor , string Name) : Enemy(HP , MaxHP , Armor){this->Name = Name;}
+HumanEnemy :: HumanEnemy(int HP , int MaxHP , double Armor , string Name , Item* item , int Shield) : 
+Enemy(HP , MaxHP , Armor , item , Shield){this->Name = Name;}
 
 // void HumanEnemy :: Attack(Player player){}
 
@@ -142,7 +153,28 @@ HumanEnemy :: ~HumanEnemy(){
     cout << EnemyDeathQuotes[0] << endl;
 }
 
-Zombie :: Zombie(int HP , int MaxHP , double Armor , string Type): Enemy(HP , MaxHP , Armor){
+void HumanEnemy :: removeItem(Item* item){
+    for (int i = 0; i < items.size(); i++)
+    {
+        if (item == items[i])
+        {
+            items.erase(items.begin() + i);
+        }
+    }
+}
+
+void HumanEnemy :: RajazKhani(){
+    vector<string> curse ={"MOTHER FUCKER" , "BITCH" , }
+    
+    vector<string> Rajaz = {"Loser" , "Almos there!"};
+    random_device rd;
+    mt19937 gen(rd());
+    shuffle(Rajaz.begin(), Rajaz.end(), gen);
+    if(rand() % 5 == 0)
+    cout << Rajaz[0] << endl;
+}
+
+Zombie :: Zombie(int HP , int MaxHP , double Armor , string Type , Item* item , int Shield): Enemy(HP , MaxHP , Armor , item , Shield){
     this-> Type = Type; 
 }
 

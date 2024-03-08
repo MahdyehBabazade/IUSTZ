@@ -19,6 +19,7 @@ private:
     int Coin;
     int Shield;
     vector<pair<Item*, int>> Items;
+    vector<Weapon*> weapons;
     vector<Relic*> Relics;
 
 public:
@@ -58,9 +59,10 @@ private:
     int MaxHP;
     double Armor;
     Item* item;
+    int Shield;
 
 public:
-    Enemy(int HP , int MaxHP , double Armor , Item* item);
+    Enemy(int HP , int MaxHP , double Armor , Item* item , int Shield);
     // constructors to add?! (factory?!!!!!)
     virtual void Attack(Player player) = 0; // can't fully develop yet?!
     void takeDamage(int damagetaken);
@@ -70,18 +72,22 @@ public:
     int getMaxHP();
     void setArmor(double Armor);
     int getArmor();
+    void setShield(int Shield);
+    int getShield();
 };
 
 class HumanEnemy: public Enemy{
 
 private:
     string Name;
+    vector<Item*> items;
 public:
     string getName();
-    HumanEnemy(int HP , int MaxHP , double Armor , string Name, Item* item); //items to add?!
+    HumanEnemy(int HP , int MaxHP , double Armor , string Name, Item* item , int shield); //items to add?!
     void Attack(Player player) override; // can't fully develop yet?!
     // consume function to be added
-    void consume(Consumable* consumable);
+    void Consume(Consumable* consumable);
+    void removeItem(Item* item); // when we throw a throwable item
     // rajaz khani to be included
     void RajazKhani();
     ~HumanEnemy();
@@ -95,7 +101,7 @@ private:
 public:
     string getType();
     void Attack(Player player) override; // can't fully develop yet?!
-    Zombie(int HP , int MaxHP , double Armor , string Type , Item* item); // items may be added
+    Zombie(int HP , int MaxHP , double Armor , string Type , Item* item , int shield); // items may be added
     ~Zombie();
     // random bullshit to be included
 };
