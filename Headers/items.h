@@ -28,7 +28,7 @@ protected:
 public:
     Weapon(string name,int capacity,int damage,int price,int energyNeed,int attackRange);
 
-    virtual void Attack(vector<Enemy*> &enemies,vector<pair<Item*, int>> &items); // takes an enemy and calls its TakeDamage function
+    virtual void Attack(vector<Enemy*> &enemies,vector<Weapon*> &weapons); // takes an enemy and calls its TakeDamage function
     void decreaseEnergy(Player* player); //decreases player's energy
 
     void setDamage(int damage);
@@ -58,25 +58,25 @@ public:
 
 class Shotgun:public Gun{
 public:
-    void Attack() override; // checks the range and deals damage based on it
+    void Attack(vector<Enemy*> &enemies) override; // checks the range and deals damage based on it
     Shotgun(string name,int capacity, int price ,int damage,int energyNeed,int attackRange,int ammo);
 };
 
 class Snipe: public Gun{
 public:
-    void Attack() override; // takes multiple enemies and attacks them all
+    void Attack(vector<Enemy*> enemies) override; // takes multiple enemies and attacks them all
     Snipe(string name,int capacity, int price,int damage,int energyNeed,int attackRange,int ammo);
 };
 
 class Rifle: public Gun{
 public:
-    void Attack() override; // takes some enemies and the damage is divided between
+    void Attack(vector<Enemy*>enemies) override; // takes some enemies and the damage is divided between
     Rifle(string name,int capacity, int price ,int damage,int energyNeed,int attackRange,int ammo);
 };
 
 class coldWeapon: public Weapon{
 public:
-    void Throw(); //throws the coldWeapon and loses it
+    void Throw(vector<Enemy*> enemies); //throws the coldWeapon and loses it
     coldWeapon(string name,int capacity,int price ,int damage,int energyNeed,int attackRange);
 };
 
@@ -88,13 +88,13 @@ public:
 class Grenade: public Throwable{
 public:
     Grenade(string name,int capacity, int price,int damage,int energyNeed,int attackRange);
-    void Attack() override;
+    void Attack(vector<Enemy*> enemies) override;
 };
 
 class BoomRang: public Throwable{
 public:
     BoomRang(string name,int capacity, int price,int damage,int energyNeed,int attackRange);
-    void Attack() override;
+    void Attack(vector<Enemy*> enemies) override;
 };
 
 //--------------------------------
@@ -109,20 +109,20 @@ public:
 
 class HealingItem: public Consumable{
 public:
-    void Heal(); // heals the player
+    void Heal(Player* player); // heals the player
     HealingItem(string name,int capacity,int price,int amount);
 };
 
 class Energizer: public Consumable{
 public:
-    void Energize(); // increases player's energy
+    void Energize(Player* player); // increases player's energy
     Energizer(string name,int capacity,int price , int amount);
 };
 
 class ShieldPotion: public Consumable{
 public:
     ShieldPotion(string name,int capacity,int price , int amount);
-    void GiveShield(); //increases shield
+    void GiveShield(Player* player); //increases shield
 };
 //------------------------------
 class Armor: public Item{
@@ -148,7 +148,6 @@ public:
 //------------------------------
 
 class Relic: Item{
-private:
 public:
     Relic(string name,int capacity,int price,int amount); // remember capacity=0
 };
