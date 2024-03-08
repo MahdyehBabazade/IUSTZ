@@ -57,13 +57,13 @@ private:
     int HP;
     int MaxHP;
     double Armor;
-    // items to be included
+    Item* item;
 
 public:
-    Enemy(int HP , int MaxHP , double Armor);
+    Enemy(int HP , int MaxHP , double Armor , Item* item);
     // constructors to add?! (factory?!!!!!)
     virtual void Attack(Player player) = 0; // can't fully develop yet?!
-    void takeDamage(int damagetaken); // items should be included
+    void takeDamage(int damagetaken);
     void setHP(int HP);
     int getHP();
     void setMaxHP(int MaxHP);
@@ -78,10 +78,12 @@ private:
     string Name;
 public:
     string getName();
-    HumanEnemy(int HP , int MaxHP , double Armor , string Name); //items to add?!
+    HumanEnemy(int HP , int MaxHP , double Armor , string Name, Item* item); //items to add?!
     void Attack(Player player) override; // can't fully develop yet?!
     // consume function to be added
+    void consume(Consumable* consumable);
     // rajaz khani to be included
+    void RajazKhani();
     ~HumanEnemy();
 };
 
@@ -93,8 +95,8 @@ private:
 public:
     string getType();
     void Attack(Player player) override; // can't fully develop yet?!
-    Zombie(int HP , int MaxHP , double Armor , string Type);
-    ~Zombie(); //cout << "Aaauugh";
+    Zombie(int HP , int MaxHP , double Armor , string Type , Item* item); // items may be added
+    ~Zombie();
     // random bullshit to be included
 };
 
@@ -108,8 +110,8 @@ public:
     string getName();
     void HiDialogue();
     void ByeDialogue();
-    void SellDialogue(); // item to be included
-    void BuyDialogue(); // item to be included
+    void SellDialogue(Item* item); // item to be included
+    void BuyDialogue(Item* item); // item to be included
     void NoMoneyDialogue();
 };
 
