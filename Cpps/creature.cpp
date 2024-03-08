@@ -6,7 +6,7 @@
 #include <cmath>
 using namespace std;
 
-Player :: Player(string Name, int HP, int MaxHP, double Armor, int BackPackCapacity , int BackPackWeight , int Energy , int Coin , vector<Item*> Items){
+Player :: Player(string Name, int HP, int MaxHP, double Armor, int BackPackCapacity , int BackPackWeight , int Energy , int Coin , int Shield ,vector<pair<Item* , int>> Items , vector<Relic*> Relics){
     this -> Name = Name;
     this -> HP = HP;
     this -> MaxHP = MaxHP;
@@ -15,16 +15,28 @@ Player :: Player(string Name, int HP, int MaxHP, double Armor, int BackPackCapac
     this -> BackPackWeight = BackPackWeight;
     this -> Energy = Energy;
     this -> Coin = Coin;
+    this -> Shield = Shield;
     this -> Items = Items;
+    this -> Relics = Relics;
 } 
 
 Player :: ~Player(){
-    cout << "Not good enough" << endl << "Defeated!!!" << endl << "Welcome to hellmos";
+    cout << "Not good enough" << endl << "Defeated!!!" << endl << "Welcome to HELLMOS";
 }
 
 // void Player :: Attack(Enemy* enemy){} // to be filled
 
-void Player :: takeDamage(int damagetaken){setHP(getHP() - damagetaken * (100 - Armor) / 100);}
+void Player :: takeDamage(int damagetaken){
+    if(Shield>=damagetaken){
+        Shield -= damagetaken;
+        damagetaken = 0;
+    }
+    else{
+        damagetaken -= Shield;
+        Shield = 0;
+    }
+    setHP(getHP() - (int) (damagetaken * (100 - Armor) / 100));
+}
 
 void Player :: setHP(int HP){this -> HP = HP;}
 
@@ -56,24 +68,50 @@ void Player :: removeCoin(int CoinToBeRemoved){this -> Coin -= CoinToBeRemoved;}
 
 int Player :: getCoin(){return Coin;}
 
+void Player :: setShield(int Shield){this->Shield = Shield;}
+
+int Player :: getShield(){return Shield;}
+
+vector<pair<Item* , int>> Player :: getItem(){return Items;}
+
 void Player :: addItem(Item* item){
     if(BackPackWeight + item->getCapacity() <= BackPackCapacity){
-    Items.push_back(item);
-    BackPackWeight += item->getCapacity();
+        bool IsAdded = false;
+        for(int i = 0; i < Items.size(); i++)
+            if(*Items[i].first== *item){
+                Items[i].second++;
+                IsAdded = true;
+                break;
+            }
+        if(!IsAdded)
+            Items.push_back(make_pair(item , 1));
+        BackPackWeight += item->getCapacity();
     }
-    else{
+    else
         cout << "You can't handle this";
-    }
 }
 
-void Player :: removeItem(Item* item){
-
+void Player :: removeItem(int index){
+    BackPackWeight -= Items[index].first->getCapacity();
+    if(Items[index].second == 1)
+        Items.erase(Items.begin()+index);
+    else
+        Items[index].second--;
 }
+
+vector<Relic*> Player :: getRelic(){return Relics;}
+
+void Player :: addRelic(Relic* relic){
+    // relic usage to be added
+    Relics.push_back(relic);
+}
+
 Enemy :: Enemy(int HP , int MaxHP , double Armor){
     this->HP = HP;
     this->MaxHP = MaxHP;
     this->Armor = Armor; 
 }
+
 void Enemy :: takeDamage(int damagetaken){setHP(getHP() - damagetaken * (100 - Armor) / 100);}
 
 void Enemy :: setHP(int HP){this -> HP = HP;}
