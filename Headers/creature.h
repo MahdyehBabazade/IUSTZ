@@ -47,7 +47,7 @@ public:
     int getShield();
     vector<pair<Item* , int>> getItem();
     void addItem(Item* item);
-    void removeItem(int index);
+    void removeItem(Item* item);
     vector<Relic*> getRelic();
     void addRelic(Relic* relic); // relic usage to be add
 };
@@ -74,6 +74,7 @@ public:
     int getArmor();
     void setShield(int Shield);
     int getShield();
+    
 };
 
 class HumanEnemy: public Enemy{
@@ -90,6 +91,7 @@ public:
     void removeItem(Item* item); // when we throw a throwable item
     // rajaz khani to be included
     void RajazKhani();
+    string getStats(); // return Name/Type + (HP)
     ~HumanEnemy();
 };
 
