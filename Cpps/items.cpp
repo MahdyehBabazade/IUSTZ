@@ -22,9 +22,11 @@ int Item :: getCapacity() {
 int Item :: getPrice() {
     return Price;
 }
+bool Item ::operator==(Item a) {
+    return a.getName() == Name;
+}
 
-
-
+//------------------------------------
 int Weapon:: getDamage() {
     return Damage;
 }
@@ -41,28 +43,18 @@ void Weapon::setAttackRange(int attackRange) {
 void Weapon::setEnergyNeeded(int energy) {
     EnergyNeeded = energy;
 }
-
 void Weapon ::decreaseEnergy() {
-
 }
 
-void Punch::Attack() {
-
-}
 
 int Gun ::getAmmo() {
     return Ammo;
 }
-
 void Gun::setAmmo(int ammo) {
     Ammo=ammo;
 }
-
 Gun ::Gun(string name, int capacity,int price, int damage, int energyNeed, int attackRange, int ammo)
 : Ammo(ammo),Weapon( name, capacity, price, damage, energyNeed, attackRange){}
-
-void Gun :: Shoot(){
-}
 
 void Gun ::setRange(int range) {
     AttackRange = range;

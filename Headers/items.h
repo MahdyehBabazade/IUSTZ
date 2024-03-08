@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+
 class Item {
 protected:
     string Name;
@@ -13,6 +14,8 @@ public:
     string getName();
     int getCapacity();
     int getPrice();
+
+    bool operator==(Item a);
 };
 
 //--------------------------------
@@ -24,7 +27,7 @@ protected:
 public:
     Weapon(string name,int capacity,int damage,int price,int energyNeed,int attackRange);
 
-    void Attack(); // takes an enemy and calls its TakeDamage function
+    virtual void Attack(); // takes an enemy and calls its TakeDamage function
     void decreaseEnergy(); //decreases player's energy
 
     void setDamage(int damage);
@@ -39,14 +42,13 @@ public:
 
 class Punch: public Weapon{
 public:
-    void Attack();
+    Punch(string name,int capacity,int damage,int price,int energyNeed,int attackRange);
 };
 
 class Gun:public Weapon{
 private:
     int Ammo;
 public:
-    void Shoot();
     void setRange(int range);
     void setAmmo(int ammo);
     int getAmmo();
@@ -55,7 +57,7 @@ public:
 
 class Shotgun:public Gun{
 public:
-    void Shoot(); // checks the range and deals damage based on it
+    void Attack() override; // checks the range and deals damage based on it
     Shotgun(string name,int capacity, int price ,int damage,int energyNeed,int attackRange,int ammo);
 };
 
