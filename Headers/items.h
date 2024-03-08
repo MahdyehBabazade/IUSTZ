@@ -49,7 +49,6 @@ class Gun:public Weapon{
 private:
     int Ammo;
 public:
-    void setRange(int range);
     void setAmmo(int ammo);
     int getAmmo();
     Gun(string name,int capacity,int price,int damage,int energyNeed,int attackRange,int ammo);
@@ -63,13 +62,13 @@ public:
 
 class Snipe: public Gun{
 public:
-    void Shoot(); // takes multiple enemies and attacks them all
+    void Attack() override; // takes multiple enemies and attacks them all
     Snipe(string name,int capacity, int price,int damage,int energyNeed,int attackRange,int ammo);
 };
 
 class Rifle: public Gun{
 public:
-    void Shoot(); // takes some enemies and the damage is divided between
+    void Attack() override; // takes some enemies and the damage is divided between
     Rifle(string name,int capacity, int price ,int damage,int energyNeed,int attackRange,int ammo);
 };
 
@@ -79,14 +78,24 @@ public:
     coldWeapon(string name,int capacity,int price ,int damage,int energyNeed,int attackRange);
 };
 
-class Bomb: public Weapon {
+class Throwable: public Weapon {
 public:
-    void Attack(); // deals damage to nearby enemies
-    Bomb(string name,int capacity, int price,int damage,int energyNeed,int attackRange);
+    Throwable(string name,int capacity, int price,int damage,int energyNeed,int attackRange);
+};
+
+class Grenade: public Throwable{
+public:
+    Grenade(string name,int capacity, int price,int damage,int energyNeed,int attackRange);
+    void Attack() override;
+};
+
+class BoomRang: public Throwable{
+public:
+    BoomRang(string name,int capacity, int price,int damage,int energyNeed,int attackRange);
+    void Attack() override;
 };
 
 //--------------------------------
-
 class Consumable: Item{
 private:
     int Amount;
@@ -107,21 +116,37 @@ public:
     void Energize(); // increases player's energy
     Energizer(string name,int capacity,int price , int amount);
 };
-//------------------------------
 
+class ShieldPotion: public Consumable{
+public:
+    ShieldPotion(string name,int capacity,int price , int amount);
+    void GiveShield(); //increases shield
+};
+//------------------------------
 class Armor: public Item{
 private:
     int Amount;
 public:
     Armor(string name,int capacity,int price,int amount);
-    void setAmount(int amount);
     int getAmount();
     void setAmount(int amount);
+};
+class Vest: public Armor{
+public:
+    Vest(string name,int capacity,int price,int amount);
+};
+class HeadGear: public Armor{
+public:
+    HeadGear(string name,int capacity,int price,int amount);
+};
+class FootWear: public Armor{
+public:
+    FootWear(string name,int capacity,int price,int amount);
 };
 //------------------------------
 
 class Relic: Item{
+private:
 public:
     Relic(string name,int capacity,int price,int amount); // remember capacity=0
-    void Ability();
 };

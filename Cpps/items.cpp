@@ -10,9 +10,6 @@ void Item :: setCapacity(int capacity){
 void Item ::setPrice(int price){
     Price=price;
 }
-Weapon :: Weapon(string name,int capacity,int price,int damage,int energyNeed,int attackRange)
-    : Damage(damage),EnergyNeeded(energyNeed), AttackRange(attackRange), Item(name, capacity, price) {};
-
 string Item :: getName() {
     return Name;
 }
@@ -27,6 +24,9 @@ bool Item ::operator==(Item a) {
 }
 
 //------------------------------------
+Weapon :: Weapon(string name,int capacity,int price,int damage,int energyNeed,int attackRange)
+        : Damage(damage),EnergyNeeded(energyNeed), AttackRange(attackRange), Item(name, capacity, price) {};
+
 int Weapon:: getDamage() {
     return Damage;
 }
@@ -45,7 +45,13 @@ void Weapon::setEnergyNeeded(int energy) {
 }
 void Weapon ::decreaseEnergy() {
 }
+//............
+Punch :: Punch(string name, int capacity, int damage, int price, int energyNeed, int attackRange)
+       : Weapon(name, capacity, price, damage, energyNeed, attackRange){}
 
+//.............
+Gun ::Gun(string name, int capacity,int price, int damage, int energyNeed, int attackRange, int ammo)
+        : Ammo(ammo),Weapon(name, capacity, price, damage, energyNeed, attackRange){}
 
 int Gun ::getAmmo() {
     return Ammo;
@@ -53,36 +59,50 @@ int Gun ::getAmmo() {
 void Gun::setAmmo(int ammo) {
     Ammo=ammo;
 }
-Gun ::Gun(string name, int capacity,int price, int damage, int energyNeed, int attackRange, int ammo)
-: Ammo(ammo),Weapon( name, capacity, price, damage, energyNeed, attackRange){}
+//..............
+Shotgun ::Shotgun(string name, int capacity,int price, int damage, int energyNeed, int attackRange, int ammo)
+: Gun(name,  capacity, price, damage,  energyNeed,  attackRange,  ammo){}
 
-void Gun ::setRange(int range) {
-    AttackRange = range;
+void Shotgun ::Attack() {
+
 }
-
-Shotgun ::Shotgun(std::string name, int capacity,int price, int damage, int energyNeed, int attackRange, int ammo)
-: Gun( name,  capacity, price, damage,  energyNeed,  attackRange,  ammo){}
-
+//..
 Snipe ::Snipe(std::string name, int capacity, int price, int damage, int energyNeed, int attackRange, int ammo)
 : Gun( name,  capacity, price, damage,  energyNeed,  attackRange,  ammo) {}
 
-void Snipe ::Shoot() {
+void Snipe ::Attack() {
 
 }
 
+//..
 Rifle ::Rifle(std::string name, int capacity, int price , int damage, int energyNeed, int attackRange, int ammo)
 : Gun( name,  capacity, price, damage,  energyNeed,  attackRange,  ammo){}
 
-coldWeapon ::coldWeapon(std::string name, int capacity,int price, int damage, int energyNeed, int attackRange)
-: Weapon( name, capacity, price, damage, energyNeed, attackRange){}
-
-void coldWeapon :: Throw(){
+void Rifle ::Attack() {
 
 }
 
-Bomb ::Bomb(std::string name, int capacity,int price, int damage, int energyNeed, int attackRange)
+//..
+coldWeapon ::coldWeapon(string name, int capacity,int price, int damage, int energyNeed, int attackRange)
+: Weapon( name, capacity, price, damage, energyNeed, attackRange){}
+
+void coldWeapon :: Throw(){
+}
+
+//..
+Throwable :: Throwable(string name, int capacity,int price, int damage, int energyNeed, int attackRange)
 : Weapon( name, capacity, price, damage, energyNeed, attackRange) {}
 
+Grenade :: Grenade(string name, int capacity, int price, int damage, int energyNeed, int attackRange)
+         : Throwable(name,capacity,price,damage,energyNeed,attackRange){};
+void Grenade :: Attack() {
+}
+
+void BoomRang ::Attack() {
+
+}
+
+//-------------------------------
 Consumable ::Consumable(std::string name, int capacity, int price,int amount)
 :Amount(amount), Item( name, capacity, price){}
 
@@ -102,22 +122,33 @@ void HealingItem ::Heal() {
 }
 
 Energizer ::Energizer(std::string name, int capacity,int price, int amount)
-: Consumable( name, capacity, price, amount){}
+: Consumable(name, capacity, price, amount){}
 
+ShieldPotion ::ShieldPotion(std::string name, int capacity, int price, int amount)
+              : Consumable(name, capacity, price, amount){};
+void ShieldPotion ::GiveShield() {
+
+}
+//---------------------------
 Armor ::Armor(std::string name, int capacity,int price, int amount)
 : Amount(amount),Item( name, capacity, price) {}
 
 void Armor ::setAmount(int amount) {
     Amount=amount;
 }
-
 int Armor::getAmount() {
     return Amount;
 }
 
+Vest ::Vest(std::string name, int capacity, int price, int amount)
+      : Armor(name,capacity,price,amount){};
+
+HeadGear ::HeadGear(string name, int capacity, int price, int amount)
+          : Armor(name,capacity,price,amount){};
+
+FootWear ::FootWear(string name, int capacity, int price, int amount)
+          : Armor(name,capacity,price,amount){};
+//-----------------------------
 Relic::Relic(std::string name, int capacity, int price, int amount)
 : Item( name, capacity, price){}
 
-void Relic ::Ability() {
-
-}
