@@ -17,10 +17,12 @@ private:
     int BackPackWeight;
     int Energy;
     int Coin;
-    vector<Item*> Items;
+    int Shield;
+    vector<pair<Item*, int>> Items;
+    vector<Relic*> Relics;
 
 public:
-    Player(string Name, int HP, int MaxHP, double Armor, int BackPackCapacity , int BackPackWeight , int Energy , int Coin , vector<Item*> items); // items to be included
+    Player(string Name, int HP, int MaxHP, double Armor, int BackPackCapacity , int BackPackWeight , int Energy , int Coin , int Shield , vector<pair<Item* , int>> Items , vector<Relic*> Relics); // items to be included
     ~Player();
     // void Attack(Enemy* enemy); // can't fully develop yet?!
     void takeDamage(int damagetaken);
@@ -40,8 +42,13 @@ public:
     void addCoin(int CoinToBeAdded);
     void removeCoin(int CoinToBeAdded);
     int getCoin();
+    void setShield(int Shield);
+    int getShield();
+    vector<pair<Item* , int>> getItem();
     void addItem(Item* item);
-    void removeItem(Item* item);
+    void removeItem(int index);
+    vector<Relic*> getRelic();
+    void addRelic(Relic* relic); // relic usage to be add
 };
 
 class Enemy{
