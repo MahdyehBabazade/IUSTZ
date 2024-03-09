@@ -16,8 +16,10 @@ private:
     int BackPackCapacity;
     int BackPackWeight;
     int Energy;
+    int MaxEnergy;
     int Coin;
     int Shield;
+
     vector<pair<Item*, int>> Items;
     vector<Relic*> Relics;
     vector<Weapon*> weapons;
@@ -40,6 +42,8 @@ public:
     int getBackPackWeight();
     void setEnergy(int Energy);
     int getEnergy();
+    void setMaxEnergy(int MaxEnergy);
+    int getMaxEnergy();
     void addCoin(int CoinToBeAdded);
     void removeCoin(int CoinToBeAdded);
     int getCoin();

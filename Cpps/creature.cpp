@@ -67,6 +67,10 @@ void Player :: setEnergy(int Energy){this -> Energy = Energy;}
 
 int Player :: getEnergy(){return Energy;}
 
+void Player :: setMaxEnergy(int MaxEnergy){this -> MaxEnergy = MaxEnergy;}
+
+int Player :: getMaxEnergy(){return MaxEnergy;}
+
 void Player :: addCoin(int CoinToBeAdded){this -> Coin += CoinToBeAdded;}
 
 void Player :: removeCoin(int CoinToBeRemoved){this -> Coin -= CoinToBeRemoved;}
