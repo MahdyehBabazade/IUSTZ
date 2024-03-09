@@ -117,6 +117,14 @@ void Player :: addRelic(Relic* relic){
     Relics.push_back(relic);
 }
 
+vector<Weapon*> Player :: getWeapons(){return weapons;}
+
+void Player :: addWeapon(Weapon* Weopon){
+    // relic usage to be added
+    weapons.push_back(Weopon);
+}
+
+
 Enemy :: Enemy(int HP , int MaxHP , double Armor , Item* item , int Shield){
     this->HP = HP;
     this->MaxHP = MaxHP;

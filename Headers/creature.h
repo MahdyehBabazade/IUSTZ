@@ -19,8 +19,8 @@ private:
     int Coin;
     int Shield;
     vector<pair<Item*, int>> Items;
-    vector<Weapon*> weapons;
     vector<Relic*> Relics;
+    vector<Weapon*> weapons;
 
 public:
     Player(string Name, int HP, int MaxHP, double Armor, int BackPackCapacity , int BackPackWeight , int Energy , int Coin , int Shield , vector<pair<Item* , int>> Items , vector<Relic*> Relics); // items to be included
@@ -50,6 +50,8 @@ public:
     void removeItem(Item* item);
     vector<Relic*> getRelic();
     void addRelic(Relic* relic); // relic usage to be add
+    vector<Weapon*> getWeapons();
+    void addWeapon(Weapon* Weapon);
 };
 
 class Enemy{
