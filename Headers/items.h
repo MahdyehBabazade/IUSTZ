@@ -126,23 +126,23 @@ public:
     void GiveShield(Player* player); //increases shield
 };
 //------------------------------
-class Armor: public Item{
+class Equipment: public Item{
 private:
     int Amount;
 public:
-    Armor(string name,int capacity,int price,int amount);
+    Equipment(string name,int capacity,int price,int amount);
     int getAmount();
     void setAmount(int amount);
 };
-class Vest: public Armor{
+class Vest: public Equipment{
 public:
     Vest(string name,int capacity,int price,int amount);
 };
-class HeadGear: public Armor{
+class HeadGear: public Equipment{
 public:
     HeadGear(string name,int capacity,int price,int amount);
 };
-class FootWear: public Armor{
+class FootWear: public Equipment{
 public:
     FootWear(string name,int capacity,int price,int amount);
 };

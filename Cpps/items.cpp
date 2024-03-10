@@ -3,6 +3,8 @@
 #include <string>
 #include <typeinfo>
 #include <cmath>
+#include <algorithm>
+#include <random>
 #include "../Headers/items.h"
 
 using namespace std;
@@ -68,6 +70,7 @@ Weapon* choose_weapon(vector<Weapon*> &weapons){
     return weapons[choice];
 }
 Enemy* choose_enemy(vector<Enemy*> &enemies){
+    /*
     cout << "choose the enemy you want to attack: \n";
     int x = 0;
     for(Enemy* &enemy:  enemies){
@@ -80,6 +83,7 @@ Enemy* choose_enemy(vector<Enemy*> &enemies){
     choice -=1;
 
     return enemies[choice];
+     */
 }
 
 void Weapon::Attack(vector<Enemy*> &enemies,vector<Weapon*> &weapons) {
@@ -225,24 +229,24 @@ void ShieldPotion ::GiveShield(Player *player) {
     player->setShield(player->getShield()+getAmount());
 }
 //---------------------------
-Armor ::Armor(std::string name, int capacity,int price, int amount)
+Equipment ::Equipment(std::string name, int capacity, int price, int amount)
 : Amount(amount),Item( name, capacity, price) {}
 
-void Armor ::setAmount(int amount) {
+void Equipment ::setAmount(int amount) {
     Amount=amount;
 }
-int Armor::getAmount() {
+int Equipment::getAmount() {
     return Amount;
 }
 
 Vest ::Vest(std::string name, int capacity, int price, int amount)
-      : Armor(name,capacity,price,amount){};
+      : Equipment(name,capacity,price,amount){};
 
 HeadGear ::HeadGear(string name, int capacity, int price, int amount)
-          : Armor(name,capacity,price,amount){};
+          : Equipment(name,capacity,price,amount){};
 
 FootWear ::FootWear(string name, int capacity, int price, int amount)
-          : Armor(name,capacity,price,amount){};
+          : Equipment(name,capacity,price,amount){};
 //-----------------------------
 Relic::Relic(std::string name, int capacity, int price)
 : Item( name, capacity, price){}
