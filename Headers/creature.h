@@ -5,37 +5,55 @@
 using namespace std;
 
 // explainings to be included
-
-class Player{
+class Character{
 
 private:
-    string Name;
     int HP;
     int MaxHP;
     double Armor;
+    int Shield;
+
+protected:
+    vector<pair<Item* , int>> Items;
+    vector<pair<Weapon* , int>> Weapons;
+    // vector<pair<Equipment* , int>> Equipments;
+
+public:
+    Character(int HP , int MaxHP , int Armor , int Shield ,
+    vector<pair<Item* , int>> Items , vector<pair<Weapon* , int>> Weapons);
+    int getHP();
+    void setHP(int HP);
+    int getMaxHP();
+    void setMaxHP(int MaxHP);
+    int getArmor();
+    void setArmor(double Armor);
+    int getShield();
+    void setShield(int Shield);
+    void takeDamage(int damageTaken);
+    vector<pair<Item* , int>> getItem();
+    vector<pair<Weapon* , int>> getWeapons();
+    // vector<pair<Equipment* , int> getEquipments();
+};
+
+class Player : public Character{
+
+private:
+    string Name;
     int BackPackCapacity;
     int BackPackWeight;
     int Energy;
     int MaxEnergy;
     int Coin;
-    int Shield;
-
-    vector<pair<Item*, int>> Items;
     vector<Relic*> Relics;
-    vector<Weapon*> weapons;
+    vector<pair<Consumable* , int>> Consumables;
 
 public:
-    Player(string Name, int HP, int MaxHP, double Armor, int BackPackCapacity , int BackPackWeight , int Energy , int Coin , int Shield , vector<pair<Item* , int>> Items , vector<Relic*> Relics); // items to be included
+    Player(string Name, int HP, int MaxHP, double Armor, int BackPackCapacity , int BackPackWeight , int Energy
+    , int Coin , int Shield , vector<pair<Item* , int>> Items , vector<Relic*> Relics , vector<pair<Weapon* , int>> Weapons
+    , vector<pair<Consumable* , int>> Consumables); // Equipments to be included
     ~Player();
     // void Attack(Enemy* enemy); // can't fully develop yet?!
-    void takeDamage(int damagetaken);
     string getName();
-    void setHP(int HP);
-    int getHP();
-    void setMaxHP(int MaxHP);
-    int getMaxHP();
-    void setArmor(double Armor);
-    int getArmor();
     void setBackPackCapacity(int BackPackCapacity);
     int getBackPackCapacity();
     void setBackPackWeight(int BackPackWeight);
@@ -47,51 +65,30 @@ public:
     void addCoin(int CoinToBeAdded);
     void removeCoin(int CoinToBeAdded);
     int getCoin();
-    void setShield(int Shield);
-    int getShield();
-    vector<pair<Item* , int>> getItem();
     void addItem(Item* item);
     void removeItem(Item* item);
     vector<Relic*> getRelic();
     void addRelic(Relic* relic); // relic usage to be add
-    vector<Weapon*> getWeapons();
     void addWeapon(Weapon* Weapon);
+    void removeWeapon(Weapon* Weapon);
+    // void addEquipment(Equipment* Equipment);
+    // void removeEquipment(Equipment* Equipment);
+    vector<pair<Consumable* , int>> getConsumables();
+    void addConsumable(Consumable* Consumable);
+    void removeConsumable(Consumable* Consumable);
 };
 
-class Enemy{
-
-private:
-    int HP;
-    int MaxHP;
-    double Armor;
-    Item* item;
-    int Shield;
-
-public:
-    Enemy(int HP , int MaxHP , double Armor , Item* item , int Shield);
-    // constructors to add?! (factory?!!!!!)
-    virtual void Attack(Player player) = 0; // can't fully develop yet?!
-    void takeDamage(int damagetaken);
-    void setHP(int HP);
-    int getHP();
-    void setMaxHP(int MaxHP);
-    int getMaxHP();
-    void setArmor(double Armor);
-    int getArmor();
-    void setShield(int Shield);
-    int getShield();
-    
-};
-
-class HumanEnemy: public Enemy{
+class HumanEnemy: public Character{
 
 private:
     string Name;
-    vector<Item*> items;
+    vector<pair<Consumable* , int>> Consumables;
+
 public:
     string getName();
-    HumanEnemy(int HP , int MaxHP , double Armor , string Name, Item* item , int shield); //items to add?!
-    void Attack(Player player) override; // can't fully develop yet?!
+    HumanEnemy(int HP , int MaxHP , double Armor , string Name, int Shield , vector<pair<Item* , int>> Items ,
+    vector<pair<Weapon* , int>> Weapons , vector<pair<Consumable* , int>> Consumables); //items to add?!
+    // void Attack(Player player) override; // can't fully develop yet?!
     // consume function to be added
     void Consume(Consumable* consumable);
     void removeItem(Item* item); // when we throw a throwable item
@@ -101,15 +98,15 @@ public:
     ~HumanEnemy();
 };
 
-class Zombie: public Enemy{
+class Zombie: public Character{
 
 private:
     string Type;
 
 public:
     string getType();
-    void Attack(Player player) override; // can't fully develop yet?!
-    Zombie(int HP , int MaxHP , double Armor , string Type , Item* item , int shield); // items may be added
+    // void Attack(Player player) override; // can't fully develop yet?!
+    Zombie(int HP , int MaxHP , double Armor , string Type , int shield , vector<pair<Item* , int>> Items , vector<pair<Weapon* , int>> Weapons); // items may be added
     ~Zombie();
     // random bullshit to be included
 };

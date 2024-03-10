@@ -11,18 +11,39 @@ string ShuffleQuotes(vector<string> QuotesGenerator){
     int i = rand() % QuotesGenerator.size();
     return QuotesGenerator[i];
 } 
-Player :: Player(string Name, int HP, int MaxHP, double Armor, int BackPackCapacity , int BackPackWeight , int Energy , int Coin , int Shield ,vector<pair<Item* , int>> Items , vector<Relic*> Relics){
-    this -> Name = Name;
+
+Character :: Character(int HP , int MaxHP , int Armor , int Shield ,
+vector<pair<Item* , int>> Items , vector<pair<Weapon* , int>> Weapons){
     this -> HP = HP;
     this -> MaxHP = MaxHP;
     this -> Armor = Armor;
+    this -> Shield = Shield;
+}
+
+int Character :: getHP(){return HP;}
+
+void Character :: setHP(int HP){this -> HP = HP;}
+
+int Character :: getMaxHP(){return MaxHP;}
+
+void Character :: setMaxHP(int MaxHP){this -> MaxHP = MaxHP;}
+
+int Character :: getArmor(){return Armor;}
+
+void Character :: setArmor(double Armor){this -> Armor = Armor;}
+
+Player :: Player(string Name, int HP, int MaxHP, double Armor, int BackPackCapacity , int BackPackWeight
+, int Energy , int Coin , int Shield ,vector<pair<Item* , int>> Items , vector<Relic*> Relics
+, vector<pair<Weapon* , int>> Weapons , vector<pair<Consumable* , int>> Consumables) : Character
+(HP , MaxHP , Armor , Shield , Items ,  Weapons){
+    this -> Name = Name;
     this -> BackPackCapacity = BackPackCapacity;
     this -> BackPackWeight = BackPackWeight;
     this -> Energy = Energy;
     this -> Coin = Coin;
-    this -> Shield = Shield;
-    this -> Items = Items;
     this -> Relics = Relics;
+    // this -> Equipments = Equipments;
+    this -> Consumables = Consumables;
 } 
 
 Player :: ~Player(){
@@ -31,7 +52,7 @@ Player :: ~Player(){
 
 // void Player :: Attack(Enemy* enemy){} // to be filled
 
-void Player :: takeDamage(int damagetaken){
+void Character :: takeDamage(int damagetaken){
     if(Shield>=damagetaken){
         Shield -= damagetaken;
         damagetaken = 0;
@@ -42,18 +63,6 @@ void Player :: takeDamage(int damagetaken){
     }
     setHP(getHP() - (int) (damagetaken * (100 - Armor) / 100));
 }
-
-void Player :: setHP(int HP){this -> HP = HP;}
-
-int Player :: getHP(){return HP;}
-
-void Player :: setMaxHP(int MaxHP){this -> MaxHP = MaxHP;}
-
-int Player :: getMaxHP(){return MaxHP;}
-
-void Player :: setArmor(double Armor){this -> Armor = Armor;}
-
-int Player :: getArmor(){return Armor;}
 
 void Player :: setBackPackCapacity(int BackPackCapacity){this -> BackPackCapacity = BackPackCapacity;}
 
@@ -77,11 +86,11 @@ void Player :: removeCoin(int CoinToBeRemoved){this -> Coin -= CoinToBeRemoved;}
 
 int Player :: getCoin(){return Coin;}
 
-void Player :: setShield(int Shield){this->Shield = Shield;}
+void Character :: setShield(int Shield){this->Shield = Shield;}
 
-int Player :: getShield(){return Shield;}
+int Character :: getShield(){return Shield;}
 
-vector<pair<Item* , int>> Player :: getItem(){return Items;}
+vector<pair<Item* , int>> Character :: getItem(){return Items;}
 
 void Player :: addItem(Item* item){
     if(BackPackWeight + item->getCapacity() <= BackPackCapacity){
@@ -100,10 +109,10 @@ void Player :: addItem(Item* item){
         cout << "You can't handle this";
 }
 
-void Player :: removeItem(Item* item){
+void Player :: removeItem(Item* Item){
     for (int i = 0; i < Items.size(); i++)
     {
-        if (item->getName() == Items[i].first->getName())
+        if (*Item == *Items[i].first)
         {
             BackPackWeight -= Items[i].first->getCapacity();
             if(Items[i].second == 1)
@@ -116,49 +125,97 @@ void Player :: removeItem(Item* item){
 
 vector<Relic*> Player :: getRelic(){return Relics;}
 
-void Player :: addRelic(Relic* relic){
+void Player :: addRelic(Relic* Relic){
     // relic usage to be added
-    Relics.push_back(relic);
+    Relics.push_back(Relic);
 }
 
-vector<Weapon*> Player :: getWeapons(){return weapons;}
+vector<pair<Weapon* , int>> Character :: getWeapons(){return Weapons;}
 
-void Player :: addWeapon(Weapon* Weopon){
-    // relic usage to be added
-    weapons.push_back(Weopon);
+void Player :: addWeapon(Weapon* Weapon){
+    bool isAdded = false;
+    for(int i = 0; i < Weapons.size(); i++){
+        if(*Weapon == *Weapons[i].first){
+            Weapons[i].second++;
+            isAdded = true;
+            break;
+        }
+    }
+    if(!isAdded)
+        Weapons.push_back(make_pair(Weapon , 1));
 }
 
-
-Enemy :: Enemy(int HP , int MaxHP , double Armor , Item* item , int Shield){
-    this->HP = HP;
-    this->MaxHP = MaxHP;
-    this->Armor = Armor;
-    this->item = item;
-    this->Shield = Shield; 
+void Player :: removeWeapon(Weapon* Weapon){
+    for(int i = 0; i < Weapons.size(); i++){
+        if(*Weapons[i].first == *Weapon){
+            if(Weapons[i].second == 1)
+                Weapons.erase(Weapons.begin()+ i);
+            else
+                Weapons[i].second--;
+        }
+    }
 }
 
-void Enemy :: takeDamage(int damagetaken){setHP(getHP() - damagetaken * (100 - Armor) / 100);}
+// vector<pair<Equipment* , int>> Player :: getEquipments(){return Equipments;}
 
-void Enemy :: setHP(int HP){this -> HP = HP;}
+// void Player :: addWeapon(Weapon* Weapon){
+//     bool isAdded = false;
+//     for(int i = 0; i < Equipments.size(); i++){
+//         if(*Weapon == *Equipments[i].first){
+//             Equipments[i].second++;
+//             isAdded = true;
+//             break;
+//         }
+//     }
+//     if(!isAdded)
+//         Equipments.push_back(make_pair(Weapon , 1));
+// }
 
-int Enemy :: getHP(){return HP;}
+// void Player :: removeWeapon(Weapon* Weapon){
+//     for(int i = 0; i < Equipments.size(); i++){
+//         if(*Equipments[i].first == *Weapon){
+//             if(Equipments[i].second == 1)
+//                 Equipments.erase(Equipments.begin()+ i);
+//             else
+//                 Equipments[i].second--;
+//         }
+//     }
+// }
 
-void Enemy :: setMaxHP(int MaxHP){this -> MaxHP = MaxHP;}
+vector<pair<Consumable* , int>> Player :: getConsumables(){return Consumables;}
 
-int Enemy :: getMaxHP(){return MaxHP;}
+void Player :: addConsumable(Consumable* Consumable){
+    bool isAdded = false;
+    for(int i = 0; i < Consumables.size(); i++){
+        if(*Consumable == *Consumables[i].first){
+            Consumables[i].second++;
+            isAdded = true;
+            break;
+        }
+    }
+    if(!isAdded)
+        Consumables.push_back(make_pair(Consumable , 1));
+}
 
-void Enemy :: setArmor(double Armor){this -> Armor = Armor;}
-
-int Enemy :: getArmor(){return Armor;}
-
-void Enemy :: setShield(int shield){this -> Shield = Shield;}
-
-int Enemy :: getShield(){return Shield;}
+void Player :: removeConsumable(Consumable* Consumable){
+    for(int i = 0; i < Consumables.size(); i++){
+        if(*Consumables[i].first == *Consumable){
+            if(Consumables[i].second == 1)
+                Consumables.erase(Consumables.begin()+ i);
+            else
+                Consumables[i].second--;
+        }
+    }
+}
 
 string HumanEnemy :: getName(){return Name;}
 
-HumanEnemy :: HumanEnemy(int HP , int MaxHP , double Armor , string Name , Item* item , int Shield) : 
-Enemy(HP , MaxHP , Armor , item , Shield){this->Name = Name;}
+HumanEnemy :: HumanEnemy(int HP , int MaxHP , double Armor , string Name, int Shield , vector<pair<Item* , int>> Items ,
+vector<pair<Weapon* , int>> , vector<pair<Consumable* , int>> Consumables)
+: Character(HP , MaxHP , Armor , Shield , Items , Weapons){
+    this->Name = Name;
+    this->Consumables = Consumables;
+}
 
 // void HumanEnemy :: Attack(Player player){}
 
@@ -172,27 +229,28 @@ HumanEnemy :: ~HumanEnemy(){
 
 //void HumanEnemy :: Consume(Consumable* consumable){}
 
-void HumanEnemy :: removeItem(Item* item){
-    for (int i = 0; i < items.size(); i++)
-    {
-        if (item == items[i])
-        {
-            items.erase(items.begin() + i);
+void HumanEnemy :: removeItem(Item* Item){
+    for (int i = 0; i < Items.size(); i++){
+        if (*Item == *Items[i].first){
+            if(Items[i].second == 1)
+                Items.erase(Items.begin()+i);
+            else
+                Items[i].second--;
         }
     }
 }
 
+
 void HumanEnemy :: RajazKhani(){
     vector<string> curse ={"MOTHER FUCKER" , "BITCH" , "Asshole" };
-    string RazajKhani = "Got u, " + ShuffleQuotes(curse);
+    string RajazKhani = "Got u, " + ShuffleQuotes(curse);
     vector<string> Rajaz = {RajazKhani , "Loser" , "Almost there!" , ""};
-    if (rand() % 5 == 0)
-    {
+    if (rand() % 5 == 0){
         cout << ShuffleQuotes(Rajaz);
     }
 }
 
-Zombie :: Zombie(int HP , int MaxHP , double Armor , string Type , Item* item , int Shield): Enemy(HP , MaxHP , Armor , item , Shield){
+Zombie :: Zombie(int HP , int MaxHP , double Armor , string Type , int Shield , vector<pair<Item* , int>> Items , vector<pair<Weapon* , int>> Weapons): Character(HP , MaxHP , Armor , Shield , Items , Weapons){
     this-> Type = Type; 
 }
 
@@ -220,7 +278,7 @@ void Shopkeeper :: ByeDialogue(){
 
 void Shopkeeper :: SellDialogue(Item* item){
     vector<string> ShopkeeperSell = {"So you bought " + item->getName() , "You choosed one of the best items." ,
-     "Wish " + item->getName() + "make you win.";}
+     "Wish " + item->getName() + "help you survive."};
 } // items to be included
 
 void Shopkeeper :: BuyDialogue(Item* item){
