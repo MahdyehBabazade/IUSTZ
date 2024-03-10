@@ -69,7 +69,7 @@ Weapon* choose_weapon(vector<Weapon*> &weapons){
 
     return weapons[choice];
 }
-Enemy* choose_enemy(vector<Enemy*> &enemies){
+Enemy* choose_character(vector<Enemy*> &enemies){
     /*
     cout << "choose the enemy you want to attack: \n";
     int x = 0;
@@ -86,45 +86,16 @@ Enemy* choose_enemy(vector<Enemy*> &enemies){
      */
 }
 
-void Weapon::Attack(vector<Enemy*> &enemies,vector<Weapon*> &weapons) {
-    Weapon* weapon = choose_weapon(weapons);
-    if(typeid(weapon) == typeid(Shotgun)){
-        Gun* gun = dynamic_cast<Gun*>(weapon);
-        Shotgun* shotgun = dynamic_cast<Shotgun*>(gun);
-        shotgun->Attack(enemies,weapons);
-        return;
-    }else if(typeid(weapon) == typeid(Rifle)){
-        Gun* gun = dynamic_cast<Gun*>(weapon);
-        Rifle* rifle = dynamic_cast<Rifle*>(gun);
-        rifle->Attack(enemies);
-        return;
-    }else if(typeid(weapon) == typeid(Snipe)) {
-        Gun *gun = dynamic_cast<Gun *>(weapon);
-        Snipe *snipe = dynamic_cast<Snipe *>(gun);
-        snipe->Attack(enemies);
-        return;
-    }else if(typeid(weapon) == typeid(Grenade)) {
-        Throwable *throwable = dynamic_cast<Throwable *>(weapon);
-        Grenade *grenade = dynamic_cast<Grenade *>(throwable);
-        grenade->Attack(enemies);
-        return;
-    }else if(typeid(weapon) == typeid(BoomRang)) {
-        Throwable *throwable = dynamic_cast<Throwable *>(weapon);
-        BoomRang *boomRang = dynamic_cast<BoomRang *>(throwable);
-        boomRang->Attack(enemies);
-        return;
-    }
-    Enemy* enemy = choose_enemy(enemies);
-
-    enemy->takeDamage(weapon->getDamage());
+void Weapon::Attack(vector<Character*> &Chars) {
+    Character* Character = choose_character(Chars);
+    character->takeDamage(Damage);
 }
 void Weapon ::decreaseEnergy(Player* player) {
-    player->setEnergy(player->getEnergy() - getEnergyNeeded());
+    player->setEnergy(player->getEnergy() - EnergyNeeded);
 }
 //............
 Punch :: Punch(string name, int capacity, int damage, int price, int energyNeed, int attackRange)
        : Weapon(name, capacity, price, damage, energyNeed, attackRange){}
-
 //.............
 Gun ::Gun(string name, int capacity,int price, int damage, int energyNeed, int attackRange, int ammo)
         : Ammo(ammo),Weapon(name, capacity, price, damage, energyNeed, attackRange){}
@@ -139,22 +110,22 @@ void Gun::setAmmo(int ammo) {
 Shotgun ::Shotgun(string name, int capacity,int price, int damage, int energyNeed, int attackRange, int ammo)
 : Gun(name,  capacity, price, damage,  energyNeed,  attackRange,  ammo){}
 
-void Shotgun ::Attack(vector<Enemy*> &enemies) {
-    Enemy* enemy = choose_enemy(enemies);
-    int EnemyDistance = enemies.size() - (find(enemies.begin(), enemies.end(),enemy) - enemies.begin());
-    int damage = max(int(this->getDamage()/2),int((EnemyDistance/enemies.size())*this->getDamage()));
-    enemy->takeDamage(damage);
+void Shotgun ::Attack(vector<Character*> &characters) {
+    Character* character = choose_character(characters);
+    int EnemyDistance = characters.size() - (find(characters.begin(), characters.end(),character) - characters.begin());
+    int damage = max(int(getDamage()/2),int((EnemyDistance/characters.size())*getDamage()));
+    character->takeDamage(damage);
 }
 //..
 Snipe ::Snipe(std::string name, int capacity, int price, int damage, int energyNeed, int attackRange, int ammo)
 : Gun( name,  capacity, price, damage,  energyNeed,  attackRange,  ammo) {}
 
-void Snipe ::Attack(vector<Enemy*> enemies) {
-    for(int i=0;i<min(1,int(enemies.size()));i++){
+void Snipe ::Attack(vector<Character*> characters) {
+    for(int i=0;i<min(1,int(characters.size()));i++){
         if(i==0){
-            enemies[i]->takeDamage(this->getDamage());
+            characters[i]->takeDamage(this->getDamage());
         }else {
-            enemies[i]->takeDamage(int(this->getDamage()/2));
+            characters[i]->takeDamage(int(this->getDamage()/2));
         }
     }
 }

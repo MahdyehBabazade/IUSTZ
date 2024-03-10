@@ -29,7 +29,7 @@ protected:
 public:
     Weapon(string name,int capacity,int damage,int price,int energyNeed,int attackRange);
 
-    virtual void Attack(vector<Enemy*> &enemies,vector<Weapon*> &weapons); // takes an enemy and calls its TakeDamage function
+    virtual void Attack(vector<Character*> &characters); // takes an enemy and calls its TakeDamage function
     void decreaseEnergy(Player* player); //decreases player's energy
 
     void setDamage(int damage);
@@ -59,13 +59,13 @@ public:
 
 class Shotgun:public Gun{
 public:
-    void Attack(vector<Enemy*> &enemies) override; // checks the range and deals damage based on it
+    void Attack(vector<Character*> &characters) override; // checks the range and deals damage based on it
     Shotgun(string name,int capacity, int price ,int damage,int energyNeed,int attackRange,int ammo);
 };
 
 class Snipe: public Gun{
 public:
-    void Attack(vector<Enemy*> enemies) override; // takes multiple enemies and attacks them all
+    void Attack(vector<Character*> characters) override; // takes multiple enemies and attacks them all
     Snipe(string name,int capacity, int price,int damage,int energyNeed,int attackRange,int ammo);
 };
 
