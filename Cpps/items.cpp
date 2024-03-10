@@ -163,10 +163,10 @@ void Snipe ::Attack(vector<Enemy*> enemies) {
 Rifle ::Rifle(std::string name, int capacity, int price , int damage, int energyNeed, int attackRange, int ammo)
 : Gun( name,  capacity, price, damage,  energyNeed,  attackRange,  ammo){}
 
-void Rifle ::Attack(vector<Enemy*> enemies) {
-    int damage=this->getDamage()/enemies.size();
-    for(Enemy* enemy: enemies){
-        enemy->takeDamage(damage);
+void Rifle ::Attack(vector<Character*> characters) {
+    int damage=this->getDamage()/characters.size();
+    for(Character* character: characters){
+        character->takeDamage(damage);
     }
 }
 
@@ -174,9 +174,9 @@ void Rifle ::Attack(vector<Enemy*> enemies) {
 coldWeapon ::coldWeapon(string name, int capacity,int price, int damage, int energyNeed, int attackRange)
 : Weapon( name, capacity, price, damage, energyNeed, attackRange){}
 
-void coldWeapon :: Throw(vector<Enemy*> enemies){
-    Enemy* enemy= choose_enemy(enemies);
-    enemy->takeDamage(int(this->getDamage()*1.2));
+void coldWeapon :: Throw(vector<Character*> characters){
+    Character* character= choose_character(characters);
+    character->takeDamage(int(this->getDamage()*1.2));
     what the fuck did you do? //throwable coldweapon
 }
 
@@ -186,15 +186,16 @@ Throwable :: Throwable(string name, int capacity,int price, int damage, int ener
 
 Grenade :: Grenade(string name, int capacity, int price, int damage, int energyNeed, int attackRange)
          : Throwable(name,capacity,price,damage,energyNeed,attackRange){};
-void Grenade :: Attack(vector<Enemy*> enemies) {
-    for(Enemy* enemy: enemies){
-        enemy->takeDamage(this->getDamage());
+
+void Grenade :: Attack(vector<Character*> characters) {
+    for(Character* character: characters){
+        character->takeDamage(this->getDamage());
     }
 }
 
-void BoomRang ::Attack(vector<Enemy*> enemies) {
-    for(Enemy* enemy:enemies){
-        enemy->takeDamage(this->getDamage()*2);
+void BoomRang ::Attack(vector<Character*> characters) {
+    for(Character* character:characters){
+        character->takeDamage(this->getDamage()*2);
     }
 }
 

@@ -71,13 +71,13 @@ public:
 
 class Rifle: public Gun{
 public:
-    void Attack(vector<Enemy*>enemies) override; // takes some enemies and the damage is divided between
+    void Attack(vector<Character*> characters) override; // takes some enemies and the damage is divided between
     Rifle(string name,int capacity, int price ,int damage,int energyNeed,int attackRange,int ammo);
 };
 
 class coldWeapon: public Weapon{
 public:
-    void Throw(vector<Enemy*> enemies); //throws the coldWeapon and loses it
+    void Throw(vector<Character*> characters); //throws the coldWeapon and loses it
     coldWeapon(string name,int capacity,int price ,int damage,int energyNeed,int attackRange);
 };
 
@@ -89,13 +89,13 @@ public:
 class Grenade: public Throwable{
 public:
     Grenade(string name,int capacity, int price,int damage,int energyNeed,int attackRange);
-    void Attack(vector<Enemy*> enemies) override;
+    void Attack(vector<Character*> characters) override;
 };
 
 class BoomRang: public Throwable{
 public:
     BoomRang(string name,int capacity, int price,int damage,int energyNeed,int attackRange);
-    void Attack(vector<Enemy*> enemies) override;
+    void Attack(vector<Character*> characters) override;
 };
 
 //--------------------------------
