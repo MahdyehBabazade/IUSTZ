@@ -69,7 +69,7 @@ Weapon* choose_weapon(vector<Weapon*> &weapons){
 
     return weapons[choice];
 }
-Enemy* choose_character(vector<Enemy*> &enemies){
+Character* choose_character(vector<Character*> &characters){
     /*
     cout << "choose the enemy you want to attack: \n";
     int x = 0;

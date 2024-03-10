@@ -65,13 +65,13 @@ public:
 
 class Snipe: public Gun{
 public:
-    void Attack(vector<Character*> characters) override; // takes multiple enemies and attacks them all
+    void Attack(vector<Character*> characters) override; // takes multiple characters and attacks them all
     Snipe(string name,int capacity, int price,int damage,int energyNeed,int attackRange,int ammo);
 };
 
 class Rifle: public Gun{
 public:
-    void Attack(vector<Character*> characters) override; // takes some enemies and the damage is divided between
+    void Attack(vector<Character*> characters) override; // takes some characters and the damage is divided between
     Rifle(string name,int capacity, int price ,int damage,int energyNeed,int attackRange,int ammo);
 };
 
