@@ -2,7 +2,6 @@
 #include <vector>
 #include <string>
 #include <typeinfo>
-#include <algorithm>
 #include <cmath>
 #include "../Headers/items.h"
 
@@ -245,6 +244,19 @@ HeadGear ::HeadGear(string name, int capacity, int price, int amount)
 FootWear ::FootWear(string name, int capacity, int price, int amount)
           : Armor(name,capacity,price,amount){};
 //-----------------------------
-Relic::Relic(std::string name, int capacity, int price, int amount)
+Relic::Relic(std::string name, int capacity, int price)
 : Item( name, capacity, price){}
 
+int getRandomNumber()
+{
+    int number = rand() % 6 + 1;
+    number = number * 5;
+    return number;
+}
+
+vector<int> Relic ::Randomize() {
+    //health,energy,equipment,weapon 
+    vector<int> result = {0,0,getRandomNumber(),getRandomNumber() };
+    shuffle(result.begin(), result.end());
+    return result;
+}

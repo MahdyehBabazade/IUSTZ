@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <algorithm>
 #include "../Headers/creature.h"
 
 class Item {
@@ -146,8 +147,10 @@ public:
     FootWear(string name,int capacity,int price,int amount);
 };
 //------------------------------
-
-class Relic: Item{
+class Relic: Item {
+private:
+    vector<int> Amounts;
 public:
-    Relic(string name,int capacity,int price,int amount); // remember capacity=0
-};
+    Relic(string name, int capacity, int price); // remember capacity=0
+    vector<int> Randomize();
+}
