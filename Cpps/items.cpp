@@ -232,7 +232,9 @@ int getRandomNumber()
 
 vector<int> Relic ::Randomize() {
     //health,energy,equipment,weapon 
+    random_device rd;
+    mt19937 g(rd());
     vector<int> result = {0,0,getRandomNumber(),getRandomNumber() };
-    shuffle(result.begin(), result.end());
+    shuffle(result.begin(), result.end(),g);
     return result;
 }
