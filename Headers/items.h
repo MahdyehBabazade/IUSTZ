@@ -102,28 +102,29 @@ public:
 class Consumable: public Item{
 private:
     int Amount;
+protected:
+    int Type;
 public:
     void setAmount(int amount);
     int getAmount();
-    Consumable(string name,int capacity,int price,int amount);
+    void setType(int type);
+    int getType();
+    Consumable(string name,int capacity,int price,int amount,int type);
 };
 
 class HealingItem: public Consumable{
 public:
-    void Heal(Player* player); // heals the player
-    HealingItem(string name,int capacity,int price,int amount);
+    HealingItem(string name,int capacity,int price,int amount,int type);
 };
 
 class Energizer: public Consumable{
 public:
-    void Energize(Player* player); // increases player's energy
-    Energizer(string name,int capacity,int price , int amount);
+    Energizer(string name,int capacity,int price , int amount,int type);
 };
 
 class ShieldPotion: public Consumable{
 public:
     ShieldPotion(string name,int capacity,int price , int amount);
-    void GiveShield(Player* player); //increases shield
 };
 //------------------------------
 class Equipment: public Item{

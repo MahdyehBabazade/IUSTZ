@@ -182,24 +182,23 @@ int Consumable::getAmount() {
     return Amount;
 }
 
-HealingItem ::HealingItem(std::string name, int capacity,int price, int amount)
-:Consumable( name, capacity, price, amount){}
-
-void HealingItem ::Heal(Player* player) {
-    player->setHP(player->getHP()+getAmount());
+void Consumable::setType(int type) {
+    Type = type;
 }
 
-Energizer ::Energizer(std::string name, int capacity,int price, int amount)
-: Consumable(name, capacity, price, amount){}
-void Energizer ::Energize(Player *player) {
-    player->setEnergy(player->getEnergy()+getAmount());
+int Consumable::getType(){
+    return Type;
 }
 
-ShieldPotion ::ShieldPotion(std::string name, int capacity, int price, int amount)
-              : Consumable(name, capacity, price, amount){};
-void ShieldPotion ::GiveShield(Player *player) {
-    player->setShield(player->getShield()+getAmount());
-}
+HealingItem ::HealingItem(std::string name, int capacity,int price, int amount,int type)
+:Consumable( name, capacity, price, amount,type){}
+
+Energizer ::Energizer(std::string name, int capacity,int price, int amount,int type)
+: Consumable(name, capacity, price, amount,type){}
+
+ShieldPotion ::ShieldPotion(std::string name, int capacity, int price, int amount,int type)
+              : Consumable(name, capacity, price, amount,type){};
+
 //---------------------------
 Equipment ::Equipment(std::string name, int capacity, int price, int amount)
 : Amount(amount),Item( name, capacity, price) {}
