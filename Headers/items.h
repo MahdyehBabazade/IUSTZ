@@ -25,7 +25,6 @@ class Weapon: public Item{
 protected:
     int Damage;
     int EnergyNeeded;
-    int AttackRange;
 public:
     Weapon(string name,int capacity,int damage,int price,int energyNeed,int attackRange);
 
@@ -33,19 +32,17 @@ public:
     void decreaseEnergy(Player* player); //decreases player's energy
 
     void setDamage(int damage);
-    void setAttackRange(int attackRange);
     void setEnergyNeeded(int energy);
 
     int getDamage();
     int getEnergyNeeded();
-    int getAttackRange();
 
     string GetStat();
 };
 
 class Punch: public Weapon{
 public:
-    Punch(string name,int capacity,int damage,int price,int energyNeed,int attackRange);
+    Punch(string name,int capacity,int damage,int price,int energyNeed);
 };
 
 class Gun:public Weapon{
@@ -54,48 +51,48 @@ private:
 public:
     void setAmmo(int ammo);
     int getAmmo();
-    Gun(string name,int capacity,int price,int damage,int energyNeed,int attackRange,int ammo);
+    Gun(string name,int capacity,int price,int damage,int energyNeed,int ammo);
 };
 
 class Shotgun:public Gun{
 public:
     void Attack(vector<Character*> &characters) override; // checks the range and deals damage based on it
-    Shotgun(string name,int capacity, int price ,int damage,int energyNeed,int attackRange,int ammo);
+    Shotgun(string name,int capacity, int price ,int damage,int energyNeed,int ammo);
 };
 
 class Snipe: public Gun{
 public:
-    void Attack(vector<Character*> characters) override; // takes multiple characters and attacks them all
-    Snipe(string name,int capacity, int price,int damage,int energyNeed,int attackRange,int ammo);
+    void Attack(vector<Character*> &characters) override; // takes multiple characters and attacks them all
+    Snipe(string name,int capacity, int price,int damage,int energyNeed,int ammo);
 };
 
 class Rifle: public Gun{
 public:
-    void Attack(vector<Character*> characters) override; // takes some characters and the damage is divided between
-    Rifle(string name,int capacity, int price ,int damage,int energyNeed,int attackRange,int ammo);
+    void Attack(vector<Character*> &characters) override; // takes some characters and the damage is divided between
+    Rifle(string name,int capacity, int price ,int damage,int energyNeed,int ammo);
 };
 
 class coldWeapon: public Weapon{
 public:
-    void Throw(vector<Character*> characters); //throws the coldWeapon and loses it
-    coldWeapon(string name,int capacity,int price ,int damage,int energyNeed,int attackRange);
+    void Throw(vector<Character*> &characters); //throws the coldWeapon and loses it
+    coldWeapon(string name,int capacity,int price ,int damage,int energyNeed);
 };
 
 class Throwable: public Weapon {
 public:
-    Throwable(string name,int capacity, int price,int damage,int energyNeed,int attackRange);
+    Throwable(string name,int capacity, int price,int damage,int energyNeed);
 };
 
 class Grenade: public Throwable{
 public:
-    Grenade(string name,int capacity, int price,int damage,int energyNeed,int attackRange);
-    void Attack(vector<Character*> characters) override;
+    Grenade(string name,int capacity, int price,int damage,int energyNeed);
+    void Attack(vector<Character*> &characters) override;
 };
 
 class BoomRang: public Throwable{
 public:
-    BoomRang(string name,int capacity, int price,int damage,int energyNeed,int attackRange);
-    void Attack(vector<Character*> characters) override;
+    BoomRang(string name,int capacity, int price,int damage,int energyNeed);
+    void Attack(vector<Character*> &characters) override;
 };
 
 //--------------------------------
@@ -147,11 +144,17 @@ class FootWear: public Equipment{
 public:
     FootWear(string name,int capacity,int price,int amount);
 };
+
+                                                                                                      
 //------------------------------
 class Relic: Item {
 private:
-    vector<int> Amounts;
+    int MaxHP;
+    int MaxEnergy;
 public:
-    Relic(string name, int capacity, int price); // remember capacity=0
-    vector<int> Randomize();
+    void setMaxHP(int MaxHP);
+    void setMaxEnergy(int MaxEnergy);
+    int getMaxEnergy();
+    int getMaxHP();
+    Relic(string name, int capacity, int price,int MaxHP,int maxEnergy); // remember capacity=0
 }
