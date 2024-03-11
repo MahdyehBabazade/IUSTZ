@@ -16,11 +16,11 @@ private:
 protected:
     vector<pair<Item* , int>> Items;
     vector<pair<Weapon* , int>> Weapons;
-    vector<pair<Equipment* , int>> Equipments;
+    vector<Equipment*> Equipments;
 
 public:
-    Character(int HP , int MaxHP , int Armor , int Shield ,
-    vector<pair<Item* , int>> Items , vector<pair<Weapon* , int>> Weapons);
+    Character(int HP , int MaxHP , int Armor , int Shield , vector<pair<Item* , int>> Items ,
+    vector<pair<Weapon* , int>> Weapons , vector<Equipment*> Equipments);
     int getHP();
     void setHP(int HP);
     int getMaxHP();
@@ -32,7 +32,7 @@ public:
     void takeDamage(int damageTaken);
     vector<pair<Item* , int>> getItems();
     vector<pair<Weapon* , int>> getWeapons();
-    vector<pair<Equipment* , int>> getEquipments();
+    vector<Equipment*> getEquipments();
 };
 
 class Player : public Character{
@@ -49,7 +49,7 @@ private:
 
 public:
     Player(string Name, int HP, int MaxHP, double Armor, int BackPackCapacity , int BackPackWeight , int MaxEnergy
-    , int Coin , int Shield , vector<pair<Item* , int>> Items , vector<pair<Weapon* , int>> Weapons); // Equipments to be included
+    , int Coin , int Shield , vector<pair<Item* , int>> Items , vector<pair<Weapon* , int>> Weapons , vector<Equipment*> Equipments); // Equipments to be included
     ~Player();
     // void Attack(Enemy* enemy); // can't fully develop yet?!
     string getName();
@@ -87,7 +87,7 @@ private:
 public:
     string getName();
     HumanEnemy(int HP , int MaxHP , double Armor , string Name, int Shield , vector<pair<Item* , int>> Items ,
-    vector<pair<Weapon* , int>> Weapons , vector<pair<Consumable* , int>> Consumables); //items to add?!
+    vector<pair<Weapon* , int>> Weapons , vector<Equipment*> Equipments , vector<pair<Consumable* , int>> Consumables); //items to add?!
     // void Attack(Player player) override; // can't fully develop yet?! // rajazKhani to be include
     // consume function to be added
     // void Consume(Consumable* consumable); // to be included
@@ -103,7 +103,8 @@ private:
 public:
     string getType();
     // void Attack(Player player) override; // can't fully develop yet?!
-    Zombie(int HP , int MaxHP , double Armor , string Type , int shield , vector<pair<Item* , int>> Items , vector<pair<Weapon* , int>> Weapons); // items may be added
+    Zombie(int HP , int MaxHP , double Armor , string Type , int shield ,
+    vector<pair<Item* , int>> Items , vector<pair<Weapon* , int>> Weapons , vector<Equipment*> Equipment);
     ~Zombie();
     // random bullshit to be included
 };

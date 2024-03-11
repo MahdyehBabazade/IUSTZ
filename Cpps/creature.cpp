@@ -15,11 +15,12 @@ vector<string> ShuffleVec(vector<string> vec){
 }
 
 Character :: Character(int HP , int MaxHP , int Armor , int Shield ,
-vector<pair<Item* , int>> Items , vector<pair<Weapon* , int>> Weapons){
+vector<pair<Item* , int>> Items , vector<pair<Weapon* , int>> Weapons , vector<Equipment*> Equipments){
     this -> HP = HP;
     this -> MaxHP = MaxHP;
     this -> Armor = Armor;
     this -> Shield = Shield;
+    this -> Equipments = Equipments;
 }
 
 int Character :: getHP(){return HP;}
@@ -54,18 +55,18 @@ vector<pair<Item* , int>> Character :: getItems(){return Items;}
 
 vector<pair<Weapon* , int>> Character :: getWeapons(){return Weapons;}
 
-vector<pair<Equipment* , int>> Character :: getEquipments(){return Equipments;}
+vector<Equipment*> Character :: getEquipments(){return Equipments;}
 
 Player :: Player(string Name, int HP, int MaxHP, double Armor, int BackPackCapacity , int BackPackWeight
 , int MaxEnergy , int Coin , int Shield ,vector<pair<Item* , int>> Items
-, vector<pair<Weapon* , int>> Weapons) : Character
-(HP , MaxHP , Armor , Shield , Items ,  Weapons){
+, vector<pair<Weapon* , int>> Weapons , vector<Equipment*> Equipments) : Character
+(HP , MaxHP , Armor , Shield , Items ,  Weapons , Equipments){
     this -> Name = Name;
     this -> BackPackCapacity = BackPackCapacity;
     this -> BackPackWeight = BackPackWeight;
     this -> MaxEnergy = MaxEnergy;
     this -> Coin = Coin;
-} 
+}
 
 Player :: ~Player(){
     cout << "Not good enough" << endl << "Defeated!!!" << endl << "Welcome to HELLMOS";
@@ -130,7 +131,7 @@ void Player :: removeItem(Item* Item){
 vector<Relic*> Player :: getRelic(){return Relics;}
 
 void Player :: addRelic(Relic* Relic){
-    // relic usage to be added
+    
     Relics.push_back(Relic);
 }
 
@@ -159,28 +160,19 @@ void Player :: removeWeapon(Weapon* Weapon){
 }
 
 void Player :: addEquipment(Equipment* Equipment){
-    bool isAdded = false;
-    for(int i = 0; i < Equipments.size(); i++){
-        if(*Equipment == *Equipments[i].first){
-            Equipments[i].second++;
-            isAdded = true;
-            break;
-        }
-    }
-    if(!isAdded)
-        Equipments.push_back(make_pair(Equipment , 1));
+    if()
 }
 
-void Player :: removeEquipment(Equipment* Equipment){
-    for(int i = 0; i < Equipments.size(); i++){
-        if(*Equipments[i].first == *Equipment){
-            if(Equipments[i].second == 1)
-                Equipments.erase(Equipments.begin()+ i);
-            else
-                Equipments[i].second--;
-        }
-    }
-}
+// void Player :: removeEquipment(Equipment* Equipment){
+//     for(int i = 0; i < Equipments.size(); i++){
+//         if(*Equipments[i].first == *Equipment){
+//             if(Equipments[i].second == 1)
+//                 Equipments.erase(Equipments.begin()+ i);
+//             else
+//                 Equipments[i].second--;
+//         }
+//     }
+// }
 
 vector<pair<Consumable* , int>> Player :: getConsumables(){return Consumables;}
 
@@ -211,8 +203,8 @@ void Player :: removeConsumable(Consumable* Consumable){
 string HumanEnemy :: getName(){return Name;}
 
 HumanEnemy :: HumanEnemy(int HP , int MaxHP , double Armor , string Name, int Shield , vector<pair<Item* , int>> Items ,
-vector<pair<Weapon* , int>> , vector<pair<Consumable* , int>> Consumables)
-: Character(HP , MaxHP , Armor , Shield , Items , Weapons){
+vector<pair<Weapon* , int>> , vector<Equipment*> Equipments , vector<pair<Consumable* , int>> Consumables)
+: Character(HP , MaxHP , Armor , Shield , Items , Weapons , Equipments){
     this->Name = Name;
     this->Consumables = Consumables;
 }
@@ -250,7 +242,9 @@ void HumanEnemy :: RajazKhani(){
     }
 }
 
-Zombie :: Zombie(int HP , int MaxHP , double Armor , string Type , int Shield , vector<pair<Item* , int>> Items , vector<pair<Weapon* , int>> Weapons): Character(HP , MaxHP , Armor , Shield , Items , Weapons){
+Zombie :: Zombie(int HP , int MaxHP , double Armor , string Type , int Shield , vector<pair<Item* , int>> Items 
+, vector<pair<Weapon* , int>> Weapons , vector<Equipment*> Equipments)
+: Character(HP , MaxHP , Armor , Shield , Items , Weapons , Equipments){
     this-> Type = Type; 
 }
 
