@@ -75,7 +75,6 @@ Player :: ~Player(){
     cout << "Not good enough" << endl << "Defeated!!!" << endl << "Welcome to HELLMOS";
 }
 
-
 void Player :: setBackPackCapacity(int BackPackCapacity){this -> BackPackCapacity = BackPackCapacity;}
 
 int Player :: getBackPackCapacity(){return BackPackCapacity;}
