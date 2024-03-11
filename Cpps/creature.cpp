@@ -72,10 +72,10 @@ Player :: ~Player(){
     cout << "Not good enough" << endl << "Defeated!!!" << endl << "Welcome to HELLMOS";
 }
 
-void Player :: Attack(Evector<Character*> &characters, vector<Weapon*> &weapons){
-    for(Weapon* weapon:weapons){
-        
-    }
+void Player :: Attack(vector<Character*> &characters, vector<Weapon*> &weapons){
+    int x;
+    cin >> x;
+    weapons[x]->Attack(characters);
 } // to be filled
 
 void Player :: setBackPackCapacity(int BackPackCapacity){this -> BackPackCapacity = BackPackCapacity;}

@@ -66,7 +66,6 @@ Weapon* choose_weapon(vector<Weapon*> &weapons){
     return weapons[choice];
 }
 Character* choose_character(vector<Character*> &characters){
-    /*
     cout << "choose the enemy you want to attack: \n";
     int x = 0;
     for(Enemy* &enemy:  enemies){
@@ -79,7 +78,6 @@ Character* choose_character(vector<Character*> &characters){
     choice -=1;
 
     return enemies[choice];
-     */
 }
 
 void Weapon::Attack(vector<Character*> &Chars) {
@@ -102,7 +100,7 @@ int Gun ::getAmmo() {
 void Gun::setAmmo(int ammo) {
     Ammo=ammo;
 }
-void Gun::Attack() {};
+void Gun::Attack(vector<Character*> &characters) {};
 //..............
 Shotgun ::Shotgun(string name, int capacity,int price, int damage, int energyNeed, int ammo)
 : Gun(name,  capacity, price, damage,  energyNeed, ammo){}
@@ -111,7 +109,7 @@ void Shotgun ::Attack(vector<Character*> &characters) {
     Character* character = choose_character(characters);
     int EnemyDistance = characters.size() - (find(characters.begin(), characters.end(),character) - characters.begin());
     int damage = max(int(getDamage()/2),int((EnemyDistance/characters.size())*getDamage()));
-    character->takeDamage(damage);
+    character->takeDamage(Damage);
 }
 //..
 Snipe ::Snipe(std::string name, int capacity, int price, int damage, int energyNeed, int ammo)
@@ -134,7 +132,7 @@ Rifle ::Rifle(std::string name, int capacity, int price , int damage, int energy
 void Rifle ::Attack(vector<Character*> &characters) {
     int damage=this->getDamage()/characters.size();
     for(Character* character: characters){
-        character->takeDamage(damage);
+        character->takeDamage(Damage);
     }
 }
 

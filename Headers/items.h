@@ -51,7 +51,7 @@ private:
 public:
     void setAmmo(int ammo);
     int getAmmo();
-    void Attack();
+    void Attack(vector<Character*> &characters);
     Gun(string name,int capacity,int price,int damage,int energyNeed,int ammo);
 };
 
@@ -151,7 +151,7 @@ public:
 };
                                                                                                       
 //------------------------------
-class Relic: Item {
+class Relic: public Item {
 private:
     int MaxHP;
     int MaxEnergy;
