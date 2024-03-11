@@ -33,6 +33,9 @@ public:
     vector<pair<Item* , int>> getItems();
     vector<pair<Weapon* , int>> getWeapons();
     vector<Equipment*> getEquipments();
+
+    void Attack(vector<Character*> &characters, vector<Weapon*> &weapons);
+
 };
 
 class Player : public Character{

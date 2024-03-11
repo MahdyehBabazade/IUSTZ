@@ -102,6 +102,7 @@ int Gun ::getAmmo() {
 void Gun::setAmmo(int ammo) {
     Ammo=ammo;
 }
+void Gun::Attack() {};
 //..............
 Shotgun ::Shotgun(string name, int capacity,int price, int damage, int energyNeed, int ammo)
 : Gun(name,  capacity, price, damage,  energyNeed, ammo){}
@@ -211,6 +212,8 @@ HeadGear ::HeadGear(string name, int capacity, int price, int amount)
 
 FootWear ::FootWear(string name, int capacity, int price, int amount)
           : Equipment(name,capacity,price,amount){};
+Boot::Boot(string name,int capacity,int price,int amount)
+        : Equipment(name,capacity,price,amount){};
 //-----------------------------
 Relic::Relic(std::string name, int capacity, int price,int MaxHP,int maxEnergy)
 :MaxHP(MaxHP),MaxEnergy(maxEnergy), Item( name, capacity, price){}

@@ -51,6 +51,7 @@ private:
 public:
     void setAmmo(int ammo);
     int getAmmo();
+    void Attack();
     Gun(string name,int capacity,int price,int damage,int energyNeed,int ammo);
 };
 
@@ -144,7 +145,10 @@ class FootWear: public Equipment{
 public:
     FootWear(string name,int capacity,int price,int amount);
 };
-
+class Boot : public Equipment{
+public:
+    Boot(string name,int capacity,int price,int amount);
+};
                                                                                                       
 //------------------------------
 class Relic: Item {

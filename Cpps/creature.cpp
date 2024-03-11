@@ -72,8 +72,11 @@ Player :: ~Player(){
     cout << "Not good enough" << endl << "Defeated!!!" << endl << "Welcome to HELLMOS";
 }
 
-// void Player :: Attack(Enemy* enemy){} // to be filled
-
+void Player :: Attack(Evector<Character*> &characters, vector<Weapon*> &weapons){
+    for(Weapon* weapon:weapons){
+        
+    }
+} // to be filled
 
 void Player :: setBackPackCapacity(int BackPackCapacity){this -> BackPackCapacity = BackPackCapacity;}
 
@@ -160,7 +163,7 @@ void Player :: removeWeapon(Weapon* Weapon){
 }
 
 void Player :: addEquipment(Equipment* Equipment){
-    if()
+
 }
 
 // void Player :: removeEquipment(Equipment* Equipment){
