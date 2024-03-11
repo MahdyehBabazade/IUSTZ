@@ -7,10 +7,12 @@
 #include <string>
 using namespace std;
 
-string ShuffleQuotes(vector<string> QuotesGenerator){
-    int i = rand() % QuotesGenerator.size();
-    return QuotesGenerator[i];
-} 
+vector<string> ShuffleVec(vector<string> vec){
+    random_device rd;
+    default_random_engine rng(rd());
+    shuffle(vec.begin(), vec.end(), rng);
+    return vec;
+}
 
 Character :: Character(int HP , int MaxHP , int Armor , int Shield ,
 vector<pair<Item* , int>> Items , vector<pair<Weapon* , int>> Weapons){
@@ -32,25 +34,9 @@ int Character :: getArmor(){return Armor;}
 
 void Character :: setArmor(double Armor){this -> Armor = Armor;}
 
-Player :: Player(string Name, int HP, int MaxHP, double Armor, int BackPackCapacity , int BackPackWeight
-, int Energy , int Coin , int Shield ,vector<pair<Item* , int>> Items , vector<Relic*> Relics
-, vector<pair<Weapon* , int>> Weapons , vector<pair<Consumable* , int>> Consumables) : Character
-(HP , MaxHP , Armor , Shield , Items ,  Weapons){
-    this -> Name = Name;
-    this -> BackPackCapacity = BackPackCapacity;
-    this -> BackPackWeight = BackPackWeight;
-    this -> Energy = Energy;
-    this -> Coin = Coin;
-    this -> Relics = Relics;
-    // this -> Equipments = Equipments;
-    this -> Consumables = Consumables;
-} 
+void Character :: setShield(int Shield){this->Shield = Shield;}
 
-Player :: ~Player(){
-    cout << "Not good enough" << endl << "Defeated!!!" << endl << "Welcome to HELLMOS";
-}
-
-// void Player :: Attack(Enemy* enemy){} // to be filled
+int Character :: getShield(){return Shield;}
 
 void Character :: takeDamage(int damagetaken){
     if(Shield>=damagetaken){
@@ -63,6 +49,30 @@ void Character :: takeDamage(int damagetaken){
     }
     setHP(getHP() - (int) (damagetaken * (100 - Armor) / 100));
 }
+
+vector<pair<Item* , int>> Character :: getItems(){return Items;}
+
+vector<pair<Weapon* , int>> Character :: getWeapons(){return Weapons;}
+
+vector<pair<Equipment* , int>> Character :: getEquipments(){return Equipments;}
+
+Player :: Player(string Name, int HP, int MaxHP, double Armor, int BackPackCapacity , int BackPackWeight
+, int MaxEnergy , int Coin , int Shield ,vector<pair<Item* , int>> Items
+, vector<pair<Weapon* , int>> Weapons) : Character
+(HP , MaxHP , Armor , Shield , Items ,  Weapons){
+    this -> Name = Name;
+    this -> BackPackCapacity = BackPackCapacity;
+    this -> BackPackWeight = BackPackWeight;
+    this -> MaxEnergy = MaxEnergy;
+    this -> Coin = Coin;
+} 
+
+Player :: ~Player(){
+    cout << "Not good enough" << endl << "Defeated!!!" << endl << "Welcome to HELLMOS";
+}
+
+// void Player :: Attack(Enemy* enemy){} // to be filled
+
 
 void Player :: setBackPackCapacity(int BackPackCapacity){this -> BackPackCapacity = BackPackCapacity;}
 
@@ -85,12 +95,6 @@ void Player :: addCoin(int CoinToBeAdded){this -> Coin += CoinToBeAdded;}
 void Player :: removeCoin(int CoinToBeRemoved){this -> Coin -= CoinToBeRemoved;}
 
 int Player :: getCoin(){return Coin;}
-
-void Character :: setShield(int Shield){this->Shield = Shield;}
-
-int Character :: getShield(){return Shield;}
-
-vector<pair<Item* , int>> Character :: getItem(){return Items;}
 
 void Player :: addItem(Item* item){
     if(BackPackWeight + item->getCapacity() <= BackPackCapacity){
@@ -130,8 +134,6 @@ void Player :: addRelic(Relic* Relic){
     Relics.push_back(Relic);
 }
 
-vector<pair<Weapon* , int>> Character :: getWeapons(){return Weapons;}
-
 void Player :: addWeapon(Weapon* Weapon){
     bool isAdded = false;
     for(int i = 0; i < Weapons.size(); i++){
@@ -156,31 +158,29 @@ void Player :: removeWeapon(Weapon* Weapon){
     }
 }
 
-// vector<pair<Equipment* , int>> Player :: getEquipments(){return Equipments;}
+void Player :: addEquipment(Equipment* Equipment){
+    bool isAdded = false;
+    for(int i = 0; i < Equipments.size(); i++){
+        if(*Equipment == *Equipments[i].first){
+            Equipments[i].second++;
+            isAdded = true;
+            break;
+        }
+    }
+    if(!isAdded)
+        Equipments.push_back(make_pair(Equipment , 1));
+}
 
-// void Player :: addWeapon(Weapon* Weapon){
-//     bool isAdded = false;
-//     for(int i = 0; i < Equipments.size(); i++){
-//         if(*Weapon == *Equipments[i].first){
-//             Equipments[i].second++;
-//             isAdded = true;
-//             break;
-//         }
-//     }
-//     if(!isAdded)
-//         Equipments.push_back(make_pair(Weapon , 1));
-// }
-
-// void Player :: removeWeapon(Weapon* Weapon){
-//     for(int i = 0; i < Equipments.size(); i++){
-//         if(*Equipments[i].first == *Weapon){
-//             if(Equipments[i].second == 1)
-//                 Equipments.erase(Equipments.begin()+ i);
-//             else
-//                 Equipments[i].second--;
-//         }
-//     }
-// }
+void Player :: removeEquipment(Equipment* Equipment){
+    for(int i = 0; i < Equipments.size(); i++){
+        if(*Equipments[i].first == *Equipment){
+            if(Equipments[i].second == 1)
+                Equipments.erase(Equipments.begin()+ i);
+            else
+                Equipments[i].second--;
+        }
+    }
+}
 
 vector<pair<Consumable* , int>> Player :: getConsumables(){return Consumables;}
 
@@ -223,7 +223,7 @@ HumanEnemy :: ~HumanEnemy(){
     vector<string> EnemyDeathQuotes = { "I can't believe this is how it all ends!", "You fucking bastard!", "Wasted!", 
     "Nooo, I can't die yet!" , "My child , take care o..." , "I'll damn you" , "My brother will get my revenge!!!" , "I'll be waiting , you SoB" , 
     "That was a fun fight" , "See you on the other side"};
-    cout << ShuffleQuotes(EnemyDeathQuotes);
+    cout << ShuffleVec(EnemyDeathQuotes)[0];
     
 }
 
@@ -243,10 +243,10 @@ void HumanEnemy :: removeItem(Item* Item){
 
 void HumanEnemy :: RajazKhani(){
     vector<string> curse ={"MOTHER FUCKER" , "BITCH" , "Asshole" };
-    string RajazKhani = "Got u, " + ShuffleQuotes(curse);
+    string RajazKhani = "Got u, " + ShuffleVec(curse)[0];
     vector<string> Rajaz = {RajazKhani , "Loser" , "Almost there!" , ""};
     if (rand() % 5 == 0){
-        cout << ShuffleQuotes(Rajaz);
+        cout << ShuffleVec(Rajaz)[0];
     }
 }
 
@@ -256,7 +256,7 @@ Zombie :: Zombie(int HP , int MaxHP , double Armor , string Type , int Shield , 
 
 Zombie :: ~Zombie(){
     vector<string> ZombieDeathQuotes = {"Aaauugh!!!!" , "Haaauugh!!!" , "Blauugh!" , "Guaargh!!" , "Bluargh!!!"};
-    ShuffleQuotes(ZombieDeathQuotes);
+    cout << ShuffleVec(ZombieDeathQuotes)[0];
 }
 
 string Zombie :: getType(){return Type;}
@@ -269,7 +269,7 @@ string Shopkeeper :: getName(){return Name;}
 
 void Shopkeeper :: HiDialogue(){
     vector<string> ShopkeeperHi = {"Salute soldier! How can I help?" , "Hi commander! Is there anything I can provide?" , "Welcome to my shop!"};
-    cout << ShuffleQuotes(ShopkeeperHi) << endl;
+    cout << ShuffleVec(ShopkeeperHi)[0] << endl;
 }
 
 void Shopkeeper :: ByeDialogue(){
@@ -278,18 +278,19 @@ void Shopkeeper :: ByeDialogue(){
 
 void Shopkeeper :: SellDialogue(Item* item){
     vector<string> ShopkeeperSell = {"So you bought " + item->getName() , "You choosed one of the best items." ,
-     "Wish " + item->getName() + "help you survive."};
+    "Wish " + item->getName() + "help you survive."};
+    cout << ShuffleVec(ShopkeeperSell)[0];
 } // items to be included
 
 void Shopkeeper :: BuyDialogue(Item* item){
     double NewPrice = 0.8*item->getPrice();
-    vector ShopkeeperBuy = {"I can buy that for"};
+    cout << "I'll buy that for " << to_string(NewPrice) << " coins.\n"; 
 } // items to be included
 
 void Shopkeeper :: NoMoneyDialogue(){
     vector<string> PoorSoldier = {"You don't have enough coins!" , "Poor soldier!!!" , "Can't get you that!" , "So little for so much?!" , "..." ,
     "You don't have enough coins!" , "Poor soldier!!!" , "Can't get you that!" , "So little for so much?!"};
-    cout << ShuffleQuotes(PoorSoldier);
+    cout << ShuffleVec(PoorSoldier)[0];
 }
 
 Medic :: Medic(string Name){this->Name = Name;}
@@ -298,7 +299,7 @@ string Medic :: getName(){return Name;}
 
 void Medic :: HiDialogue(){
     vector<string> MedicSayHi = {"Hi, Soldier." , "Salute soldier! How can I help?" , "Hi commander! Are you hurt anywhere?"};
-    cout << ShuffleQuotes(MedicSayHi);
+    cout << ShuffleVec(MedicSayHi)[0];
 }
 
 void Medic :: ByeDialogue(){cout << "Have a safe journy.";}
@@ -308,7 +309,7 @@ void Medic :: HealDialogue(){cout << "I've patched you up!";}
 void Medic :: NoMoneyDialogue(){
     vector<string> PoorSoldier = {"You don't have enough coins!" , "Poor soldier!" , "Can't Heal you with that much coin!" , "So little for so much?!" , "..." ,
     "You don't have enough coins!" , "Poor soldier!!!" , "Can't heal you with that much coin" , "So little for so much?!"};
-    cout << ShuffleQuotes(PoorSoldier);
+    cout << ShuffleVec(PoorSoldier)[0];
 }
 
 void Medic :: Heal(Player player){
@@ -318,4 +319,5 @@ void Medic :: Heal(Player player){
 
 void Medic :: MaxHPIncrease(Player player){
     player.setMaxHP((int)player.getMaxHP() * 1.1);
+    HealDialogue();
 }
