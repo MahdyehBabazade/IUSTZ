@@ -99,7 +99,7 @@ public:
 };
 
 //--------------------------------
-class Consumable: Item{
+class Consumable: public Item{
 private:
     int Amount;
 public:

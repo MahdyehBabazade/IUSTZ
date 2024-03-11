@@ -230,11 +230,11 @@ int getRandomNumber()
     return number;
 }
 
-vector<int> Relic ::Randomize() {
+vector<int> Relic::Randomize() {
     //health,energy,equipment,weapon 
     random_device rd;
     mt19937 g(rd());
-    vector<int> result = {0,0,getRandomNumber(),getRandomNumber() };
-    shuffle(result.begin(), result.end(),g);
+    vector<int> result = { 0,0,getRandomNumber(),getRandomNumber() };
+    shuffle(result.begin(), result.end(), g);
     return result;
 }
