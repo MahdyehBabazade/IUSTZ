@@ -26,7 +26,7 @@ protected:
     int Damage;
     int EnergyNeeded;
 public:
-    Weapon(string name,int capacity,int damage,int price,int energyNeed,int attackRange);
+    Weapon(string name,int capacity,int damage,int price,int energyNeed);
 
     virtual void Attack(vector<Character*> &characters); // takes an enemy and calls its TakeDamage function
     void decreaseEnergy(Player* player); //decreases player's energy
@@ -157,4 +157,4 @@ public:
     int getMaxEnergy();
     int getMaxHP();
     Relic(string name, int capacity, int price,int MaxHP,int maxEnergy); // remember capacity=0
-}
+};
