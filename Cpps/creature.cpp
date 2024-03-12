@@ -5,22 +5,25 @@
 #include <random>
 #include <cmath>
 #include <string>
+#include <typeinfo>
 using namespace std;
 
 vector<string> ShuffleVec(vector<string> vec){
     random_device rd;
-    default_random_engine rng(rd());
-    shuffle(vec.begin(), vec.end(), rng);
+    default_random_engine abs(rd());
+    shuffle(vec.begin(), vec.end(), abs);
     return vec;
 }
 
 Character :: Character(int HP , int MaxHP , int Armor , int Shield ,
-vector<pair<Item* , int>> Items , vector<pair<Weapon* , int>> Weapons , vector<Equipment*> Equipments){
+vector<pair<Item* , int>> Items , vector<pair<Weapon* , int>> Weapons){
     this -> HP = HP;
     this -> MaxHP = MaxHP;
     this -> Armor = Armor;
     this -> Shield = Shield;
-    this -> Equipments = Equipments;
+    this -> Items = Items;
+    this -> Weapons = Weapons;
+    this -> Equipments = {{nullptr} , {nullptr} , {nullptr} , {nullptr}};
 }
 
 int Character :: getHP(){return HP;}
@@ -57,10 +60,56 @@ vector<pair<Weapon* , int>> Character :: getWeapons(){return Weapons;}
 
 vector<Equipment*> Character :: getEquipments(){return Equipments;}
 
+Weapon* Player::ChooseWeapon(vector<Weapon *> weapons) {
+    int x = 0;
+    for(Weapon* weapon : weapons){
+        x++;
+        cout << to_string(x) + "." + weapon->GetStat() << endl;
+    }
+    cout << "Choose: ";
+    int choice;
+    cin >> choice;
+    choice --;
+    return weapons[choice];
+}
+void Player ::Attack(vector<Character *> &characters, vector<Weapon *> &weapons) {
+    Weapon* weapon = ChooseWeapon(weapons);
+    if(getEnergy()>=weapon->getEnergyNeeded()) {
+        if (typeid(Weapon) == typeid(Gun)) {
+            Gun *gun = dynamic_cast<Gun *>(weapon);
+            if (gun->getAmmo() >= gun->getAmmoNeeded()) {
+                gun->Attack(characters);
+                gun->setAmmo(gun->getAmmo()-gun->getAmmoNeeded());
+            }
+        }else if(typeid(Weapon) == typeid(Throwable)){
+            Throwable *throwable = dynamic_cast<Throwable *>(weapon);
+            throwable->Attack(characters);
+            removeItem(throwable);
+        }else if(typeid(Weapon) == typeid(ColdWeapon)){
+            ColdWeapon *coldWeapon = dynamic_cast<ColdWeapon *>(weapon);
+            cout << "1.attack\n"
+                    "2.throw\n"
+                    "choose: ";
+            int choice;
+            cin >> choice;
+            if(choice ==1){
+                coldWeapon->Attack(characters);
+            }else{
+                coldWeapon->Throw(characters);
+                removeItem(coldWeapon);
+            }
+        }else{
+            weapon->Attack(characters);
+        }
+        setEnergy(getEnergy()-weapon->getEnergyNeeded());
+    }
+
+}
+
 Player :: Player(string Name, int HP, int MaxHP, double Armor, int BackPackCapacity , int BackPackWeight
 , int MaxEnergy , int Coin , int Shield ,vector<pair<Item* , int>> Items
-, vector<pair<Weapon* , int>> Weapons , vector<Equipment*> Equipments) : Character
-(HP , MaxHP , Armor , Shield , Items ,  Weapons , Equipments){
+, vector<pair<Weapon* , int>> Weapons) : Character
+(HP , MaxHP , Armor , Shield , Items ,  Weapons){
     this -> Name = Name;
     this -> BackPackCapacity = BackPackCapacity;
     this -> BackPackWeight = BackPackWeight;
@@ -71,9 +120,6 @@ Player :: Player(string Name, int HP, int MaxHP, double Armor, int BackPackCapac
 Player :: ~Player(){
     cout << "Not good enough" << endl << "Defeated!!!" << endl << "Welcome to HELLMOS";
 }
-
-// void Player :: Attack(Enemy* enemy){} // to be filled
-
 
 void Player :: setBackPackCapacity(int BackPackCapacity){this -> BackPackCapacity = BackPackCapacity;}
 
@@ -120,8 +166,9 @@ void Player :: removeItem(Item* Item){
         if (*Item == *Items[i].first)
         {
             BackPackWeight -= Items[i].first->getCapacity();
-            if(Items[i].second == 1)
-                Items.erase(Items.begin()+i);
+            if(Items[i].second == 1){
+                Items.erase(Items.begin()+i); //this may still consume some Bytes
+            }
             else
                 Items[i].second--;
         }   
@@ -133,6 +180,7 @@ vector<Relic*> Player :: getRelic(){return Relics;}
 void Player :: addRelic(Relic* Relic){
     
     Relics.push_back(Relic);
+    addItem(Relic);
 }
 
 void Player :: addWeapon(Weapon* Weapon){
@@ -146,6 +194,7 @@ void Player :: addWeapon(Weapon* Weapon){
     }
     if(!isAdded)
         Weapons.push_back(make_pair(Weapon , 1));
+    addItem(Weapon);
 }
 
 void Player :: removeWeapon(Weapon* Weapon){
@@ -157,22 +206,25 @@ void Player :: removeWeapon(Weapon* Weapon){
                 Weapons[i].second--;
         }
     }
+    removeItem(Weapon);
 }
 
 void Player :: addEquipment(Equipment* Equipment){
     
 }
 
-// void Player :: removeEquipment(Equipment* Equipment){
-//     for(int i = 0; i < Equipments.size(); i++){
-//         if(*Equipments[i].first == *Equipment){
-//             if(Equipments[i].second == 1)
-//                 Equipments.erase(Equipments.begin()+ i);
-//             else
-//                 Equipments[i].second--;
-//         }
-//     }
-// }
+void Player :: removeEquipment(Equipment* Equipment){
+    setArmor(getArmor() - Equipment->getAmount());
+    if(typeid(Equipment) == typeid(HeadGear))
+        Equipments[0] = nullptr;
+    else if(typeid(Equipment) == typeid(Vest))
+        Equipments[1] = nullptr;
+    else if(typeid(Equipment) == typeid(FootWear))
+        Equipments[2] = nullptr;
+    else if(typeid(Equipment) == typeid(Boot))
+        Equipments[3] = nullptr;
+    removeItem(Equipment);
+}
 
 vector<pair<Consumable* , int>> Player :: getConsumables(){return Consumables;}
 
@@ -187,6 +239,7 @@ void Player :: addConsumable(Consumable* Consumable){
     }
     if(!isAdded)
         Consumables.push_back(make_pair(Consumable , 1));
+    addItem(Consumable);
 }
 
 void Player :: removeConsumable(Consumable* Consumable){
@@ -198,15 +251,54 @@ void Player :: removeConsumable(Consumable* Consumable){
                 Consumables[i].second--;
         }
     }
+    removeItem(Consumable);
 }
 
+void Player :: Consume(Consumable* Consumable){
+    if(typeid(Consumable) == typeid(ShieldPotion)){
+        setShield(getShield() + Consumable->getAmount());
+        removeConsumable(Consumable);
+    }
+    else if(typeid(Consumable) == typeid(HealingItem)){
+        setHP(min(getMaxHP() , getHP() + Consumable->getAmount()));
+        removeConsumable(Consumable);
+    }
+    else if(typeid(Consumable) == typeid(Energizer)){
+        setEnergy(min(MaxEnergy , Energy + Consumable->getAmount()));
+        removeConsumable(Consumable);
+    }
+}
 string HumanEnemy :: getName(){return Name;}
 
 HumanEnemy :: HumanEnemy(int HP , int MaxHP , double Armor , string Name, int Shield , vector<pair<Item* , int>> Items ,
 vector<pair<Weapon* , int>> , vector<Equipment*> Equipments , vector<pair<Consumable* , int>> Consumables)
-: Character(HP , MaxHP , Armor , Shield , Items , Weapons , Equipments){
+: Character(HP , MaxHP , Armor , Shield , Items , Weapons){
     this->Name = Name;
     this->Consumables = Consumables;
+    this->Equipments = Equipments;
+}
+
+void HumanEnemy :: removeConsumable(Consumable* Consumable){
+    for(int i = 0; i < Consumables.size(); i++){
+        if(*Consumables[i].first == *Consumable){
+            if(Consumables[i].second == 1)
+                Consumables.erase(Consumables.begin()+ i);
+            else
+                Consumables[i].second--;
+        }
+    }
+    removeItem(Consumable);
+}
+
+void HumanEnemy :: Consume(Consumable* Consumable){
+    if(typeid(Consumable) == typeid(ShieldPotion)){
+        setShield(getShield() + Consumable->getAmount());
+        removeConsumable(Consumable);
+    }
+    else if(typeid(Consumable) == typeid(HealingItem)){
+        setHP(min(getMaxHP() , getHP() + Consumable->getAmount()));
+        removeConsumable(Consumable);
+    }
 }
 
 // void HumanEnemy :: Attack(Player player){}
@@ -244,8 +336,9 @@ void HumanEnemy :: RajazKhani(){
 
 Zombie :: Zombie(int HP , int MaxHP , double Armor , string Type , int Shield , vector<pair<Item* , int>> Items 
 , vector<pair<Weapon* , int>> Weapons , vector<Equipment*> Equipments)
-: Character(HP , MaxHP , Armor , Shield , Items , Weapons , Equipments){
+: Character(HP , MaxHP , Armor , Shield , Items , Weapons){
     this-> Type = Type; 
+    this-> Equipments = Equipments;
 }
 
 Zombie :: ~Zombie(){

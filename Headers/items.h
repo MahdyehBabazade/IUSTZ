@@ -26,72 +26,80 @@ protected:
     int Damage;
     int EnergyNeeded;
 public:
-    Weapon(string name,int capacity,int damage,int price,int energyNeed);
-
+    Weapon(string name,int capacity,int damage,int price,int energyNeeded);
     virtual void Attack(vector<Character*> &characters); // takes an enemy and calls its TakeDamage function
     void decreaseEnergy(Player* player); //decreases player's energy
-
     void setDamage(int damage);
     void setEnergyNeeded(int energy);
-
     int getDamage();
     int getEnergyNeeded();
 
-    string GetStat();
+    string GetStat() override;
 };
 
 class Punch: public Weapon{
 public:
-    Punch(string name,int capacity,int damage,int price,int energyNeed);
+    Punch(string name,int capacity,int damage,int price,int energyNeeded);
 };
 
 class Gun:public Weapon{
 private:
+    int MaxAmmo;
     int Ammo;
+    int ReloadEnergy;
+    int AmmoNeeded;
 public:
     void setAmmo(int ammo);
     int getAmmo();
-    Gun(string name,int capacity,int price,int damage,int energyNeed,int ammo);
+    int getAmmoNeeded();
+    void setAmmoNeeded(int ammoNeeded);
+    void Attack(vector<Character*> &characters);
+    int getReloadEnergy();
+    void setReloadEnergy(int reloadEnergy);
+    //void operator-=(int amount);
+    void Reload();
+    Gun(string name,int capacity,int price,int damage,int energyNeeded,int ammo,int reloadEnergy,int ammoNeeded);
+    string GetStat() override;
 };
 
 class Shotgun:public Gun{
 public:
     void Attack(vector<Character*> &characters) override; // checks the range and deals damage based on it
-    Shotgun(string name,int capacity, int price ,int damage,int energyNeed,int ammo);
+    Shotgun(string name,int capacity, int price ,int damage,int energyNeeded,int ammo,int ammoNeeded);
 };
 
 class Snipe: public Gun{
 public:
     void Attack(vector<Character*> &characters) override; // takes multiple characters and attacks them all
-    Snipe(string name,int capacity, int price,int damage,int energyNeed,int ammo);
+    Snipe(string name,int capacity, int price,int damage,int energyNeeded,int ammo,int ammoNeeded);
 };
 
 class Rifle: public Gun{
 public:
     void Attack(vector<Character*> &characters) override; // takes some characters and the damage is divided between
-    Rifle(string name,int capacity, int price ,int damage,int energyNeed,int ammo);
+    Rifle(string name,int capacity, int price ,int damage,int energyNeeded,int ammo,int ammoNeeded);
 };
 
-class coldWeapon: public Weapon{
+class ColdWeapon: public Weapon{
 public:
     void Throw(vector<Character*> &characters); //throws the coldWeapon and loses it
-    coldWeapon(string name,int capacity,int price ,int damage,int energyNeed);
+    ColdWeapon(string name,int capacity,int price ,int damage,int energyNeeded);
 };
 
 class Throwable: public Weapon {
 public:
-    Throwable(string name,int capacity, int price,int damage,int energyNeed);
+    Throwable(string name,int capacity, int price,int damage,int energyNeeded);
 };
 
 class Grenade: public Throwable{
 public:
-    Grenade(string name,int capacity, int price,int damage,int energyNeed);
+    Grenade(string name,int capacity, int price,int damage,int energyNeeded);
     void Attack(vector<Character*> &characters) override;
 };
 
 class BoomRang: public Throwable{
 public:
-    BoomRang(string name,int capacity, int price,int damage,int energyNeed);
+    BoomRang(string name,int capacity, int price,int damage,int energyNeeded);
     void Attack(vector<Character*> &characters) override;
 };
 
@@ -99,24 +107,20 @@ public:
 class Consumable: public Item{
 private:
     int Amount;
-protected:
-    int Type;
 public:
     void setAmount(int amount);
     int getAmount();
-    void setType(int type);
-    int getType();
-    Consumable(string name,int capacity,int price,int amount,int type);
+    Consumable(string name,int capacity,int price,int amount);
 };
 
 class HealingItem: public Consumable{
 public:
-    HealingItem(string name,int capacity,int price,int amount,int type);
+    HealingItem(string name,int capacity,int price,int amount);
 };
 
 class Energizer: public Consumable{
 public:
-    Energizer(string name,int capacity,int price , int amount,int type);
+    Energizer(string name,int capacity,int price , int amount);
 };
 
 class ShieldPotion: public Consumable{
@@ -144,10 +148,13 @@ class FootWear: public Equipment{
 public:
     FootWear(string name,int capacity,int price,int amount);
 };
-
+class Boot : public Equipment{
+public:
+    Boot(string name,int capacity,int price,int amount);
+};
                                                                                                       
 //------------------------------
-class Relic: Item {
+class Relic: public Item {
 private:
     int MaxHP;
     int MaxEnergy;
