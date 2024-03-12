@@ -33,9 +33,6 @@ public:
     vector<pair<Item* , int>> getItems();
     vector<pair<Weapon* , int>> getWeapons();
     vector<Equipment*> getEquipments();
-
-    void Attack(vector<Character*> &characters, vector<Weapon*> &weapons);
-
 };
 
 class Player : public Character{
@@ -79,6 +76,8 @@ public:
     void addConsumable(Consumable* Consumable);
     void removeConsumable(Consumable* Consumable);
     void Consume(Consumable* Consumable);
+    Weapon* ChooseWeapon(vector<Weapon*> weapons);
+    void Attack(vector<Character*> &characters, vector<Weapon*> &weapons);
 };
 
 class HumanEnemy: public Character{

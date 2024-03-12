@@ -60,6 +60,52 @@ vector<pair<Weapon* , int>> Character :: getWeapons(){return Weapons;}
 
 vector<Equipment*> Character :: getEquipments(){return Equipments;}
 
+Weapon* Player::ChooseWeapon(vector<Weapon *> weapons) {
+    int x = 0;
+    for(Weapon* weapon : weapons){
+        x++;
+        cout << to_string(x) + "." + weapon->GetStat() << endl;
+    }
+    cout << "Choose: ";
+    int choice;
+    cin >> choice;
+    choice --;
+    return weapons[choice];
+}
+void Player ::Attack(vector<Character *> &characters, vector<Weapon *> &weapons) {
+    Weapon* weapon = ChooseWeapon(weapons);
+    if(getEnergy()>=weapon->getEnergyNeeded()) {
+        if (typeid(Weapon) == typeid(Gun)) {
+            Gun *gun = dynamic_cast<Gun *>(weapon);
+            if (gun->getAmmo() >= gun->getAmmoNeeded()) {
+                gun->Attack(characters);
+                gun->setAmmo(gun->getAmmo()-gun->getAmmoNeeded());
+            }
+        }else if(typeid(Weapon) == typeid(Throwable)){
+            Throwable *throwable = dynamic_cast<Throwable *>(weapon);
+            throwable->Attack(characters);
+            removeItem(throwable);
+        }else if(typeid(Weapon) == typeid(ColdWeapon)){
+            ColdWeapon *coldWeapon = dynamic_cast<ColdWeapon *>(weapon);
+            cout << "1.attack\n"
+                    "2.throw\n"
+                    "choose: ";
+            int choice;
+            cin >> choice;
+            if(choice ==1){
+                coldWeapon->Attack(characters);
+            }else{
+                coldWeapon->Throw(characters);
+                removeItem(coldWeapon);
+            }
+        }else{
+            weapon->Attack(characters);
+        }
+        setEnergy(getEnergy()-weapon->getEnergyNeeded());
+    }
+
+}
+
 Player :: Player(string Name, int HP, int MaxHP, double Armor, int BackPackCapacity , int BackPackWeight
 , int MaxEnergy , int Coin , int Shield ,vector<pair<Item* , int>> Items
 , vector<pair<Weapon* , int>> Weapons) : Character
