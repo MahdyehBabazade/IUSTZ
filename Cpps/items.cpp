@@ -47,15 +47,10 @@ void Weapon::setEnergyNeeded(int energy) {
     EnergyNeeded = energy;
 }
 string Weapon::GetStat() {
-    string outPut = Name + "(Damage: " + to_string(Damage) + " Energy Needed: " + to_string(EnergyNeeded) + ")";
+    string outPut = Name+"(Damage: " + to_string(Damage) +")";
     return outPut;
 }
-void setAmmoNeeded(int ammoNeeded){
-    AmmoNeeded=ammoneeded;
-}
-int getAmmoNNeeded(){
-    return AmmoNeeded;
-}
+
 Weapon* choose_weapon(vector<Weapon*> &weapons){
     cout << "choose your weapon: \n";
     int x = 0;
@@ -96,16 +91,8 @@ void Weapon ::decreaseEnergy(Player* player) {
 Punch :: Punch(string name, int capacity, int damage, int price, int energyNeed)
        : Weapon(name, capacity, price, damage, energyNeed){}
 //.............
-Gun ::Gun(string name, int capacity,int price, int damage, int energyNeed, int ammo,int reloadEnergy,int ammoNeeded)
-        : AmmoNeeded(ammoNeeded),ReloadEnergy(reloadEnergy), Ammo(ammo),Weapon(name, capacity, price, damage, energyNeed){};
-
-string Gun::GetStat() {
-    string outPut = Name + "(Damage: " + Damage +
-                    " Ammo: " + Ammo + "/" + MaxAmmo+
-                    " Energy Needed: " + EnergyNeeded +
-                    " Reload Energy: " + ReloadEnergy;
-    return outPut;
-}
+Gun ::Gun(string name, int capacity,int price, int damage, int energyNeed, int ammo)
+        : Ammo(ammo),Weapon(name, capacity, price, damage, energyNeed){}
 
 int Gun ::getAmmo() {
     return Ammo;
@@ -113,49 +100,34 @@ int Gun ::getAmmo() {
 void Gun::setAmmo(int ammo) {
     Ammo=ammo;
 }
-int Gun::getReloadEnergy() {
-    return ReloadEnergy;
-}
-void Gun::setReloadEnergy(int reloadEnergy) {
-    ReloadEnergy=reloadEnergy;
-}
 void Gun::Attack(vector<Character*> &characters) {};
-void Gun::Reload() {
-    Ammo = MaxAmmo;f
-}
 //..............
-Shotgun ::Shotgun(string name, int capacity,int price, int damage, int energyNeeded, int ammo,int ammoNeeded)
-: Gun(name,  capacity, price, damage,  energyNeed, ammo,ammoNeeded){}
-
-/*
-void Gun::operator-=(int amount) {
-    Ammo-=1;
-}
- */
-
+Shotgun ::Shotgun(string name, int capacity,int price, int damage, int energyNeed, int ammo)
+: Gun(name,  capacity, price, damage,  energyNeed, ammo){}
 
 void Shotgun ::Attack(vector<Character*> &characters) {
     Character* character = choose_character(characters);
     int EnemyDistance = characters.size() - (find(characters.begin(), characters.end(),character) - characters.begin());
     int damage = max(int(getDamage()/2),int((EnemyDistance/characters.size())*getDamage()));
-    character->takeDamage(damage);
+    character->takeDamage(Damage);
 }
 //..
-Snipe ::Snipe(std::string name, int capacity, int price, int damage, int energyNeeded, int ammo,int ammoNeeded)
-: Gun( name,  capacity, price, damage,  energyNeed, ammo,ammoNeeded) {}
+Snipe ::Snipe(std::string name, int capacity, int price, int damage, int energyNeed, int ammo)
+: Gun( name,  capacity, price, damage,  energyNeed, ammo) {}
 
 void Snipe ::Attack(vector<Character*> &characters) {
-    Character* character= choose_character(characters);
-    int index= find(characters.begin(),characters.end(),character);
-    character->takeDamage(getDamage());
-    if(characters[index+1]!=nullptr){
-        characters[index+1]->takeDamage(getDamage();
+    for(int i=0;i<min(1,int(characters.size()));i++){
+        if(i==0){
+            characters[i]->takeDamage(this->getDamage());
+        }else {
+            characters[i]->takeDamage(int(this->getDamage()/2));
+        }
     }
 }
 
 //..
-Rifle ::Rifle(std::string name, int capacity, int price , int damage, int energyNeeded, int ammo,int ammoNeeded)
-: Gun( name,  capacity, price, damage,  energyNeed, ammo,ammoNeeded){}
+Rifle ::Rifle(std::string name, int capacity, int price , int damage, int energyNeed, int ammo)
+: Gun( name,  capacity, price, damage,  energyNeed, ammo){}
 
 void Rifle ::Attack(vector<Character*> &characters) {
     int damage=this->getDamage()/characters.size();
@@ -165,21 +137,21 @@ void Rifle ::Attack(vector<Character*> &characters) {
 }
 
 //..
-ColdWeapon ::ColdWeapon(string name, int capacity,int price, int damage, int energyNeeded)
-: Weapon( name, capacity, price, damage, energyNeeded){}
+coldWeapon ::coldWeapon(string name, int capacity,int price, int damage, int energyNeed)
+: Weapon( name, capacity, price, damage, energyNeed){}
 
-void ColdWeapon :: Throw(vector<Character*> &characters){
+void coldWeapon :: Throw(vector<Character*> &characters){
     Character* character= choose_character(characters);
     character->takeDamage(int(this->getDamage()*1.2));
     //what the fuck did you do? //throwable coldweapon
 }
 
 //..
-Throwable :: Throwable(string name, int capacity,int price, int damage, int energyNeeded)
-: Weapon( name, capacity, price, damage, energyNeeded) {}
+Throwable :: Throwable(string name, int capacity,int price, int damage, int energyNeed)
+: Weapon( name, capacity, price, damage, energyNeed) {}
 
-Grenade :: Grenade(string name, int capacity, int price, int damage, int energyNeeded)
-         : Throwable(name,capacity,price,damage,energyNeeded){};
+Grenade :: Grenade(string name, int capacity, int price, int damage, int energyNeed)
+         : Throwable(name,capacity,price,damage,energyNeed){};
 
 void Grenade :: Attack(vector<Character*> &characters) {
     for(Character* character: characters){
@@ -205,14 +177,20 @@ int Consumable::getAmount() {
     return Amount;
 }
 
-HealingItem ::HealingItem(std::string name, int capacity,int price, int amount)
-:Consumable( name, capacity, price, amount){}
+void Consumable::setType(int type) {
+    Type = type;
+}
 
-Energizer ::Energizer(std::string name, int capacity,int price, int amount)
-: Consumable(name, capacity, price, amount){}
+int Consumable::getType(){
+    return Type;
+}
 
-ShieldPotion::ShieldPotion(string name, int capacity, int price, int amount)
-: Consumable(name, capacity, price, amount){}
+HealingItem ::HealingItem(std::string name, int capacity,int price, int amount,int type)
+:Consumable( name, capacity, price, amount,type){}
+
+Energizer ::Energizer(std::string name, int capacity,int price, int amount,int type)
+: Consumable(name, capacity, price, amount,type){}
+
 //---------------------------
 Equipment ::Equipment(std::string name, int capacity, int price, int amount)
 : Amount(amount),Item( name, capacity, price) {}
