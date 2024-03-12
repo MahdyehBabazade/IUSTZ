@@ -160,7 +160,7 @@ void Player :: removeWeapon(Weapon* Weapon){
 }
 
 void Player :: addEquipment(Equipment* Equipment){
-    if()
+    
 }
 
 // void Player :: removeEquipment(Equipment* Equipment){
