@@ -15,8 +15,9 @@ vector<string> ShuffleVec(vector<string> vec){ // Shuffles a vector
     return vec;
 }
 
-Character :: Character(int HP , int MaxHP , int Armor , int Shield ,
-                       vector<pair<Item* , int>> Items , vector<pair<Weapon* , int>> Weapons){
+Character :: Character(string Name , int HP , int MaxHP , double Armor , int Shield ,
+vector<pair<Item* , int>> Items , vector<pair<Weapon*,int>> Weapons){
+    this -> Name = Name;
     this -> HP = HP;
     this -> MaxHP = MaxHP;
     this -> Armor = Armor;
@@ -25,6 +26,10 @@ Character :: Character(int HP , int MaxHP , int Armor , int Shield ,
     this -> Weapons = Weapons;
     this -> Equipments = {{nullptr} , {nullptr} , {nullptr} , {nullptr}};
 }
+
+string Character :: getName(){return Name;}
+
+void Character :: setName(string Name){this -> Name = Name;}
 
 int Character :: getHP(){return HP;}
 
@@ -78,7 +83,7 @@ void Player :: Attack(vector<Character *> &characters, vector<Weapon *> &weapons
     //attacks the enemies with guns, cold weapons or throwables
     Weapon* weapon = ChooseWeapon(weapons);
     if(getEnergy()>=weapon->getEnergyNeeded()){
-        //checks which type of weapon, the weapon you chose is, then call the Attack function of that weapon
+        //checks which type of weapon, the weapon you chose is, then calls the Attack function of that weapon
         if (typeid(Weapon) == typeid(Gun)) {
             Gun *gun = dynamic_cast<Gun *>(weapon);
             if (gun->getAmmo() >= gun->getAmmoNeeded()) {
@@ -89,7 +94,7 @@ void Player :: Attack(vector<Character *> &characters, vector<Weapon *> &weapons
         else if(typeid(Weapon) == typeid(Throwable)){
             Throwable *throwable = dynamic_cast<Throwable *>(weapon);
             throwable->Attack(characters);
-            removeItem(throwable); //removes the throwable from the backpack after it dropped
+            removeWeapon(throwable); //removes the throwable from the backpack after it dropped
         }
         else if(typeid(Weapon) == typeid(ColdWeapon)){
             ColdWeapon *coldWeapon = dynamic_cast<ColdWeapon *>(weapon);
@@ -104,7 +109,7 @@ void Player :: Attack(vector<Character *> &characters, vector<Weapon *> &weapons
             }
             else{
                 coldWeapon->Throw(characters); //if throw, it calls the Throw function of the cold weapon then removes it from the backpack
-                removeItem(coldWeapon); 
+                removeWeapon(coldWeapon); 
             }
         }
         else{
@@ -116,14 +121,14 @@ void Player :: Attack(vector<Character *> &characters, vector<Weapon *> &weapons
 }
 
 Player :: Player(string Name, int HP, int MaxHP, double Armor, int BackPackCapacity , int BackPackWeight
-        , int MaxEnergy , int Coin , int Shield ,vector<pair<Item* , int>> Items
-        , vector<pair<Weapon* , int>> Weapons) : Character
-                                                         (HP , MaxHP , Armor , Shield , Items ,  Weapons){
-    this -> Name = Name;
+, int MaxEnergy , int Coin , int Shield ,vector<pair<Item* , int>> Items
+, vector<pair<Weapon* , int>> Weapons , vector<pair<Consumable* , int>> Consumables , vector<Equipment*> Equipments) : Character(Name , HP , MaxHP , Armor , Shield , Items ,  Weapons){
     this -> BackPackCapacity = BackPackCapacity;
     this -> BackPackWeight = BackPackWeight;
     this -> MaxEnergy = MaxEnergy;
     this -> Coin = Coin;
+    this -> Consumables = Consumables;
+    this -> Equipments = Equipments;
 }
 
 Player :: ~Player(){
@@ -287,25 +292,23 @@ void Player :: removeConsumable(Consumable* Consumable){ //deletes the consumabl
 }
 
 void Player :: Consume(Consumable* Consumable){
-    if(typeid(Consumable) == typeid(ShieldPotion)){ // if the player consumes ShieldPotion the shield amount increases
+    if(Consumable->getType() == "ShieldPotion"){ // if the player consumes ShieldPotion the shield amount increases
         setShield(getShield() + Consumable->getAmount());
         removeConsumable(Consumable);
     }
-    else if(typeid(Consumable) == typeid(HealingItem)){
+    else if(Consumable->getType() == "HPPotion"){
         setHP(min(getMaxHP() , getHP() + Consumable->getAmount())); // if the player consumes  HealingItem the hp increases
         removeConsumable(Consumable);
     }
-    else if(typeid(Consumable) == typeid(Energizer)){
+    else if(Consumable->getType() == "EnergyPotion"){
         setEnergy(min(MaxEnergy , Energy + Consumable->getAmount())); // if the player consumes Energizer the energy increases
         removeConsumable(Consumable);
     }
 }
-string HumanEnemy :: getName(){return Name;}
 
-HumanEnemy :: HumanEnemy(int HP , int MaxHP , double Armor , string Name, int Shield , vector<pair<Item* , int>> Items ,
-                         vector<pair<Weapon* , int>> , vector<Equipment*> Equipments , vector<pair<Consumable* , int>> Consumables)
-        : Character(HP , MaxHP , Armor , Shield , Items , Weapons){
-    this->Name = Name;
+HumanEnemy :: HumanEnemy(string Name ,int HP , int MaxHP , double Armor , int Shield , vector<pair<Item* , int>> Items ,
+    vector<pair<Weapon* , int>> , vector<Equipment*> Equipments , vector<pair<Consumable* , int>> Consumables)
+    : Character(Name , HP , MaxHP , Armor , Shield , Items , Weapons){
     this->Consumables = Consumables;
     this->Equipments = Equipments;
 }
@@ -323,11 +326,11 @@ void HumanEnemy :: removeConsumable(Consumable* Consumable){ //deletes the consu
 }
 
 void HumanEnemy :: Consume(Consumable* Consumable){
-    if(typeid(Consumable) == typeid(ShieldPotion)){ // if the human enemy consumes ShieldPotion the shield amount increases
+    if(Consumable->getType() == "ShieldPotion"){ // if the human enemy consumes ShieldPotion the shield amount increases
         setShield(getShield() + Consumable->getAmount());
         removeConsumable(Consumable);
     }
-    else if(typeid(Consumable) == typeid(HealingItem)){ // if the human enemy consumes  HealingItem the hp increases
+    else if(Consumable->getType() == "HPPotion"){ // if the human enemy consumes  HealingItem the hp increases
         setHP(min(getMaxHP() , getHP() + Consumable->getAmount()));
         removeConsumable(Consumable);
     }
@@ -337,11 +340,11 @@ void HumanEnemy :: Consume(Consumable* Consumable){
 
 HumanEnemy :: ~HumanEnemy(){
     // What the enemy says when he/she dies
-    vector<string> EnemyDeathQuotes = { "I can't believe this is how it all ends!", "You fucking bastard!", "Wasted!",
-                                        "Nooo, I can't die yet!" , "My child , take care o..." , "I'll damn you" , "My brother will get my revenge!!!" , "I'll be waiting , you SoB" ,
-                                        "That was a fun fight" , "See you on the other side"};
+    vector<string> EnemyDeathQuotes = { "I can't believe this is how it all ends!", "You fucking bastard!",
+    "Wasted!" , "Nooo, I can't die yet!" , "My child , take care o..." , "I'll damn you" , 
+    "My brother will get my revenge!!!" , "I'll be waiting , you SoB!!!" , "That was a fun fight" , 
+    "See you on the other side"};
     cout << ShuffleVec(EnemyDeathQuotes)[0];
-
 }
 
 //void HumanEnemy :: Consume(Consumable* consumable){}
@@ -367,10 +370,9 @@ void HumanEnemy :: RajazKhani(){
     }
 }
 
-Zombie :: Zombie(int HP , int MaxHP , double Armor , string Type , int Shield , vector<pair<Item* , int>> Items
-        , vector<pair<Weapon* , int>> Weapons , vector<Equipment*> Equipments)
-        : Character(HP , MaxHP , Armor , Shield , Items , Weapons){
-    this-> Type = Type;
+Zombie :: Zombie(string Name , int HP , int MaxHP , double Armor , int Shield , vector<pair<Item* , int>> Items
+, vector<pair<Weapon* , int>> Weapons , vector<Equipment*> Equipments)
+: Character(Name , HP , MaxHP , Armor , Shield , Items , Weapons){
     this-> Equipments = Equipments;
 }
 
@@ -378,8 +380,6 @@ Zombie :: ~Zombie(){
     vector<string> ZombieDeathQuotes = {"Aaauugh!!!!" , "Haaauugh!!!" , "Blauugh!" , "Guaargh!!" , "Bluargh!!!"};
     cout << ShuffleVec(ZombieDeathQuotes)[0];
 }
-
-string Zombie :: getType(){return Type;}
 
 // void Zombie :: Attack(Player player){}
 
@@ -397,8 +397,8 @@ void Shopkeeper :: ByeDialogue(){ //The shopkeeper says bye
 }
 
 void Shopkeeper :: SellDialogue(Item* item){ //The shopkeeper sells sth to the player
-    vector<string> ShopkeeperSell = {"So you bought " + item->getName() , "You choosed one of the best items." ,
-                                     "Wish " + item->getName() + "help you survive."};
+    vector<string> ShopkeeperSell = {"So you've bought " + item->getName() , "You choosed one of the best items." ,
+    "Wish " + item->getName() + "helps you survive."};
     cout << ShuffleVec(ShopkeeperSell)[0];
 } // items to be included
 
@@ -408,8 +408,9 @@ void Shopkeeper :: BuyDialogue(Item* item){ //The shopkeeper buys sth from the p
 } // items to be included
 
 void Shopkeeper :: NoMoneyDialogue(){ // What the shopkeeper says when the player has less money than the item's price
-    vector<string> PoorSoldier = {"You don't have enough coins!" , "Poor soldier!!!" , "Can't get you that!" , "So little for so much?!" , "..." ,
-                                  "You don't have enough coins!" , "Poor soldier!!!" , "Can't get you that!" , "So little for so much?!"};
+    vector<string> PoorSoldier = {"You don't have enough coins!" , "Poor soldier!!!" , "Can't get you that!" ,
+    "So little for so much?!" , "..." , "You don't have enough coins!" , "Poor soldier!!!" , 
+    "Can't get you that!" , "So little for so much?!"};
     cout << ShuffleVec(PoorSoldier)[0];
 }
 
@@ -418,7 +419,7 @@ Medic :: Medic(string Name){this->Name = Name;}
 string Medic :: getName(){return Name;}
 
 void Medic :: HiDialogue(){
-    vector<string> MedicSayHi = {"Hi, Soldier." , "Salute soldier! How can I help?" , "Hi commander! Are you hurt anywhere?"};
+    vector<string> MedicSayHi = {"Hi, Soldier." , "Salute soldier! How can I help?" , "Hi commander! Are you hurt somewhere?"};
     cout << ShuffleVec(MedicSayHi)[0];
 }
 
@@ -427,8 +428,9 @@ void Medic :: ByeDialogue(){cout << "Have a safe journy.";}
 void Medic :: HealDialogue(){cout << "I've patched you up!";}
 
 void Medic :: NoMoneyDialogue(){
-    vector<string> PoorSoldier = {"You don't have enough coins!" , "Poor soldier!" , "Can't Heal you with that much coin!" , "So little for so much?!" , "..." ,
-                                  "You don't have enough coins!" , "Poor soldier!!!" , "Can't heal you with that much coin" , "So little for so much?!"};
+    vector<string> PoorSoldier = {"You don't have enough coins!" , "Poor soldier!" , "Can't Heal you with that much coin!" , 
+    "So little for so much?!" , "..." , "You don't have enough coins!" , "Poor soldier!!!" , 
+    "Can't heal you with that much coin" , "So little for so much?!"};
     cout << ShuffleVec(PoorSoldier)[0];
 }
 
@@ -438,57 +440,6 @@ void Medic :: Heal(Player player){
 }
 
 void Medic :: MaxHPIncrease(Player player){
-    player.setMaxHP((int)player.getMaxHP() * 1.1);
-    HealDialogue();
-}
-
-
-void Shopkeeper :: ByeDialogue(){
-    cout << "Good luck , Soldier." << endl;
-}
-
-void Shopkeeper :: SellDialogue(Item* item){
-    vector<string> ShopkeeperSell = {"So you bought " + item->getName() , "You choosed one of the best items." ,
-                                     "Wish " + item->getName() + "help you survive."};
-    cout << ShuffleVec(ShopkeeperSell)[0];
-} // items to be included
-
-void Shopkeeper :: BuyDialogue(Item* item){
-    double NewPrice = 0.8*item->getPrice();
-    cout << "I'll buy that for " << to_string(NewPrice) << " coins.\n";
-} // items to be included
-
-void Shopkeeper :: NoMoneyDialogue(){
-    vector<string> PoorSoldier = {"You don't have enough coins!" , "Poor soldier!!!" , "Can't get you that!" , "So little for so much?!" , "..." ,
-                                  "You don't have enough coins!" , "Poor soldier!!!" , "Can't get you that!" , "So little for so much?!"};
-    cout << ShuffleVec(PoorSoldier)[0];
-}
-
-Medic :: Medic(string Name){this->Name = Name;}
-
-string Medic :: getName(){return Name;}
-
-void Medic :: HiDialogue(){
-    vector<string> MedicSayHi = {"Hi, Soldier." , "Salute soldier! How can I help?" , "Hi commander! Are you hurt anywhere?"};
-    cout << ShuffleVec(MedicSayHi)[0];
-}
-
-void Medic :: ByeDialogue(){cout << "Have a safe journy.";}
-
-void Medic :: HealDialogue(){cout << "I've patched you up!";}
-
-void Medic :: NoMoneyDialogue(){
-    vector<string> PoorSoldier = {"You don't have enough coins!" , "Poor soldier!" , "Can't Heal you with that much coin!" , "So little for so much?!" , "..." ,
-                                  "You don't have enough coins!" , "Poor soldier!!!" , "Can't heal you with that much coin" , "So little for so much?!"};
-    cout << ShuffleVec(PoorSoldier)[0];
-}
-
-void Medic :: Heal(Player player){ // Increases the hp
-    player.setHP(min(player.getMaxHP() , (int)(player.getHP() + player.getMaxHP() * 0.5)));
-    HealDialogue();
-}
-
-void Medic :: MaxHPIncrease(Player player){ // Increases the max hp
     player.setMaxHP((int)player.getMaxHP() * 1.1);
     HealDialogue();
 }
