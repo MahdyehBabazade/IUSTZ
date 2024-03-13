@@ -76,7 +76,7 @@ void Player ::Attack(vector<Character *> &characters, vector<Weapon *> &weapons)
     Weapon* weapon = ChooseWeapon(weapons);
     if(getEnergy()>=weapon->getEnergyNeeded()) {
         if (typeid(Weapon) == typeid(Gun)) {
-            Gun *gun = dynamic_cast<Gun *>(weapon);
+            Gun *gun = dynamic_cast<Gun*>(weapon);
             if (gun->getAmmo() >= gun->getAmmoNeeded()) {
                 gun->Attack(characters);
                 gun->setAmmo(gun->getAmmo()-gun->getAmmoNeeded());
@@ -272,15 +272,18 @@ void Player :: removeConsumable(Consumable* Consumable){
 }
 
 void Player :: Consume(Consumable* Consumable){
-    if(typeid(Consumable) == typeid(ShieldPotion)){
+    // 1. heal
+    // 2. energy
+    // 3. shield
+    if(Consumable->getType() == 3){
         setShield(getShield() + Consumable->getAmount());
         removeConsumable(Consumable);
     }
-    else if(typeid(Consumable) == typeid(HealingItem)){
+    else if(Consumable->getType() == 1){
         setHP(min(getMaxHP() , getHP() + Consumable->getAmount()));
         removeConsumable(Consumable);
     }
-    else if(typeid(Consumable) == typeid(Energizer)){
+    else if(Consumable->getType() == 2){
         setEnergy(min(MaxEnergy , Energy + Consumable->getAmount()));
         removeConsumable(Consumable);
     }
@@ -308,11 +311,11 @@ void HumanEnemy :: removeConsumable(Consumable* Consumable){
 }
 
 void HumanEnemy :: Consume(Consumable* Consumable){
-    if(typeid(Consumable) == typeid(ShieldPotion)){
+    if(Consumable->getType() == 3){
         setShield(getShield() + Consumable->getAmount());
         removeConsumable(Consumable);
     }
-    else if(typeid(Consumable) == typeid(HealingItem)){
+    else if(Consumable->getType() == 2){
         setHP(min(getMaxHP() , getHP() + Consumable->getAmount()));
         removeConsumable(Consumable);
     }
@@ -421,18 +424,10 @@ void Medic :: Heal(Player player){
     HealDialogue();
 }
 
-void Medic :: MaxHPIncrease(Player player){
-    player.setMaxHP((int)player.getMaxHP() * 1.1);
+void Medic :: MaxHPIncrease(Player player) {
+    player.setMaxHP((int) player.getMaxHP() * 1.1);
     HealDialogue();
-}#include "../Headers/creature.h"
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <random>
-#include <cmath>
-#include <string>
-#include <typeinfo>
-using namespace std;
+}
 
 vector<string> ShuffleVec(vector<string> vec){
     random_device rd;
@@ -847,7 +842,7 @@ void Medic :: Heal(Player player){
     HealDialogue();
 }
 
-void Medic :: MaxHPIncrease(Player player){
+void Medic ::MaxHPIncrease(Player player) {
     player.setMaxHP((int)player.getMaxHP() * 1.1);
     HealDialogue();
 }

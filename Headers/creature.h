@@ -6,18 +6,15 @@ using namespace std;
 
 // explainings to be included
 class Character{
-
 private:
     int HP;
     int MaxHP;
     double Armor;
     int Shield;
-
 protected:
     vector<pair<Item* , int>> Items;
     vector<pair<Weapon* , int>> Weapons;
     vector<Equipment*> Equipments;
-
 public:
     Character(int HP , int MaxHP , int Armor , int Shield , vector<pair<Item* , int>> Items ,
               vector<pair<Weapon* , int>> Weapons);
