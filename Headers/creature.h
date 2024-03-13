@@ -7,6 +7,7 @@ using namespace std;
 // explainings to be included
 class Character{
 private:
+    string Name;
     int HP;
     int MaxHP;
     double Armor;
@@ -16,8 +17,10 @@ protected:
     vector<pair<Weapon* , int>> Weapons;
     vector<Equipment*> Equipments;
 public:
-    Character(int HP , int MaxHP , int Armor , int Shield , vector<pair<Item* , int>> Items ,
-              vector<pair<Weapon* , int>> Weapons);
+    Character(string Name,int HP , int MaxHP , double Armor , int Shield , vector<pair<Item* , int>> Items ,
+              vector<pair<Weapon*,int>> Weapons);
+    string getName();
+    void setName(string Name);
     int getHP();
     void setHP(int HP);
     int getMaxHP();
@@ -30,6 +33,8 @@ public:
     vector<pair<Item* , int>> getItems();
     vector<pair<Weapon* , int>> getWeapons();
     vector<Equipment*> getEquipments();
+
+    string getStat();
 };
 
 class Player : public Character{
@@ -80,13 +85,11 @@ public:
 class HumanEnemy: public Character{
 
 private:
-    string Name;
     vector<pair<Consumable* , int>> Consumables;
     void RajazKhani();
 
 public:
-    string getName();
-    HumanEnemy(int HP , int MaxHP , double Armor , string Name, int Shield , vector<pair<Item* , int>> Items ,
+    HumanEnemy(string Name,int HP , int MaxHP , double Armor, int Shield , vector<pair<Item* , int>> Items ,
                vector<pair<Weapon* , int>> Weapons , vector<Equipment*> Equipments , vector<pair<Consumable* , int>> Consumables); //items to add?!
     // void Attack(Player player) override; // can't fully develop yet?! // rajazKhani to be include
     void removeConsumable(Consumable* Consumable);
@@ -96,14 +99,9 @@ public:
 };
 
 class Zombie: public Character{
-
-private:
-    string Type;
-
 public:
-    string getType();
     // void Attack(Player player) override; // can't fully develop yet?!
-    Zombie(int HP , int MaxHP , double Armor , string Type , int shield ,
+    Zombie(string Name,int HP , int MaxHP , double Armor, int shield ,
            vector<pair<Item* , int>> Items , vector<pair<Weapon* , int>> Weapons , vector<Equipment*> Equipment);
     ~Zombie();
     // random bullshit to be included
