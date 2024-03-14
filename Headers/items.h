@@ -118,14 +118,14 @@ class Consumable: public Item{
     // 3. shield
 private:
     int Amount;
-    int Type;
+    string Type;
 public:
     void setAmount(int amount);
     int getAmount();
 
-    int getType();
-    void setType(int type);
-    Consumable(string name,int type,int capacity,int price,int amount);
+    string getType();
+    void setType(string type);
+    Consumable(string name,string type,int capacity,int price,int amount);
 };
 //------------------------------
 class Equipment: public Item{

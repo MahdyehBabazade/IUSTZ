@@ -170,14 +170,14 @@ void BoomRang ::Attack(vector<Character*> &characters) {
 }
 
 //-------------------------------
-Consumable ::Consumable(std::string name, int capacity, int price,int amount,int type)
+Consumable ::Consumable(string name,string type, int capacity, int price,int amount)
         :Amount(amount),Type(type), Item( name, capacity, price){}
 
 void Consumable ::setAmount(int amount) {Amount=amount;}
 
 int Consumable::getAmount() {return Amount;}
-void Consumable:: setType(int type){Type = type;}
-int Consumable::getType() {return Type;}
+void Consumable:: setType(string type){Type = type;}
+string Consumable::getType() {return Type;}
 //---------------------------
 Equipment ::Equipment(std::string name, int capacity, int price, int amount)
         : Amount(amount),Item( name, capacity, price) {}
