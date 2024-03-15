@@ -67,21 +67,19 @@ vector<pair<Weapon* , int>> Character :: getWeapons(){return Weapons;} //returns
 
 vector<Equipment*> Character :: getEquipments(){return Equipments;} //returns the Equipments the character owns
 
-Weapon* Player::ChooseWeapon(vector<Weapon *> weapons){ //lists the weapons for you and the lets you choose one from your backpack
-    int x = 0;
-    for(Weapon* weapon : weapons){
-        x++;
-        cout << to_string(x) + "." + weapon->GetStat() << endl;
+Weapon* Player::ChooseWeapon(){ //lists the weapons for you and the lets you choose one from your backpack
+    for(int i = 0; i< Weapons.size(); i++){
+        cout << i + 1 << "." << Weapons[i].first->GetStat() << endl;
     }
     cout << "Choose: ";
     int choice;
     cin >> choice;
     choice --;
-    return weapons[choice];
+    return Weapons[choice].first;
 }
-void Player :: Attack(vector<Character *> &characters, vector<Weapon *> &weapons){ 
+void Player :: Attack(vector<Character *> &characters){ 
     //attacks the enemies with guns, cold weapons or throwables
-    Weapon* weapon = ChooseWeapon(weapons);
+    Weapon* weapon = ChooseWeapon();
     if(getEnergy()>=weapon->getEnergyNeeded()){
         //checks which type of weapon, the weapon you chose is, then calls the Attack function of that weapon
         if (typeid(*weapon) == typeid(Gun)) {
@@ -499,19 +497,23 @@ void Player :: removeWeapon(Weapon* Weapon){ //deletes the weapon considering it
 void Player :: addEquipment(Equipment* Equipment){ // adds the equipment if you buy it, to the Equipments' vector
     setArmor(getArmor() + Equipment->getAmount());
     if(typeid(*Equipment) == typeid(HeadGear)){
-        removeItem(Equipments[0]);
+        if(Equipments[0] != nullptr)
+            removeItem(Equipments[0]);
         Equipments[0] = Equipment;
     }
     else if(typeid(*Equipment) == typeid(Vest)){
-        removeItem(Equipments[1]);
+        if(Equipments[1] != nullptr)
+            removeItem(Equipments[1]);
         Equipments[1] = Equipment;
     }
     else if(typeid(*Equipment) == typeid(FootWear)){
-        removeItem(Equipments[2]);
+        if(Equipments[2] != nullptr)
+            removeItem(Equipments[2]);
         Equipments[2] = Equipment;
     }
     else if(typeid(*Equipment) == typeid(Boot)){
-        removeItem(Equipments[3]);
+        if(Equipments[3] != nullptr)
+            removeItem(Equipments[3]);
         Equipments[3] = Equipment;
     }
 }
@@ -633,6 +635,10 @@ void HumanEnemy :: removeItem(Item* Item){ //deletes the items considering their
                 Items[i].second--;
         }
     }
+    if(typeid(*Item) == typeid(Weapon))
+        removeWeapon(dynamic_cast<Weapon *>(Item));
+    else if(typeid(*Item) == typeid(Consumable))
+        removeConsumable(dynamic_cast<Consumable *>(Item));
 }
 
 void HumanEnemy :: RajazKhani(){

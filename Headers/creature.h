@@ -77,24 +77,24 @@ public:
     void removeItem(Item* item);
     vector<pair<Consumable* , int>> getConsumables();
     void Consume(Consumable* Consumable);
-    Weapon* ChooseWeapon(vector<Weapon*> weapons); // to be deleted later (?)
-    void Attack(vector<Character*> &characters, vector<Weapon*> &weapons);
+    Weapon* ChooseWeapon(); // to be deleted later (?)
+    void Attack(vector<Character*> &characters);
 };
 
 class HumanEnemy: public Character{
 
 private:
     vector<pair<Consumable* , int>> Consumables;
-    void removeItem(Item* item); // when we throw a throwable item or consumables
+    void removeConsumable(Consumable* Consumable);
+    void removeWeapon(Weapon* Weapon);
     void RajazKhani();
 
 public:
     HumanEnemy(string Name,int HP , int MaxHP , double Armor, int Shield , vector<pair<Item* , int>> Items ,
     vector<pair<Weapon* , int>> Weapons , vector<Equipment*> Equipments , vector<pair<Consumable* , int>> Consumables); //items to add?!
     // void Attack(Player player) override; // can't fully develop yet?! // rajazKhani to be include
-    void removeConsumable(Consumable* Consumable);
-    void removeWeapon(Weapon* Weapon);
     void Consume(Consumable* consumable); // to be included
+    void removeItem(Item* item); // when we throw a throwable item or consumables
     ~HumanEnemy();
 };
 
