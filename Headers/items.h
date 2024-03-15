@@ -76,9 +76,18 @@ public:
     Snipe(string name,int capacity, int price,int damage,int energyNeeded,int reloadEnergy,int ammo,int ammoNeeded);
 };
 
+class SMG: public Gun{
+    SMG(string name,int capacity, int price ,int damage,int energyNeeded,int reloadEnergy,int ammo,int ammoNeeded);
+    void Attack(vector<Character*> &characters) override; // attacks every enemy
+};
+
 class Rifle: public Gun{
+private:
+    int MaxAttackAmount; // max amount of enemies it can attack
 public:
-    void Attack(vector<Character*> &characters) override; // attacks all enemies
+    int getMaxAttackAmount();
+    void setMaxAttackAmount(int maxAttackAmount);
+    void Attack(vector<Character*> &characters) override; // attacks chooses a certain amount of enemies and the damage is divided between them
     Rifle(string name,int capacity, int price ,int damage,int energyNeeded,int reloadEnergy,int ammo,int ammoNeeded);
 };
 

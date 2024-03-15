@@ -119,17 +119,29 @@ void Snipe ::Attack(vector<Character*> &characters) {
         characters[index+1]->takeDamage(getDamage());
     }
 }
+//..
+SMG ::SMG(string name, int capacity, int price, int damage, int energyNeeded, int reloadEnergy, int ammo,
+          int ammoNeeded) : Gun(name,  capacity, price, damage,  energyNeeded,reloadEnergy, ammo,ammoNeeded) {};
+
+void SMG ::Attack(vector<Character *> &characters) {
+    for (Character* character: characters){
+        character->takeDamage(getDamage());
+    }
+}
 
 //..
 Rifle ::Rifle(std::string name, int capacity, int price , int damage, int energyNeeded,int reloadEnergy, int ammo,int ammoNeeded)
         : Gun( name,  capacity, price, damage,  energyNeeded,reloadEnergy, ammo,ammoNeeded){}
 
-void Rifle ::Attack(vector<Character*> &characters) {
-    int damage=this->getDamage()/characters.size();
+void Rifle ::Attack(vector<Character*> &characters){
+    int damage=getDamage()/characters.size();
     for(Character* character: characters){
-        character->takeDamage(Damage);
+        character->takeDamage(damage);
     }
 }
+
+void Rifle ::setMaxAttackAmount(int maxAttackAmount) {MaxAttackAmount = maxAttackAmount;}
+int Rifle ::getMaxAttackAmount() {return MaxAttackAmount;}
 
 //..
 ColdWeapon ::ColdWeapon(string name, int capacity,int price, int damage, int energyNeeded)
