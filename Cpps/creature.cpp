@@ -84,19 +84,19 @@ void Player :: Attack(vector<Character *> &characters, vector<Weapon *> &weapons
     Weapon* weapon = ChooseWeapon(weapons);
     if(getEnergy()>=weapon->getEnergyNeeded()){
         //checks which type of weapon, the weapon you chose is, then calls the Attack function of that weapon
-        if (typeid(Weapon) == typeid(Gun)) {
+        if (typeid(*weapon) == typeid(Gun)) {
             Gun *gun = dynamic_cast<Gun *>(weapon);
             if (gun->getAmmo() >= gun->getAmmoNeeded()) {
                 gun->Attack(characters);
                 gun->setAmmo(gun->getAmmo()-gun->getAmmoNeeded()); //reduces the number of ammos after the gun shot.
             }
         }
-        else if(typeid(Weapon) == typeid(Throwable)){
+        else if(typeid(*weapon) == typeid(Throwable)){
             Throwable *throwable = dynamic_cast<Throwable *>(weapon);
             throwable->Attack(characters);
-            removeWeapon(throwable); //removes the throwable from the backpack after it dropped
+            removeItem(throwable); //removes the throwable from the backpack after it dropped
         }
-        else if(typeid(Weapon) == typeid(ColdWeapon)){
+        else if(typeid(*weapon) == typeid(ColdWeapon)){
             ColdWeapon *coldWeapon = dynamic_cast<ColdWeapon *>(weapon);
             cout << "1.attack\n"
                     "2.throw\n"
@@ -109,7 +109,7 @@ void Player :: Attack(vector<Character *> &characters, vector<Weapon *> &weapons
             }
             else{
                 coldWeapon->Throw(characters); //if throw, it calls the Throw function of the cold weapon then removes it from the backpack
-                removeWeapon(coldWeapon); 
+                removeItem(coldWeapon); 
             }
         }
         else{
@@ -157,28 +157,177 @@ void Player :: removeCoin(int CoinToBeRemoved){this -> Coin -= CoinToBeRemoved;}
 
 int Player :: getCoin(){return Coin;}
 
-void Player :: addItem(Item* item){ //adds items depending on its capacity and the backpack capacity
-    if(BackPackWeight + item->getCapacity() <= BackPackCapacity){
+void Player :: addItem(Item* Item){ //adds items depending on its capacity and the backpack capacity
+    if(BackPackWeight + Item->getCapacity() <= BackPackCapacity){
         bool IsAdded = false;
-        for(int i = 0; i < Items.size(); i++)
-            if(*Items[i].first== *item){
-                Items[i].second++;
-                IsAdded = true;
-                break;
+        if(typeid(*Item)!=typeid(Gun))
+            for(int i = 0; i < Items.size(); i++)
+                if(*Items[i].first== *Item){
+                    Items[i].second++;
+                    IsAdded = true;
+                    break;
+                }
+        if(!IsAdded){
+            if(typeid(*Item) == typeid(Shotgun)){
+                for(int i = 0; i < Items.size(); i++){
+                    if(typeid(*Items[i].first) == typeid(Shotgun))
+                        if(Items[i].first->getName()>=Item->getName()){
+                            Items.insert(Items.begin()+ i , make_pair(Item , 1));
+                            break;
+                    }
+                    else if(typeid(*Items[i].first) != typeid(Shotgun)){
+                        Items.insert(Items.begin()+ i , make_pair(Item , 1));
+                        break;
+                    }
+                    else if(i == Items.size() - 1){
+                        Items.push_back(make_pair(Item , 1));
+                    }
+                }
             }
-        if(!IsAdded)
-            Items.push_back(make_pair(item , 1));
-        BackPackWeight += item->getCapacity();
+            else if(typeid(*Item) == typeid(Snipe)){
+                for(int i = 0; i < Items.size(); i++){
+                    if(typeid(*Items[i].first) == typeid(Snipe))
+                        if(Items[i].first->getName()>=Item->getName()){
+                            Items.insert(Items.begin()+ i , make_pair(Item , 1));
+                            break;
+                    }
+                    else if(typeid(*Items[i].first) != typeid(Shotgun)){
+                        Items.insert(Items.begin()+ i , make_pair(Item , 1));
+                        break;
+                    }
+                    else if(i == Items.size() - 1){
+                        Items.push_back(make_pair(Item , 1));
+                    }
+                }
+            }
+            else if(typeid(*Item) == typeid(SMG)){
+                for(int i = 0; i < Items.size(); i++){
+                    if(typeid(*Items[i].first) == typeid(SMG))
+                        if(Items[i].first->getName()>=Item->getName()){
+                            Items.insert(Items.begin()+ i , make_pair(Item , 1));
+                            break;
+                    }
+                    else if(typeid(*Items[i].first) != typeid(Shotgun) && typeid(*Items[i].first) != typeid(Snipe)){
+                        Items.insert(Items.begin()+ i , make_pair(Item , 1));
+                        break;
+                    }
+                    else if(i == Items.size() - 1){
+                        Items.push_back(make_pair(Item , 1));
+                    }
+                }
+            }
+            else if(typeid(*Item) == typeid(Rifle)){
+                for(int i = 0; i < Items.size(); i++){
+                    if(typeid(*Items[i].first) == typeid(Rifle))
+                        if(Items[i].first->getName()>=Item->getName()){
+                            Items.insert(Items.begin()+ i , make_pair(Item , 1));
+                            break;
+                    }
+                    else if(typeid(*Items[i].first) != typeid(Shotgun) && typeid(*Items[i].first) != typeid(Snipe)
+                    && typeid(*Items[i].first) != typeid(SMG)){
+                        Items.insert(Items.begin()+ i , make_pair(Item , 1));
+                        break;
+                    }
+                    else if(i == Items.size() - 1){
+                        Items.push_back(make_pair(Item , 1));
+                    }
+                }
+            }
+            else if(typeid(*Item) == typeid(ColdWeapon)){
+                for(int i = 0; i < Items.size(); i++){
+                    if(typeid(*Items[i].first) == typeid(ColdWeapon))
+                        if(Items[i].first->getName()>=Item->getName()){
+                            Items.insert(Items.begin()+ i , make_pair(Item , 1));
+                            break;
+                    }
+                    else if(typeid(*Items[i].first) != typeid(Gun)){
+                        Items.insert(Items.begin()+ i , make_pair(Item , 1));
+                        break;
+                    }
+                    else if(i == Items.size() - 1){
+                        Items.push_back(make_pair(Item , 1));
+                    }
+                }
+            }
+            else if(typeid(*Item) == typeid(Grenade)){
+                for(int i = 0; i < Items.size(); i++){
+                    if(typeid(*Items[i].first) == typeid(Grenade))
+                        if(Items[i].first->getName()>=Item->getName()){
+                            Items.insert(Items.begin()+ i , make_pair(Item , 1));
+                            break;
+                    }
+                    else if(typeid(*Items[i].first) != typeid(Gun) && typeid(*Items[i].first) != typeid(ColdWeapon)){
+                        Items.insert(Items.begin()+ i , make_pair(Item , 1));
+                        break;
+                    }
+                    else if(i == Items.size() - 1){
+                        Items.push_back(make_pair(Item , 1));
+                    }
+                }
+            }
+            else if(typeid(*Item) == typeid(BoomRang)){
+                for(int i = 0; i < Items.size(); i++){
+                    if(typeid(*Items[i].first) == typeid(BoomRang))
+                        if(Items[i].first->getName()>=Item->getName()){
+                            Items.insert(Items.begin()+ i , make_pair(Item , 1));
+                            break;
+                    }
+                    else if(typeid(*Items[i].first) != typeid(Gun) && typeid(*Items[i].first) != typeid(ColdWeapon) &&
+                    typeid(*Items[i].first) != typeid(Grenade)){
+                        Items.insert(Items.begin()+ i , make_pair(Item , 1));
+                        break;
+                    }
+                    else if(i == Items.size() - 1){
+                        Items.push_back(make_pair(Item , 1));
+                    }
+                }
+            }
+            else if(typeid(*Item) == typeid(Consumable)){
+                for(int i = 0; i < Items.size(); i++){
+                    if(typeid(*Items[i].first) == typeid(Consumable) && Items[i].first->getName() >= Item->getName()){
+                        Items.insert(Items.begin()+ i , make_pair(Item , 1));
+                        break;
+                    }
+                    else if(typeid(*Items[i].first) == typeid(Equipment)){
+                        Items.insert(Items.begin()+ i , make_pair(Item , 1));
+                        break;
+                    }
+                    else if(i == Items.size() - 1){
+                        Items.push_back(make_pair(Item , 1));
+                        break;
+                    }
+                }
+            }
+            else if(typeid(*Item) == typeid(Equipment)){
+                for(int i = 0; i < Items.size() ; i++){
+                    if(typeid(*Items[i].first) == typeid(Equipment) && Items[i].first->getName() >= Item->getName()){
+                        Items.insert(Items.begin()+ i , make_pair(Item , 1));
+                        break;
+                    }
+                    else if(i == Items.size() - 1){
+                        Items.push_back(make_pair(Item , 1));
+                    }
+                }
+            }
+        }
+        if(Items.size() == 0){
+            Items.push_back(make_pair(Item , 1));
+        }
+        BackPackWeight += Item->getCapacity();
+        if(typeid(*Item) == typeid(Weapon))
+            addWeapon(dynamic_cast<Weapon *>(Item));
+        else if(typeid(*Item) == typeid(Equipment))
+            addEquipment(dynamic_cast<Equipment *>(Item));
+        else if(typeid(*Item) == typeid(Consumable))
+            addConsumable(dynamic_cast<Consumable *>(Item));
     }
     else
         cout << "You can't handle this";
 }
 
 void Player :: removeItem(Item* Item){ //deletes the items considering their numbers 
-    for (int i = 0; i < Items.size(); i++)
-    {
-        if (*Item == *Items[i].first)
-        {
+    for (int i = 0; i < Items.size(); i++){
+        if (*Item == *Items[i].first){
             BackPackWeight -= Items[i].first->getCapacity();
             if(Items[i].second == 1){
                 Items.erase(Items.begin()+i); //this may still consume some Bytes
@@ -187,6 +336,12 @@ void Player :: removeItem(Item* Item){ //deletes the items considering their num
                 Items[i].second--;
         }
     }
+    if(typeid(*Item) == typeid(Weapon))
+        removeWeapon(dynamic_cast<Weapon *>(Item));
+    else if(typeid(*Item) == typeid(Equipment))
+        removeEquipment(dynamic_cast<Equipment *>(Item));
+    else if(typeid(*Item) == typeid(Consumable))
+        removeConsumable(dynamic_cast<Consumable *>(Item));
 }
 
 
@@ -195,23 +350,138 @@ vector<Relic*> Player :: getRelic(){return Relics;}
 void Player :: addRelic(Relic* Relic){
 
     Relics.push_back(Relic);
-    addItem(Relic);
 }
 
 void Player :: addWeapon(Weapon* Weapon){ //adds weapons checking if already existed or not,
     bool isAdded = false;
     //if existed, just increases the number by one
-    for(int i = 0; i < Weapons.size(); i++){
-        if(*Weapon == *Weapons[i].first){
-            Weapons[i].second++;
-            isAdded = true;
-            break;
+    if(typeid(*Weapon) != typeid(Gun))
+        for(int i = 0; i < Weapons.size(); i++)
+            if(*Weapon == *Weapons[i].first){
+                Weapons[i].second++;
+                isAdded = true;
+                break;
+            }
+    //if not, inserts the weapon in
+    if(!isAdded){
+        if(typeid(*Weapon) == typeid(Shotgun)){
+            for(int i = 0; i < Weapons.size(); i++){
+                if(typeid(*Weapons[i].first) == typeid(Shotgun))
+                    if(Weapons[i].first->getName()>=Weapon->getName()){
+                        Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
+                        break;
+                }
+                else if(typeid(*Weapons[i].first) != typeid(Shotgun)){
+                    Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
+                    break;
+                }
+                else if(i == Weapons.size() - 1){
+                    Weapons.push_back(make_pair(Weapon , 1));
+                }
+            }
+        }
+        else if(typeid(*Weapon) == typeid(Snipe)){
+            for(int i = 0; i < Weapons.size(); i++){
+                if(typeid(*Weapons[i].first) == typeid(Snipe))
+                    if(Weapons[i].first->getName()>=Weapon->getName()){
+                        Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
+                        break;
+                }
+                else if(typeid(*Weapons[i].first) != typeid(Shotgun)){
+                    Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
+                    break;
+                }
+                else if(i == Weapons.size() - 1){
+                    Weapons.push_back(make_pair(Weapon , 1));
+                }
+            }
+        }
+        else if(typeid(*Weapon) == typeid(SMG)){
+            for(int i = 0; i < Weapons.size(); i++){
+                if(typeid(*Weapons[i].first) == typeid(SMG))
+                    if(Weapons[i].first->getName()>=Weapon->getName()){
+                        Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
+                        break;
+                    }
+                else if(typeid(*Weapons[i].first) != typeid(Shotgun) && typeid(*Weapons[i].first) != typeid(Snipe)){
+                    Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
+                    break;
+                }
+                else if(i == Weapons.size() - 1){
+                    Weapons.push_back(make_pair(Weapon , 1));
+                }
+            }
+        }
+        else if(typeid(*Weapon) == typeid(Rifle)){
+            for(int i = 0; i < Weapons.size(); i++){
+                if(typeid(*Weapons[i].first) == typeid(Rifle))
+                    if(Weapons[i].first->getName()>=Weapon->getName()){
+                        Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
+                        break;
+                }
+                else if(typeid(*Weapons[i].first) != typeid(Shotgun) && typeid(*Weapons[i].first) != typeid(Snipe)
+                && typeid(*Weapons[i].first) != typeid(SMG)){
+                    Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
+                    break;
+                }
+                else if(i == Weapons.size() - 1){
+                    Weapons.push_back(make_pair(Weapon , 1));
+                }
+            }
+        }
+        else if(typeid(*Weapon) == typeid(ColdWeapon)){
+            for(int i = 0; i < Weapons.size(); i++){
+                if(typeid(*Weapons[i].first) == typeid(ColdWeapon))
+                    if(Weapons[i].first->getName()>=Weapon->getName()){
+                        Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
+                        break;
+                    }
+                else if(typeid(*Weapons[i].first) != typeid(Gun)){
+                    Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
+                    break;
+                }
+                else if(i == Weapons.size() - 1){
+                    Weapons.push_back(make_pair(Weapon , 1));
+                }
+            }
+        }
+        else if(typeid(*Weapon) == typeid(Grenade)){
+            for(int i = 0; i < Weapons.size(); i++){
+                if(typeid(*Weapons[i].first) == typeid(Grenade))
+                    if(Weapons[i].first->getName()>=Weapon->getName()){
+                        Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
+                        break;
+                }
+                else if(typeid(*Weapons[i].first) != typeid(Gun) && typeid(*Weapons[i].first) != typeid(ColdWeapon)){
+                    Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
+                    break;
+                }
+                else if(i == Weapons.size() - 1){
+                    Weapons.push_back(make_pair(Weapon , 1));
+                }
+            }
+        }
+        else if(typeid(*Weapon) == typeid(BoomRang)){
+            for(int i = 0; i < Weapons.size(); i++){
+                if(typeid(*Weapons[i].first) == typeid(BoomRang))
+                    if(Weapons[i].first->getName()>=Weapon->getName()){
+                        Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
+                        break;
+                }
+                else if(typeid(*Weapons[i].first) != typeid(Gun) && typeid(*Weapons[i].first) != typeid(ColdWeapon) &&
+                typeid(*Weapons[i].first) != typeid(Grenade)){
+                    Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
+                    break;
+                }
+                else if(i == Weapons.size() - 1){
+                    Weapons.push_back(make_pair(Weapon , 1));
+                }
+            }
         }
     }
-    //if not, pushes the weapon in
-    if(!isAdded)
+    if(Weapons.size() == 0){
         Weapons.push_back(make_pair(Weapon , 1));
-    addItem(Weapon);
+    }
 }
 
 void Player :: removeWeapon(Weapon* Weapon){ //deletes the weapon considering its numbers, thus an item is also deleted
@@ -223,42 +493,39 @@ void Player :: removeWeapon(Weapon* Weapon){ //deletes the weapon considering it
                 Weapons[i].second--;
         }
     }
-    removeItem(Weapon);
 }
 
 
 void Player :: addEquipment(Equipment* Equipment){ // adds the equipment if you buy it, to the Equipments' vector
     setArmor(getArmor() + Equipment->getAmount());
     if(typeid(*Equipment) == typeid(HeadGear)){
-        removeEquipment(Equipments[0]);
+        removeItem(Equipments[0]);
         Equipments[0] = Equipment;
     }
     else if(typeid(*Equipment) == typeid(Vest)){
-        removeEquipment(Equipments[1]);
+        removeItem(Equipments[1]);
         Equipments[1] = Equipment;
     }
     else if(typeid(*Equipment) == typeid(FootWear)){
-        removeEquipment(Equipments[2]);
+        removeItem(Equipments[2]);
         Equipments[2] = Equipment;
     }
     else if(typeid(*Equipment) == typeid(Boot)){
-        removeEquipment(Equipments[3]);
+        removeItem(Equipments[3]);
         Equipments[3] = Equipment;
     }
-    addItem(Equipment);
 }
 
 void Player :: removeEquipment(Equipment* Equipment){ //removes the equipment if you sell or lose it, from the Equipments' vector
     setArmor(getArmor() - Equipment->getAmount());
-    if(typeid(Equipment) == typeid(HeadGear))
+    if(typeid(*Equipment) == typeid(HeadGear))
         Equipments[0] = nullptr;
-    else if(typeid(Equipment) == typeid(Vest))
+    else if(typeid(*Equipment) == typeid(Vest))
         Equipments[1] = nullptr;
-    else if(typeid(Equipment) == typeid(FootWear))
+    else if(typeid(*Equipment) == typeid(FootWear))
         Equipments[2] = nullptr;
-    else if(typeid(Equipment) == typeid(Boot))
+    else if(typeid(*Equipment) == typeid(Boot))
         Equipments[3] = nullptr;
-    removeItem(Equipment);
 }
 
 vector<pair<Consumable* , int>> Player :: getConsumables(){return Consumables;}
@@ -273,10 +540,20 @@ void Player :: addConsumable(Consumable* Consumable){ //adds consumables checkin
             break;
         }
     }
-    //if not, pushes the consumable in
+    //if not, inserts the consumable in
     if(!isAdded)
+        for(int i = 0; i < Consumables.size(); i++){
+            if(Consumables[i].first->getName()>=Consumable->getName()){
+                Consumables.insert(Consumables.begin()+ i , make_pair(Consumable , 1));
+                break;
+            }
+            else if(i == Consumables.size() - 1){
+                Consumables.push_back(make_pair(Consumable , 1));
+            }
+        }
+    if(Consumables.size() == 0){
         Consumables.push_back(make_pair(Consumable , 1));
-    addItem(Consumable);
+    }
 }
 
 void Player :: removeConsumable(Consumable* Consumable){ //deletes the consumable considering its numbers, thus an item is also deleted
@@ -288,21 +565,20 @@ void Player :: removeConsumable(Consumable* Consumable){ //deletes the consumabl
                 Consumables[i].second--;
         }
     }
-    removeItem(Consumable);
 }
 
 void Player :: Consume(Consumable* Consumable){
     if(Consumable->getType() == "ShieldPotion"){ // if the player consumes ShieldPotion the shield amount increases
         setShield(getShield() + Consumable->getAmount());
-        removeConsumable(Consumable);
+        removeItem(Consumable);
     }
     else if(Consumable->getType() == "HPPotion"){
         setHP(min(getMaxHP() , getHP() + Consumable->getAmount())); // if the player consumes  HealingItem the hp increases
-        removeConsumable(Consumable);
+        removeItem(Consumable);
     }
     else if(Consumable->getType() == "EnergyPotion"){
         setEnergy(min(MaxEnergy , Energy + Consumable->getAmount())); // if the player consumes Energizer the energy increases
-        removeConsumable(Consumable);
+        removeItem(Consumable);
     }
 }
 
@@ -322,17 +598,16 @@ void HumanEnemy :: removeConsumable(Consumable* Consumable){ //deletes the consu
                 Consumables[i].second--;
         }
     }
-    removeItem(Consumable);
 }
 
 void HumanEnemy :: Consume(Consumable* Consumable){
     if(Consumable->getType() == "ShieldPotion"){ // if the human enemy consumes ShieldPotion the shield amount increases
         setShield(getShield() + Consumable->getAmount());
-        removeConsumable(Consumable);
+        removeItem(Consumable);
     }
     else if(Consumable->getType() == "HPPotion"){ // if the human enemy consumes  HealingItem the hp increases
         setHP(min(getMaxHP() , getHP() + Consumable->getAmount()));
-        removeConsumable(Consumable);
+        removeItem(Consumable);
     }
 }
 
