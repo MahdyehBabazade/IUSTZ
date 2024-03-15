@@ -11,9 +11,7 @@ using namespace std;
 
 Item :: Item(string name,int capacity,int price) : Name(name), Capacity(capacity),Price(price){}
 
-void Item :: setCapacity(int capacity){
-    Capacity=capacity;
-}
+void Item :: setCapacity(int capacity){Capacity=capacity;}
 void Item ::setPrice(int price){Price=price;}
 string Item :: getName() {return Name;}
 int Item :: getCapacity() {return Capacity;}
@@ -53,6 +51,7 @@ Weapon* choose_weapon(vector<Weapon*> &weapons){
 }
 
 Character* choose_character(vector<Character*> &characters){
+    /*
     cout << "choose the enemy you want to attack: \n";
     int x = 0;
     for(Character* &character:  characters){
@@ -64,14 +63,12 @@ Character* choose_character(vector<Character*> &characters){
     cin >> choice;
     choice -=1;
     return characters[choice];
+     */
 }
 
 void Weapon::Attack(vector<Character*> &Chars) {
     Character* Character = choose_character(Chars);
     Character->takeDamage(Damage);
-}
-void Weapon ::decreaseEnergy(Player* player) {
-    player->setEnergy(player->getEnergy() - EnergyNeeded);
 }
 //............
 Punch :: Punch(string name, int capacity, int damage, int price, int energyNeed)
@@ -88,15 +85,9 @@ string Gun::GetStat() {
     return outPut;
 }
 
-int Gun ::getAmmo() {
-    return Ammo;
-}
-void Gun::setAmmo(int ammo) {
-    Ammo=ammo;
-}
-int Gun::getReloadEnergy() {
-    return ReloadEnergy;
-}
+int Gun ::getAmmo() {return Ammo;}
+void Gun::setAmmo(int ammo) {Ammo=ammo;}
+int Gun::getReloadEnergy() {return ReloadEnergy;}
 void Gun::setReloadEnergy(int reloadEnergy) {ReloadEnergy=reloadEnergy;}
 
 void Gun::Attack(vector<Character*> &characters) {};

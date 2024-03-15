@@ -6,7 +6,7 @@
 class Item {
 protected:
     string Name;
-    int Capacity;
+    int Capacity; // space it takes in the backpack
     int Price;
 public:
     Item(string name, int capacity, int Price);
@@ -17,7 +17,7 @@ public:
     int getCapacity();
     int getPrice();
 
-    bool operator==(Item a);
+    bool operator==(Item a); // checks if the names are the same
 };
 
 //--------------------------------
@@ -28,13 +28,12 @@ protected:
 public:
     Weapon(string name,int capacity,int damage,int price,int energyNeeded);
     virtual void Attack(vector<Character*> &characters); // takes an enemy and calls its TakeDamage function
-    void decreaseEnergy(Player* player); //decreases player's energy
     void setDamage(int damage);
     void setEnergyNeeded(int energy);
     int getDamage();
     int getEnergyNeeded();
 
-    string GetStat() override;
+    string GetStat() override; // returns the properties
 };
 
 class Punch: public Weapon{
@@ -56,7 +55,6 @@ public:
     void Attack(vector<Character*> &characters);
     int getReloadEnergy();
     void setReloadEnergy(int reloadEnergy);
-    //void operator-=(int amount);
     void Reload();
     Gun(string name,int capacity,int price,int damage,int energyNeeded,int ammo,int reloadEnergy,int ammoNeeded);
     string GetStat() override;
@@ -64,7 +62,7 @@ public:
 
 class Shotgun:public Gun{
 private:
-    int MinDamagePercent;
+    int MinDamagePercent; // the least amount of damage it can deal based on the distance
 public:
     int getMinDamagePercent();
     void setMinDamagePercent(int minDamagePercent);
@@ -74,23 +72,23 @@ public:
 
 class Snipe: public Gun{
 public:
-    void Attack(vector<Character*> &characters) override; // takes multiple characters and attacks them all
+    void Attack(vector<Character*> &characters) override; // takes a character and attacks both the selected character and the one behind it
     Snipe(string name,int capacity, int price,int damage,int energyNeeded,int reloadEnergy,int ammo,int ammoNeeded);
 };
 
 class Rifle: public Gun{
 public:
-    void Attack(vector<Character*> &characters) override; // takes some characters and the damage is divided between
+    void Attack(vector<Character*> &characters) override; // attacks all enemies
     Rifle(string name,int capacity, int price ,int damage,int energyNeeded,int reloadEnergy,int ammo,int ammoNeeded);
 };
 
 class ColdWeapon: public Weapon{
 private:
-    int ThrowDamagePercent;
+    int ThrowDamagePercent; // damage increase when it's thrown
 public:
     int getThrowDamagePercent();
     void setThrowDamagePercent(int throwDamagePercent);
-    void Throw(vector<Character*> &characters); //throws the coldWeapon and loses it
+    void Throw(vector<Character*> &characters); //throws the coldWeapon and removes it from the items
     ColdWeapon(string name,int capacity,int price ,int damage,int energyNeeded);
 };
 
@@ -108,16 +106,13 @@ public:
 class BoomRang: public Throwable{
 public:
     BoomRang(string name,int capacity, int price,int damage,int energyNeeded);
-    void Attack(vector<Character*> &characters) override;
+    void Attack(vector<Character*> &characters) override; // attacks all the characters twice
 };
 
 //--------------------------------
 class Consumable: public Item{
-    // 1. heal
-    // 2. energy
-    // 3. shield
 private:
-    int Amount;
+    int Amount; // how much it's going to increase
     string Type;
 public:
     void setAmount(int amount);
@@ -130,7 +125,7 @@ public:
 //------------------------------
 class Equipment: public Item{
 private:
-    int Amount;
+    int Amount; // the percent
 public:
     Equipment(string name,int capacity,int price,int amount);
     int getAmount();
@@ -156,8 +151,8 @@ public:
 //------------------------------
 class Relic: public Item {
 private:
-    int MaxHP;
-    int MaxEnergy;
+    int MaxHP; // how much percent of maxHP is being added
+    int MaxEnergy; // how much percent of maxEnergy is being added
 public:
     void setMaxHP(int MaxHP);
     void setMaxEnergy(int MaxEnergy);
