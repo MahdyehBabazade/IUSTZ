@@ -116,7 +116,7 @@ void Snipe ::Attack(vector<Character*> &characters) {
     int index= find(characters.begin(),characters.end(),character) - characters.begin();
     character->takeDamage(getDamage());
     if(characters[index+1]!=nullptr){
-        characters[index+1]->takeDamage(getDamage());
+        characters[index+1]->takeDamage(getDamage()/2);
     }
 }
 //..

@@ -346,7 +346,8 @@ void Player :: removeItem(Item* Item){ //deletes the items considering their num
 vector<Relic*> Player :: getRelic(){return Relics;}
 
 void Player :: addRelic(Relic* Relic){
-
+    player.setMaxHP(getMaxHP()*(100+Relics->getMaxHP())/100);
+    player.setMaxEnergy(getMaxEnergy()*(100+Relics->getMaxEnergy())/100);
     Relics.push_back(Relic);
 }
 
