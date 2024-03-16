@@ -69,7 +69,7 @@ vector<Equipment*> Character :: getEquipments(){return Equipments;} //returns th
 
 Weapon* Player::ChooseWeapon(){ //lists the weapons for you and the lets you choose one from your backpack
     for(int i = 0; i< Weapons.size(); i++){
-        cout << i + 1 << "." << Weapons[i].first->GetStat() << endl;
+        cout << i + 1 << "." << Weapons[i].first->getStat() << endl;
     }
     cout << "Choose: ";
     int choice;
@@ -77,9 +77,8 @@ Weapon* Player::ChooseWeapon(){ //lists the weapons for you and the lets you cho
     choice --;
     return Weapons[choice].first;
 }
-void Player :: Attack(vector<Character *> &characters , Weapon* weapon){ 
+void Player :: Attack(vector<Character *> &characters , Weapon* weapon , int choice){ 
     //attacks the enemies with guns, cold weapons or throwables
-    Weapon* weapon = ChooseWeapon();
     if(getEnergy()>=weapon->getEnergyNeeded()){
         //checks which type of weapon, the weapon you chose is, then calls the Attack function of that weapon
         if (typeid(*weapon) == typeid(Gun)) {
@@ -96,11 +95,6 @@ void Player :: Attack(vector<Character *> &characters , Weapon* weapon){
         }
         else if(typeid(*weapon) == typeid(ColdWeapon)){
             ColdWeapon *coldWeapon = dynamic_cast<ColdWeapon *>(weapon);
-            cout << "1.attack\n"
-                    "2.throw\n"
-                    "choose: ";
-            int choice;
-            cin >> choice;
             //checks if we want to throw the cold weapon or attack with it
             if(choice ==1){
                 coldWeapon->Attack(characters); //if attack, it calls the Attack function of the cold weapon

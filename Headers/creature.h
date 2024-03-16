@@ -98,7 +98,7 @@ public:
 
     void Consume(Consumable* Consumable); // the function for when a Consumable is used
     Weapon* ChooseWeapon(); // to be deleted later (?)
-    void Attack(vector<Character*> &characters , Weapon* weapon); // Attack function
+    void Attack(vector<Character*> &characters , Weapon* weapon , int choice); // Attack function
 };
 
 class HumanEnemy: public Character{
