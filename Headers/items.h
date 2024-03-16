@@ -83,10 +83,12 @@ class Snipe: public Gun{
 public:
     void Attack(vector<Character*> &characters) override; // takes a character and attacks both the selected character and the one behind it
     Snipe(string name,int capacity, int price,int damage,int energyNeeded,int reloadEnergy,int ammo;
+    Snipe();
 };
 
 class SMG: public Gun{
     SMG(string name,int capacity, int price ,int damage,int energyNeeded,int reloadEnergy,int ammo);
+    SMG();
     void Attack(vector<Character*> &characters) override; // attacks every enemy
 };
 
@@ -98,7 +100,7 @@ public:
     void setMaxAttackAmount(int maxAttackAmount);
     void Attack(vector<Character*> &characters) override; // attacks chooses a certain amount of enemies and the damage is divided between them
     Rifle(string name,int capacity, int price ,int damage,int energyNeeded,int reloadEnergy,int ammo);
-
+    Rifle();
     string getStat() override;
 };
 
@@ -110,6 +112,7 @@ public:
     void setThrowDamagePercent(int throwDamagePercent);
     void Throw(vector<Character*> &characters); //throws the coldWeapon and removes it from the items
     ColdWeapon(string name,int capacity,int price ,int damage,int energyNeeded);
+    ColdWeapon();
 };
 
 class Throwable: public Weapon {

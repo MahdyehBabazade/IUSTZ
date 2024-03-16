@@ -92,7 +92,6 @@ void Gun::Reload() {Ammo = MaxAmmo;}
 Shotgun ::Shotgun(string name, int capacity,int price, int damage, int energyNeeded,int reloadEnergy,int ammo)
         : Gun(name,  capacity, price, damage,  energyNeeded,reloadEnergy, ammo){}
 
-
 void Shotgun ::Attack(vector<Character*> &characters) {
     Character* character = choose_character(characters);
     int EnemyDistance = characters.size() - (find(characters.begin(), characters.end(),character) - characters.begin());
@@ -117,6 +116,8 @@ Shotgun ::Shotgun(): Gun("Shotgun",4,15,10,4,4,1) {}
 Snipe ::Snipe(std::string name, int capacity, int price, int damage, int energyNeeded,int reloadEnergy, int ammo)
         : Gun(name,  capacity, price, damage,  energyNeeded,reloadEnergy, ammo) {}
 
+Snipe::Snipe() : Gun("snipe",5,17,10,5,5,2){}
+
 void Snipe ::Attack(vector<Character*> &characters) {
     Character* character= choose_character(characters);
     int index= find(characters.begin(),characters.end(),character) - characters.begin();
@@ -129,6 +130,8 @@ void Snipe ::Attack(vector<Character*> &characters) {
 SMG ::SMG(string name, int capacity, int price, int damage, int energyNeeded, int reloadEnergy, int ammo)
     : Gun(name,  capacity, price, damage,  energyNeeded,reloadEnergy, ammo) {};
 
+SMG::SMG() : Gun("SMG",4,15,10,5,5,3){}
+
 void SMG ::Attack(vector<Character *> &characters) {
     for (Character* character: characters){
         character->takeDamage(getDamage());
@@ -138,6 +141,7 @@ void SMG ::Attack(vector<Character *> &characters) {
 //..
 Rifle ::Rifle(std::string name, int capacity, int price , int damage, int energyNeeded,int reloadEnergy, int ammo)
         : Gun( name,  capacity, price, damage,  energyNeeded,reloadEnergy, ammo){}
+Rifle::Rifle() : Gun("Riflr",5,18,10,5,8,4){}
 
 void Rifle ::Attack(vector<Character*> &characters){
     int damage=getDamage()/characters.size();
@@ -160,6 +164,8 @@ string Rifle::getStat() {
 //..
 ColdWeapon ::ColdWeapon(string name, int capacity,int price, int damage, int energyNeeded)
         : Weapon( name, capacity, price, damage, energyNeeded){}
+
+ColdWeapon::ColdWeapon() : Weapon("ColdWeapon",3,12,8,4){}
 
 void ColdWeapon :: Throw(vector<Character*> &characters){
     Character* character= choose_character(characters);
