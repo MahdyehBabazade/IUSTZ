@@ -85,7 +85,7 @@ void Gun::setAmmo(int ammo) {Ammo=ammo;}
 int Gun::getReloadEnergy() {return ReloadEnergy;}
 void Gun::setReloadEnergy(int reloadEnergy) {ReloadEnergy=reloadEnergy;}
 
-void Gun::Attack(vector<Character*> &characters) {};
+//void Gun::Attack(vector<Character*> &characters) {};
 void Gun::Reload() {Ammo = MaxAmmo;}
 
 //..............
