@@ -225,3 +225,8 @@ void Relic::setMaxEnergy(int Maxenergy) {MaxEnergy = Maxenergy;}
 int Relic::getMaxHP() {return MaxHP;}
 
 int Relic::getMaxEnergy() {return MaxEnergy;}
+
+string Relic::getStat() {
+    string outPut = Name + "(Hp Increase: " + to_string(MaxHP) +
+                    " Energy Increase: " + to_string(MaxEnergy);
+}

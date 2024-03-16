@@ -178,4 +178,5 @@ public:
     int getMaxEnergy();
     int getMaxHP();
     Relic(string name, int capacity, int price,int MaxHP,int maxEnergy); // remember capacity=0
+    getStat() override;
 };
