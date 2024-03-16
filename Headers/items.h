@@ -23,6 +23,7 @@ public:
     //virtual ~Item()=0; // default constructor
 
     virtual string getStat();
+    Item();
 };
 
 //--------------------------------
@@ -44,6 +45,7 @@ public:
 class Punch: public Weapon{
 public:
     Punch(string name,int capacity,int damage,int price,int energyNeeded);
+    Punch();
 };
 
 class Gun:public Weapon{
@@ -51,17 +53,14 @@ protected:
     int MaxAmmo;
     int Ammo;
     int ReloadEnergy;
-    int AmmoNeeded;
 public:
     void setAmmo(int ammo);
     int getAmmo();
-    int getAmmoNeeded();
-    void setAmmoNeeded(int ammoNeeded);
     //void Attack(vector<Character*> &characters);
     int getReloadEnergy();
     void setReloadEnergy(int reloadEnergy);
     void Reload();
-    Gun(string name,int capacity,int price,int damage,int energyNeeded,int ammo,int reloadEnergy,int ammoNeeded);
+    Gun(string name,int capacity,int price,int damage,int energyNeeded,int ammo,int reloadEnergy);
 
     string getStat() override;
 };
@@ -73,19 +72,21 @@ public:
     int getMinDamagePercent();
     void setMinDamagePercent(int minDamagePercent);
     void Attack(vector<Character*> &characters) override; // checks the range and deals damage based on it
-    Shotgun(string name,int capacity, int price ,int damage,int energyNeeded,int reloadEnergy,int ammo,int ammoNeeded);
+    Shotgun(string name,int capacity, int price ,int damage,int energyNeeded,int reloadEnergy,int ammo);
 
     string getStat() override;
+
+    Shotgun();
 };
 
 class Snipe: public Gun{
 public:
     void Attack(vector<Character*> &characters) override; // takes a character and attacks both the selected character and the one behind it
-    Snipe(string name,int capacity, int price,int damage,int energyNeeded,int reloadEnergy,int ammo,int ammoNeeded);
+    Snipe(string name,int capacity, int price,int damage,int energyNeeded,int reloadEnergy,int ammo;
 };
 
 class SMG: public Gun{
-    SMG(string name,int capacity, int price ,int damage,int energyNeeded,int reloadEnergy,int ammo,int ammoNeeded);
+    SMG(string name,int capacity, int price ,int damage,int energyNeeded,int reloadEnergy,int ammo);
     void Attack(vector<Character*> &characters) override; // attacks every enemy
 };
 
@@ -96,7 +97,7 @@ public:
     int getMaxAttackAmount();
     void setMaxAttackAmount(int maxAttackAmount);
     void Attack(vector<Character*> &characters) override; // attacks chooses a certain amount of enemies and the damage is divided between them
-    Rifle(string name,int capacity, int price ,int damage,int energyNeeded,int reloadEnergy,int ammo,int ammoNeeded);
+    Rifle(string name,int capacity, int price ,int damage,int energyNeeded,int reloadEnergy,int ammo);
 
     string getStat() override;
 };
@@ -148,7 +149,7 @@ public:
 };
 //------------------------------
 class Equipment: public Item{
-private:
+protected:
     int Amount; // the percent
 public:
     Equipment(string name,int capacity,int price,int amount);
