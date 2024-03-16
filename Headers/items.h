@@ -18,6 +18,7 @@ public:
     int getPrice();
 
     bool operator==(Item a); // checks if the names are the same
+    virtual ~Item()=0;
 };
 
 //--------------------------------

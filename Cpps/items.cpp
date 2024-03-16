@@ -18,6 +18,9 @@ int Item :: getCapacity() {return Capacity;}
 int Item :: getPrice() {return Price;}
 bool Item ::operator==(Item a) {return a.getName() == Name;}
 
+Item::~Item(){
+
+}
 //------------------------------------
 Weapon :: Weapon(string name,int capacity,int price,int damage,int energyNeed)
         : Damage(damage),EnergyNeeded(energyNeed), Item(name, capacity, price) {};
