@@ -77,7 +77,7 @@ Weapon* Player::ChooseWeapon(){ //lists the weapons for you and the lets you cho
     choice --;
     return Weapons[choice].first;
 }
-void Player :: Attack(vector<Character *> &characters){ 
+void Player :: Attack(vector<Character *> &characters , Weapon* weapon){ 
     //attacks the enemies with guns, cold weapons or throwables
     Weapon* weapon = ChooseWeapon();
     if(getEnergy()>=weapon->getEnergyNeeded()){
@@ -346,8 +346,8 @@ void Player :: removeItem(Item* Item){ //deletes the items considering their num
 vector<Relic*> Player :: getRelic(){return Relics;}
 
 void Player :: addRelic(Relic* Relic){
-    player.setMaxHP(getMaxHP()*(100+Relics->getMaxHP())/100);
-    player.setMaxEnergy(getMaxEnergy()*(100+Relics->getMaxEnergy())/100);
+    setMaxHP(getMaxHP()*(100+Relic->getMaxHP())/100);
+    setMaxEnergy(getMaxEnergy()*(100+Relic->getMaxEnergy())/100);
     Relics.push_back(Relic);
 }
 
@@ -585,11 +585,59 @@ void Player :: Consume(Consumable* Consumable){
     }
 }
 
+void HumanEnemy :: RajazKhani(){
+    vector<string> curse ={"MOTHER FUCKER" , "BITCH" , "Asshole" };
+    string RajazKhani = "Got u, " + ShuffleVec(curse)[0];
+    vector<string> Rajaz = {RajazKhani , "Loser" , "Almost there!" , "You think you can defeat me? Pathetic!" , 
+        "I'll crush you like a bug!" , "You're nothing but a stain on the battlefield!"};
+    if (rand() % 5 == 0){ // There is a 1/5 chance that human enemy insult the player befor attacking him/her
+        cout << ShuffleVec(Rajaz)[0];
+    }
+}
+
 HumanEnemy :: HumanEnemy(string Name ,int HP , int MaxHP , double Armor , int Shield , vector<pair<Item* , int>> Items ,
     vector<pair<Weapon* , int>> , vector<Equipment*> Equipments , vector<pair<Consumable* , int>> Consumables)
     : Character(Name , HP , MaxHP , Armor , Shield , Items , Weapons){
     this->Consumables = Consumables;
     this->Equipments = Equipments;
+}
+
+HumanEnemy :: ~HumanEnemy(){
+    // What the enemy says when he/she dies
+    vector<string> EnemyDeathQuotes = { "I can't believe this is how it all ends!", "You fucking bastard!",
+    "Wasted!" , "Nooo, I can't die yet!" , "My child , take care o..." , "I'll damn you" , 
+    "My brother will get my revenge!!!" , "I'll be waiting , you SoB!!!" , "That was a fun fight" , 
+    "See you on the other side"};
+    cout << ShuffleVec(EnemyDeathQuotes)[0];
+}
+
+void HumanEnemy::Attack(vector<Character*> characters , Weapon* weapon , int choice){
+    if (typeid(*weapon) == typeid(Gun)) {
+        Gun *gun = dynamic_cast<Gun *>(weapon);
+        if (gun->getAmmo() >= gun->getAmmoNeeded()) {
+            gun->Attack(characters);
+            gun->setAmmo(gun->getAmmo()-gun->getAmmoNeeded()); //reduces the number of ammos after the gun shot.
+        }
+    }
+    else if(typeid(*weapon) == typeid(Throwable)){
+        Throwable *throwable = dynamic_cast<Throwable *>(weapon);
+        throwable->Attack(characters);
+        removeItem(throwable); //removes the throwable from the backpack after it dropped
+    }
+    else if(typeid(*weapon) == typeid(ColdWeapon)){
+        ColdWeapon *coldWeapon = dynamic_cast<ColdWeapon *>(weapon);
+        if(choice ==1){
+            coldWeapon->Attack(characters); //if attack, it calls the Attack function of the cold weapon
+        }
+        else{
+            coldWeapon->Throw(characters); //if throw, it calls the Throw function of the cold weapon then removes it from the backpack
+            removeItem(coldWeapon); 
+        }
+    }
+    else{
+        weapon->Attack(characters);
+    }
+    RajazKhani();
 }
 
 void HumanEnemy :: removeConsumable(Consumable* Consumable){ //deletes the consumable considering its numbers, thus an item is also deleted (for throwables)
@@ -614,19 +662,6 @@ void HumanEnemy :: Consume(Consumable* Consumable){
     }
 }
 
-// void HumanEnemy :: Attack(Player player){}
-
-HumanEnemy :: ~HumanEnemy(){
-    // What the enemy says when he/she dies
-    vector<string> EnemyDeathQuotes = { "I can't believe this is how it all ends!", "You fucking bastard!",
-    "Wasted!" , "Nooo, I can't die yet!" , "My child , take care o..." , "I'll damn you" , 
-    "My brother will get my revenge!!!" , "I'll be waiting , you SoB!!!" , "That was a fun fight" , 
-    "See you on the other side"};
-    cout << ShuffleVec(EnemyDeathQuotes)[0];
-}
-
-//void HumanEnemy :: Consume(Consumable* consumable){}
-
 void HumanEnemy :: removeItem(Item* Item){ //deletes the items considering their numbers 
     for (int i = 0; i < Items.size(); i++){
         if (*Item == *Items[i].first){
@@ -642,15 +677,6 @@ void HumanEnemy :: removeItem(Item* Item){ //deletes the items considering their
         removeConsumable(dynamic_cast<Consumable *>(Item));
 }
 
-void HumanEnemy :: RajazKhani(){
-    vector<string> curse ={"MOTHER FUCKER" , "BITCH" , "Asshole" };
-    string RajazKhani = "Got u, " + ShuffleVec(curse)[0];
-    vector<string> Rajaz = {RajazKhani , "Loser" , "Almost there!" , "You think you can defeat me? Pathetic!" , 
-        "I'll crush you like a bug!" , "You're nothing but a stain on the battlefield!"};
-    if (rand() % 5 == 0){ // There is a 1/4 chance that human enemy insult the player befor attacking him/her
-        cout << ShuffleVec(Rajaz)[0];
-    }
-}
 
 Zombie :: Zombie(string Name , int HP , int MaxHP , double Armor , int Shield , vector<pair<Item* , int>> Items
 , vector<pair<Weapon* , int>> Weapons , vector<Equipment*> Equipments)
@@ -663,7 +689,9 @@ Zombie :: ~Zombie(){
     cout << ShuffleVec(ZombieDeathQuotes)[0];
 }
 
-// void Zombie :: Attack(Player player){}
+void Zombie :: Attack(vector<Character*> &player , Punch* punch){
+    punch->Attack(player);
+}
 
 Shopkeeper :: Shopkeeper(string Name){this->Name = Name;}
 
