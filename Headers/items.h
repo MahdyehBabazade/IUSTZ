@@ -118,12 +118,14 @@ public:
 
 class Grenade: public Throwable{
 public:
+    Grenade();
     Grenade(string name,int capacity, int price,int damage,int energyNeeded);
     void Attack(vector<Character*> &characters) override;
 };
 
 class BoomRang: public Throwable{
 public:
+    BoomRang();
     BoomRang(string name,int capacity, int price,int damage,int energyNeeded);
     void Attack(vector<Character*> &characters) override; // attacks all the characters twice
 };
@@ -139,6 +141,7 @@ public:
 
     string getType();
     void setType(string type);
+    Consumable();
     Consumable(string name,string type,int capacity,int price,int amount);
     string getStat() override;
 
@@ -154,18 +157,22 @@ public:
 };
 class Vest: public Equipment{
 public:
+    Vest();
     Vest(string name,int capacity,int price,int amount);
 };
 class HeadGear: public Equipment{
 public:
+    HeadGear();
     HeadGear(string name,int capacity,int price,int amount);
 };
 class FootWear: public Equipment{
 public:
+    FootWear();
     FootWear(string name,int capacity,int price,int amount);
 };
 class Boot : public Equipment{
 public:
+    Boot();
     Boot(string name,int capacity,int price,int amount);
 };
                                                                                                       
@@ -179,6 +186,7 @@ public:
     void setMaxEnergy(int MaxEnergy);
     int getMaxEnergy();
     int getMaxHP();
+    Relic();
     Relic(string name, int capacity, int price,int MaxHP,int maxEnergy); // remember capacity=0
     string getStat() override;
 };

@@ -173,12 +173,28 @@ Throwable :: Throwable(string name, int capacity,int price, int damage, int ener
 Grenade :: Grenade(string name, int capacity, int price, int damage, int energyNeeded)
         : Throwable(name,capacity,price,damage,energyNeeded){};
 
+Grenade::Grenade() {
+    Name=grenade;
+    Capacity=10;
+    Price=10;
+    Damage=8;
+    EnergyNeeded=3;
+}
 void Grenade :: Attack(vector<Character*> &characters) {
     for(Character* character: characters){
         character->takeDamage(this->getDamage());
     }
 }
+BoomRang::BoomRang(string name, int capacity, int price, int damage, int energyNeeded)
+:Name(name),Capacity(capacity),Price(price),Damage(damage),EnergyNeeded(energyNeeded){}
 
+BoomRang::BoomRang() {
+    Name=boomi;
+    Capacity=4;
+    Price=15;
+    Damage=10;
+    EnergyNeeded=4;
+}
 void BoomRang ::Attack(vector<Character*> &characters) {
     for(Character* character:characters){
         character->takeDamage(this->getDamage()*2);
@@ -188,7 +204,13 @@ void BoomRang ::Attack(vector<Character*> &characters) {
 //-------------------------------
 Consumable ::Consumable(string name,string type, int capacity, int price,int amount)
         :Amount(amount),Type(type), Item( name, capacity, price){}
-
+Consumable::Consumable() {
+    Name=consumable;
+    Type=HPPotion;
+    Capacity=5;
+    Price=7;
+    Amount=10;
+}
 void Consumable ::setAmount(int amount) {Amount=amount;}
 
 int Consumable::getAmount() {return Amount;}
@@ -208,17 +230,46 @@ int Equipment::getAmount() {return Amount;}
 
 Vest ::Vest(std::string name, int capacity, int price, int amount)
         : Equipment(name,capacity,price,amount){};
+Vest::Vest() {
+    Name=vest;
+    Capacity=20;
+    Price=20;
+    Amount=15;
+}
 HeadGear ::HeadGear(string name, int capacity, int price, int amount)
         : Equipment(name,capacity,price,amount){};
+HeadGear::HeadGear(){
+    Name=headgear;
+    Capacity=15;
+    Price=20;
+    Amount=20;
+}
 FootWear ::FootWear(string name, int capacity, int price, int amount)
         : Equipment(name,capacity,price,amount){};
+FootWear::FootWear(){
+    Name=footWear;
+    Capacity=15;
+    Price=25;
+    Amount=15;
+}
 Boot::Boot(string name,int capacity,int price,int amount)
         : Equipment(name,capacity,price,amount){};
-
+Boot::Boot() {
+    Name=boot;
+    Capacity=15;
+    Price=20;
+    Amount=15;
+}
 //-----------------------------
 Relic::Relic(std::string name, int capacity, int price,int MaxHP,int maxEnergy)
         :MaxHP(MaxHP),MaxEnergy(maxEnergy), Item( name, capacity, price){}
-
+Relic::Relic() {
+    Name=relic;
+    Capacity=10;
+    Price=10;
+    MaxHP=20;
+    MaxEnergy=20;
+}
 void Relic:: setMaxHP(int Maxhp){MaxHP = Maxhp;}
 
 void Relic::setMaxEnergy(int Maxenergy) {MaxEnergy = Maxenergy;}
