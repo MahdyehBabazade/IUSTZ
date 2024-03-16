@@ -31,6 +31,7 @@ int Weapon:: getDamage() {return Damage;}
 void Weapon::setDamage(int damage) {Damage = damage;}
 
 void Weapon::setEnergyNeeded(int energy) {EnergyNeeded = energy;}
+
 string Weapon::getStat() {
     string outPut = Name + "(Damage: " + to_string(Damage) + " Energy Needed: " + to_string(EnergyNeeded) + ")";
     return outPut;
@@ -229,4 +230,5 @@ int Relic::getMaxEnergy() {return MaxEnergy;}
 string Relic::getStat() {
     string outPut = Name + "(Hp Increase: " + to_string(MaxHP) +
                     " Energy Increase: " + to_string(MaxEnergy);
+    return outPut;
 }

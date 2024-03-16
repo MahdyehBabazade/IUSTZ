@@ -1,7 +1,9 @@
 #pragma once
 #include <string>
 #include <algorithm>
+#include <vector>
 #include "../Headers/creature.h"
+using namespace std;
 
 class Item {
 protected:
@@ -70,7 +72,7 @@ private:
 public:
     int getMinDamagePercent();
     void setMinDamagePercent(int minDamagePercent);
-    Attack(vector<Character*> &characters) override; // checks the range and deals damage based on it
+    void Attack(vector<Character*> &characters) override; // checks the range and deals damage based on it
     Shotgun(string name,int capacity, int price ,int damage,int energyNeeded,int reloadEnergy,int ammo,int ammoNeeded);
 
     string getStat() override;
