@@ -1,3 +1,5 @@
+#include "../Headers/items.h"
+#include "../Headers/creature.h"
 #include <iostream>
 #include <vector>
 #include <string>
@@ -5,7 +7,6 @@
 #include <cmath>
 #include <algorithm>
 #include <random>
-#include "../Headers/items.h"
 
 using namespace std;
 
@@ -53,6 +54,7 @@ Character* choose_character(vector<Character*> &characters){
     choice -=1;
     return characters[choice];
      */
+    
 }
 
 void Weapon::Attack(vector<Character*> &Chars) {
