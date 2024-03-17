@@ -87,6 +87,7 @@ public:
 };
 
 class SMG: public Gun{
+public:
     SMG(string name,int capacity, int price ,int damage,int energyNeeded,int reloadEnergy,int ammo);
     SMG();
     void Attack(vector<Character*> &characters) override; // attacks every enemy

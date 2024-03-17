@@ -55,7 +55,7 @@ int main(){
             auto* sniper = new Snipe();
             sniper->Attack(enemies);
         }else if(choice == 4){
-            
+
         }else if(choice ==5){
 
         }else if(choice == 6){
