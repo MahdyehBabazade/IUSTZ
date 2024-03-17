@@ -19,7 +19,7 @@ protected:
 public:
     
     // Constructor
-    Character(string Name , int HP , int MaxHP , double Armor , int Shield , vector<pair<Item* , int>> Items ,
+    Character(string Name , int MaxHP , double Armor , vector<pair<Item* , int>> Items ,
     vector<pair<Weapon*,int>> Weapons);
     
     // getters
@@ -65,8 +65,8 @@ private:
 
 public:
     // Constructor and Destructor
-    Player(string Name, int HP, int MaxHP, double Armor, int BackPackCapacity , int BackPackWeight , int MaxEnergy
-    , int Coin , int Shield , vector<pair<Item* , int>> Items , vector<pair<Weapon* , int>> Weapons ,
+    Player(string Name, int MaxHP, double Armor, int BackPackCapacity , int BackPackWeight , int MaxEnergy
+    , int Coin , vector<pair<Item* , int>> Items , vector<pair<Weapon* , int>> Weapons ,
     vector<pair<Consumable* , int>> Consumables , vector<Equipment*> Equipments); // Equipments to be included
     ~Player();
 
@@ -116,7 +116,7 @@ private:
 public:
     
     // Constructor and Destructor
-    HumanEnemy(string Name,int HP , int MaxHP , double Armor, int Shield , vector<pair<Item* , int>> Items ,
+    HumanEnemy(string Name, int MaxHP , double Armor, vector<pair<Item* , int>> Items ,
     vector<pair<Weapon* , int>> Weapons , vector<Equipment*> Equipments , vector<pair<Consumable* , int>> Consumables); //items to add?!
     ~HumanEnemy();
 
@@ -129,7 +129,7 @@ class Zombie: public Character{
 
 public:
     // Constructor and Destructor
-    Zombie(string Name,int HP , int MaxHP , double Armor, int shield , vector<pair<Item* , int>> Items , 
+    Zombie(string Name, int MaxHP , double Armor , vector<pair<Item* , int>> Items , 
     vector<pair<Weapon* , int>> Weapons , vector<Equipment*> Equipment);
     ~Zombie();
 

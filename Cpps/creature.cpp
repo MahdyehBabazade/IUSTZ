@@ -15,13 +15,13 @@ vector<string> ShuffleVec(vector<string> vec){ // Shuffles a vector
     return vec;
 }
 
-Character :: Character(string Name , int HP , int MaxHP , double Armor , int Shield ,
+Character :: Character(string Name , int MaxHP , double Armor ,
 vector<pair<Item* , int>> Items , vector<pair<Weapon*,int>> Weapons){
     this -> Name = Name;
-    this -> HP = HP;
+    this -> HP = MaxHP;
     this -> MaxHP = MaxHP;
     this -> Armor = Armor;
-    this -> Shield = Shield;
+    this -> Shield = 0;
     this -> Items = Items;
     this -> Weapons = Weapons;
     this -> Equipments = {{nullptr} , {nullptr} , {nullptr} , {nullptr}};
@@ -112,11 +112,12 @@ void Player :: Attack(vector<Character *> &characters , Weapon* weapon , int cho
 
 }
 
-Player :: Player(string Name, int HP, int MaxHP, double Armor, int BackPackCapacity , int BackPackWeight
-, int MaxEnergy , int Coin , int Shield ,vector<pair<Item* , int>> Items
-, vector<pair<Weapon* , int>> Weapons , vector<pair<Consumable* , int>> Consumables , vector<Equipment*> Equipments) : Character(Name , HP , MaxHP , Armor , Shield , Items ,  Weapons){
+Player :: Player(string Name, int MaxHP, double Armor, int BackPackCapacity , int BackPackWeight
+, int MaxEnergy , int Coin ,vector<pair<Item* , int>> Items
+, vector<pair<Weapon* , int>> Weapons , vector<pair<Consumable* , int>> Consumables , vector<Equipment*> Equipments) : Character(Name , MaxHP , Armor , Items ,  Weapons){
     this -> BackPackCapacity = BackPackCapacity;
     this -> BackPackWeight = BackPackWeight;
+    this -> Energy = MaxEnergy;
     this -> MaxEnergy = MaxEnergy;
     this -> Coin = Coin;
     this -> Consumables = Consumables;
@@ -589,9 +590,9 @@ void HumanEnemy :: RajazKhani(){
     }
 }
 
-HumanEnemy :: HumanEnemy(string Name ,int HP , int MaxHP , double Armor , int Shield , vector<pair<Item* , int>> Items ,
-    vector<pair<Weapon* , int>> , vector<Equipment*> Equipments , vector<pair<Consumable* , int>> Consumables)
-    : Character(Name , HP , MaxHP , Armor , Shield , Items , Weapons){
+HumanEnemy :: HumanEnemy(string Name , int MaxHP , double Armor , vector<pair<Item* , int>> Items ,
+    vector<pair<Weapon* , int>> Weapons , vector<Equipment*> Equipments , vector<pair<Consumable* , int>> Consumables)
+    : Character(Name , MaxHP , Armor , Items , Weapons){
     this->Consumables = Consumables;
     this->Equipments = Equipments;
 }
@@ -672,9 +673,9 @@ void HumanEnemy :: removeItem(Item* Item){ //deletes the items considering their
 }
 
 
-Zombie :: Zombie(string Name , int HP , int MaxHP , double Armor , int Shield , vector<pair<Item* , int>> Items
+Zombie :: Zombie(string Name , int MaxHP , double Armor , vector<pair<Item* , int>> Items
 , vector<pair<Weapon* , int>> Weapons , vector<Equipment*> Equipments)
-: Character(Name , HP , MaxHP , Armor , Shield , Items , Weapons){
+: Character(Name , MaxHP , Armor , Items , Weapons){
     this-> Equipments = Equipments;
 }
 
