@@ -39,9 +39,10 @@ public:
     void setArmor(double Armor);
     void setShield(int Shield);
 
-    void takeDamage(int damageTaken); // reduces the hp of characters based on their Armor and Shield
+    void takeDamage(int damageTaken); // Reduces the hp of characters based on their Armor and Shield
+    void death(); // Character dies
 
-    string getStat(); //to be deleted later
+    string getStat(); // To be deleted later
 };
 
 class Player : public Character{

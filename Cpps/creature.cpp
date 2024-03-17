@@ -61,13 +61,17 @@ void Character :: takeDamage(int damagetaken){
     setHP(getHP() - (int) (damagetaken * (100 - Armor) / 100));
 }
 
-vector<pair<Item* , int>> Character :: getItems(){return Items;} //returns the Items the character owns
+void Character :: death(){
+    delete this;
+}
 
-vector<pair<Weapon* , int>> Character :: getWeapons(){return Weapons;} //returns the Weapons the character owns
+vector<pair<Item* , int>> Character :: getItems(){return Items;} // Returns the Items the character owns
 
-vector<Equipment*> Character :: getEquipments(){return Equipments;} //returns the Equipments the character owns
+vector<pair<Weapon* , int>> Character :: getWeapons(){return Weapons;} // Returns the Weapons the character owns
 
-Weapon* Player::ChooseWeapon(){ //lists the weapons for you and the lets you choose one from your backpack
+vector<Equipment*> Character :: getEquipments(){return Equipments;} // Returns the Equipments the character owns
+
+Weapon* Player::ChooseWeapon(){ // Lists the weapons for you and the lets you choose one from your backpack
     for(int i = 0; i< Weapons.size(); i++){
         cout << i + 1 << "." << Weapons[i].first->getStat() << endl;
     }
@@ -634,7 +638,7 @@ void HumanEnemy::Attack(vector<Character*> characters , Weapon* weapon , int cho
     RajazKhani();
 }
 
-void HumanEnemy :: removeConsumable(Consumable* Consumable){ //deletes the consumable considering its numbers, thus an item is also deleted (for throwables)
+void HumanEnemy :: removeConsumable(Consumable* Consumable){ // Deletes the consumable considering its numbers, thus an item is also deleted (for throwables)
     for(int i = 0; i < Consumables.size(); i++){
         if(*Consumables[i].first == *Consumable){
             if(Consumables[i].second == 1)
@@ -646,17 +650,17 @@ void HumanEnemy :: removeConsumable(Consumable* Consumable){ //deletes the consu
 }
 
 void HumanEnemy :: Consume(Consumable* Consumable){
-    if(Consumable->getType() == "ShieldPotion"){ // if the human enemy consumes ShieldPotion the shield amount increases
+    if(Consumable->getType() == "ShieldPotion"){ // If the human enemy consumes ShieldPotion the shield amount increases
         setShield(getShield() + Consumable->getAmount());
         removeItem(Consumable);
     }
-    else if(Consumable->getType() == "HPPotion"){ // if the human enemy consumes  HealingItem the hp increases
+    else if(Consumable->getType() == "HPPotion"){ // If the human enemy consumes  HealingItem the hp increases
         setHP(min(getMaxHP() , getHP() + Consumable->getAmount()));
         removeItem(Consumable);
     }
 }
 
-void HumanEnemy :: removeItem(Item* Item){ //deletes the items considering their numbers 
+void HumanEnemy :: removeItem(Item* Item){ // Deletes the items considering their numbers 
     for (int i = 0; i < Items.size(); i++){
         if (*Item == *Items[i].first){
             if(Items[i].second == 1)
