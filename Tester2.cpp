@@ -229,8 +229,10 @@ void ShowLists(Player* Player){
     }
     case 4:{
         vector<Equipment*> Equipments = Player->getEquipments();
+        int x = 1;
         for(int i = 0; i < Equipments.size(); i++){
-            cout << "\t" << i + 1 << " " << Equipments[i]->getName() << "\n";
+            if(Equipments[i] != nullptr)
+                cout << "\t" << x++ << " " << Equipments[i]->getName() << "\n";
         }
         cout << "Press anything to continue";
         getch();
