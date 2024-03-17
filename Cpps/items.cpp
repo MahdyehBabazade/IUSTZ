@@ -35,25 +35,19 @@ void Weapon::setDamage(int damage) {Damage = damage;}
 
 void Weapon::setEnergyNeeded(int energy) {EnergyNeeded = energy;}
 
-string Weapon::getStat() {
-    string outPut = Name + "(Damage: " + to_string(Damage) + " Energy Needed: " + to_string(EnergyNeeded) + ")";
-    return outPut;
-}
 
 Character* choose_character(vector<Character*> &characters){
-    /*
     cout << "choose the enemy you want to attack: \n";
     int x = 0;
     for(Character* &character:  characters){
         x++;
-        cout << x << ". " << character->GetStat() << endl;
+        cout << x << ". " << character->getStat() << endl;
     }
     int choice;
     cout << "choose: ";
     cin >> choice;
     choice -=1;
     return characters[choice];
-     */
     
 }
 
