@@ -13,7 +13,7 @@ vector<string> ShuffleVec(vector<string> vec) {
     return vec;
 }
 
-void getStat(vector<Character*> enemies) {
+void getStat(vector<Character*> &enemies) {
     for (auto* Enemy : enemies) {
         cout << Enemy->getStat() << endl;
     }
@@ -25,7 +25,7 @@ int main() {
         vector<pair<Weapon*, int>> Weapons = {};
         vector<pair<Consumable*, int>> Consumables = {};
         vector<Equipment*> Equipments = { nullptr , nullptr , nullptr , nullptr };
-        auto* player = new Player("Herbod", 100, 0.0, 100, 0, 50, 0, Items, Weapons, Consumables, Equipments);
+        //auto* player = new Player("Herbod", 100, 0.0, 100, 0, 50, 0, Items, Weapons, Consumables, Equipments);
 
         auto* enemy = new HumanEnemy("enemy", 100, 0, Items, Weapons, Equipments, Consumables);
         vector<Character*> enemies = { enemy,enemy,enemy,enemy };
@@ -71,6 +71,8 @@ int main() {
         else if (choice == 8) {
             auto* knife = new ColdWeapon();
             knife->Attack(enemies);
+        }else{
+            break;
         }
         getStat(enemies);
     }
