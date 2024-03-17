@@ -13,17 +13,60 @@ vector<string> ShuffleVec(vector<string> vec){
     return vec;
 }
 
-void check_attack(){
-    Weapon* weapon = new Snipe("sniper",5,20,20,4,2);
-    Consumable*  consumable = new Consumable("hiHPPoition" , "HPPotion" , 1 , 10 , 30); 
-    vector<pair<Item*,int>> items = {make_pair(consumable , 1),make_pair(weapon,1)};
-    vector<pair<Weapon* , int>> Weapons = {make_pair(weapon,1)};
-    vector<pair<Consumable* , int>> Consumables = {make_pair(consumable , 1)};
-    vector<Equipment*> Equipments;
-    Player* player = new Player("O",100,100,0,100,0,100,40,50,items,Weapons,Equipments);
-    HumanEnemy* enemy = new HumanEnemy(30,30,0,"enemy1",0,items,Weapons,Equipments,Weapons,Consumables);
+void getStat(vector<Character*> enemies){
+    for(auto* Enemy : enemies){
+        cout << Enemy->getStat() << endl;
+    }
 }
 
 int main(){
-    
+    while(true){
+        vector<pair<Item* , int>> Items = {};
+        vector<pair<Weapon* , int>> Weapons = {};
+        vector<pair<Consumable* , int>> Consumables = {};
+        vector<Equipment*> Equipments ={nullptr , nullptr , nullptr , nullptr};
+        auto * player = new Player("Herbod" , 100 , 0.0 , 100 , 0 , 50 ,0 , Items , Weapons , Consumables , Equipments);
+
+        auto *enemy = new HumanEnemy("enemy",100,0,Items,Weapons,Equipments,Consumables);
+        vector<Character*> enemies = {enemy,enemy,enemy,enemy};
+
+        getStat(enemies);
+        cout << "choose a weapon you want to attack with: \n"
+                "1. punch \n"
+                "2. Rifle \n"
+                "3. Sniper \n"
+                "4. ShotGun \n"
+                "5. SMG \n"
+                "6. Grenade \n"
+                "7. BoomRang \n"
+                "8. Knife \n"
+                "choose: \n";
+        int choice;
+        cin >> choice;
+        if(choice == 1){
+
+            auto* punch = new Punch();
+            punch->Attack(enemies);
+
+        }else if(choice == 2){
+            auto* rifle = new Rifle();
+            rifle->Attack(enemies);
+        }else if(choice == 3){
+            auto* sniper = new Snipe();
+            sniper->Attack(enemies);
+        }else if(choice == 4){
+            
+        }else if(choice ==5){
+
+        }else if(choice == 6){
+
+        }else if(choice == 7){
+
+        }else if(choice == 8){
+
+        }
+
+        getStat(enemies);
+
+    }
 }
