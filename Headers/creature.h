@@ -111,7 +111,7 @@ private:
     void removeWeapon(Weapon* Weapon);
     
     // fun little Dialogues :)
-    void RajazKhani();
+    //void RajazKhani();
 
 public:
     
@@ -122,7 +122,8 @@ public:
 
     void Attack(vector<Character*> player , Weapon* weapon , int choice); // Attack function
     void Consume(Consumable* consumable); // When a Consumable is used
-    void removeItem(Item* item); // when a throwable is thrown or a Consumable is used;
+    void removeItem(Item* item); // When a throwable is thrown or a Consumable is used;
+    void RajazKhani(); // Dont forget make it private
 };
 
 class Zombie: public Character{
