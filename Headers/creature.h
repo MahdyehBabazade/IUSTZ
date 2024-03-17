@@ -160,7 +160,7 @@ class Medic{
 private:
     string Name;
 
-    void HealDialogue();
+    //void HealDialogue();
 
 public:
     // Constructor
@@ -171,6 +171,7 @@ public:
     void HiDialogue();
     void ByeDialogue();
     void NoMoneyDialogue();
+    void HealDialogue(); // Don't forget to make it private
 
     void Heal(Player player);
     void MaxHPIncrease(Player player);

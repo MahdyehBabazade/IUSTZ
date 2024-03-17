@@ -14,7 +14,9 @@ vector<string> ShuffleVec(vector<string> vec){
 }
 
 void check_dialogues(){
-    Shopkeeper shopkeeper1("Ali");
+    Shopkeeper shopkeeper1("A");
+    Medic medic1("B");
+
     Weapon* weapon = new Snipe("sniper",5,20,20,4,2,8);
     Consumable*  consumable = new Consumable("hiHPPoition" , "HPPotion" , 1 , 10 , 30); 
     vector<pair<Item*,int>> items = {make_pair(consumable , 1),make_pair(weapon,1)};
@@ -22,29 +24,82 @@ void check_dialogues(){
     vector<pair<Consumable* , int>> consumables = {make_pair(consumable , 1)};
     Vest* vest = new Vest("vest" , 60 , 60 , 10);
     vector<Equipment*> equipments = {vest};
+
     Player* player1 = new Player("O", 100, 100, 0, 100, 0, 100, items, weapons, consumables, equipments);
-    cout << "Shopkeeper's Dialogues: " << endl;
-    cout << "Shopkeeper says hi: ";
-    shopkeeper1.HiDialogue();
-    cout << "The shopkeeper sells you sth: ";
-    shopkeeper1.SellDialogue(weapon);
-    cout << "If you have less coins than the item's price, the shopkeeper says: ";
-    shopkeeper1.NoMoneyDialogue();
-    cout << "The shopkeeper buys sth from you: ";
-    shopkeeper1.BuyDialogue(weapon);
-    cout << "Shopkeeper say bye: ";
-    shopkeeper1.ByeDialogue();
-    cout << "Now a human enemy wants to rajaz: " << endl;
-    HumanEnemy enemy1("O", 100, 100, items, weapons, equipments, consumables);
-    enemy1.RajazKhani();
-    Medic medic1("B");
-    cout << "Medic's Dialogues: " << endl;
-    cout << "Medic says hi: ";
-    medic1.HiDialogue();
-    cout << "If you don't have enough money, the medic says: ";
-    medic1.NoMoneyDialogue();
-    cout << "If he/she heals you: ";
-    medic1.HealDialogue();
-    cout << "The medic says bye: ";
-    medic1.ByeDialogue();
+    HumanEnemy enemy1("C", 100, 100, items, weapons, equipments, consumables);
+    
+
+    cout << "Choose the character you want to talk: "<< endl;
+    cout << "1. Shopkeeper" << endl << "2. Medic" << endl << "3. Human Enemy";
+    int n;
+    cin >> n;
+
+    int choice;
+    switch (n)
+    {
+    case 1:
+        cout << "1. Hi \n"
+                "2. Bye \n"
+                "3. Sell \n"
+                "4. Buy \n"
+                "5. No Money \n";
+        cin >> choice;
+        switch (choice)
+        {
+        case 1:
+            shopkeeper1.HiDialogue();
+            break;
+        case 2:
+            shopkeeper1.ByeDialogue();
+            break;
+        case 3:
+            shopkeeper1.SellDialogue(weapon);
+            break;
+        case 4: 
+            shopkeeper1.BuyDialogue(weapon);
+            break;
+        case 5: 
+            shopkeeper1.NoMoneyDialogue();
+        default:
+            break;
+        }
+        break;
+    case 2:
+        cout << "1. Hi \n"
+                "2. Bye \n"
+                "3. Heal \n"
+                "4. No Money \n";
+        cin >> choice;
+        switch (choice)
+        {
+        case 1:
+            medic1.HiDialogue();
+            break;
+        case 2:
+            medic1.ByeDialogue();
+            break;
+        case 3:
+            medic1.HealDialogue();
+            break;
+        case 4:
+            medic1.NoMoneyDialogue();
+        default:
+            break;
+        }
+        break;
+    case 3:
+        cout << "1. Rajaz Khani \n";
+        cin >> choice;
+        switch (choice)
+        {
+        case 1:
+            enemy1.RajazKhani();
+            break;
+        default:
+            break;
+        }
+      break;
+    default:
+        break;
+    }    
 }
