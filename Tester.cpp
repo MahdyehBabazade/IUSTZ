@@ -55,15 +55,24 @@ int main(){
             auto* sniper = new Snipe();
             sniper->Attack(enemies);
         }else if(choice == 4){
+<<<<<<< Updated upstream
 
+=======
+            auto* shotgun = new Shotgun();
+            shotgun->tack(enemies);
+>>>>>>> Stashed changes
         }else if(choice ==5){
-
+            auto* smg = new SMG();
+            smg->Attack(enemies);
         }else if(choice == 6){
-
+            auto* grenade = new Grenade();
+            grenade->Attack(enemies);
         }else if(choice == 7){
-
+            auto* boomRang = new BoomRang();
+            boomRang->Attack(enemies);
         }else if(choice == 8){
-
+            auto* knife = new ColdWeapon();
+            knife->Attack(enemies);
         }
 
         getStat(enemies);
