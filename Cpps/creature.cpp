@@ -24,7 +24,7 @@ vector<pair<Item* , int>> Items , vector<pair<Weapon*,int>> Weapons){
     this -> Shield = Shield;
     this -> Items = Items;
     this -> Weapons = Weapons;
-    this -> Equipments = {{nullptr} , {nullptr} , {nullptr} , {nullptr}};
+    this -> Equipments = {nullptr , nullptr , nullptr , nullptr};
 }
 
 string Character :: getName(){return Name;}
