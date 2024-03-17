@@ -83,9 +83,9 @@ void Player :: Attack(vector<Character *> &characters , Weapon* weapon , int cho
         //checks which type of weapon, the weapon you chose is, then calls the Attack function of that weapon
         if (typeid(*weapon) == typeid(Gun)) {
             Gun *gun = dynamic_cast<Gun *>(weapon);
-            if (gun->getAmmo() >= gun->getAmmoNeeded()) {
+            if (gun->getAmmo() >= characters.size()) {
                 gun->Attack(characters);
-                gun->setAmmo(gun->getAmmo()-gun->getAmmoNeeded()); //reduces the number of ammos after the gun shot.
+                gun->setAmmo(gun->getAmmo()-characters.size()); //reduces the number of ammos after the gun shot.
             }
         }
         else if(typeid(*weapon) == typeid(Throwable)){
@@ -609,9 +609,9 @@ HumanEnemy :: ~HumanEnemy(){
 void HumanEnemy::Attack(vector<Character*> characters , Weapon* weapon , int choice){
     if (typeid(*weapon) == typeid(Gun)) {
         Gun *gun = dynamic_cast<Gun *>(weapon);
-        if (gun->getAmmo() >= gun->getAmmoNeeded()) {
+        if (gun->getAmmo() >= characters.size()) {
             gun->Attack(characters);
-            gun->setAmmo(gun->getAmmo()-gun->getAmmoNeeded()); //reduces the number of ammos after the gun shot.
+            gun->setAmmo(gun->getAmmo()-characters.size()); //reduces the number of ammos after the gun shot.
         }
     }
     else if(typeid(*weapon) == typeid(Throwable)){

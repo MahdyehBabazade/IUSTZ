@@ -82,7 +82,7 @@ public:
 class Snipe: public Gun{
 public:
     void Attack(vector<Character*> &characters) override; // takes a character and attacks both the selected character and the one behind it
-    Snipe(string name,int capacity, int price,int damage,int energyNeeded,int reloadEnergy,int ammo;
+    Snipe(string name,int capacity, int price,int damage,int energyNeeded,int reloadEnergy,int ammo);
     Snipe();
 };
 
