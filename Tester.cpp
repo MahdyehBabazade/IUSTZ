@@ -43,23 +43,20 @@ int main() {
             "choose: \n";
         int choice;
         cin >> choice;
-        if (choice == 1) {
+        if(choice == 1){
             auto* punch = new Punch();
             punch->Attack(enemies);
-        }
-        else if (choice == 2) {
+        }else if(choice == 2){
             auto* rifle = new Rifle();
             rifle->Attack(enemies);
         }
         else if (choice == 3) {
             auto* sniper = new Snipe();
             sniper->Attack(enemies);
-        }
-        else if (choice == 4) {
+        }else if(choice == 4){
             auto* shotgun = new Shotgun();
-            shotgun->tack(enemies);
-        }
-        else if (choice == 5) {
+            shotgun->Attack(enemies);
+        }else if(choice ==5){
             auto* smg = new SMG();
             smg->Attack(enemies);
         }
@@ -75,8 +72,6 @@ int main() {
             auto* knife = new ColdWeapon();
             knife->Attack(enemies);
         }
-
         getStat(enemies);
-
     }
 }
