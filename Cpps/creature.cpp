@@ -61,6 +61,11 @@ void Character :: takeDamage(int damagetaken){
     setHP(getHP() - (int) (damagetaken * (100 - Armor) / 100));
 }
 
+string Character :: getStat(){
+    return Name + "\t" + to_string(getHP()) + "/" + to_string(getMaxHP()) + "\t" + to_string(getShield()) + "\t"
+    + to_string(getArmor());
+}
+
 vector<pair<Item* , int>> Character :: getItems(){return Items;} //returns the Items the character owns
 
 vector<pair<Weapon* , int>> Character :: getWeapons(){return Weapons;} //returns the Weapons the character owns
@@ -654,6 +659,17 @@ void HumanEnemy :: Consume(Consumable* Consumable){
     else if(Consumable->getType() == "HPPotion"){ // if the human enemy consumes  HealingItem the hp increases
         setHP(min(getMaxHP() , getHP() + Consumable->getAmount()));
         removeItem(Consumable);
+    }
+}
+
+void HumanEnemy::removeWeapon(Weapon* Weapon){
+    for(int i = 0; i < Weapons.size(); i++){
+        if(*Weapons[i].first == *Weapon){
+            if(Weapons[i].second == 1)
+                Weapons.erase(Weapons.begin()+ i);
+            else
+                Weapons[i].second--;
+        }
     }
 }
 

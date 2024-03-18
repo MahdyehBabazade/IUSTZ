@@ -1,17 +1,10 @@
-#include "Headers/creature.h"
-#include "Headers/items.h"
+#include "Cpps/creature.cpp"
+#include "Cpps/items.cpp"
 #include <iostream>
 #include <vector>
 #include <string>
 #include <random>
 using namespace std;
-
-vector<string> ShuffleVec(vector<string> vec){
-    random_device rd;
-    default_random_engine rng(rd());
-    shuffle(vec.begin(), vec.end(), rng);
-    return vec;
-}
 
 void check_dialogues(){
     Shopkeeper shopkeeper1("A");

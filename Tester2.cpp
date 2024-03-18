@@ -1,5 +1,5 @@
-#include "Headers/creature.h"
-#include "Headers/items.h"
+#include "Cpps/creature.cpp"
+#include "Cpps/items.cpp"
 #include <iostream>
 #include <vector>
 #include <string>
@@ -25,7 +25,7 @@ void ShowLists(Player* Player);
 void Item_Changes_Tester(){
     while(true){
         clearScreen();
-        cout <<"Choose: (Enter the number)\n\t1. Add Item\n\t2. Remove Item\n\t3. Show The Lists\n\t4. Exit";
+        cout <<"Choose: (Enter the number)\n\t1. Add Item\n\t2. Remove Item\n\t3. Show The Lists\n\t4. Exit\n";
         vector<pair<Item* , int>> Items = {};
         vector<pair<Weapon* , int>> Weapons = {};
         vector<pair<Consumable* , int>> Consumables = {};
@@ -45,7 +45,7 @@ void Item_Changes_Tester(){
             ShowLists(player);
             break;
         default:
-            exit;
+            exit(0) ;
             break;
         }
     }
@@ -53,7 +53,7 @@ void Item_Changes_Tester(){
 
 void AddItem(Player* Player){
     cout << "Choose what kind of Item you wanna add:(Enter the number)\n"
-    << "\t1. Weapon\n\t2. Equipment\n\t3. Consumable\n\t4. Back";
+    << "\t1. Weapon\n\t2. Equipment\n\t3. Consumable\n\t4. Back\n";
     int choice;
     cin >> choice;
     clearScreen();
@@ -81,7 +81,7 @@ Weapon* AddWeapon(){
     clearScreen();
     cout << "What's the name of the Item?\n";
     string Name;
-    getline(cin , Name);
+    cin >> Name;
     cout << "What's the weight of the Item?(positive integer)\n";
     int weight;
     cin >> weight;

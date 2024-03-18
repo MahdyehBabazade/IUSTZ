@@ -31,6 +31,8 @@ Weapon :: Weapon(string name,int capacity,int price,int damage,int energyNeed)
 
 int Weapon:: getDamage() {return Damage;}
 
+int Weapon::getEnergyNeeded(){return EnergyNeeded;}
+
 void Weapon::setDamage(int damage) {Damage = damage;}
 
 void Weapon::setEnergyNeeded(int energy) {EnergyNeeded = energy;}
