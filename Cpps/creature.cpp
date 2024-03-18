@@ -249,8 +249,8 @@ void Player :: addItem(Item* Item){ //adds items depending on its capacity and t
                             Items.insert(Items.begin()+ i , make_pair(Item , 1));
                             break;
                         }
-                    }
-                    else if(typeid(*Items[i].first) != typeid(Gun)){
+                    }else if(typeid(*Items[i].first) != typeid(Shotgun) && typeid(*Items[i].first) != typeid(Snipe)
+                    && typeid(*Items[i].first) != typeid(SMG) && typeid(*Items[i].first) != typeid(Rifle)){
                         Items.insert(Items.begin()+ i , make_pair(Item , 1));
                         break;
                     }
@@ -268,7 +268,9 @@ void Player :: addItem(Item* Item){ //adds items depending on its capacity and t
                             break;
                         }
                     }
-                    else if(typeid(*Items[i].first) != typeid(Gun) && typeid(*Items[i].first) != typeid(ColdWeapon)){
+                    else if(typeid(*Items[i].first) != typeid(Shotgun) && typeid(*Items[i].first) != typeid(Snipe)
+                    && typeid(*Items[i].first) != typeid(SMG) && typeid(*Items[i].first) != typeid(Rifle) 
+                    && typeid(*Items[i].first) != typeid(ColdWeapon)){
                         Items.insert(Items.begin()+ i , make_pair(Item , 1));
                         break;
                     }
@@ -286,7 +288,8 @@ void Player :: addItem(Item* Item){ //adds items depending on its capacity and t
                             break;
                         }
                     }
-                    else if(typeid(*Items[i].first) != typeid(Gun) && typeid(*Items[i].first) != typeid(ColdWeapon) &&
+                    else if(typeid(*Items[i].first) != typeid(Shotgun) && typeid(*Items[i].first) != typeid(Snipe)
+                    && typeid(*Items[i].first) != typeid(SMG) && typeid(*Items[i].first) != typeid(Rifle) && typeid(*Items[i].first) != typeid(ColdWeapon) &&
                     typeid(*Items[i].first) != typeid(Grenade)){
                         Items.insert(Items.begin()+ i , make_pair(Item , 1));
                         break;
@@ -455,7 +458,8 @@ void Player :: addWeapon(Weapon* Weapon){ //adds weapons checking if already exi
                         Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
                         break;
                     }
-                else if(typeid(*Weapons[i].first) != typeid(Gun)){
+                else if(typeid(*Weapons[i].first) != typeid(Shotgun) && typeid(*Weapons[i].first) != typeid(Snipe)
+                && typeid(*Weapons[i].first) != typeid(SMG) && typeid(*Weapons[i].first) != typeid(Rifle)){
                     Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
                     break;
                 }
@@ -472,7 +476,9 @@ void Player :: addWeapon(Weapon* Weapon){ //adds weapons checking if already exi
                         Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
                         break;
                 }
-                else if(typeid(*Weapons[i].first) != typeid(Gun) && typeid(*Weapons[i].first) != typeid(ColdWeapon)){
+                else if(typeid(*Weapons[i].first) != typeid(Shotgun) && typeid(*Weapons[i].first) != typeid(Snipe)
+                && typeid(*Weapons[i].first) != typeid(SMG) && typeid(*Weapons[i].first) != typeid(Rifle) && 
+                typeid(*Weapons[i].first) != typeid(ColdWeapon)){
                     Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
                     break;
                 }
@@ -489,8 +495,9 @@ void Player :: addWeapon(Weapon* Weapon){ //adds weapons checking if already exi
                         Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
                         break;
                 }
-                else if(typeid(*Weapons[i].first) != typeid(Gun) && typeid(*Weapons[i].first) != typeid(ColdWeapon) &&
-                typeid(*Weapons[i].first) != typeid(Grenade)){
+                else if(typeid(*Weapons[i].first) != typeid(Shotgun) && typeid(*Weapons[i].first) != typeid(Snipe)
+                && typeid(*Weapons[i].first) != typeid(SMG) && typeid(*Weapons[i].first) != typeid(Rifle) && 
+                typeid(*Weapons[i].first) != typeid(ColdWeapon) && typeid(*Weapons[i].first) != typeid(Grenade)){
                     Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
                     break;
                 }
