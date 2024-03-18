@@ -29,6 +29,8 @@ Weapon :: Weapon(string name,int capacity,int price,int damage,int energyNeed)
 
 int Weapon:: getDamage() {return Damage;}
 
+int Weapon :: getEnergyNeeded(){return EnergyNeeded;}
+
 void Weapon::setDamage(int damage) {Damage = damage;}
 
 void Weapon::setEnergyNeeded(int energy) {EnergyNeeded = energy;}
@@ -43,19 +45,17 @@ int Gun::getAmmoNeeded(){return AmmoNeeded;}
 
 
 Character* choose_character(vector<Character*> &characters){
-    /*
     cout << "choose the enemy you want to attack: \n";
     int x = 0;
     for(Character* &character:  characters){
         x++;
-        cout << x << ". " << character->GetStat() << endl;
+        cout << x << ". " << character->getStat() << endl;
     }
     int choice;
     cout << "choose: ";
     cin >> choice;
     choice -=1;
     return characters[choice];
-     */
 }
 
 void Weapon::Attack(vector<Character*> &Chars) {
@@ -63,10 +63,6 @@ void Weapon::Attack(vector<Character*> &Chars) {
     Character->takeDamage(Damage);
 }
 
-string Weapon::getStat() {
-    string outPut = Name + " (Damage:  " + to_string(Damage) + ", EnergyNeeded: " + to_string(EnergyNeeded)+")";
-    return outPut;
-}
 //............
 Punch :: Punch(string name, int capacity, int damage, int price, int energyNeed)
         : Weapon(name, capacity, price, damage, energyNeed){}

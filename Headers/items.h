@@ -2,8 +2,14 @@
 #include <string>
 #include <algorithm>
 #include <vector>
-#include "../Headers/creature.h"
 using namespace std;
+
+class Character;
+class Player;
+class HumanEnemy;
+class Zombie;
+class ShopKeeper;
+class Medic;
 
 class Item {
 protected:
