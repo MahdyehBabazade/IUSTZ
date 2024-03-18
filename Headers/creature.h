@@ -19,7 +19,7 @@ protected:
 public:
     
     // Constructor
-    Character(string Name , int HP , int MaxHP , double Armor , int Shield , vector<pair<Item* , int>> Items ,
+    Character(string Name , int MaxHP , vector<pair<Item* , int>> Items ,
     vector<pair<Weapon*,int>> Weapons);
     
     // getters
@@ -66,9 +66,8 @@ private:
 
 public:
     // Constructor and Destructor
-    Player(string Name, int HP, int MaxHP, double Armor, int BackPackCapacity , int BackPackWeight , int MaxEnergy
-    , int Coin , int Shield , vector<pair<Item* , int>> Items , vector<pair<Weapon* , int>> Weapons ,
-    vector<pair<Consumable* , int>> Consumables , vector<Equipment*> Equipments); // Equipments to be included
+    Player(string Name, int MaxHP, int BackPackCapacity , int BackPackWeight , int MaxEnergy
+    , int Coin , vector<pair<Item* , int>> Items , vector<pair<Weapon* , int>> Weapons); // Equipments to be included
     ~Player();
 
     // getters
@@ -117,8 +116,8 @@ private:
 public:
     
     // Constructor and Destructor
-    HumanEnemy(string Name,int HP , int MaxHP , double Armor, int Shield , vector<pair<Item* , int>> Items ,
-    vector<pair<Weapon* , int>> Weapons , vector<Equipment*> Equipments , vector<pair<Consumable* , int>> Consumables); //items to add?!
+    HumanEnemy(string Name , int MaxHP , double Armor, vector<pair<Item* , int>> Items ,
+    vector<pair<Weapon* , int>> Weapons , vector<pair<Consumable* , int>> Consumables); //items to add?!
     ~HumanEnemy();
 
     void Attack(vector<Character*> player , Weapon* weapon , int choice); // Attack function
@@ -130,8 +129,8 @@ class Zombie: public Character{
 
 public:
     // Constructor and Destructor
-    Zombie(string Name,int HP , int MaxHP , double Armor, int shield , vector<pair<Item* , int>> Items , 
-    vector<pair<Weapon* , int>> Weapons , vector<Equipment*> Equipment);
+    Zombie(string Name , int MaxHP , double Armor, vector<pair<Item* , int>> Items , 
+    vector<pair<Weapon* , int>> Weapons);
     ~Zombie();
 
     void Attack(vector<Character*> &player , Punch* punch); // Attack function for zombie it can only attack with its Punch
@@ -148,11 +147,11 @@ public:
 
     string getName();
     // Dialogues
-    void HiDialogue();
-    void ByeDialogue();
-    void SellDialogue(Item* item);
-    void BuyDialogue(Item* item);
-    void NoMoneyDialogue();
+    string HiDialogue();
+    string ByeDialogue();
+    string SellDialogue(Item* item);
+    string BuyDialogue(Item* item);
+    string NoMoneyDialogue();
 };
 
 class Medic{
@@ -160,7 +159,7 @@ class Medic{
 private:
     string Name;
 
-    void HealDialogue();
+    string HealDialogue();
 
 public:
     // Constructor
@@ -168,9 +167,9 @@ public:
 
     string getName();
     // Dialogues
-    void HiDialogue();
-    void ByeDialogue();
-    void NoMoneyDialogue();
+    string HiDialogue();
+    string ByeDialogue();
+    string NoMoneyDialogue();
 
     void Heal(Player player);
     void MaxHPIncrease(Player player);

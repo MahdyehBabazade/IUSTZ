@@ -1,3 +1,5 @@
+#include "../Headers/items.h"
+#include "../Headers/creature.h"
 #include <iostream>
 #include <vector>
 #include <string>
@@ -5,7 +7,6 @@
 #include <cmath>
 #include <algorithm>
 #include <random>
-#include "../Headers/items.h"
 
 using namespace std;
 
@@ -229,6 +230,6 @@ int Relic::getMaxEnergy() {return MaxEnergy;}
 
 string Relic::getStat() {
     string outPut = Name + "(Hp Increase: " + to_string(MaxHP) +
-                    " Energy Increase: " + to_string(MaxEnergy);
+    " Energy Increase: " + to_string(MaxEnergy);
     return outPut;
 }
