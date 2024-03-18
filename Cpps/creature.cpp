@@ -47,12 +47,12 @@ void Character :: setShield(int Shield){this->Shield = Shield;}
 int Character :: getShield(){return Shield;}
 
 void Character :: takeDamage(int damagetaken){
-    //if the shield could handle more damage than the damage the weapon causes, then the weapon damages the shield not the character.
+    // If the shield could handle more damage than the damage the weapon causes, then the weapon damages the shield not the character.
     if(Shield>=damagetaken){ 
         Shield -= damagetaken; 
         damagetaken = 0;       
     }
-    //if not, the shield just reduces the damage given by the weapon and damages the character less than it could have.
+    // If not, the shield just reduces the damage given by the weapon and damages the character less than it could have.
     else{
         damagetaken -= Shield; 
         Shield = 0;
@@ -60,18 +60,22 @@ void Character :: takeDamage(int damagetaken){
     setHP(getHP() - (int) (damagetaken * (100 - Armor) / 100));
 }
 
+void Character :: death(){
+    delete this;
+}
+
 string Character :: getStat(){
     return Name + "\t" + to_string(getHP()) + "/" + to_string(getMaxHP()) + "\t" + to_string(getShield()) + "\t"
     + to_string(getArmor());
 }
 
-vector<pair<Item* , int>> Character :: getItems(){return Items;} //returns the Items the character owns
+vector<pair<Item* , int>> Character :: getItems(){return Items;} // Returns the Items the character owns
 
-vector<pair<Weapon* , int>> Character :: getWeapons(){return Weapons;} //returns the Weapons the character owns
+vector<pair<Weapon* , int>> Character :: getWeapons(){return Weapons;} // Returns the Weapons the character owns
 
-vector<Equipment*> Character :: getEquipments(){return Equipments;} //returns the Equipments the character owns
+vector<Equipment*> Character :: getEquipments(){return Equipments;} // Returns the Equipments the character owns
 
-Weapon* Player::ChooseWeapon(){ //lists the weapons for you and the lets you choose one from your backpack
+Weapon* Player::ChooseWeapon(){ // Lists the weapons for you and the lets you choose one from your backpack
     for(int i = 0; i< Weapons.size(); i++){
         cout << i + 1 << "." << Weapons[i].first->getStat() << endl;
     }
