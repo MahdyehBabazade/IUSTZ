@@ -732,30 +732,33 @@ Shopkeeper :: Shopkeeper(string Name){this->Name = Name;}
 
 string Shopkeeper :: getName(){return Name;}
 
-string Shopkeeper :: HiDialogue(){ //The shopkeeper says hi
+string Shopkeeper :: HiDialogue(){ // The shopkeeper says hi
     vector<string> ShopkeeperHi = {"Salute soldier! How can I help?" , "Hi commander! Is there anything I can provide?" , "Welcome to my shop!"};
     return ShuffleVec(ShopkeeperHi)[0] + "\n";
 }
 
-string Shopkeeper :: ByeDialogue(){ //The shopkeeper says bye
-    return "Good luck , Soldier.\n";
+string Shopkeeper :: ByeDialogue(){ // The shopkeeper says bye
+    return "Good luck, Soldier.\n";
 }
 
-string Shopkeeper :: SellDialogue(Item* item){ //The shopkeeper sells sth to the player
-    vector<string> ShopkeeperSell = {"So you've bought " + item->getName() , "You choosed one of the best items." ,
-    "Wish " + item->getName() + "helps you survive."};
+string Shopkeeper :: SellDialogue(Item* item){ // The shopkeeper sells sth to the player
+    vector<string> ShopkeeperSell = {"So you've bought " + item->getName() , "You chose one of the best items." ,
+    "Wish " + item->getName() + " helps you survive."};
     return ShuffleVec(ShopkeeperSell)[0] + "\n";
 } // items to be included
 
-string Shopkeeper :: BuyDialogue(Item* item){ //The shopkeeper buys sth from the player
+string Shopkeeper :: BuyDialogue(Item* item){ // The shopkeeper buys sth from the player
     double NewPrice = 0.8*item->getPrice();
     return "I'll buy that for " + to_string(NewPrice) + " coins.\n";
 } // items to be included
 
 string Shopkeeper :: NoMoneyDialogue(){ // What the shopkeeper says when the player has less money than the item's price
     vector<string> PoorSoldier = {"You don't have enough coins!" , "Poor soldier!!!" , "Can't get you that!" ,
-    "So little for so much?!" , "..." , "You don't have enough coins!" , "Poor soldier!!!" , 
-    "Can't get you that!" , "So little for so much?!"};
+    "So little for so much?!"};
+    if (rand() % 9 == 0)
+    {
+        return "...";
+    }
     return ShuffleVec(PoorSoldier)[0] + "\n";
 }
 
@@ -768,14 +771,17 @@ string Medic :: HiDialogue(){
     return ShuffleVec(MedicSayHi)[0]+"\n";
 }
 
-string Medic :: ByeDialogue(){return "Have a safe journy.\n";}
+string Medic :: ByeDialogue(){return "Have a safe journey.\n";}
 
 string Medic :: HealDialogue(){return "I've patched you up!\n";}
 
 string Medic :: NoMoneyDialogue(){
     vector<string> PoorSoldier = {"You don't have enough coins!" , "Poor soldier!" , "Can't Heal you with that much coin!" , 
-    "So little for so much?!" , "..." , "You don't have enough coins!" , "Poor soldier!!!" , 
-    "Can't heal you with that much coin" , "So little for so much?!"};
+    "So little for so much?!"};
+    if (rand() % 9 == 0)
+    {
+        return "...";
+    }
     return ShuffleVec(PoorSoldier)[0] + "\n";
 }
 
