@@ -18,16 +18,13 @@ void check_dialogues(){
     Vest* vest = new Vest("vest" , 60 , 60 , 10);
     vector<Equipment*> equipments = {vest};
 
-    Player* player1 = new Player("O", 100, 100, 0, 100, 0, 100, items, weapons, consumables, equipments);
     HumanEnemy enemy1("C", 100, 100, items, weapons, equipments, consumables);
-    
 
     cout << "Choose the character you want to talk: "<< endl;
     cout << "1. Shopkeeper" << endl << "2. Medic" << endl << "3. Human Enemy";
+
     int n;
     cin >> n;
-
-    int choice;
     switch (n)
     {
     case 1:
@@ -36,6 +33,7 @@ void check_dialogues(){
                 "3. Sell \n"
                 "4. Buy \n"
                 "5. No Money \n";
+        int choice;
         cin >> choice;
         switch (choice)
         {
@@ -82,8 +80,9 @@ void check_dialogues(){
         break;
     case 3:
         cout << "1. Rajaz Khani \n";
-        cin >> choice;
-        switch (choice)
+        int choice1;
+        cin >> choice1;
+        switch (choice1)
         {
         case 1:
             enemy1.RajazKhani();
@@ -95,4 +94,8 @@ void check_dialogues(){
     default:
         break;
     }    
+}
+
+int main(){
+    check_dialogues();
 }
