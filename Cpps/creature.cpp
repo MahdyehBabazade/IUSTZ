@@ -248,8 +248,8 @@ void Player :: addItem(Item* Item){ //adds items depending on its capacity and t
                             Items.insert(Items.begin()+ i , make_pair(Item , 1));
                             break;
                         }
-                    }
-                    else if(typeid(*Items[i].first) != typeid(Gun)){
+                    }else if(typeid(*Items[i].first) != typeid(Shotgun) && typeid(*Items[i].first) != typeid(Snipe)
+                    && typeid(*Items[i].first) != typeid(SMG) && typeid(*Items[i].first) != typeid(Rifle)){
                         Items.insert(Items.begin()+ i , make_pair(Item , 1));
                         break;
                     }
@@ -267,7 +267,9 @@ void Player :: addItem(Item* Item){ //adds items depending on its capacity and t
                             break;
                         }
                     }
-                    else if(typeid(*Items[i].first) != typeid(Gun) && typeid(*Items[i].first) != typeid(ColdWeapon)){
+                    else if(typeid(*Items[i].first) != typeid(Shotgun) && typeid(*Items[i].first) != typeid(Snipe)
+                    && typeid(*Items[i].first) != typeid(SMG) && typeid(*Items[i].first) != typeid(Rifle) 
+                    && typeid(*Items[i].first) != typeid(ColdWeapon)){
                         Items.insert(Items.begin()+ i , make_pair(Item , 1));
                         break;
                     }
@@ -285,7 +287,8 @@ void Player :: addItem(Item* Item){ //adds items depending on its capacity and t
                             break;
                         }
                     }
-                    else if(typeid(*Items[i].first) != typeid(Gun) && typeid(*Items[i].first) != typeid(ColdWeapon) &&
+                    else if(typeid(*Items[i].first) != typeid(Shotgun) && typeid(*Items[i].first) != typeid(Snipe)
+                    && typeid(*Items[i].first) != typeid(SMG) && typeid(*Items[i].first) != typeid(Rifle) && typeid(*Items[i].first) != typeid(ColdWeapon) &&
                     typeid(*Items[i].first) != typeid(Grenade)){
                         Items.insert(Items.begin()+ i , make_pair(Item , 1));
                         break;
@@ -302,7 +305,8 @@ void Player :: addItem(Item* Item){ //adds items depending on its capacity and t
                         Items.insert(Items.begin()+ i , make_pair(Item , 1));
                         break;
                     }
-                    else if(typeid(*Items[i].first) == typeid(Equipment)){
+                    else if(typeid(*Items[i].first) == typeid(HeadGear) || typeid(*Items[i].first) == typeid(Vest)
+                    || typeid(*Items[i].first) == typeid(FootWear) || typeid(*Items[i].first) == typeid(Boot)){
                         Items.insert(Items.begin()+ i , make_pair(Item , 1));
                         break;
                     }
