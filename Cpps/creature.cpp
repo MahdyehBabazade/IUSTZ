@@ -303,7 +303,7 @@ void Player :: addItem(Item* Item){ //adds items depending on its capacity and t
                         Items.insert(Items.begin()+ i , make_pair(Item , 1));
                         break;
                     }
-                    else if(typeid(*Items[i].first) == typeid(HeadGear) || typeid(*Items[i].first) == typeid(HeadGear)
+                    else if(typeid(*Items[i].first) == typeid(HeadGear) || typeid(*Items[i].first) == typeid(Vest)
                     || typeid(*Items[i].first) == typeid(FootWear) || typeid(*Items[i].first) == typeid(Boot)){
                         Items.insert(Items.begin()+ i , make_pair(Item , 1));
                         break;
