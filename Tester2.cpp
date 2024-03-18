@@ -60,7 +60,6 @@ void AddItem(Player* player){
     switch (choice){
     case 1:
         AddWeapon(player);
-        getch();
         break;
     case 2:
         AddEquipment(player);
