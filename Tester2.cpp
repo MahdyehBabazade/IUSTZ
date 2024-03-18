@@ -10,27 +10,27 @@ void clearScreen(){
     system("cls");
 }
 
-void AddItem(Player* Player);
+void AddItem(Player* player);
 
 void AddWeapon(Player* Player);
 
-void AddEquipment(Player* Player);
+void AddEquipment(Player* player);
 
-void AddConsumable(Player* Player);
+void AddConsumable(Player* player);
 
-void RemoveItem(Player* Player);
+void RemoveItem(Player* player);
 
-void ShowLists(Player* Player);
+void ShowLists(Player* player);
 
 void Item_Changes_Tester(){
-    while(true){
-        clearScreen();
-        cout <<"Choose: (Enter the number)\n\t1. Add Item\n\t2. Remove Item\n\t3. Show The Lists\n\t4. Exit\n";
         vector<pair<Item* , int>> Items = {};
         vector<pair<Weapon* , int>> Weapons = {};
         vector<pair<Consumable* , int>> Consumables = {};
         vector<Equipment*> Equipments ={nullptr , nullptr , nullptr , nullptr};
         Player* player = new Player("Herbod" , 100 , 0.0 , 100 , 0 , 0 ,0 , Items , Weapons , Consumables , Equipments);
+    while(true){
+        clearScreen();
+        cout <<"Choose: (Enter the number)\n\t1. Add Item\n\t2. Remove Item\n\t3. Show The Lists\n\t4. Exit\n";
         int choice;
         cin >> choice;
         clearScreen();
@@ -51,7 +51,7 @@ void Item_Changes_Tester(){
     }
 }
 
-void AddItem(Player* Player){
+void AddItem(Player* player){
     cout << "Choose what kind of Item you wanna add:(Enter the number)\n"
     << "\t1. Weapon\n\t2. Equipment\n\t3. Consumable\n\t4. Back\n";
     int choice;
@@ -59,13 +59,14 @@ void AddItem(Player* Player){
     clearScreen();
     switch (choice){
     case 1:
-        AddWeapon(Player);        
+        AddWeapon(player);
+        getch();
         break;
     case 2:
-        AddEquipment(Player);
+        AddEquipment(player);
         break;
     case 3:
-        AddConsumable(Player);
+        AddConsumable(player);
         break;
     default:
         break;
@@ -87,38 +88,31 @@ void AddWeapon(Player* player){
     cin >> weight;
     switch(choice){
     case 1:{
-        Shotgun* shotgun = new Shotgun(Name , weight , 0 , 0 , 0 , 0 , 10);
-        player->addItem(shotgun);
+        player->addItem(new Shotgun(Name , weight , 0 , 0 , 0 , 0 , 10));
         break;
     }
     case 2:{
-        Snipe* snipe = new Snipe(Name , weight , 0 , 0 , 0 , 0 , 10);
-        player->addItem(snipe);
+        player->addItem(new Snipe(Name , weight , 0 , 0 , 0 , 0 , 10));
         break;
     }
     case 3:{
-        SMG* Smg = new SMG(Name , weight , 0 , 0 , 0 , 0 , 10);
-        player->addItem(Smg);
+        player->addItem(new SMG(Name , weight , 0 , 0 , 0 , 0 , 10));
         break;
     }
     case 4:{
-        Rifle* rifle = new Rifle(Name , weight , 0 , 0 , 0 , 0 , 10);
-        player->addItem(rifle);
+        player->addItem(new Rifle(Name , weight , 0 , 0 , 0 , 0 , 10));
         break;
     }
     case 5:{
-        ColdWeapon* Coldweapon = new ColdWeapon(Name , weight , 0 , 0 , 0);
-        player->addItem(Coldweapon);
+        player->addItem(new ColdWeapon(Name , weight , 0 , 0 , 0));
         break;
     }
     case 6:{
-        Grenade* grenade = new Grenade(Name , weight , 0 , 0 , 0);
-        player->addItem(grenade);
+        player->addItem(new Grenade(Name , weight , 0 , 0 , 0));
         break;
     }
     default:{
-        BoomRang* Boomrang = new BoomRang(Name , weight , 0 , 0 , 0);
-        player->addItem(Boomrang);
+        player->addItem(new BoomRang(Name , weight , 0 , 0 , 0));
         break;
     }
     }
@@ -244,25 +238,5 @@ void ShowLists(Player* Player){
 }
 
 int main(){
-    // Item_Changes_Tester();
-    vector<pair<Item* , int>> Items = {};
-    vector<pair<Weapon* , int>> Weapons = {};
-    vector<pair<Consumable* , int>> Consumables = {};
-    vector<Equipment*> Equipments ={nullptr , nullptr , nullptr , nullptr};
-    Player* player = new Player("Herbod" , 100 , 0.0 , 100 , 0 , 0 ,0 , Items , Weapons , Consumables , Equipments);
-    // player->addItem(new Consumable);
-    player->addItem(new Shotgun);
-    player->addItem(new SMG);
-    player->addItem(new Rifle);
-    player->addItem(new Shotgun);
-    player->addItem(new Consumable);
-    player->addItem(new HeadGear);
-    player->addItem(new Consumable);
-    player->addItem(new Vest);
-    player->addItem(new FootWear);
-    player->addItem(new Boot);
-    player->addItem(new Consumable);
-    player->addItem(new Consumable("Shield" , "ShieldPotion" , 0 , 0 , 0));
-    while(true)
-        ShowLists(player);
+    Item_Changes_Tester();
 }
