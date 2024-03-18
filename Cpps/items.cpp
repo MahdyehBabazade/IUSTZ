@@ -227,7 +227,7 @@ int Equipment::getAmount() {return Amount;}
 //..
 Vest ::Vest(std::string name, int capacity, int price, int amount)
         : Equipment(name,capacity,price,amount){};
-Vest::Vest()  : Equipment("headgear",15,20,20){}
+Vest::Vest()  : Equipment("Vest",15,20,20){}
 
 //..
 HeadGear ::HeadGear(string name, int capacity, int price, int amount)

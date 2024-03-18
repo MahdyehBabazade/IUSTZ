@@ -158,7 +158,8 @@ int Player :: getCoin(){return Coin;}
 void Player :: addItem(Item* Item){ //adds items depending on its capacity and the backpack capacity
     if(BackPackWeight + Item->getCapacity() <= BackPackCapacity){
         bool IsAdded = false;
-        if(typeid(*Item)!=typeid(Gun))
+        if(typeid(*Item) != typeid(Shotgun) && typeid(*Item) != typeid(Snipe) && typeid(*Item) != typeid(SMG)
+        && typeid(*Item) != typeid(Rifle))
             for(int i = 0; i < Items.size(); i++)
                 if(*Items[i].first== *Item){
                     Items[i].second++;
@@ -168,115 +169,130 @@ void Player :: addItem(Item* Item){ //adds items depending on its capacity and t
         if(!IsAdded){
             if(typeid(*Item) == typeid(Shotgun)){
                 for(int i = 0; i < Items.size(); i++){
-                    if(typeid(*Items[i].first) == typeid(Shotgun))
+                    if(typeid(*Items[i].first) == typeid(Shotgun)){
                         if(Items[i].first->getName()>=Item->getName()){
                             Items.insert(Items.begin()+ i , make_pair(Item , 1));
                             break;
+                        }
+                        if(i == Items.size() - 1){
+                            Items.push_back(make_pair(Item , 1));
+                            break;
+                        }
                     }
                     else if(typeid(*Items[i].first) != typeid(Shotgun)){
                         Items.insert(Items.begin()+ i , make_pair(Item , 1));
                         break;
-                    }
-                    else if(i == Items.size() - 1){
-                        Items.push_back(make_pair(Item , 1));
                     }
                 }
             }
             else if(typeid(*Item) == typeid(Snipe)){
                 for(int i = 0; i < Items.size(); i++){
-                    if(typeid(*Items[i].first) == typeid(Snipe))
+                    if(typeid(*Items[i].first) == typeid(Snipe)){
                         if(Items[i].first->getName()>=Item->getName()){
                             Items.insert(Items.begin()+ i , make_pair(Item , 1));
                             break;
+                        }
                     }
                     else if(typeid(*Items[i].first) != typeid(Shotgun)){
                         Items.insert(Items.begin()+ i , make_pair(Item , 1));
                         break;
                     }
-                    else if(i == Items.size() - 1){
+                    if(i == Items.size() - 1){
                         Items.push_back(make_pair(Item , 1));
+                        break;
                     }
                 }
             }
             else if(typeid(*Item) == typeid(SMG)){
                 for(int i = 0; i < Items.size(); i++){
-                    if(typeid(*Items[i].first) == typeid(SMG))
+                    if(typeid(*Items[i].first) == typeid(SMG)){
                         if(Items[i].first->getName()>=Item->getName()){
                             Items.insert(Items.begin()+ i , make_pair(Item , 1));
                             break;
+                        }
                     }
                     else if(typeid(*Items[i].first) != typeid(Shotgun) && typeid(*Items[i].first) != typeid(Snipe)){
                         Items.insert(Items.begin()+ i , make_pair(Item , 1));
                         break;
                     }
-                    else if(i == Items.size() - 1){
+                    if(i == Items.size() - 1){
                         Items.push_back(make_pair(Item , 1));
+                        break;
                     }
                 }
             }
             else if(typeid(*Item) == typeid(Rifle)){
                 for(int i = 0; i < Items.size(); i++){
-                    if(typeid(*Items[i].first) == typeid(Rifle))
+                    if(typeid(*Items[i].first) == typeid(Rifle)){
                         if(Items[i].first->getName()>=Item->getName()){
                             Items.insert(Items.begin()+ i , make_pair(Item , 1));
+                            IsAdded = true;
                             break;
+                        }
                     }
                     else if(typeid(*Items[i].first) != typeid(Shotgun) && typeid(*Items[i].first) != typeid(Snipe)
                     && typeid(*Items[i].first) != typeid(SMG)){
                         Items.insert(Items.begin()+ i , make_pair(Item , 1));
                         break;
                     }
-                    else if(i == Items.size() - 1){
+                    if(i == Items.size() - 1 && !IsAdded){
                         Items.push_back(make_pair(Item , 1));
+                        break;
                     }
                 }
             }
             else if(typeid(*Item) == typeid(ColdWeapon)){
                 for(int i = 0; i < Items.size(); i++){
-                    if(typeid(*Items[i].first) == typeid(ColdWeapon))
+                    if(typeid(*Items[i].first) == typeid(ColdWeapon)){
                         if(Items[i].first->getName()>=Item->getName()){
                             Items.insert(Items.begin()+ i , make_pair(Item , 1));
                             break;
+                        }
                     }
                     else if(typeid(*Items[i].first) != typeid(Gun)){
                         Items.insert(Items.begin()+ i , make_pair(Item , 1));
                         break;
                     }
-                    else if(i == Items.size() - 1){
+                    if(i == Items.size() - 1){
                         Items.push_back(make_pair(Item , 1));
+                        break;
                     }
                 }
             }
             else if(typeid(*Item) == typeid(Grenade)){
                 for(int i = 0; i < Items.size(); i++){
-                    if(typeid(*Items[i].first) == typeid(Grenade))
+                    if(typeid(*Items[i].first) == typeid(Grenade)){
                         if(Items[i].first->getName()>=Item->getName()){
                             Items.insert(Items.begin()+ i , make_pair(Item , 1));
                             break;
+                        }
                     }
                     else if(typeid(*Items[i].first) != typeid(Gun) && typeid(*Items[i].first) != typeid(ColdWeapon)){
                         Items.insert(Items.begin()+ i , make_pair(Item , 1));
                         break;
                     }
-                    else if(i == Items.size() - 1){
+                    if(i == Items.size() - 1){
                         Items.push_back(make_pair(Item , 1));
+                        break;
                     }
                 }
             }
             else if(typeid(*Item) == typeid(BoomRang)){
                 for(int i = 0; i < Items.size(); i++){
-                    if(typeid(*Items[i].first) == typeid(BoomRang))
+                    if(typeid(*Items[i].first) == typeid(BoomRang)){
                         if(Items[i].first->getName()>=Item->getName()){
                             Items.insert(Items.begin()+ i , make_pair(Item , 1));
                             break;
+                        }
                     }
                     else if(typeid(*Items[i].first) != typeid(Gun) && typeid(*Items[i].first) != typeid(ColdWeapon) &&
                     typeid(*Items[i].first) != typeid(Grenade)){
                         Items.insert(Items.begin()+ i , make_pair(Item , 1));
                         break;
                     }
-                    else if(i == Items.size() - 1){
+                    if(i == Items.size() - 1){
                         Items.push_back(make_pair(Item , 1));
+                        break;
                     }
                 }
             }
@@ -290,22 +306,15 @@ void Player :: addItem(Item* Item){ //adds items depending on its capacity and t
                         Items.insert(Items.begin()+ i , make_pair(Item , 1));
                         break;
                     }
-                    else if(i == Items.size() - 1){
+                    if(i == Items.size() - 1){
                         Items.push_back(make_pair(Item , 1));
                         break;
                     }
                 }
             }
-            else if(typeid(*Item) == typeid(Equipment)){
-                for(int i = 0; i < Items.size() ; i++){
-                    if(typeid(*Items[i].first) == typeid(Equipment) && Items[i].first->getName() >= Item->getName()){
-                        Items.insert(Items.begin()+ i , make_pair(Item , 1));
-                        break;
-                    }
-                    else if(i == Items.size() - 1){
-                        Items.push_back(make_pair(Item , 1));
-                    }
-                }
+            else if(typeid(*Item) == typeid(HeadGear) || typeid(*Item) == typeid(Vest) || typeid(*Item) == typeid(FootWear)
+            || typeid(*Item) == typeid(Boot)){
+                Items.push_back(make_pair(Item , 1));
             }
         }
         if(Items.size() == 0){
@@ -357,7 +366,8 @@ void Player :: addRelic(Relic* Relic){
 void Player :: addWeapon(Weapon* Weapon){ //adds weapons checking if already existed or not,
     bool isAdded = false;
     //if existed, just increases the number by one
-    if(typeid(*Weapon) != typeid(Gun))
+    if(typeid(*Weapon) != typeid(Shotgun) && typeid(*Weapon) != typeid(Snipe) && typeid(*Weapon) != typeid(SMG)
+        && typeid(*Weapon) != typeid(Rifle))
         for(int i = 0; i < Weapons.size(); i++)
             if(*Weapon == *Weapons[i].first){
                 Weapons[i].second++;
@@ -372,13 +382,15 @@ void Player :: addWeapon(Weapon* Weapon){ //adds weapons checking if already exi
                     if(Weapons[i].first->getName()>=Weapon->getName()){
                         Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
                         break;
-                }
+                    }
+                    
                 else if(typeid(*Weapons[i].first) != typeid(Shotgun)){
                     Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
                     break;
                 }
-                else if(i == Weapons.size() - 1){
+                if(i == Weapons.size() - 1){
                     Weapons.push_back(make_pair(Weapon , 1));
+                    break;
                 }
             }
         }
@@ -393,8 +405,9 @@ void Player :: addWeapon(Weapon* Weapon){ //adds weapons checking if already exi
                     Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
                     break;
                 }
-                else if(i == Weapons.size() - 1){
+                if(i == Weapons.size() - 1){
                     Weapons.push_back(make_pair(Weapon , 1));
+                    break;
                 }
             }
         }
@@ -409,8 +422,9 @@ void Player :: addWeapon(Weapon* Weapon){ //adds weapons checking if already exi
                     Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
                     break;
                 }
-                else if(i == Weapons.size() - 1){
+                if(i == Weapons.size() - 1){
                     Weapons.push_back(make_pair(Weapon , 1));
+                    break;
                 }
             }
         }
@@ -426,8 +440,9 @@ void Player :: addWeapon(Weapon* Weapon){ //adds weapons checking if already exi
                     Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
                     break;
                 }
-                else if(i == Weapons.size() - 1){
+                if(i == Weapons.size() - 1){
                     Weapons.push_back(make_pair(Weapon , 1));
+                    break;
                 }
             }
         }
@@ -442,8 +457,9 @@ void Player :: addWeapon(Weapon* Weapon){ //adds weapons checking if already exi
                     Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
                     break;
                 }
-                else if(i == Weapons.size() - 1){
+                if(i == Weapons.size() - 1){
                     Weapons.push_back(make_pair(Weapon , 1));
+                    break;
                 }
             }
         }
@@ -458,8 +474,9 @@ void Player :: addWeapon(Weapon* Weapon){ //adds weapons checking if already exi
                     Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
                     break;
                 }
-                else if(i == Weapons.size() - 1){
+                if(i == Weapons.size() - 1){
                     Weapons.push_back(make_pair(Weapon , 1));
+                    break;
                 }
             }
         }
@@ -475,8 +492,9 @@ void Player :: addWeapon(Weapon* Weapon){ //adds weapons checking if already exi
                     Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
                     break;
                 }
-                else if(i == Weapons.size() - 1){
+                if(i == Weapons.size() - 1){
                     Weapons.push_back(make_pair(Weapon , 1));
+                    break;
                 }
             }
         }
@@ -553,8 +571,9 @@ void Player :: addConsumable(Consumable* Consumable){ //adds consumables checkin
                 Consumables.insert(Consumables.begin()+ i , make_pair(Consumable , 1));
                 break;
             }
-            else if(i == Consumables.size() - 1){
+            if(i == Consumables.size() - 1){
                 Consumables.push_back(make_pair(Consumable , 1));
+                break;
             }
         }
     if(Consumables.size() == 0){

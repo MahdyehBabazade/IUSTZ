@@ -132,7 +132,7 @@ void AddConsumable(Player* player){
     clearScreen();
     cout << "Enter the Name of the Potion:\n";
     string Name;
-    getline(cin , Name);
+    cin >> Name;
     int weight;
     cout << "Enter the weight of the Potion:(positive integer)\n";
     cin >> weight;
@@ -158,7 +158,7 @@ void AddEquipment(Player* player){
     clearScreen();
     cout << "Enter the Name of the Equipment:\n";
     string Name;
-    getline(cin , Name);
+    cin >> Name;
     int weight;
     cout << "Enter the weight of the Equipment:(positive integer)\n";
     cin >> weight;
@@ -250,17 +250,17 @@ int main(){
     vector<pair<Consumable* , int>> Consumables = {};
     vector<Equipment*> Equipments ={nullptr , nullptr , nullptr , nullptr};
     Player* player = new Player("Herbod" , 100 , 0.0 , 100 , 0 , 0 ,0 , Items , Weapons , Consumables , Equipments);
+    // player->addItem(new Consumable);
+    player->addItem(new Shotgun);
     player->addItem(new SMG);
-    player->addItem(new Consumable);
     player->addItem(new Rifle);
     player->addItem(new Shotgun);
-    player->addItem(new Shotgun);
+    player->addItem(new Consumable);
     player->addItem(new HeadGear);
+    player->addItem(new Consumable);
     player->addItem(new Vest);
     player->addItem(new FootWear);
     player->addItem(new Boot);
-    player->addItem(new Consumable);
-    player->addItem(new Consumable);
     player->addItem(new Consumable);
     player->addItem(new Consumable("Shield" , "ShieldPotion" , 0 , 0 , 0));
     while(true)
