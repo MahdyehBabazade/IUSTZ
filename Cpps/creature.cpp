@@ -730,30 +730,33 @@ Shopkeeper :: Shopkeeper(string Name){this->Name = Name;}
 
 string Shopkeeper :: getName(){return Name;}
 
-void Shopkeeper :: HiDialogue(){ //The shopkeeper says hi
+void Shopkeeper :: HiDialogue(){ // The shopkeeper says hi
     vector<string> ShopkeeperHi = {"Salute soldier! How can I help?" , "Hi commander! Is there anything I can provide?" , "Welcome to my shop!"};
     cout << ShuffleVec(ShopkeeperHi)[0] << endl;
 }
 
-void Shopkeeper :: ByeDialogue(){ //The shopkeeper says bye
-    cout << "Good luck , Soldier." << endl;
+void Shopkeeper :: ByeDialogue(){ // The shopkeeper says bye
+    cout << "Good luck, Soldier." << endl;
 }
 
-void Shopkeeper :: SellDialogue(Item* item){ //The shopkeeper sells sth to the player
-    vector<string> ShopkeeperSell = {"So you've bought " + item->getName() , "You choosed one of the best items." ,
-    "Wish " + item->getName() + "helps you survive."};
+void Shopkeeper :: SellDialogue(Item* item){ // The shopkeeper sells sth to the player
+    vector<string> ShopkeeperSell = {"So you've bought " + item->getName() , "You chose one of the best items." ,
+    "Wish " + item->getName() + " helps you survive."};
     cout << ShuffleVec(ShopkeeperSell)[0];
 } // items to be included
 
-void Shopkeeper :: BuyDialogue(Item* item){ //The shopkeeper buys sth from the player
+void Shopkeeper :: BuyDialogue(Item* item){ // The shopkeeper buys sth from the player
     double NewPrice = 0.8*item->getPrice();
     cout << "I'll buy that for " << to_string(NewPrice) << " coins.\n";
 } // items to be included
 
 void Shopkeeper :: NoMoneyDialogue(){ // What the shopkeeper says when the player has less money than the item's price
     vector<string> PoorSoldier = {"You don't have enough coins!" , "Poor soldier!!!" , "Can't get you that!" ,
-    "So little for so much?!" , "..." , "You don't have enough coins!" , "Poor soldier!!!" , 
-    "Can't get you that!" , "So little for so much?!"};
+    "So little for so much?!"};
+    if (rand() % 9 == 0)
+    {
+        cout << "...";
+    }
     cout << ShuffleVec(PoorSoldier)[0];
 }
 
@@ -766,14 +769,17 @@ void Medic :: HiDialogue(){
     cout << ShuffleVec(MedicSayHi)[0];
 }
 
-void Medic :: ByeDialogue(){cout << "Have a safe journy.";}
+void Medic :: ByeDialogue(){cout << "Have a safe journey.";}
 
 void Medic :: HealDialogue(){cout << "I've patched you up!";}
 
 void Medic :: NoMoneyDialogue(){
     vector<string> PoorSoldier = {"You don't have enough coins!" , "Poor soldier!" , "Can't Heal you with that much coin!" , 
-    "So little for so much?!" , "..." , "You don't have enough coins!" , "Poor soldier!!!" , 
-    "Can't heal you with that much coin" , "So little for so much?!"};
+    "So little for so much?!"};
+    if (rand() % 9 == 0)
+    {
+        cout << "...";
+    }
     cout << ShuffleVec(PoorSoldier)[0];
 }
 
