@@ -206,7 +206,7 @@ void ShowLists(Player* Player){
     case 2:{
         vector<pair<Weapon* , int>> Weapons = Player->getWeapons();
         for(int i = 0; i < Weapons.size(); i++){
-            cout << "\t" << i + 1 << " " << Weapons[i].first->getName() << "\n";
+            cout << "\t" << i + 1 << " " << Weapons[i].first->getName() << " x " << Weapons[i].second << "\n";
         }
         cout << "Press anything to continue";
         getch();
