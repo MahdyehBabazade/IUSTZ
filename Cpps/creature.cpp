@@ -312,9 +312,12 @@ void Player :: addItem(Item* Item){ //adds items depending on its capacity and t
             Items.push_back(make_pair(Item , 1));
         }
         BackPackWeight += Item->getCapacity();
-        if(typeid(*Item) == typeid(Weapon))
+        if(typeid(*Item) == typeid(Shotgun) || typeid(*Item) == typeid(Snipe) || typeid(*Item) == typeid(SMG) ||
+        typeid(*Item) == typeid(Rifle) || typeid(*Item) == typeid(ColdWeapon) || typeid(*Item) == typeid(Grenade) ||
+        typeid(*Item) == typeid(BoomRang))
             addWeapon(dynamic_cast<Weapon *>(Item));
-        else if(typeid(*Item) == typeid(Equipment))
+        else if(typeid(*Item) == typeid(HeadGear) || typeid(*Item) == typeid(Vest) || typeid(*Item) == typeid(FootWear) ||
+        typeid(*Item) == typeid(Boot))
             addEquipment(dynamic_cast<Equipment *>(Item));
         else if(typeid(*Item) == typeid(Consumable))
             addConsumable(dynamic_cast<Consumable *>(Item));

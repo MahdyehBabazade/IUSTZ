@@ -12,11 +12,11 @@ void clearScreen(){
 
 void AddItem(Player* Player);
 
-Weapon* AddWeapon();
+void AddWeapon(Player* Player);
 
-Equipment* AddEquipment();
+void AddEquipment(Player* Player);
 
-Consumable* AddConsumable();
+void AddConsumable(Player* Player);
 
 void RemoveItem(Player* Player);
 
@@ -59,20 +59,20 @@ void AddItem(Player* Player){
     clearScreen();
     switch (choice){
     case 1:
-        Player->addItem(AddWeapon());        
+        AddWeapon(Player);        
         break;
     case 2:
-        Player->addItem(AddEquipment());
+        AddEquipment(Player);
         break;
     case 3:
-        Player->addItem(AddConsumable());
+        AddConsumable(Player);
         break;
     default:
         break;
     }
 }
 
-Weapon* AddWeapon(){
+void AddWeapon(Player* player){
     cout << "What type of Weapon do you wanna Add?\n"
     << "\t1. Shotgun\n\t2. Sniper Rifle\n\t3. SMG\n\t4. Rifle\n\t5. Cold Weapon \n\t6. Grenade\n\t7. Boomrang\n"
     << "(Enter a number)\n";
@@ -88,43 +88,43 @@ Weapon* AddWeapon(){
     switch(choice){
     case 1:{
         Shotgun* shotgun = new Shotgun(Name , weight , 0 , 0 , 0 , 0 , 10);
-        return shotgun;
+        player->addItem(shotgun);
         break;
     }
     case 2:{
         Snipe* snipe = new Snipe(Name , weight , 0 , 0 , 0 , 0 , 10);
-        return snipe;
+        player->addItem(snipe);
         break;
     }
     case 3:{
         SMG* Smg = new SMG(Name , weight , 0 , 0 , 0 , 0 , 10);
-        return Smg;
+        player->addItem(Smg);
         break;
     }
     case 4:{
         Rifle* rifle = new Rifle(Name , weight , 0 , 0 , 0 , 0 , 10);
-        return rifle;
+        player->addItem(rifle);
         break;
     }
     case 5:{
         ColdWeapon* Coldweapon = new ColdWeapon(Name , weight , 0 , 0 , 0);
-        return Coldweapon;
+        player->addItem(Coldweapon);
         break;
     }
     case 6:{
         Grenade* grenade = new Grenade(Name , weight , 0 , 0 , 0);
-        return grenade;
+        player->addItem(grenade);
         break;
     }
     default:{
         BoomRang* Boomrang = new BoomRang(Name , weight , 0 , 0 , 0);
-        return Boomrang;
+        player->addItem(Boomrang);
         break;
     }
     }
 }
 
-Consumable* AddConsumable(){
+void AddConsumable(Player* player){
     cout << "What type of potion do you wanna add?\n"
     << "\n\t1. HP Potion\n\t2. Shield Potion\n\t3. Energy Potion\nEnter the number of your choice\n";
     int choice;
@@ -139,18 +139,18 @@ Consumable* AddConsumable(){
     switch (choice)
     {
     case 1:
-        return new Consumable(Name , "HPPotion" , weight , 0 , 0);
+        player->addItem(new Consumable(Name , "HPPotion" , weight , 0 , 0));
         break;
     case 2:
-        return new Consumable(Name , "ShieldPotion" , weight , 0 , 0);
+        player->addItem(new Consumable(Name , "ShieldPotion" , weight , 0 , 0));
         break;
     default:
-        return new Consumable(Name , "EnergyPotion" , weight , 0 , 0);
+        player->addItem(new Consumable(Name , "EnergyPotion" , weight , 0 , 0));
         break;
     }
 }
 
-Equipment* AddEquipment(){
+void AddEquipment(Player* player){
     cout << "What type of Equipment do you wanna add?\n"
     << "\n\t1. Head Gear \n\t2. Vest \n\t3. Foot Wear\n\t4. Boot\nEnter the number of your choice\n";
     int choice;
@@ -165,16 +165,16 @@ Equipment* AddEquipment(){
     switch (choice)
     {
     case 1:
-        return new HeadGear(Name, weight , 0 , 0);
+        player->addItem(new HeadGear(Name, weight , 0 , 0));
         break;
     case 2:
-        return new Vest(Name , weight , 0 , 0);
+        player->addItem(new Vest(Name , weight , 0 , 0));
         break;
     case 3:
-        return new FootWear(Name , weight , 0 , 0);
+        player->addItem(new FootWear(Name , weight , 0 , 0));
         break;
     default:
-        return new Boot(Name , weight , 0 , 0);
+        player->addItem(new Boot(Name , weight , 0 , 0));
         break;
     }
 }
@@ -203,7 +203,7 @@ void ShowLists(Player* Player){
     case 1:{
         vector<pair<Item* , int>> Items = Player->getItems();
         for(int i = 0; i < Items.size(); i++){
-            cout << "\t" << i + 1 << " " << Items[i].first->getName() << "\n";
+            cout << "\t" << i + 1 << " " << Items[i].first->getName() << " x " << Items[i].second << "\n";
         }
         cout << "Press anything to continue";
         getch();
@@ -221,7 +221,7 @@ void ShowLists(Player* Player){
     case 3:{
         vector<pair<Consumable* , int>> Consumables = Player->getConsumables();
         for(int i = 0; i < Consumables.size(); i++){
-            cout << "\t" << i + 1 << " " << Consumables[i].first->getName() << "\n";
+            cout << "\t" << i + 1 << " " << Consumables[i].first->getName() << " x " << Consumables[i].second << "\n";
         }
         cout << "Press anything to continue";
         getch();
@@ -244,5 +244,25 @@ void ShowLists(Player* Player){
 }
 
 int main(){
-    Item_Changes_Tester();
+    // Item_Changes_Tester();
+    vector<pair<Item* , int>> Items = {};
+    vector<pair<Weapon* , int>> Weapons = {};
+    vector<pair<Consumable* , int>> Consumables = {};
+    vector<Equipment*> Equipments ={nullptr , nullptr , nullptr , nullptr};
+    Player* player = new Player("Herbod" , 100 , 0.0 , 100 , 0 , 0 ,0 , Items , Weapons , Consumables , Equipments);
+    player->addItem(new SMG);
+    player->addItem(new Consumable);
+    player->addItem(new Rifle);
+    player->addItem(new Shotgun);
+    player->addItem(new Shotgun);
+    player->addItem(new HeadGear);
+    player->addItem(new Vest);
+    player->addItem(new FootWear);
+    player->addItem(new Boot);
+    player->addItem(new Consumable);
+    player->addItem(new Consumable);
+    player->addItem(new Consumable);
+    player->addItem(new Consumable("Shield" , "ShieldPotion" , 0 , 0 , 0));
+    while(true)
+        ShowLists(player);
 }
