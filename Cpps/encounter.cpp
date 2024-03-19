@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-Shop :: Shop(Player* player, vector<Weapon*> weapons, vector<Consumable*> consumables, vector<Equipment*> equipments, Shopkeeper* shopkeeper){
+Shop :: Shop(Player* player, vector<Weapon*> weapons, vector<Consumable*> consumables, vector<Equipment*> equipments, Shopkeeper* shopkeeper,string Story) : Encounter(Story){
 
     this -> player = player;
     this -> weapons = weapons;
@@ -131,7 +131,7 @@ void Shop :: Menu(){
     
 }
     
-Hospital :: Hospital(Player* player,Medic* medic,int MaxHpIncresePrice,int FullHealPrice,int HalfHealPrice) {
+Hospital :: Hospital(Player* player,Medic* medic,int MaxHpIncresePrice,int FullHealPrice,int HalfHealPrice,string Story) : Encounter(Story) {
     this->player = player;
     this->medic = medic;
     this->MaxHpIncreasePrice =MaxHpIncreasePrice;

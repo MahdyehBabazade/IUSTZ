@@ -4,7 +4,17 @@
 #include <iostream>
 using namespace std;
 
-class Shop{
+class Encounter{
+private:
+    string Story;
+public: 
+    Encounter(string Story);
+    
+    string getStory();
+    
+};
+
+class Shop : Encounter{
 private:    
     Player* player;
     vector<Weapon*> weapons;
@@ -15,9 +25,8 @@ private:
     bool WantsToQuit;
     
 public:
-
     // Constructor
-    Shop(Player* player, vector<Weapon*> weapons, vector<Consumable*> consumables, vector<Equipment*> equipments, Shopkeeper* shopkeeper);
+    Shop(Player* player, vector<Weapon*> weapons, vector<Consumable*> consumables, vector<Equipment*> equipments, Shopkeeper* shopkeeper,string Story);
 
     // Getters
     vector<Weapon*> getWeapons();
@@ -36,7 +45,7 @@ public:
     void Menu(); 
 };
 
-class Hospital{
+class Hospital : Encounter{
     
 private:
     Player* player;
@@ -46,7 +55,7 @@ private:
     int HalfHealPrice;
     bool HasHealed;
 public:
-    Hospital(Player* player,Medic* medic,int MaxHpIncresePrice,int FullHealPrice,int HalfHealPrice);
+    Hospital(Player* player,Medic* medic,int MaxHpIncresePrice,int FullHealPrice,int HalfHealPrice,string Story);
     
     void MaxHpIncrease();
     void FullHeal();
@@ -55,14 +64,17 @@ public:
     void Menu();
 };
 
-class Random{
+class Random : Encounter{
     
 };
 
-class Fight{
+class Fight : Encounter{
     
 };
 
-
-
-
+class MiniBoss : Encounter{
+    
+};
+class Boss : Encounter{
+    
+};
