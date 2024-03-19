@@ -26,15 +26,18 @@ public:
     // void setEquipments(vector<Equipment*> equipments);
     
     // Other Functions
+    void Upgrade(Item* item);
     void Sell(Item* item); // The shopkeeper sells sth to the player
     void Buy(Item* item); // The shopkeeper buys sth from the player
-    void menu(); 
+    void Menu(); 
 };
 
 class Hospital{
+    
 private:
     Player* player;
     Medic* medic;
+    
 public:
     Hospital(Player* player,Medic* medic);
     
