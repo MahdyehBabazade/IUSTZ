@@ -30,6 +30,24 @@ void Shop :: Sell(Item* item){ // Shopkeeper sells, Player buys
     }
 }
 
+void Shop::Upgrade(Weapon* weapon){
+    if(typeid(weapon) == typeid(Shotgun)){
+        cout << "1. Damage" << endl <<
+                "2. Min Damage Percent" << endl <<
+                "choose an option (0 to go back): ";
+        int choice;
+        cin >> choice;
+        
+        switch (choice){
+            case 1:
+                
+                break;
+            default:
+                break;
+        }
+    }
+}
+
 void Shop :: Buy(Item* item){ // Shopkeeper buys, Player sells
     
     player->removeItem(item);
@@ -39,7 +57,7 @@ void Shop :: Buy(Item* item){ // Shopkeeper buys, Player sells
 void Shop :: Menu(){
     shopkeeper->HiDialogue();
     while (!WantsToQuit){
-        cout << " \n 1. Buy \n" // Player buys, Shopkeeper sells ( Sell(Item* item) should be called ) 
+        cout << "1. Buy \n" // Player buys, Shopkeeper sells ( Sell(Item* item) should be called ) 
                 "2. Sell \n"
                 "3. Upgrade \n"
                 "4. Quit";
