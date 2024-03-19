@@ -8,3 +8,5 @@ cmake-build-debug/
 ../Cpps/cmake-build-debug/
 ../Cpps/*.txt
 Cpps/CMakeLists.txt
+
+*.txt
