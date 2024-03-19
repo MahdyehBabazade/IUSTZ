@@ -87,7 +87,7 @@ void AddWeapon(Player* player){
     cin >> weight;
     switch(choice){
     case 1:{
-        player->addItem(new Shotgun(Name , weight , 0 , 0 , 0 , 0 , 10));
+        player->addItem(new Shotgun(Name , weight , 0 , 0 , 0 , 0 , 10,30));
         break;
     }
     case 2:{
@@ -99,7 +99,7 @@ void AddWeapon(Player* player){
         break;
     }
     case 4:{
-        player->addItem(new Rifle(Name , weight , 0 , 0 , 0 , 0 , 10));
+        player->addItem(new Rifle(Name , weight , 0 , 0 , 0 , 0 , 10,30));
         break;
     }
     case 5:{
