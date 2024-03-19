@@ -65,7 +65,6 @@ public:
     void setReloadEnergy(int reloadEnergy);
     void Reload();
     Gun(string name,int capacity,int price,int damage,int energyNeeded,int ammo,int reloadEnergy);
-
     string getStat() override;
 };
 
@@ -76,7 +75,7 @@ public:
     int getMinDamagePercent();
     void setMinDamagePercent(int minDamagePercent);
     void Attack(vector<Character*> &characters) override; // checks the range and deals damage based on it
-    Shotgun(string name,int capacity, int price ,int damage,int energyNeeded,int reloadEnergy,int ammo);
+    Shotgun(string name,int capacity, int price ,int damage,int energyNeeded,int reloadEnergy,int ammo,int minDamagePercent);
 
     string getStat() override;
 
@@ -104,7 +103,7 @@ public:
     int getMaxAttackAmount();
     void setMaxAttackAmount(int maxAttackAmount);
     void Attack(vector<Character*> &characters) override; // attacks chooses a certain amount of enemies and the damage is divided between them
-    Rifle(string name,int capacity, int price ,int damage,int energyNeeded,int reloadEnergy,int ammo);
+    Rifle(string name,int capacity, int price ,int damage,int energyNeeded,int reloadEnergy,int ammo,int maxAttackAmount);
     Rifle();
     string getStat() override;
 };
