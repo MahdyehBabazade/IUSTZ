@@ -63,7 +63,6 @@ string Weapon::getStat() {
 //............
 Punch :: Punch(string name, int capacity, int damage, int price, int energyNeed)
         : Weapon(name, capacity, price, damage, energyNeed){};
-Punch ::Punch() : Weapon("Punch",0,0,1,1) {};
 //.............
 Gun ::Gun(string name, int capacity,int price, int damage, int energyNeed, int ammo,int reloadEnergy)
         : ReloadEnergy(reloadEnergy), Ammo(ammo),MaxAmmo(ammo),Weapon(name, capacity, price, damage, energyNeed){};
@@ -196,13 +195,6 @@ void BoomRang ::Attack(vector<Character*> &characters) {
 //-------------------------------
 Consumable ::Consumable(string name,string type, int capacity, int price,int amount)
         :Amount(amount),Type(type), Item( name, capacity, price){}
-Consumable::Consumable() {
-    Name="consumable";
-    Type="HPPotion";
-    Capacity=5;
-    Price=7;
-    Amount=10;
-}
 
 void Consumable ::setAmount(int amount) {Amount=amount;}
 
