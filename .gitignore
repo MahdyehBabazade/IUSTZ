@@ -14,5 +14,4 @@ Headers/.idea/
 Headers/*.iml
 Headers/cmake-build-debug/
 Headers/*.txt
-Headers/CMakeLists.txt
 
