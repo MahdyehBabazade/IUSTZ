@@ -12,6 +12,8 @@ private:
     vector<Equipment*> equipments;
     Shopkeeper* shopkeeper;
     
+    bool WantsToQuit;
+    
 public:
 
     // Constructor

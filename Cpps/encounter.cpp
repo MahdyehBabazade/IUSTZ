@@ -9,6 +9,7 @@ Shop :: Shop(Player* player, vector<Weapon*> weapons, vector<Consumable*> consum
     this -> consumables = consumables;
     this -> equipments = equipments;
     this -> shopkeeper = shopkeeper;
+    this -> WantsToQuit = false;
 }
 
 vector<Weapon*> Shop :: getWeapons(){return weapons;}
@@ -37,80 +38,99 @@ void Shop :: Buy(Item* item){ // Shopkeeper buys, Player sells
 
 void Shop :: Menu(){
     shopkeeper->HiDialogue();
-    while (true)
-    {
+    while (!WantsToQuit){
         cout << " \n 1. Buy \n" // Player buys, Shopkeeper sells ( Sell(Item* item) should be called ) 
                 "2. Sell \n"
                 "3. Upgrade \n"
-                "4. Exit";
+                "4. Quit";
         int choice;
         cin >> choice;
-        switch (choice)
-        {
-        case 1:
-            cout << "1. Weapons" << endl;
-            cout << "2. Consumables" << endl;
-            cout << "3. Equipments" << endl;
-            int choice1;
-            cin >> choice1;
-            switch (choice1)
-            {
-            case 1:
-                for (int i = 0; i < weapons.size(); i++)
-                {
-                    cout << i+1 << ". " << weapons[i]->getName() << endl;
+        switch (choice){
+            case 1: // player buys an item
+                cout << "1. Weapons" << endl;
+                cout << "2. Consumables" << endl;
+                cout << "3. Equipments" << endl;
+                cin >> choice;
+                switch (choice){
+                    case 1:
+                        while(true){
+                            for (int i = 0; i < weapons.size(); i++){
+                            cout << i+1 << ". " << weapons[i]->getName() << endl;
+                            }
+                            cout << "choose a weapon to buy (0 to go back): ";
+                            cin >> choice;
+                            if(choice == 0){
+                                break;
+                            }
+                            Sell(weapons[choice-1]);
+                        }
+                        break;
+                    case 2:
+                        while (true){
+                            for (int i = 0; i < consumables.size(); i++){
+                                cout << i+1 << ". " << consumables[i]->getName() << endl;
+                            }
+                            cout << "choose a consumable to buy (0 to go back): ";
+                            cin >> choice;
+                            if(choice == 0){
+                                break;
+                            }
+                            Sell(consumables[choice-1]);
+                        }
+                        break;
+                    case 3:
+                        while(true){
+                            for (int i = 0; i < equipments.size(); i++){
+                                cout << i+1 << equipments[i]->getName() << endl;
+                            }
+                            cout << "choose a consumable to buy (0 to go back): ";
+                            cin >> choice;
+                            if(choice == 0){
+                                break;
+                            }
+                            Sell(equipments[choice-1]);
+                        }
+                        break;
+                    default:
+                        continue;
+                }   
+    
+            case 2: // player sells an item
+                while(true){
+                    for (int i = 0; i < player->getItems().size(); i++){
+                        cout << i+1 << ". " << player->getItems()[i].first->getName() << " " << player->getItems()[i].second << endl;
+                    }
+                    cout << "choose an item you want to sell (0 to go back): ";
+                    cin >> choice;
+                    if(choice == 0){
+                        break;
+                    }
+                    Buy(player->getItems()[choice-1].first);   
                 }
-                int chosenWeapon;
-                cin >> chosenWeapon;
-                Sell(weapons[chosenWeapon-1]);
-            case 2:
-                for (int i = 0; i < consumables.size(); i++)
-                {
-                    cout << i+1 << ". " << consumables[i]->getName() << endl;
-                }
-                int chosenConsumable;
-                cin >> chosenConsumable;
-                Sell(consumables[chosenConsumable-1]);
                 break;
-            case 3:
-                for (int i = 0; i < equipments.size(); i++)
-                {
-                    cout << i+1 << equipments[i]->getName() << endl;
+            case 3: // player upgrades a gun
+                while(true){
+                    for (int i = 0; i < player->getWeapons().size(); i++){
+                        cout << i+1 << ". " << (player->getWeapons()[i].first)->getStat()<< endl;
+                    }
+                    cout << "choose a weapon you want to upgrade (0 to go back): ";
+                    cin >> choice;
+                    if(choice == 0){
+                        break;
+                    }
+                    Upgrade(player->getWeapons()[choice-1].first);   
                 }
-                int chosenEquiment;
-                cin >> chosenEquiment;
-                Sell(equipments[chosenEquiment-1]);
                 break;
-            
+            case 4: //player quits
+                WantsToQuit = true;
+                break;
             default:
-                break;
-            }   
-
-        case 2:
-            for (int i = 0; i < player->getItems().size(); i++)
-            {
-                cout << i+1 << ". " << player->getItems()[i].first->getName() << " " << player->getItems()[i].second << endl;
-            }
-            int chosenItem;
-            cin >> chosenItem;
-            Buy(player->getItems()[chosenItem-1].first);
-            break;
-
-        case 3: // Can be changed later
-            for (int i = 0; i < player->getItems().size(); i++)
-            {
-                cout << i+1 << ". " << player->getItems()[i].first->getName() << " " << player->getItems()[i].second << endl;
-            }
-            int chosenItem;
-            cin >> chosenItem;
-            Upgrade(player->getItems()[chosenItem-1].first);
-            break;
-
-        case 4:
-            exit(0);
-            break;
+                continue;    
         }
     }
+    
+}
+    
 Hospital :: Hospital(Player* player,Medic* medic,int MaxHpIncresePrice,int FullHealPrice,int HalfHealPrice) {
     this->player = player;
     this->medic = medic;
@@ -152,8 +172,8 @@ void Hospital :: MaxHpIncrease(){
 }
 
 void Hospital :: Menu(){
+    cout << medic->HiDialogue();
     while(!HasHealed){
-        cout << medic->HiDialogue();
         cout << "1. Restore half HP ( " << HalfHealPrice << "$)" << endl <<
                 "2. Restore full HP" << FullHealPrice << "$)" << endl <<
                 "3. Increase max HP by 20%" << MaxHpIncreasePrice << "$)" << endl <<
