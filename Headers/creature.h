@@ -158,9 +158,6 @@ class Medic{
 
 private:
     string Name;
-
-    string HealDialogue();
-
 public:
     // Constructor
     Medic(string Name);
@@ -168,6 +165,7 @@ public:
     string getName();
     // Dialogues
     string HiDialogue();
+    string HealDialogue();
     string ByeDialogue();
     string NoMoneyDialogue();
 

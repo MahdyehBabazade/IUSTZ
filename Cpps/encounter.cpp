@@ -111,4 +111,72 @@ void Shop :: Menu(){
             break;
         }
     }
+Hospital :: Hospital(Player* player,Medic* medic,int MaxHpIncresePrice,int FullHealPrice,int HalfHealPrice) {
+    this->player = player;
+    this->medic = medic;
+    this->MaxHpIncreasePrice =MaxHpIncreasePrice;
+    this->FullHealPrice = FullHealPrice;
+    this->HalfHealPrice = HalfHealPrice;
+    this->HasHealed = false;
+};
+
+
+void Hospital :: FullHeal(){
+    if(player->getCoin() < FullHealPrice){
+        cout << medic->NoMoneyDialogue();
+        return;
+    }
+    player->setHP(player->getMaxHP());
+    cout << medic->HealDialogue();
+    HasHealed = true;
+}
+
+void Hospital ::HalfHeal(){
+    if(player->getCoin() < HalfHealPrice){
+        cout << medic->NoMoneyDialogue();
+        return;
+    }
+    player->setHP(player->getHP() + (player->getMaxHP()/2));
+    cout << medic->HealDialogue();
+    HasHealed = true;
+}
+
+void Hospital :: MaxHpIncrease(){
+    if(player->getCoin() < MaxHpIncreasePrice){
+        cout << medic->NoMoneyDialogue();
+        return;
+    }
+    player->setHP(int(player->getMaxHP()*1.2));
+    cout << medic->HealDialogue();
+    HasHealed = true;
+}
+
+void Hospital :: Menu(){
+    while(!HasHealed){
+        cout << medic->HiDialogue();
+        cout << "1. Restore half HP ( " << HalfHealPrice << "$)" << endl <<
+                "2. Restore full HP" << FullHealPrice << "$)" << endl <<
+                "3. Increase max HP by 20%" << MaxHpIncreasePrice << "$)" << endl <<
+                "4.quit" << endl <<
+                "choose an option: ";
+        int choice;
+        cin >> choice;
+        
+        switch (choice){
+            case 1:
+                HalfHeal();
+                break;
+            case 2:
+                FullHeal();
+                break;
+            case 3:
+                MaxHpIncrease();
+                break;
+            case 4:
+                break;
+            default:
+                continue;
+        }
+    }
+   cout <<  medic->ByeDialogue();
 }

@@ -1,6 +1,8 @@
 #pragma once
 #include "../Headers/items.h"
 #include "../Headers/creature.h"
+#include <iostream>
+using namespace std;
 
 class Shop{
 private:    
@@ -37,10 +39,18 @@ class Hospital{
 private:
     Player* player;
     Medic* medic;
-    
+    int MaxHpIncreasePrice;
+    int FullHealPrice;
+    int HalfHealPrice;
+    bool HasHealed;
 public:
-    Hospital(Player* player,Medic* medic);
+    Hospital(Player* player,Medic* medic,int MaxHpIncresePrice,int FullHealPrice,int HalfHealPrice);
     
+    void MaxHpIncrease();
+    void FullHeal();
+    void HalfHeal();
+    
+    void Menu();
 };
 
 class Random{
