@@ -748,15 +748,16 @@ string Shopkeeper :: ByeDialogue(){ // The shopkeeper says bye
     return "Good luck, Soldier.\n";
 }
 
-string Shopkeeper :: SellDialogue(Item* item){ // The shopkeeper sells sth to the player
+string Shopkeeper :: SellDialogue(Item* item){ // The player sells sth to the player
+    double NewPrice = 0.8*item->getPrice();
+    return "I'll buy that for " + to_string(NewPrice) + " coins.\n";
+} // items to be included
+
+string Shopkeeper :: BuyDialogue(Item* item){ // The player buys sth from the player
     vector<string> ShopkeeperSell = {"So you've bought " + item->getName() , "You chose one of the best items." ,
     "Wish " + item->getName() + " helps you survive."};
     return ShuffleVec(ShopkeeperSell)[0] + "\n";
-} // items to be included
-
-string Shopkeeper :: BuyDialogue(Item* item){ // The shopkeeper buys sth from the player
-    double NewPrice = 0.8*item->getPrice();
-    return "I'll buy that for " + to_string(NewPrice) + " coins.\n";
+    
 } // items to be included
 
 string Shopkeeper :: NoMoneyDialogue(){ // What the shopkeeper says when the player has less money than the item's price
