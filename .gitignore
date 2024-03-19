@@ -2,11 +2,17 @@
 .idea/
 *.iml
 cmake-build-debug/
+*.txt
 
-../Cpps/.idea/
-../Cpps/*.iml
-../Cpps/cmake-build-debug/
-../Cpps/*.txt
+Cpps/.idea/
+Cpps/*.iml
+Cpps/cmake-build-debug/
+Cpps/*.txt
 Cpps/CMakeLists.txt
 
-*.txt
+Headers/.idea/
+Headers/*.iml
+Headers/cmake-build-debug/
+Headers/*.txt
+Headers/CMakeLists.txt
+
