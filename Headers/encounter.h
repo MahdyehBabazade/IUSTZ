@@ -5,22 +5,30 @@
 class Shop{
 private:    
     Player* player;
-    vector<Weapon*> Weapons;
-    vector<Consumable*> Consumables;
-    vector<Equipment*> Equipments;
-    ShopKeeper* shopKeeper;
+    vector<Weapon*> weapons;
+    vector<Consumable*> consumables;
+    vector<Equipment*> equipments;
+    Shopkeeper* shopkeeper;
     
 public:
-    Shop(Player* player,vector<Weapon*> weapons,vector<Consumable*> consumables,vector<Equipment*> equipments,ShopKeeper* shopKeeper);
-    /*
+
+    // Constructor
+    Shop(Player* player, vector<Weapon*> weapons, vector<Consumable*> consumables, vector<Equipment*> equipments, Shopkeeper* shopkeeper);
+
+    // Getters
     vector<Weapon*> getWeapons();
     vector<Consumable*> getConsumables();
     vector<Equipment*> getEquipments();
     
-    void setWeapons();
-    void setConsumables();
-    void setEquipments();
-    */
+    // Setters
+    // void setWeapons(vector<Weapon*> weapons);
+    // void setConsumables(vector<Consumable*> consumables);
+    // void setEquipments(vector<Equipment*> equipments);
+    
+    // Other Functions
+    void Sell(Item* item); // The shopkeeper sells sth to the player
+    void Buy(Item* item); // The shopkeeper buys sth from the player
+    void menu(); 
 };
 
 class Hospital{
