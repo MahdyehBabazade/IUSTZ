@@ -152,6 +152,8 @@ public:
     string SellDialogue(Item* item);
     string BuyDialogue(Item* item);
     string NoMoneyDialogue();
+    string UpgradeLimitDialogue(Weapon* weapon);
+    string UpgradeLimitDialogue();
 };
 
 class Medic{

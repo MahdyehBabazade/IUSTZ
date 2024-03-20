@@ -759,6 +759,18 @@ string Shopkeeper :: BuyDialogue(Item* item){ // The shopkeeper buys sth from th
     return "I'll buy that for " + to_string(NewPrice) + " coins.\n";
 } // items to be included
 
+string Shopkeeper::UpgradeLimitDialogue(Weapon* weapon){
+    vector<string> UpgradeLimit = {weapon->getName() + " has been fined too many times already." , 
+    weapon->getName() + " has reached it's limits." + weapon->getName() + " is as fine as it gets!"};
+    return ShuffleVec(UpgradeLimit)[0] + "\n";
+}
+
+string Shopkeeper::UpgradeLimitDialogue(){
+    vector<string> UpgradeLimit = {"i'm so tired!" , "i can't refine your items anymore!" , 
+    "i'm out of refinement resources."};
+    return ShuffleVec(UpgradeLimit)[0] + "\n";
+}
+
 string Shopkeeper :: NoMoneyDialogue(){ // What the shopkeeper says when the player has less money than the item's price
     vector<string> PoorSoldier = {"You don't have enough coins!" , "Poor soldier!!!" , "Can't get you that!" ,
     "So little for so much?!"};
