@@ -10,6 +10,8 @@ Shop :: Shop(Player* player, vector<Weapon*> weapons, vector<Consumable*> consum
     this -> equipments = equipments;
     this -> shopkeeper = shopkeeper;
     this -> WantsToQuit = false;
+    this -> BaseUpgradePrice = 5; // chanegs later
+    this -> UpgradesLeft = 6; // changes later
 }
 
 vector<Weapon*> Shop :: getWeapons(){return weapons;}
@@ -30,9 +32,30 @@ void Shop :: Sell(Item* item){ // Shopkeeper sells, Player buys
     }
 }
 
+string UpgradeNameChange(string name,int upgradeAmount){
+    if(upgradeAmount != 0){
+        int spaceIndex = name.find_last_of(' ');
+        name = name.substr(0,spaceIndex);   
+    }
+    name += " " + to_string(upgradeAmount+1) +"+";
+    return name;
+}
+
 void Shop::Upgrade(Weapon* weapon){
     if(typeid(weapon) == typeid(Shotgun)){
         while(true){
+            if(weapon->getUpgradeAmount() >= weapon->getUpgradeLimit()){
+                cout << shopkeeper->WeaponUpgradeLimitDialogue();
+                break;
+            }
+            if(UpgradesLeft <=0){
+                cout << shopkeeper->ShopUpgradeLimitDialogue();
+                break;
+            }
+            if(player->getCoin() < BaseUpgradePrice * weapon->getUpgradeAmount()){
+                cout << shopkeeper->NoMoneyDialogue();
+                break;;
+            }
             cout << "1. Damage" << endl <<
                 "2. Min Damage Percent" << endl <<
                 "choose an option (0 to go back): ";
@@ -43,13 +66,28 @@ void Shop::Upgrade(Weapon* weapon){
                 case 0:
                     break;
                 case 1:
+                    player->removeItem(weapon);
+                    
+                    weapon->setName(UpgradeNameChange(weapon->getName(),weapon->getUpgradeAmount()));
                     weapon->setDamage(int(weapon->getDamage()*1.5));
-                    weapon->setUpgrades(weapon->getUpgrades()+1);
+                    
+                    weapon->setUpgradeAmount(weapon->getUpgradeAmount()+1);
+                    UpgradesLeft --;
+                    
+                    player->addItem(weapon);
+                    
                     continue;
                 case 2:
+                    player->removeItem(weapon);
+                    
+                    weapon->setName(UpgradeNameChange(weapon->getName(),weapon->getUpgradeAmount()));
                     Shotgun* shotgun = dynamic_cast<Shotgun*>(weapon);
                     shotgun->setMinDamagePercent(shotgun->getMinDamagePercent() + 10);
-                    weapon->setUpgrades(weapon->getUpgrades()+1);
+                    
+                    shotgun->setUpgradeAmount(shotgun->getUpgradeAmount()+1);
+                    UpgradesLeft --;
+                    
+                    player->addItem(shotgun);
                     continue;
                 default:
                     continue;
@@ -58,7 +96,96 @@ void Shop::Upgrade(Weapon* weapon){
         }
         
     }else if(typeid(weapon) == typeid(Rifle)){
-        
+        while(true){
+            if(weapon->getUpgradeAmount() >= weapon->getUpgradeLimit()){
+                cout << shopkeeper->WeaponUpgradeLimitDialogue();
+                break;
+            }
+            if(UpgradesLeft <=0){
+                cout << shopkeeper->ShopUpgradeLimitDialogue();
+                break;
+            }
+            if(player->getCoin() < BaseUpgradePrice * weapon->getUpgradeAmount()){
+                cout << shopkeeper->NoMoneyDialogue();
+                break;;
+            }
+            cout << "1. Damage" << endl <<
+                "2. Max Attack Amount" << endl <<
+                "choose an option (0 to go back): ";
+            int choice;
+            cin >> choice;
+            
+            switch (choice){
+                case 0:
+                    break;
+                case 1:
+                    player->removeItem(weapon);
+                    
+                    weapon->setName(UpgradeNameChange(weapon->getName(),weapon->getUpgradeAmount()));
+                    weapon->setDamage(int(weapon->getDamage()*1.5));
+                    
+                    weapon->setUpgradeAmount(weapon->getUpgradeAmount()+1);
+                    UpgradesLeft --;
+                    
+                    player->addItem(weapon);
+                    
+                    continue;
+                case 2:
+                    player->removeItem(weapon);
+                    
+                    weapon->setName(UpgradeNameChange(weapon->getName(),weapon->getUpgradeAmount()));
+                    Rifle* rifle = dynamic_cast<Rifle*>(weapon);
+                    rifle->setMaxAttackAmount(rifle->getMaxAttackAmount() + 10);
+                    
+                    rifle->setUpgradeAmount(weapon->getUpgradeAmount()+1);
+                    UpgradesLeft --;
+                    
+                    player->addItem(rifle);
+                    continue;
+                default:
+                    continue;
+            }
+            break;   
+        }
+    }else{
+        while(true){
+            if(weapon->getUpgradeAmount() >= weapon->getUpgradeLimit()){
+                cout << shopkeeper->WeaponUpgradeLimitDialogue();
+                break;
+            }
+            if(UpgradesLeft <=0){
+                cout << shopkeeper->ShopUpgradeLimitDialogue();
+                break;
+            }
+            if(player->getCoin() < BaseUpgradePrice * weapon->getUpgradeAmount()){
+                cout << shopkeeper->NoMoneyDialogue();
+                break;;
+            }
+            cout << "1. Damage" << endl <<
+                "choose an option (0 to go back): ";
+            int choice;
+            cin >> choice;
+            
+            switch (choice){
+                case 0:
+                    break;
+                case 1:
+                    player->removeItem(weapon);
+                    
+                    weapon->setName(UpgradeNameChange(weapon->getName(),weapon->getUpgradeAmount()));
+                    weapon->setDamage(int(weapon->getDamage()*1.5));
+                    
+                    weapon->setUpgradeAmount(weapon->getUpgradeAmount()+1);
+                    UpgradesLeft --;
+                    
+                    player->addItem(weapon);
+                    
+                    continue;
+                default:
+                    continue;
+            }
+            break;
+        }  
     }
 }
 
@@ -141,6 +268,11 @@ void Shop :: Menu(){
                 }
                 break;
             case 3: // player upgrades a gun
+                if(UpgradesLeft<=0){
+                        cout << shopkeeper->ShopUpgradeLimitDialogue();
+                        break;
+                }
+                
                 while(true){
                     for (int i = 0; i < player->getWeapons().size(); i++){
                         cout << i+1 << ". " << (player->getWeapons()[i].first)->getStat()<< endl;
@@ -150,7 +282,18 @@ void Shop :: Menu(){
                     if(choice == 0){
                         break;
                     }
-                    Upgrade(player->getWeapons()[choice-1].first);   
+                    
+                    Weapon* ChosenWeapon = player->getWeapons()[choice-1].first;
+                    
+                    if(ChosenWeapon->getUpgradeAmount() >= ChosenWeapon->getUpgradeLimit()){
+                        cout << shopkeeper->WeaponUpgradeLimitDialogue();
+                        continue;
+                    }
+                    if(player->getCoin() < BaseUpgradePrice * ChosenWeapon->getUpgradeAmount()){
+                        cout << shopkeeper->NoMoneyDialogue();
+                        continue;
+                    }
+                    Upgrade(ChosenWeapon);   
                 }
                 break;
             case 4: //player quits

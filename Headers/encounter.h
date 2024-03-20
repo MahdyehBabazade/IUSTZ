@@ -24,7 +24,7 @@ private:
     
     bool WantsToQuit;
     int BaseUpgradePrice;
-    int UpgradeLimit;
+    int UpgradesLeft;
     
 public:
     // Constructor
