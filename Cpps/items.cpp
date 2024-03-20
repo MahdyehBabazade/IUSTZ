@@ -14,6 +14,7 @@ Item :: Item(string name,int capacity,int price) : Name(name), Capacity(capacity
 
 void Item :: setCapacity(int capacity){Capacity=capacity;}
 void Item ::setPrice(int price){Price=price;}
+void Item ::setName(string name){Name = name;}
 string Item :: getName() {return Name;}
 int Item :: getCapacity() {return Capacity;}
 int Item :: getPrice() {return Price;}

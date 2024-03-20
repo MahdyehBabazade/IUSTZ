@@ -18,7 +18,8 @@ public:
     Item(string name, int capacity, int Price);
     void setCapacity(int capacity);
     void setPrice(int price);
-
+    void setName(string name);
+    
     string getName();
     int getCapacity();
     int getPrice();
