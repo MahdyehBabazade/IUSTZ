@@ -9,12 +9,11 @@ private:
     string Story;
 public: 
     Encounter(string Story);
-    
+    Encounter()=default;
     string getStory();
-    
 };
 
-class Shop : Encounter{
+class Shop : public Encounter{
 private:    
     Player* player;
     vector<Weapon*> weapons;
@@ -47,7 +46,7 @@ public:
     void Menu(); 
 };
 
-class Hospital : Encounter{
+class Hospital : public Encounter{
     
 private:
     Player* player;
@@ -67,21 +66,21 @@ public:
     void Menu();
 };
 
-class RandomEncounter : Encounter{
+class RandomEncounter : public Encounter{
 public:
     RandomEncounter() = default;
 };
 
-class Fight : Encounter{
+class Fight : public Encounter{
 public:
     Fight()=default;
 };
 
-class MiniBoss : Encounter{
+class MiniBoss : public Encounter{
 public:
     MiniBoss()=default;
 };
-class Boss : Encounter{
+class Boss : public Encounter{
 public:
     Boss() = default;
     
