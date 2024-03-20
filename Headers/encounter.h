@@ -29,7 +29,7 @@ private:
 public:
     // Constructor
     Shop(Player* player, vector<Weapon*> weapons, vector<Consumable*> consumables, vector<Equipment*> equipments, Shopkeeper* shopkeeper,string Story);
-
+    Shop() = default;
     // Getters
     vector<Weapon*> getWeapons();
     vector<Consumable*> getConsumables();
@@ -58,6 +58,7 @@ private:
     bool HasHealed;
 public:
     Hospital(Player* player,Medic* medic,int MaxHpIncresePrice,int FullHealPrice,int HalfHealPrice,string Story);
+    Hospital()=default;
     
     void MaxHpIncrease();
     void FullHeal();
@@ -67,16 +68,21 @@ public:
 };
 
 class RandomEncounter : Encounter{
-    
+public:
+    RandomEncounter() = default;
 };
 
 class Fight : Encounter{
-    
+public:
+    Fight()=default;
 };
 
 class MiniBoss : Encounter{
-    
+public:
+    MiniBoss()=default;
 };
 class Boss : Encounter{
+public:
+    Boss() = default;
     
 };
