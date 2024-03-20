@@ -24,16 +24,21 @@ string Item ::getStat() {
     return outPut;
 }
 //------------------------------------
-Weapon :: Weapon(string name,int capacity,int price,int damage,int energyNeed)
-        : Damage(damage),EnergyNeeded(energyNeed), Item(name, capacity, price) {};
+Weapon :: Weapon(string name,int capacity,int price,int damage,int energyNeed,int upgradeLimit)
+        : Damage(damage),EnergyNeeded(energyNeed),UpgradeAmount(0),UpgradeLimit(upgradeLimit), Item(name, capacity, price) {};
 
 int Weapon:: getDamage() {return Damage;}
 
 int Weapon::getEnergyNeeded(){return EnergyNeeded;}
 
+int Weapon::getUpgradeAmount(){return UpgradeAmount;}
+
+void Weapon::setUpgradeAmount(int upgrades){UpgradeAmount = upgrades;}
+
 void Weapon::setDamage(int damage) {Damage = damage;}
 
 void Weapon::setEnergyNeeded(int energy) {EnergyNeeded = energy;}
+
 
 
 Character* choose_character(vector<Character*> &characters){
@@ -62,10 +67,10 @@ string Weapon::getStat() {
 }
 //............
 Punch :: Punch(string name, int capacity, int damage, int price, int energyNeed)
-        : Weapon(name, capacity, price, damage, energyNeed){};
+        : Weapon(name, capacity, price, damage, energyNeed,0){};
 //.............
-Gun ::Gun(string name, int capacity,int price, int damage, int energyNeed, int ammo,int reloadEnergy)
-        : ReloadEnergy(reloadEnergy), Ammo(ammo),MaxAmmo(ammo),Weapon(name, capacity, price, damage, energyNeed){};
+Gun ::Gun(string name, int capacity,int price, int damage, int energyNeed, int ammo,int reloadEnergy,int upgradeLimit)
+        : ReloadEnergy(reloadEnergy), Ammo(ammo),MaxAmmo(ammo),Weapon(name, capacity, price, damage, energyNeed,upgradeLimit){};
 
 string Gun::getStat() {
     string outPut = Name + " (Damage: " + to_string(Damage) +
@@ -84,8 +89,8 @@ void Gun::setReloadEnergy(int reloadEnergy) {ReloadEnergy=reloadEnergy;}
 void Gun::Reload() {Ammo = MaxAmmo;}
 
 //..............
-Shotgun ::Shotgun(string name, int capacity,int price, int damage, int energyNeeded,int reloadEnergy,int ammo,int minDamagePercent)
-        : Gun(name,  capacity, price, damage,  energyNeeded,reloadEnergy, ammo), MinDamagePercent(minDamagePercent){}
+Shotgun ::Shotgun(string name, int capacity,int price, int damage, int energyNeeded,int reloadEnergy,int ammo,int minDamagePercent,int upgradeLimit)
+        : Gun(name,  capacity, price, damage,  energyNeeded,reloadEnergy, ammo,upgradeLimit), MinDamagePercent(minDamagePercent){}
 
 void Shotgun ::Attack(vector<Character*> &characters) {
     Character* character = choose_character(characters);
@@ -111,8 +116,8 @@ string Shotgun::getStat() {
 }
 
 //..
-Snipe ::Snipe(std::string name, int capacity, int price, int damage, int energyNeeded,int reloadEnergy, int ammo)
-        : Gun(name,  capacity, price, damage,  energyNeeded,reloadEnergy, ammo) {}
+Snipe ::Snipe(std::string name, int capacity, int price, int damage, int energyNeeded,int reloadEnergy, int ammo,int upgradeLimit)
+        : Gun(name,  capacity, price, damage,  energyNeeded,reloadEnergy, ammo,upgradeLimit) {}
 
 void Snipe ::Attack(vector<Character*> &characters) {
     Character* character= choose_character(characters);
@@ -125,8 +130,8 @@ void Snipe ::Attack(vector<Character*> &characters) {
     setAmmo(getAmmo()-1);
 }
 //..
-SMG ::SMG(string name, int capacity, int price, int damage, int energyNeeded, int reloadEnergy, int ammo)
-    : Gun(name,  capacity, price, damage,  energyNeeded,reloadEnergy, ammo) {};
+SMG ::SMG(string name, int capacity, int price, int damage, int energyNeeded, int reloadEnergy, int ammo,int upgradeLimit)
+    : Gun(name,  capacity, price, damage,  energyNeeded,reloadEnergy, ammo,upgradeLimit) {};
 
 
 void SMG ::Attack(vector<Character *> &characters) {
@@ -137,8 +142,8 @@ void SMG ::Attack(vector<Character *> &characters) {
 }
 
 //..
-Rifle ::Rifle(std::string name, int capacity, int price , int damage, int energyNeeded,int reloadEnergy, int ammo,int maxAttackAmount)
-        : Gun( name,  capacity, price, damage,  energyNeeded,reloadEnergy, ammo),MaxAttackAmount(maxAttackAmount){}
+Rifle ::Rifle(std::string name, int capacity, int price , int damage, int energyNeeded,int reloadEnergy, int ammo,int maxAttackAmount,int upgradeLimit)
+        : Gun( name,  capacity, price, damage,  energyNeeded,reloadEnergy, ammo,upgradeLimit),MaxAttackAmount(maxAttackAmount){}
 
 void Rifle ::Attack(vector<Character*> &characters){
     int damage=getDamage()/characters.size();
@@ -161,8 +166,8 @@ string Rifle::getStat() {
     return outPut;
 }
 //..
-ColdWeapon ::ColdWeapon(string name, int capacity,int price, int damage, int energyNeeded)
-        : Weapon( name, capacity, price, damage, energyNeeded){}
+ColdWeapon ::ColdWeapon(string name, int capacity,int price, int damage, int energyNeeded,int upgradeLimit)
+        : Weapon( name, capacity, price, damage, energyNeeded,upgradeLimit){}
 
 void ColdWeapon :: Throw(vector<Character*> &characters){
     Character* character= choose_character(characters);
@@ -171,11 +176,11 @@ void ColdWeapon :: Throw(vector<Character*> &characters){
 int ColdWeapon::getThrowDamagePercent(){return ThrowDamagePercent;}
 void ColdWeapon:: setThrowDamagePercent(int throwDamagePercent){ThrowDamagePercent=throwDamagePercent;}
 //..
-Throwable :: Throwable(string name, int capacity,int price, int damage, int energyNeeded)
-        : Weapon( name, capacity, price, damage, energyNeeded) {}
+Throwable :: Throwable(string name, int capacity,int price, int damage, int energyNeeded,int upgradeLimit)
+        : Weapon( name, capacity, price, damage, energyNeeded,upgradeLimit) {}
 
-Grenade :: Grenade(string name, int capacity, int price, int damage, int energyNeeded)
-        : Throwable(name,capacity,price,damage,energyNeeded){};
+Grenade :: Grenade(string name, int capacity, int price, int damage, int energyNeeded,int upgradeLimit)
+        : Throwable(name,capacity,price,damage,energyNeeded,upgradeLimit){};
 
 void Grenade :: Attack(vector<Character*> &characters) {
     for(Character* character: characters){
@@ -183,8 +188,8 @@ void Grenade :: Attack(vector<Character*> &characters) {
     }
 }
 //..
-BoomRang::BoomRang(string name, int capacity, int price, int damage, int energyNeeded)
-    :Throwable(name,capacity,price,damage,energyNeeded){}
+BoomRang::BoomRang(string name, int capacity, int price, int damage, int energyNeeded,int upgradeLimit)
+    :Throwable(name,capacity,price,damage,energyNeeded,upgradeLimit){}
 
 void BoomRang ::Attack(vector<Character*> &characters) {
     for(Character* character:characters){

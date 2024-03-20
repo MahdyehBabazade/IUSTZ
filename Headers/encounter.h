@@ -23,6 +23,8 @@ private:
     Shopkeeper* shopkeeper;
     
     bool WantsToQuit;
+    int BaseUpgradePrice;
+    int UpgradeLimit;
     
 public:
     // Constructor

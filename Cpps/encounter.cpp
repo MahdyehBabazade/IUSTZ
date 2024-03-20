@@ -32,19 +32,33 @@ void Shop :: Sell(Item* item){ // Shopkeeper sells, Player buys
 
 void Shop::Upgrade(Weapon* weapon){
     if(typeid(weapon) == typeid(Shotgun)){
-        cout << "1. Damage" << endl <<
+        while(true){
+            cout << "1. Damage" << endl <<
                 "2. Min Damage Percent" << endl <<
                 "choose an option (0 to go back): ";
-        int choice;
-        cin >> choice;
-        
-        switch (choice){
-            case 1:
-                
-                break;
-            default:
-                break;
+            int choice;
+            cin >> choice;
+            
+            switch (choice){
+                case 0:
+                    break;
+                case 1:
+                    weapon->setDamage(int(weapon->getDamage()*1.5));
+                    weapon->setUpgrades(weapon->getUpgrades()+1);
+                    continue;
+                case 2:
+                    Shotgun* shotgun = dynamic_cast<Shotgun*>(weapon);
+                    shotgun->setMinDamagePercent(shotgun->getMinDamagePercent() + 10);
+                    weapon->setUpgrades(weapon->getUpgrades()+1);
+                    continue;
+                default:
+                    continue;
+            }
+            break;   
         }
+        
+    }else if(typeid(weapon) == typeid(Rifle)){
+        
     }
 }
 
