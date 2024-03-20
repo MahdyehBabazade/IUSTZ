@@ -45,11 +45,11 @@ void Shop::Upgrade(Weapon* weapon){
     if(typeid(weapon) == typeid(Shotgun)){
         while(true){
             if(weapon->getUpgradeAmount() >= weapon->getUpgradeLimit()){
-                cout << shopkeeper->WeaponUpgradeLimitDialogue();
+                cout << shopkeeper->UpgradeLimitDialogue(weapon);
                 break;
             }
             if(UpgradesLeft <=0){
-                cout << shopkeeper->ShopUpgradeLimitDialogue();
+                cout << shopkeeper->UpgradeLimitDialogue();
                 break;
             }
             if(player->getCoin() < BaseUpgradePrice * weapon->getUpgradeAmount()){
@@ -98,11 +98,11 @@ void Shop::Upgrade(Weapon* weapon){
     }else if(typeid(weapon) == typeid(Rifle)){
         while(true){
             if(weapon->getUpgradeAmount() >= weapon->getUpgradeLimit()){
-                cout << shopkeeper->WeaponUpgradeLimitDialogue();
+                cout << shopkeeper->UpgradeLimitDialogue(weapon);
                 break;
             }
             if(UpgradesLeft <=0){
-                cout << shopkeeper->ShopUpgradeLimitDialogue();
+                cout << shopkeeper->UpgradeLimitDialogue();
                 break;
             }
             if(player->getCoin() < BaseUpgradePrice * weapon->getUpgradeAmount()){
@@ -150,11 +150,11 @@ void Shop::Upgrade(Weapon* weapon){
     }else{
         while(true){
             if(weapon->getUpgradeAmount() >= weapon->getUpgradeLimit()){
-                cout << shopkeeper->WeaponUpgradeLimitDialogue();
+                cout << shopkeeper->UpgradeLimitDialogue(weapon);
                 break;
             }
             if(UpgradesLeft <=0){
-                cout << shopkeeper->ShopUpgradeLimitDialogue();
+                cout << shopkeeper->UpgradeLimitDialogue();
                 break;
             }
             if(player->getCoin() < BaseUpgradePrice * weapon->getUpgradeAmount()){
@@ -269,7 +269,7 @@ void Shop :: Menu(){
                 break;
             case 3: // player upgrades a gun
                 if(UpgradesLeft<=0){
-                        cout << shopkeeper->ShopUpgradeLimitDialogue();
+                        cout << shopkeeper->UpgradeLimitDialogue();
                         break;
                 }
                 
@@ -286,7 +286,7 @@ void Shop :: Menu(){
                     Weapon* ChosenWeapon = player->getWeapons()[choice-1].first;
                     
                     if(ChosenWeapon->getUpgradeAmount() >= ChosenWeapon->getUpgradeLimit()){
-                        cout << shopkeeper->WeaponUpgradeLimitDialogue();
+                        cout << shopkeeper->UpgradeLimitDialogue(ChosenWeapon);
                         continue;
                     }
                     if(player->getCoin() < BaseUpgradePrice * ChosenWeapon->getUpgradeAmount()){
