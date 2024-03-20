@@ -64,7 +64,7 @@ public:
     void Menu();
 };
 
-class Random : Encounter{
+class RandomEncounter : Encounter{
     
 };
 
