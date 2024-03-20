@@ -38,7 +38,7 @@ vector<vector<Encounter*>> generateEncounters(vector<int> path1 , vector<int> pa
         }
         if(i == 0){
             for(int j = 0; j < VisitedNodes[0].size();j++){
-                // Encounters[i][VisitedNodes[0][j]] = new Fight // Encounter generation to be included
+                Encounters[i][VisitedNodes[0][j]] = new Fight; // Encounter generation to be included
             }
         }
         else if(i < 3){
@@ -63,7 +63,7 @@ vector<vector<Encounter*>> generateEncounters(vector<int> path1 , vector<int> pa
                         inRow.push_back(path4[i]);
                     if(typeid(*Encounters[i - 1][Visits[m]]) == typeid(Fight))
                         weights[0] = 0;
-                    else if(typeid(*Encounters[i - 1][Visits[m]]) == typeid(Random))
+                    else if(typeid(*Encounters[i - 1][Visits[m]]) == typeid(RandomEncounter))
                         weights[1] = 0;
                     else if(typeid(*Encounters[i - 1][Visits[m]]) == typeid(Shop))
                         weights[2] = 0;
@@ -71,20 +71,20 @@ vector<vector<Encounter*>> generateEncounters(vector<int> path1 , vector<int> pa
                 for(int m = 0; m < inRow.size(); m++){
                     if(typeid(*Encounters[i][inRow[m]]) == typeid(Fight))
                         weights[0] = 0;
-                    else if(typeid(*Encounters[i][inRow[m]]) == typeid(Random))
+                    else if(typeid(*Encounters[i][inRow[m]]) == typeid(RandomEncounter))
                         weights[1] = 0;
                     else if(typeid(*Encounters[i][inRow[m]]) == typeid(Shop))
                         weights[2] = 0;
                 }
                 int enc = Index_Weighted_Random(weights);
                 if(enc == 0){
-                    // Encounters[i][VisitedNodes[i][j]] = new Fight; //Fight Constructor to be included
+                    Encounters[i][VisitedNodes[i][j]] = new Fight; //Fight Constructor to be included
                 }
                 if(enc == 1){
-                    // Encounters[i][VisitedNodes[i][j]] = new Random; //Random Constructor to be included
+                    Encounters[i][VisitedNodes[i][j]] = new RandomEncounter; //RandomEncounter Constructor to be included
                 }
                 if(enc == 2){
-                    // Encounters[i][VisitedNodes[i][j]] = new Shop; //Shop Constructor to be included
+                    Encounters[i][VisitedNodes[i][j]] = new Shop; //Shop Constructor to be included
                 }
             }
         }
@@ -110,7 +110,7 @@ vector<vector<Encounter*>> generateEncounters(vector<int> path1 , vector<int> pa
                         inRow.push_back(path4[i]);
                     if(typeid(*Encounters[i - 1][Visits[m]]) == typeid(Fight))
                         weights[0] = 0;
-                    else if(typeid(*Encounters[i - 1][Visits[m]]) == typeid(Random))
+                    else if(typeid(*Encounters[i - 1][Visits[m]]) == typeid(RandomEncounter))
                         weights[1] = 0;
                     else if(typeid(*Encounters[i - 1][Visits[m]]) == typeid(MiniBoss))
                         weights[2] = 0;
@@ -122,7 +122,7 @@ vector<vector<Encounter*>> generateEncounters(vector<int> path1 , vector<int> pa
                 for(int m = 0; m < inRow.size(); m++){
                     if(typeid(*Encounters[i][inRow[m]]) == typeid(Fight))
                         weights[0] = 0;
-                    else if(typeid(*Encounters[i][inRow[m]]) == typeid(Random))
+                    else if(typeid(*Encounters[i][inRow[m]]) == typeid(RandomEncounter))
                         weights[1] = 0;
                     else if(typeid(*Encounters[i - 1][inRow[m]]) == typeid(MiniBoss))
                         weights[2] = 0;
@@ -133,19 +133,19 @@ vector<vector<Encounter*>> generateEncounters(vector<int> path1 , vector<int> pa
                 }
                 int enc = Index_Weighted_Random(weights);
                 if(enc == 0){
-                    // Encounters[i][VisitedNodes[i][j]] = new Fight; //Fight Constructor to be included
+                    Encounters[i][VisitedNodes[i][j]] = new Fight; //Fight Constructor to be included
                 }
                 if(enc == 1){
-                    // Encounters[i][VisitedNodes[i][j]] = new Random; //Random Constructor to be included
+                    Encounters[i][VisitedNodes[i][j]] = new RandomEncounter; //RandomEncounter Constructor to be included
                 }
                 if(enc == 2){
-                    // Encounters[i][VisitedNodes[i][j]] = new MiniBoss; //MiniBoss Constructor to be included
+                    Encounters[i][VisitedNodes[i][j]] = new MiniBoss; //MiniBoss Constructor to be included
                 }
                 if(enc == 3){
-                    // Encounters[i][VisitedNodes[i][j]] = new Hospital; //Hospital Constructor to be included
+                    Encounters[i][VisitedNodes[i][j]] = new Hospital; //Hospital Constructor to be included
                 }
                 if(enc == 4){
-                    // Encounters[i][VisitedNodes[i][j]] = new Shop; //Shop Constructor to be included
+                    Encounters[i][VisitedNodes[i][j]] = new Shop; //Shop Constructor to be included
                 }
             }
         }
@@ -171,7 +171,7 @@ vector<vector<Encounter*>> generateEncounters(vector<int> path1 , vector<int> pa
                         inRow.push_back(path4[i]);
                     if(typeid(*Encounters[i - 1][Visits[m]]) == typeid(Fight))
                         weights[0] = 0;
-                    else if(typeid(*Encounters[i - 1][Visits[m]]) == typeid(Random))
+                    else if(typeid(*Encounters[i - 1][Visits[m]]) == typeid(RandomEncounter))
                         weights[1] = 0;
                     else if(typeid(*Encounters[i - 1][Visits[m]]) == typeid(MiniBoss))
                         weights[2] = 0;
@@ -181,7 +181,7 @@ vector<vector<Encounter*>> generateEncounters(vector<int> path1 , vector<int> pa
                 for(int m = 0; m < inRow.size(); m++){
                     if(typeid(*Encounters[i][inRow[m]]) == typeid(Fight))
                         weights[0] = 0;
-                    else if(typeid(*Encounters[i][inRow[m]]) == typeid(Random))
+                    else if(typeid(*Encounters[i][inRow[m]]) == typeid(RandomEncounter))
                         weights[1] = 0;
                     else if(typeid(*Encounters[i - 1][inRow[m]]) == typeid(MiniBoss))
                         weights[2] = 0;
@@ -190,22 +190,22 @@ vector<vector<Encounter*>> generateEncounters(vector<int> path1 , vector<int> pa
                 }
                 int enc = Index_Weighted_Random(weights);
                 if(enc == 0){
-                    // Encounters[i][VisitedNodes[i][j]] = new Fight; //Fight Constructor to be included
+                    Encounters[i][VisitedNodes[i][j]] = new Fight; //Fight Constructor to be included
                 }
                 if(enc == 1){
-                    // Encounters[i][VisitedNodes[i][j]] = new Random; //Random Constructor to be included
+                    Encounters[i][VisitedNodes[i][j]] = new RandomEncounter; //RandomEncounter Constructor to be included
                 }
                 if(enc == 2){
-                    // Encounters[i][VisitedNodes[i][j]] = new MiniBoss; //MiniBoss Constructor to be included
+                    Encounters[i][VisitedNodes[i][j]] = new MiniBoss; //MiniBoss Constructor to be included
                 }
                 if(enc == 3){
-                    // Encounters[i][VisitedNodes[i][j]] = new Hospital; //Hospital Constructor to be included
+                    Encounters[i][VisitedNodes[i][j]] = new Hospital; //Hospital Constructor to be included
                 }
             }
         }
         else{
             for(int j = 0; j < VisitedNodes[i].size(); j++){
-                // Encounters[i][VisitedNodes[i][j]] = new Hospital // Hospital Constructor to be included
+                Encounters[i][VisitedNodes[i][j]] = new Hospital; // Hospital Constructor to be included
             }
         }
     }
