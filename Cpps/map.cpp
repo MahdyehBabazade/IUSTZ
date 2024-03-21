@@ -20,7 +20,7 @@ int Index_Weighted_Random(vector<int> weights){
 
 vector<int> PathFinding1(){
     vector<int> path={0,0,0,0,0,0,0,0,0,0};
-    path[0]=rand()%6;
+    path[0]=rand() %6;
     for(int i=1;i<10;i++){
         if(path[i-1]==0){
             vector<int> nexthome={path[i-1],path[i-1]+1};
@@ -49,7 +49,9 @@ vector<int> PathFinding1(){
 
 vector<int> PathFinding2(vector<int> path1){
     vector<int> path={0,0,0,0,0,0,0,0,0,0};
-    path[0]=rand()%6;
+    do{
+        path[0]=rand() %6;
+    }while(path[0]==path1[0]);
     for(int i=1;i<10;i++){
         if(path[i-1]==0){
             if((path1[i-1]==1)&&(path1[i]==0)){
@@ -104,6 +106,9 @@ vector<int> PathFinding2(vector<int> path1){
 
 vector<int> PathFinding3(vector<int> path1,vector<int> path2){
     vector<int> path={0,0,0,0,0,0,0,0,0,0};
+    de{
+        path[0]=rand() %6;
+    }while(path[0]==path1[0] || path[0]==path2[0]);
     path[0]=rand()% 6;
     for(int i=1;i<10;i++){
         if(path[i-1]==0){
@@ -118,7 +123,7 @@ vector<int> PathFinding3(vector<int> path1,vector<int> path2){
                 path[i]=nexthome[0];
             }
         }
-        if(path[i-1]==5){
+        else if(path[i-1]==5){
             if((path1[i-1]==4 && path1[i]==5)||(path2[i-1]==4 &&path2[i]==5)){
                 path[i]=5;
             }
@@ -163,7 +168,76 @@ vector<int> PathFinding3(vector<int> path1,vector<int> path2){
     return path;
 }
 
-vector<int> PathFinding4(vector<int> path1,vector<int> path2,vector<int>path3);
+vector<int> PathFinding4(vector<int> path1,vector<int> path2,vector<int>path3){
+    vector<int> path={0,0,0,0,0,0,0,0,0,0};
+    path[0]=rand() %6;
+    for(int i=1; i<10 ;i++){
+        if(path[i-1]==0){
+            if((path1[i-1]==path[i-1]+1 && path1[i]==path[i-1])
+            || (path2[i-1]==path[i-1]+1 && path2[i]==path[i-1])
+            || (path3[i-1]==path[i-1]+1 && path3[i]==path[i-1])){
+                path[i]=0;
+            }
+            else{
+                vector<int> nexthome={path[i-1],path[i-1]+1}
+                random_device rd;
+                default_random_engine abs(rd());
+                shuffle(nexthome.begin(), nexthome.end(), abs);
+                path[i]=nexthome[0];
+            }
+        }
+        else if(path[i-1]==5){
+            if((path1[i-1]==path[i-1]-1 && path1[i]==path[i-1])
+            || (path2[i-1]==path[i-1]-1 && path2[i]==path[i-1])
+            || (path3[i-1]==path[i-1]-1 && path3[i]==path[i-1])){
+                path[i]=5;
+            }
+            else{
+                vector<int> nexthome={path[i-1],path[i-1]-1}
+                random_device rd;
+                default_random_engine abs(rd());
+                shuffle(nexthome.begin(), nexthome.end(), abs);
+                path[i]=nexthome[0];
+            }
+        }
+        else{
+            if((path1[i-1]==path[i-1]+1 && path1[i]==path[i-1] && path2[i-1]==path[i-1]-1 && path2[i]==path[i-1])
+            ||(path1[i-1]==path[i-1]-1 && path1[i]==path[i-1] && path2[i-1]==path[i-1]+1 && path2[i]==path[i-1])
+            ||(path1[i-1]==path[i-1]-1 && path1[i]==path[i-1] && path3[i-1]==path[i-1]+1 && path3[i]==path[i-1])
+            ||(path1[i-1]==path[i-1]+1 && path1[i]==path[i-1] && path3[i-1]==path[i-1]-1 && path3[i]==path[i-1])
+            ||(path2[i-1]==path[i-1]-1 && path2[i]==path[i-1] && path3[i-1]==path[i-1]+1 && path3[i]==path[i-1])
+            ||(path2[i-1]==path[i-1]+1 && path2[i]==path[i-1] && path3[i-1]==path[i-1]-1 && path3[i]==path[i-1])){
+                path[i]=path[i-1];
+            }
+            else if((path1[i-1]=path[i-1]+1 && path1[i]==path[i-1])
+            || (path2[i-1]==path[i-1]+1 && path2[i]==path[i-1]) 
+            || (path3[i-1]==path[i-1]+1 && path3[i]==path[i-1])){
+                vector<int> nexthome={path[i-1],path[i-1]-1}
+                random_device rd;
+                default_random_engine abs(rd());
+                shuffle(nexthome.begin(), nexthome.end(), abs);
+                path[i]=nexthome[0];
+            }
+            else if((path1[i-1]=path[i-1]-1 && path1[i]==path[i-1])
+            || (path2[i-1]==path[i-1]-1 && path2[i]==path[i-1]) 
+            || (path3[i-1]==path[i-1]-1 && path3[i]==path[i-1])){
+                vector<int> nexthome={path[i-1],path[i-1]+1}
+                random_device rd;
+                default_random_engine abs(rd());
+                shuffle(nexthome.begin(), nexthome.end(), abs);
+                path[i]=nexthome[0];
+            }
+            else{
+                vector<int> nexthome={path[i-1],path[i-1]-1,path[i-1]+1}
+                random_device rd;
+                default_random_engine abs(rd());
+                shuffle(nexthome.begin(), nexthome.end(), abs);
+                path[i]=nexthome[0];
+            }
+        }
+    }
+    return path;
+}
 
 vector<vector<Encounter*>> generateEncounters(vector<int> path1 , vector<int> path2 , vector<int> path3 , vector<int> path4){
     vector<vector<Encounter*>> Encounters;
