@@ -18,7 +18,7 @@ vector<int> Shuffle(vector<int> vec){
 }
 
 vector<int> PathFinding1(){
-    vector<int> path;
+    vector<int> path={0,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0, 0};
     path[0]=rand()/6;
     for(int i=1;i<10;i++){
         if(path[i-1]==0){
