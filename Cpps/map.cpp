@@ -179,7 +179,7 @@ vector<int> PathFinding4(vector<int> path1,vector<int> path2,vector<int>path3){
                 path[i]=0;
             }
             else{
-                vector<int> nexthome={path[i-1],path[i-1]+1}
+                vector<int> nexthome={path[i-1],path[i-1]+1};
                 random_device rd;
                 default_random_engine abs(rd());
                 shuffle(nexthome.begin(), nexthome.end(), abs);
@@ -193,7 +193,7 @@ vector<int> PathFinding4(vector<int> path1,vector<int> path2,vector<int>path3){
                 path[i]=5;
             }
             else{
-                vector<int> nexthome={path[i-1],path[i-1]-1}
+                vector<int> nexthome={path[i-1],path[i-1]-1};
                 random_device rd;
                 default_random_engine abs(rd());
                 shuffle(nexthome.begin(), nexthome.end(), abs);
@@ -212,7 +212,7 @@ vector<int> PathFinding4(vector<int> path1,vector<int> path2,vector<int>path3){
             else if((path1[i-1]=path[i-1]+1 && path1[i]==path[i-1])
             || (path2[i-1]==path[i-1]+1 && path2[i]==path[i-1]) 
             || (path3[i-1]==path[i-1]+1 && path3[i]==path[i-1])){
-                vector<int> nexthome={path[i-1],path[i-1]-1}
+                vector<int> nexthome={path[i-1],path[i-1]-1};
                 random_device rd;
                 default_random_engine abs(rd());
                 shuffle(nexthome.begin(), nexthome.end(), abs);
@@ -221,14 +221,14 @@ vector<int> PathFinding4(vector<int> path1,vector<int> path2,vector<int>path3){
             else if((path1[i-1]=path[i-1]-1 && path1[i]==path[i-1])
             || (path2[i-1]==path[i-1]-1 && path2[i]==path[i-1]) 
             || (path3[i-1]==path[i-1]-1 && path3[i]==path[i-1])){
-                vector<int> nexthome={path[i-1],path[i-1]+1}
+                vector<int> nexthome={path[i-1],path[i-1]+1};
                 random_device rd;
                 default_random_engine abs(rd());
                 shuffle(nexthome.begin(), nexthome.end(), abs);
                 path[i]=nexthome[0];
             }
             else{
-                vector<int> nexthome={path[i-1],path[i-1]-1,path[i-1]+1}
+                vector<int> nexthome={path[i-1],path[i-1]-1,path[i-1]+1};
                 random_device rd;
                 default_random_engine abs(rd());
                 shuffle(nexthome.begin(), nexthome.end(), abs);
