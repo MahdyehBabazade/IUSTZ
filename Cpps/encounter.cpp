@@ -27,12 +27,12 @@ Shop :: Shop(Player* player, vector<Weapon*> weapons, vector<Consumable*> consum
     string BazaarStory = "As you wander through the crowded boulevard, getting curious about the growing number of people, "
     "you enter a traditional bazaar hall where everyone is just shouting. This place is all colorful but you are too exhasted to"
     "open your eyes widely to see all the beauty here. A man with a weird mustache out of nowhere takes you in his store. Where is "
-    "here? I guess you're in where you should be.";
+    "place?";
 
-    string ForestStory = "While exploring the dense forest, you found this dusty open wooden door. Having entered, you saw a collection"
+    string ForestStory = "While exploring the dense forest, you find this dusty open wooden door. Upon entering, you see a collection"
     " of weapons and other war stuff. It's noticable on the mat below the door <You and your shoes are welcome. Clean them ;)> "
     "There is no man, low light, weird patterns on the wall and valuable-looking items. The shopkeepr, a man of god -looking so- "
-    "with long white beard came down the stairs. ";
+    "with long white beard comes down the stairs. ";
 
     vector<string> Stories = {BazaarStory, ForestStory};
 
@@ -82,6 +82,7 @@ void Shop :: Upgrade(Weapon* weapon){
                 case 1:
                     player->removeItem(weapon);
                     
+                    weapon->setPrice(weapon->getPrice() + int(BaseUpgradePrice * weapon->getUpgradeAmount() * 0.8));
                     weapon->setName(UpgradeNameChange(weapon->getName(),weapon->getUpgradeAmount()));
                     weapon->setDamage(int(weapon->getDamage()*1.5));
                     
@@ -94,6 +95,7 @@ void Shop :: Upgrade(Weapon* weapon){
                 case 2:
                     player->removeItem(weapon);
                     
+                    weapon->setPrice(weapon->getPrice() + int(BaseUpgradePrice * weapon->getUpgradeAmount() * 0.8));
                     weapon->setName(UpgradeNameChange(weapon->getName(),weapon->getUpgradeAmount()));
                     Shotgun* shotgun = dynamic_cast<Shotgun*>(weapon);
                     shotgun->setMinDamagePercent(shotgun->getMinDamagePercent() + 10);
@@ -135,6 +137,7 @@ void Shop :: Upgrade(Weapon* weapon){
                 case 1:
                     player->removeItem(weapon);
                     
+                    weapon->setPrice(weapon->getPrice() + int(BaseUpgradePrice * weapon->getUpgradeAmount() * 0.8));
                     weapon->setName(UpgradeNameChange(weapon->getName(),weapon->getUpgradeAmount()));
                     weapon->setDamage(int(weapon->getDamage()*1.5));
                     
@@ -147,6 +150,7 @@ void Shop :: Upgrade(Weapon* weapon){
                 case 2:
                     player->removeItem(weapon);
                     
+                    weapon->setPrice(weapon->getPrice() + int(BaseUpgradePrice * weapon->getUpgradeAmount() * 0.8));
                     weapon->setName(UpgradeNameChange(weapon->getName(),weapon->getUpgradeAmount()));
                     Rifle* rifle = dynamic_cast<Rifle*>(weapon);
                     rifle->setMaxAttackAmount(rifle->getMaxAttackAmount() + 10);
@@ -186,6 +190,7 @@ void Shop :: Upgrade(Weapon* weapon){
                 case 1:
                     player->removeItem(weapon);
                     
+                    weapon->setPrice(weapon->getPrice() + int(BaseUpgradePrice * weapon->getUpgradeAmount() * 0.8));
                     weapon->setName(UpgradeNameChange(weapon->getName(),weapon->getUpgradeAmount()));
                     weapon->setDamage(int(weapon->getDamage()*1.5));
                     
@@ -205,8 +210,10 @@ void Shop :: Upgrade(Weapon* weapon){
 
 void Shop :: Sell(Item* item){ // Shopkeeper sells, Player buys
 
-    if (player->getCoin() >= 1.25*item->getPrice()){
-        player->removeCoin(1.25*item->getPrice());
+    if (player->getCoin() >= item->getPrice()){
+        player->removeCoin(item->getPrice());
+        
+        item->setPrice(int(item->getPrice()*0.75));
         player->addItem(item);
         cout << shopkeeper->SellDialogue(item);
         removeItem(item);
@@ -220,6 +227,8 @@ void Shop :: Buy(Item* item){ // Shopkeeper buys, Player sells
     player->addCoin(item->getPrice());
     player->removeItem(item);
     shopkeeper->BuyDialogue(item);
+    
+    item->setPrice(int(item->getPrice()* 1.2)); // adds 20 precent to item's orignial price 
     addItem(item);
 }
 
@@ -263,7 +272,7 @@ void Shop :: Menu(){
                     case 1:
                         while(true){
                             for (int i = 0; i < weapons.size(); i++){
-                            cout << i+1 << ". " << weapons[i]->getName() << " " << 1.25*weapons[i]->getPrice() << "$" << endl;
+                            cout << i+1 << ". " << weapons[i]->getStat() << endl;
                             }
                             cout << "Choose a weapon to buy (0 to go back): ";
                             cin >> choice;
@@ -276,7 +285,7 @@ void Shop :: Menu(){
                     case 2:
                         while (true){
                             for (int i = 0; i < consumables.size(); i++){
-                                cout << i+1 << ". " << consumables[i]->getName() << " " << 1.25*consumables[i]->getPrice() << "$" << endl;
+                                cout << i+1 << ". " << consumables[i]->getStat() << endl;
                             }
                             cout << "Choose a consumable to buy (0 to go back): ";
                             cin >> choice;
@@ -289,7 +298,7 @@ void Shop :: Menu(){
                     case 3:
                         while(true){
                             for (int i = 0; i < equipments.size(); i++){
-                                cout << i+1 << equipments[i]->getName() << " " << 1.25*equipments[i]->getPrice() << "$" << endl;
+                                cout << i+1 << equipments[i]->getStat() << endl;
                             }
                             cout << "Choose a consumable to buy (0 to go back): ";
                             cin >> choice;
@@ -306,7 +315,7 @@ void Shop :: Menu(){
             case 2: // Player sells an item
                 while(true){
                     for (int i = 0; i < player->getItems().size(); i++){
-                        cout << i+1 << ". " << player->getItems()[i].first->getName() << " " << player->getItems()[i].second << endl;
+                        cout << i+1 << ". " << player->getItems()[i].first->getStat() << endl;
                     }
                     cout << "Choose an item you want to sell (0 to go back): ";
                     cin >> choice;
@@ -363,14 +372,14 @@ Hospital :: Hospital(Player* player, Medic* medic, int MaxHpIncresePrice, int Fu
     this->HalfHealPrice = HalfHealPrice;
     this->HasHealed = false;
 
-    string CrowdedCityStory = "As you walk through the crowded street with a limp, a baby girl screams seeing your body and face "
+    string CrowdedCityStory = "As you walk through the crowded street with a limp, a little girl screams seeing your body and face "
     "injuries but you're too exhasted to actually care. Suddenly you notice a red sign, acutually a plus (+) sign on a building. "
     "That's a hospital full of injured people. You're gonna have a long time waiting for your turn. But a good-hearted woman gives you "
-    "her turn so you enter the doctor's.";
+    "her turn so you're now the next in line.";
 
     string CaveStory = "As you're walking in darkness, injured and full of wounds, you see a pair of eyes shining out of a cave, "
-    "staring at you. You are frightened and about to run away. The body of those eyes shows up. It is an old man with a kind face "
-    "inviting you to his cave. A cave full of vague tools. You can't understand what they really are and who he really is untill you "
+    "staring at you. You are frightened and about to run away when an old man with a kind face steps forward,"
+    "inviting you to his cave. A cave full of vague tools. You can't understand what they really are and who he really is until you "
     "see a paper under some glasses filled with some beverage-looking drinks on which <Mystical Medicines> is written.";
 
     vector<string> Stories = {CrowdedCityStory, CaveStory};  
