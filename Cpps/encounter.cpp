@@ -26,11 +26,11 @@ Shop :: Shop(Player* player, vector<Weapon*> weapons, vector<Consumable*> consum
 
     string BazaarStory = "As you wander through the crowded boulevard, getting curious about the growing number of people, "
     "you enter a traditional bazaar hall where everyone is just shouting. This place is all colorful but you are too exhasted to"
-    "open your eyes widely to see all the beauty here. A man with a weird mustache out of nowhere takes you in his store. Where is "
+    "open your eyes widely to see all the beauty here. A man with a weird mustache out of nowhere takes you in his store. Where is this "
     "place?";
 
     string ForestStory = "While exploring the dense forest, you find this dusty open wooden door. Upon entering, you see a collection"
-    " of weapons and other war stuff. It's noticable on the mat below the door <You and your shoes are welcome. Clean them ;)> "
+    " of weapons and other war stuff. It's noticable on the mat below the door < You and your shoes are welcome. Clean them ;) > "
     "There is no man, low light, weird patterns on the wall and valuable-looking items. The shopkeepr, a man of god -looking so- "
     "with long white beard comes down the stairs. ";
 
@@ -376,12 +376,10 @@ Hospital :: Hospital(Player* player, Medic* medic, int MaxHpIncresePrice, int Fu
     "injuries but you're too exhasted to actually care. Suddenly you notice a red sign, acutually a plus (+) sign on a building. "
     "That's a hospital full of injured people. You're gonna have a long time waiting for your turn. But a good-hearted woman gives you "
     "her turn so you're now the next in line.";
-
     string CaveStory = "As you're walking in darkness, injured and full of wounds, you see a pair of eyes shining out of a cave, "
-    "staring at you. You are frightened and about to run away when an old man with a kind face steps forward,"
-    "inviting you to his cave. A cave full of vague tools. You can't understand what they really are and who he really is until you "
+    "staring at you. You are frightened and about to run away when an old man with a kind face steps forward, inviting you to his cave."
+    " A cave full of vague tools. You can't understand what they really are and who he really is until you "
     "see a paper under some glasses filled with some beverage-looking drinks on which <Mystical Medicines> is written.";
-
     vector<string> Stories = {CrowdedCityStory, CaveStory};  
 
     this -> Story = ShuffleVec(Stories)[0];  
@@ -446,4 +444,63 @@ void Hospital :: Menu(){
         }
     }
    cout <<  medic->ByeDialogue();
+}
+
+RandomEncounter :: RandomEncounter(){Menu();}
+
+RandomEncounter :: RandomEncounter(Player* player){
+    this -> player = player;
+    Menu();
+}
+
+void RandomEncounter :: Menu(){
+
+    int RandomChoice = rand() % 4;
+    
+    switch (RandomChoice)
+    {
+    case 0: // Fight
+        Fight* fight;
+        break;
+    case 1: // Shop
+        Shop* shop;
+        break;
+    case 2: // Disaster
+        cout << "You're looking around for a sign on this mountain when suddenly the ground under your feet shakes. The smoke rises "
+        "from the peak then you see the lava coming out so you start to run but the smoke stops you and makes it hard to breath." << endl;
+        player->setHP(player->getHP()-5);
+        break;
+
+    case 4: // Prize (Mystery Box)
+        int RandomChoice2 = rand() % 5;
+        switch (RandomChoice2)
+        {
+        case 0: // Coin increase
+            cout << "LUCKY YOU! You earned 10 coins" << endl;
+            player->addCoin(10);
+            break;
+        case 1: // HP increase
+            cout << "Congratulations! You've gained 5 more health points!" << endl;
+            player->setHP(player->getHP()+5);
+            break;
+        case 2: // Energy increase
+            cout << "Max Energy increase! (5 points)" << endl;
+            player->setMaxEnergy(player->getMaxEnergy()+5);
+            break;
+        case 3: // Shield increase
+            cout << "Feeling more secure? That's because your shield amount has been increased by 10 points." << endl;
+            player->setShield(player->getShield()+10);
+            break;
+        case 4: // MaxHP increase
+            cout << "Congratulations! You've gained 5 more max health points!" << endl;
+            player->setMaxHP(player->getMaxHP()+5);
+            break;
+        default:
+            break;
+        }
+    default:
+        break;
+    }
+    
+
 }
