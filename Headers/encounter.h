@@ -70,8 +70,12 @@ public:
 };
 
 class RandomEncounter : public Encounter{
+private:
+    Player* player;
 public:
     RandomEncounter() = default;
+    RandomEncounter(Player* player);
+    void Menu();
 };
 
 class Fight : public Encounter{
