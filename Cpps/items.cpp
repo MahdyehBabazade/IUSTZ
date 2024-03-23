@@ -24,6 +24,9 @@ string Item ::getStat() {
     string outPut = Name + " (price: " + to_string(Price) +"$"+", Capacity: " + to_string(Capacity) + ")";
     return outPut;
 }
+string Item::getShortStat(){
+    return Name;
+}
 //------------------------------------
 Weapon :: Weapon(string name,int capacity,int price,int damage,int energyNeed,int upgradeLimit)
         : Damage(damage),EnergyNeeded(energyNeed),UpgradeAmount(0),UpgradeLimit(upgradeLimit), Item(name, capacity, price) {};
@@ -67,6 +70,11 @@ string Weapon::getStat() {
         ", Price: "+to_string(Price)+"$"+", Capacity: "+ to_string(Capacity)+ ")";
     return outPut;
 }
+string Weapon::getShortStat(){
+    string outPut = Name + " (Damage: " + to_string(Damage) + ", EnergyNeeded: " + to_string(EnergyNeeded) +")";
+    return outPut;
+}
+
 //............
 Punch :: Punch(string name, int capacity, int damage, int price, int energyNeed)
         : Weapon(name, capacity, price, damage, energyNeed,0){};
@@ -79,6 +87,13 @@ string Gun::getStat() {
                     ", Ammo: " + to_string(Ammo) + "/" + to_string(MaxAmmo)+ 
                     ", Energy Needed: " + to_string(EnergyNeeded) +
                     ", Reload Energy: " + to_string(ReloadEnergy) +", Price: "+to_string(Price)+"$"+", Capacity: "+ to_string(Capacity)+ ")";
+    return outPut;
+}
+string Gun::getShortStat(){
+    string outPut = Name + " (Damage: " + to_string(Damage) +
+                    ", Ammo: " + to_string(Ammo) + "/" + to_string(MaxAmmo)+ 
+                    ", Energy Needed: " + to_string(EnergyNeeded) +
+                    ", Reload Energy: " + to_string(ReloadEnergy) +")";
     return outPut;
 }
 
@@ -108,12 +123,21 @@ int Shotgun::getMinDamagePercent() {return MinDamagePercent;}
 void Shotgun::setMinDamagePercent(int minDamagePercent) {MinDamagePercent=minDamagePercent;}
 
 string Shotgun::getStat() {
-    int minDamage = (MinDamagePercent+100)/100*Damage;
+    int minDamage = int((MinDamagePercent+100)/100*Damage);
     string outPut = Name + " (Damage: " + to_string(Damage) +
                     ", Ammo: " + to_string(Ammo) + "/" + to_string(MaxAmmo)+
                     ", Energy Needed: " + to_string(EnergyNeeded) +
                     ", Reload Energy: " + to_string(ReloadEnergy) +
                     "Min Damage: "+ to_string(minDamage) +", Price: "+to_string(Price)+"$"+", Capacity: "+ to_string(Capacity)+")";
+    return outPut;
+}
+string Shotgun::getShortStat(){
+    int minDamage = int((MinDamagePercent+100)/100*Damage);
+    string outPut = Name + " (Damage: " + to_string(Damage) +
+                    ", Ammo: " + to_string(Ammo) + "/" + to_string(MaxAmmo)+
+                    ", Energy Needed: " + to_string(EnergyNeeded) +
+                    ", Reload Energy: " + to_string(ReloadEnergy) +
+                    "Min Damage: "+ to_string(minDamage) +")";
     return outPut;
 }
 
@@ -167,6 +191,14 @@ string Rifle::getStat() {
                     "Max Attackable Enemies:"+ to_string(MaxAttackAmount) + ", Price: "+to_string(Price)+"$"+", Capacity: "+ to_string(Capacity)+")";
     return outPut;
 }
+string Rifle::getShortStat(){
+    string outPut = Name + " (Damage: " + to_string(Damage) +
+                    ", Ammo: " + to_string(Ammo) + "/" + to_string(MaxAmmo)+
+                    ", Energy Needed: " + to_string(EnergyNeeded) +
+                    ", Reload Energy: " + to_string(ReloadEnergy) +
+                    "Max Attackable Enemies:"+ to_string(MaxAttackAmount) +")";
+    return outPut;
+}
 //..
 ColdWeapon ::ColdWeapon(string name, int capacity,int price, int damage, int energyNeeded,int upgradeLimit)
         : Weapon( name, capacity, price, damage, energyNeeded,upgradeLimit){}
@@ -213,6 +245,10 @@ string Consumable::getStat() {
     string outPut = Name + " (" + Type + " increase amount: " + to_string(Amount) +", Price: "+to_string(Price)+"$"+", Capacity: "+ to_string(Capacity)+")";
     return outPut;
 }
+string Consumable::getShortStat(){
+    string outPut = Name + " (" + Type + " increase amount: " + to_string(Amount) +")";
+    return outPut;
+}
 //---------------------------
 Equipment ::Equipment(std::string name, int capacity, int price, int amount)
         : Amount(amount),Item( name, capacity, price) {}
@@ -224,6 +260,10 @@ string Equipment ::getStat(){
     string output=Name + "(" + ", Protection: "+to_string(Amount) + "%"+ ", Price: "+ to_string(Price)+ "$"+
         ", Capacity: "+ to_string(Capacity) +")";
         return output;
+}
+string Equipment ::getShortStat(){
+    string output=Name + "(" + ", Protection: "+to_string(Amount) + "%)";
+    return output;
 }
 //..
 Vest ::Vest(std::string name, int capacity, int price, int amount)
@@ -256,4 +296,7 @@ string Relic::getStat() {
     string outPut = Name + " (Hp Increase: " + to_string(MaxHP) +
                     " Energy Increase: " + to_string(MaxEnergy)+")";
     return outPut;
+}
+string Relic::getShortStat(){
+    return getStat();
 }

@@ -28,6 +28,7 @@ public:
     //virtual ~Item()=0; // default constructor
 
     virtual string getStat();
+    virtual string getShortStat();
 };
 
 //--------------------------------
@@ -50,6 +51,7 @@ public:
     void setUpgradeLimit(int upgradeLimit);
 
     string getStat() override; // returns the properties
+    string getShortStat() override;
 };
 
 class Punch: public Weapon{
@@ -71,6 +73,7 @@ public:
     void Reload();
     Gun(string name,int capacity,int price,int damage,int energyNeeded,int ammo,int reloadEnergy,int upgradeLimit);
     string getStat() override;
+    string getShortStat() override;
 };
 
 class Shotgun:public Gun{
@@ -83,7 +86,7 @@ public:
     Shotgun(string name,int capacity, int price ,int damage,int energyNeeded,int reloadEnergy,int ammo,int minDamagePercent,int upgradeLimit);
 
     string getStat() override;
-
+    string getShortStat() override;
 };
 
 class Snipe: public Gun{
@@ -107,6 +110,7 @@ public:
     void Attack(vector<Character*> &characters) override; // attacks chooses a certain amount of enemies and the damage is divided between them
     Rifle(string name,int capacity, int price ,int damage,int energyNeeded,int reloadEnergy,int ammo,int maxAttackAmount,int upgradeLimit);
     string getStat() override;
+    string getShortStat() override;
 };
 
 class ColdWeapon: public Weapon{
@@ -149,6 +153,7 @@ public:
     void setType(string type);
     Consumable(string name,string type,int capacity,int price,int amount);
     string getStat() override;
+    string getShortStat() override;
 
 };
 //------------------------------
@@ -160,6 +165,7 @@ public:
     int getAmount();
     void setAmount(int amount);
     string getStat() override;
+    string getShortStat() override;
 };
 class Vest: public Equipment{
 public:
@@ -190,4 +196,5 @@ public:
     int getMaxHP();
     Relic(string name, int capacity, int price,int MaxHP,int maxEnergy); // remember capacity=0
     string getStat() override;
+    string getShortStat() override;
 };
