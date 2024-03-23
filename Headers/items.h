@@ -152,6 +152,7 @@ public:
     Equipment(string name,int capacity,int price,int amount);
     int getAmount();
     void setAmount(int amount);
+    string getStat() override;
 };
 class Vest: public Equipment{
 public:
