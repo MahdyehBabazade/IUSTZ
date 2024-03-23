@@ -205,8 +205,8 @@ void Shop :: Upgrade(Weapon* weapon){
 
 void Shop :: Sell(Item* item){ // Shopkeeper sells, Player buys
 
-    if (player->getCoin() >= item->getPrice()){
-        player->removeCoin(item->getPrice());
+    if (player->getCoin() >= 1.25*item->getPrice()){
+        player->removeCoin(1.25*item->getPrice());
         player->addItem(item);
         cout << shopkeeper->SellDialogue(item);
     }
@@ -228,7 +228,7 @@ void Shop :: Menu(){
         cout << "1. Buy \n" // Player buys, Shopkeeper sells ( Sell(Item* item) should be called ) 
                 "2. Sell \n"
                 "3. Upgrade \n"
-                "4. Quit";
+                "4. Quit \n";
         int choice;
         cin >> choice;
         switch (choice){
@@ -241,7 +241,7 @@ void Shop :: Menu(){
                     case 1:
                         while(true){
                             for (int i = 0; i < weapons.size(); i++){
-                            cout << i+1 << ". " << weapons[i]->getName() << endl;
+                            cout << i+1 << ". " << weapons[i]->getName() << " " << 1.25*weapons[i]->getPrice() << "$" << endl;
                             }
                             cout << "Choose a weapon to buy (0 to go back): ";
                             cin >> choice;
@@ -254,7 +254,7 @@ void Shop :: Menu(){
                     case 2:
                         while (true){
                             for (int i = 0; i < consumables.size(); i++){
-                                cout << i+1 << ". " << consumables[i]->getName() << endl;
+                                cout << i+1 << ". " << consumables[i]->getName() << " " << 1.25*consumables[i]->getPrice() << "$" << endl;
                             }
                             cout << "Choose a consumable to buy (0 to go back): ";
                             cin >> choice;
@@ -267,7 +267,7 @@ void Shop :: Menu(){
                     case 3:
                         while(true){
                             for (int i = 0; i < equipments.size(); i++){
-                                cout << i+1 << equipments[i]->getName() << endl;
+                                cout << i+1 << equipments[i]->getName() << " " << 1.25*equipments[i]->getPrice() << "$" << endl;
                             }
                             cout << "Choose a consumable to buy (0 to go back): ";
                             cin >> choice;
