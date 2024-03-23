@@ -209,6 +209,7 @@ void Shop :: Sell(Item* item){ // Shopkeeper sells, Player buys
         player->removeCoin(1.25*item->getPrice());
         player->addItem(item);
         cout << shopkeeper->SellDialogue(item);
+        removeItem(item);
     }
     else{
         cout << shopkeeper->NoMoneyDialogue();
@@ -219,6 +220,27 @@ void Shop :: Buy(Item* item){ // Shopkeeper buys, Player sells
     player->addCoin(item->getPrice());
     player->removeItem(item);
     shopkeeper->BuyDialogue(item);
+    addItem(item);
+}
+
+void Shop::addItem(Item* item){
+    if(typeid(item) == typeid(Weapon)){
+        weapons.push_back(dynamic_cast<Weapon*>(item));
+    }else if(typeid(item) == typeid(Consumable)){
+        consumables.push_back(dynamic_cast<Consumable*>(item));
+    }else if(typeid(item) == typeid(Equipment)){
+        equipments.push_back(dynamic_cast<Equipment*>(item));
+    }
+}
+
+void Shop::removeItem(Item* item){
+    if(typeid(item) == typeid(Weapon)){
+        weapons.erase(remove(weapons.begin(),weapons.end(),dynamic_cast<Weapon*>(item)),weapons.end());
+    }else if(typeid(item) == typeid(Consumable)){
+        consumables.erase(remove(consumables.begin(),consumables.end(),dynamic_cast<Consumable*>(item)),consumables.end());
+    }else if(typeid(item) == typeid(Equipment)){
+        equipments.erase(remove(equipments.begin(),equipments.end(),dynamic_cast<Equipment*>(item)),equipments.end());
+    }
 }
 
 void Shop :: Menu(){

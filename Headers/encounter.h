@@ -44,6 +44,9 @@ public:
     void Sell(Item* item); // The shopkeeper sells sth to the player
     void Buy(Item* item); // The shopkeeper buys sth from the player
     void Menu(); 
+    
+    void addItem(Item* item);
+    void removeItem(Item* item);
 };
 
 class Hospital : public Encounter{
