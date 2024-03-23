@@ -477,7 +477,7 @@ void RandomEncounter :: Menu(){
         case 1: // Coin decrease
             cout << "You enter a mysterious cave where its walls are all covered with strange patterns. You're actually fascinated by what "
             "you're looking at. Suddenly you hear a weird sound 'KHSH KHSH'. What was that? You put your hand in your pocket with "
-            "hesistation to take your gun out. 5 coins fells on the ground. You bend over to collect them but out of nowhere a monkey "
+            "hesistation to take your gun out. 5 coins fell down. You bend over to collect them but out of nowhere a monkey "
             "appears and takes away all those coins." << endl;
             player->removeCoin(5);
             break;
