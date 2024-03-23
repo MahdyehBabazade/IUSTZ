@@ -5,7 +5,7 @@
 using namespace std;
 
 class Encounter{
-private:
+protected:
     string Story;
 public: 
     Encounter(string Story);

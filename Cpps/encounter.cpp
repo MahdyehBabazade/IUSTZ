@@ -1,11 +1,19 @@
 #include "../Headers/encounter.h"
 #include <iostream>
+#include <random>
+
+vector<string> ShuffleVec(vector<string> vec){ // Shuffles a vector
+    random_device rd;
+    default_random_engine abs(rd());
+    shuffle(vec.begin(), vec.end(), abs);
+    return vec;
+}
 
 Encounter :: Encounter(string Story){this -> Story = Story;}
 
 string Encounter :: getStory(){return Story;}
 
-Shop :: Shop(Player* player, vector<Weapon*> weapons, vector<Consumable*> consumables, vector<Equipment*> equipments, Shopkeeper* shopkeeper,string Story) : Encounter(Story){
+Shop :: Shop(Player* player, vector<Weapon*> weapons, vector<Consumable*> consumables, vector<Equipment*> equipments, Shopkeeper* shopkeeper, string Story){
 
     this -> player = player;
     this -> weapons = weapons;
@@ -15,6 +23,20 @@ Shop :: Shop(Player* player, vector<Weapon*> weapons, vector<Consumable*> consum
     this -> WantsToQuit = false;
     this -> BaseUpgradePrice = 5; // Changes later
     this -> UpgradesLeft = 6; // Changes later
+
+    string BazaarStory = "As you wander through the crowded boulevard, getting curious about the growing number of people, "
+    "you enter a traditional bazaar hall where everyone is just shouting. This place is all colorful but you are too exhasted to"
+    "open your eyes widely to see all the beauty here. A man with a weird mustache out of nowhere takes you in his store. Where is "
+    "here? I guess you're in where you should be.";
+
+    string ForestStory = "While exploring the dense forest, you found this dusty open wooden door. Having entered, you saw a collection"
+    " of weapons and other war stuff. It's noticable on the mat below the door <You and your shoes are welcome. Clean them ;)> "
+    "There is no man, low light, weird patterns on the wall and valuable-looking items. The shopkeepr, a man of god -looking so- "
+    "with long white beard came down the stairs. ";
+
+    vector<string> Stories = {BazaarStory, ForestStory};
+
+    this -> Story = ShuffleVec(Stories)[0];
 }
 
 vector<Weapon*> Shop :: getWeapons(){return weapons;}
@@ -24,6 +46,7 @@ vector<Consumable*> Shop :: getConsumables(){return consumables;}
 vector<Equipment*> Shop :: getEquipments(){return equipments;}
 
 string UpgradeNameChange(string name, int upgradeAmount){
+
     if(upgradeAmount != 0){
         int spaceIndex = name.find_last_of(' ');
         name = name.substr(0,spaceIndex);   
@@ -193,7 +216,7 @@ void Shop :: Sell(Item* item){ // Shopkeeper sells, Player buys
 }
 
 void Shop :: Buy(Item* item){ // Shopkeeper buys, Player sells
-    
+    player->addCoin(item->getPrice());
     player->removeItem(item);
     shopkeeper->BuyDialogue(item);
 }
@@ -310,14 +333,28 @@ void Shop :: Menu(){
     cout << shopkeeper->ByeDialogue();
 }
     
-Hospital :: Hospital(Player* player, Medic* medic, int MaxHpIncresePrice, int FullHealPrice, int HalfHealPrice, string Story) : Encounter(Story){
+Hospital :: Hospital(Player* player, Medic* medic, int MaxHpIncresePrice, int FullHealPrice, int HalfHealPrice, string Story){
     this->player = player;
     this->medic = medic;
     this->MaxHpIncreasePrice = MaxHpIncreasePrice;
     this->FullHealPrice = FullHealPrice;
     this->HalfHealPrice = HalfHealPrice;
     this->HasHealed = false;
-};
+
+    string CrowdedCityStory = "As you walk through the crowded street with a limp, a baby girl screams seeing your body and face "
+    "injuries but you're too exhasted to actually care. Suddenly you notice a red sign, acutually a plus (+) sign on a building. "
+    "That's a hospital full of injured people. You're gonna have a long time waiting for your turn. But a good-hearted woman gives you "
+    "her turn so you enter the doctor's.";
+
+    string CaveStory = "As you're walking in darkness, injured and full of wounds, you see a pair of eyes shining out of a cave, "
+    "staring at you. You are frightened and about to run away. The body of those eyes shows up. It is an old man with a kind face "
+    "inviting you to his cave. A cave full of vague tools. You can't understand what they really are and who he really is untill you "
+    "see a paper under some glasses filled with some beverage-looking drinks on which <Mystical Medicines> is written.";
+
+    vector<string> Stories = {CrowdedCityStory, CaveStory};  
+
+    this -> Story = ShuffleVec(Stories)[0];  
+}
 
 
 void Hospital :: FullHeal(){
