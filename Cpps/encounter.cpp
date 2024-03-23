@@ -485,7 +485,7 @@ void RandomEncounter :: Menu(){
             cout << "You're walking through this endless-looking road tiredly. You're thinking about your last fight, remembering your "
             "weaknesses and analyzing them. The sound of someone walking on the grass took you out of your thoughts and made you look "
             "around yourself carefully. A zombie looking exactly like the zombie you lately fought with, appears and runs after you. You "
-            "get shocked but run faster and faster untill you find a cave to take shelter in." << endl;
+            "get shocked but run faster and faster untill you find a cave to take shelter in. " << endl;
             player->setMaxEnergy(player->getMaxEnergy()-3);
             break;
         default:
@@ -504,7 +504,7 @@ void RandomEncounter :: Menu(){
             break;
         case 1: // HP increase
             cout << "Congratulations! You've gained 5 more health points!" << endl;
-            player->setHP(player->getHP()+5);
+            player->setHP(max(player->getHP()+5,player->getMaxHP()));
             break;
         case 2: // Energy increase
             cout << "Max Energy increase! (5 points)" << endl;
@@ -512,7 +512,7 @@ void RandomEncounter :: Menu(){
             break;
         case 3: // Shield increase
             cout << "Feeling more secure? That's because your shield amount has been increased by 10 points." << endl;
-            player->setShield(player->getShield()+10);
+            player->setShield(max(player->getShield()+10,100));
             break;
         case 4: // MaxHP increase
             cout << "Congratulations! You've gained 5 more max health points!" << endl;
