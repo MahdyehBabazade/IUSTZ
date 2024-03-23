@@ -466,14 +466,37 @@ void RandomEncounter :: Menu(){
         Shop* shop;
         break;
     case 2: // Disaster
-        cout << "You're looking around for a sign on this mountain when suddenly the ground under your feet shakes. The smoke rises "
-        "from the peak then you see the lava coming out so you start to run but the smoke stops you and makes it hard to breath." << endl;
-        player->setHP(player->getHP()-5);
+        RandomChoice = rand() % 3;
+        switch (RandomChoice)
+        {
+        case 0: // HP decrease
+            cout << "You're looking around for a sign on this mountain when suddenly the ground under your feet shakes. The smoke rises "
+            "from the peak then you see the lava coming out so you start to run but the smoke stops you and makes it hard to breath." << endl;
+            player->setHP(player->getHP()-5);
+            break;
+        case 1: // Coin decrease
+            cout << "You enter a mysterious cave where its walls are all covered with strange patterns. You're actually fascinated by what "
+            "you're looking at. Suddenly you hear a weird sound 'KHSH KHSH'. What was that? You put your hand in your pocket with "
+            "hesistation to take your gun out. 5 coins fells on the ground. You bend over to collect them but out of nowhere a monkey "
+            "appears and takes away all those coins." << endl;
+            player->removeCoin(5);
+            break;
+        case 3: // Max Energy decrease
+            cout << "You're walking through this endless-looking road tiredly. You're thinking about your last fight, remembering your "
+            "weaknesses and analyzing them. The sound of someone walking on the grass took you out of your thoughts and made you look "
+            "around yourself carefully. A zombie looking exactly like the zombie you lately fought with, appears and runs after you. You "
+            "get shocked but run faster and faster untill you find a cave to take shelter in." << endl;
+            player->setMaxEnergy(player->getMaxEnergy()-3);
+            break;
+        default:
+            break;
+        }
+        
         break;
 
     case 4: // Prize (Mystery Box)
-        int RandomChoice2 = rand() % 5;
-        switch (RandomChoice2)
+        RandomChoice = rand() % 5;
+        switch (RandomChoice)
         {
         case 0: // Coin increase
             cout << "LUCKY YOU! You earned 10 coins" << endl;
