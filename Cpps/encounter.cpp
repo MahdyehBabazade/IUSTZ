@@ -446,8 +446,6 @@ void Hospital :: Menu(){
    cout <<  medic->ByeDialogue();
 }
 
-RandomEncounter :: RandomEncounter(){Menu();}
-
 RandomEncounter :: RandomEncounter(Player* player){
     this -> player = player;
     Menu();
@@ -473,20 +471,25 @@ void RandomEncounter :: Menu(){
             cout << "You're looking around for a sign on this mountain when suddenly the ground under your feet shakes. The smoke rises "
             "from the peak then you see the lava coming out so you start to run but the smoke stops you and makes it hard to breath." << endl;
             player->setHP(player->getHP()-5);
+            cout << "< You lost 5 health points =( >" << endl;
             break;
         case 1: // Coin decrease
             cout << "You enter a mysterious cave where its walls are all covered with strange patterns. You're actually fascinated by what "
             "you're looking at. Suddenly you hear a weird sound 'KHSH KHSH'. What was that? You put your hand in your pocket with "
-            "hesistation to take your gun out. 5 coins fell down. You bend over to collect them but out of nowhere a monkey "
+            "hesistation to take your gun out. 5 coins fall down. You bend over to collect them but out of nowhere a monkey "
             "appears and takes away all those coins." << endl;
             player->removeCoin(5);
+            cout << "< You lost 5 coins :( >" << endl;
             break;
-        case 3: // Max Energy decrease
+        case 3: // BackpackCapacity decrease
             cout << "You're walking through this endless-looking road tiredly. You're thinking about your last fight, remembering your "
-            "weaknesses and analyzing them. The sound of someone walking on the grass took you out of your thoughts and made you look "
+            "weaknesses and analyzing them. The sound of someone walking on the grass takes you out of your thoughts and makes you look "
             "around yourself carefully. A zombie looking exactly like the zombie you lately fought with, appears and runs after you. You "
-            "get shocked but run faster and faster untill you find a cave to take shelter in. " << endl;
-            player->setMaxEnergy(player->getMaxEnergy()-3);
+            "get shocked but run faster and faster but your backpack gets stuck on a tree branch. Trying to remove it, the zombie gets closer "
+            "but you finally succeed and find a cave to take shelter in." << endl;
+            // Decreases the size ignoring if the pack is for or not
+            player->setBackPackCapacity(player->getBackPackCapacity()-3); // Can be changed later 
+            cout << "< Yout backpack's capacity is now decreased by 3 points =( >";
             break;
         default:
             break;
@@ -495,24 +498,35 @@ void RandomEncounter :: Menu(){
         break;
 
     case 4: // Prize (Mystery Box)
+        RandomChoice = rand() % 3;
+        switch (RandomChoice)
+        {
+        case 0:
+            cout << "Wandering through this dense forest, a shining object which seems to have a large part of it still underground " 
+            "makes you stare at it for seconds. You go closer untill you approach enough to take it out from the soil. It seems to be "
+            "a gift box. You open it and... " << endl;
+            break;
+        default:
+            break;
+        }
         RandomChoice = rand() % 5;
         switch (RandomChoice)
         {
         case 0: // Coin increase
-            cout << "LUCKY YOU! You earned 10 coins" << endl;
+            cout << "LUCKY YOU! You earned 10 coins." << endl;
             player->addCoin(10);
             break;
         case 1: // HP increase
             cout << "Congratulations! You've gained 5 more health points!" << endl;
-            player->setHP(max(player->getHP()+5,player->getMaxHP()));
+            player->setHP(min(player->getHP()+5, player->getMaxHP()));
             break;
-        case 2: // Energy increase
+        case 2: // Max Energy increase
             cout << "Max Energy increase! (5 points)" << endl;
             player->setMaxEnergy(player->getMaxEnergy()+5);
             break;
         case 3: // Shield increase
-            cout << "Feeling more secure? That's because your shield amount has been increased by 10 points." << endl;
-            player->setShield(max(player->getShield()+10,100));
+            cout << "Feeling more secure? That's because your shield amount has been increased by 10 points!" << endl;
+            player->setShield(min(player->getShield()+10, 100));
             break;
         case 4: // MaxHP increase
             cout << "Congratulations! You've gained 5 more max health points!" << endl;
