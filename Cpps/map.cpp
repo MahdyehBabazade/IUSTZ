@@ -424,31 +424,37 @@ vector<vector<string>> generateEncounters(vector<int> path1 , vector<int> path2 
 
 string Showmap(vector<int> path1, vector<int> path2, vector<int> path3 ,vector<int> path4,vector<vector<string>> generateEncounter){
     string map;
-    for(int i=0; i<14 ;i++){
-        vector<bool> slash={false,false,false,false,false,false}
-        vector<bool> backSlash={false,false,false,false,false,false}
-        vector<bool> line={false,false,false,false,false,false}
+    for(int i=0; i<9 ;i++){
+        vector<bool> slash={false,false,false,false,false};
+        vector<bool> backSlash={false,false,false,false,false};
+        vector<bool> line={false,false,false,false,false,false};
         if(path1[i+1]==path1[i]+1 )
             backSlash[path1[i]]=true;
+        else if(path1[i+1]==path1[i]-1 )
+            slash[path1[i]-1]=true;
+        else if(path1[i+1]==path1[i] )  
+            line[path1[i]]=true;
         if(path2[i+1]==path2[i]+1 )
             backSlash[path2[i]]=true;
+        else if(path2[i+1]==path2[i]-1 )
+            slash[path2[i]-1]=true;
+        else if(path2[i+1]==path2[i])
+            line[path2[i]]=true;
         if(path3[i+1]==path3[i]+1)
             backSlash[path3[i]]=true;
-        if(path1[i+1]==path1[i]-1 )
-            slash[path1[i]]=true;
-        if(path2[i+1]==path2[i]-1 )
-            slash[path2[i]]=true;
-        if(path3[i+1]==path3[i]-1)
-            slash[path3[i]]=true;
-        if(path1[i+1]==path1[i] )  
-            line[path1[i]]=true;
-        if(path2[i+1]==path2[i])
-            line[path2[i]]=true;
-        if(path3[i+1]==path3[i])
+        else if(path3[i+1]==path3[i]-1)
+            slash[path3[i]-1]=true;
+        else if(path3[i+1]==path3[i])
             line[path3[i]]=true;
+        if(path4[i+1]==path4[i]+1)
+            backSlash[path4[i]]=true;
+        else if(path4[i+1]==path4[i]-1)
+            slash[path4[i]-1]=true;
+        else if(path4[i+1]==path4[i])
+            line[path4[i]]=true;
         for(int z=0;z<3;z++){
             for(int j=0;j<6;j++){
-                if(generateEncounter[i][j]==" ")
+                if(generateEncounter[i][j]=="")
                     map+="   ";
                 if(generateEncounter[i][j]=="Hospital")
                     map+="+++";
@@ -472,76 +478,72 @@ string Showmap(vector<int> path1, vector<int> path2, vector<int> path3 ,vector<i
                     if(z==2)
                         map+="/ \\";                    
                 }
+                map += "   ";
             }
             map+="\n";
         }
         
         for(int j=0;j<4 ;j++){
-            for(int z=0;z<6;z++){
+            for(int z=0;z<5;z++){
                 if(z==0)
-                map+=" ";
+                    map+=" ";
                 if(line[z]==true)
                     map+="|";
+                else
+                    map+=" ";
                 if(slash[z]==true){
-                    while(3-j!=0){
+                    for(int k = 0; k < 3 - j; k++){
                         map+=" ";
-                        (3-j)--;
                     }
                     map+="/";
-                    while(j+1!=0){
+                    for(int k = 0; k < j + 1; k++){
                         map+=" ";
-                        (j+1)--;
                     }
                 }
-                if(backSlash[z]==true){
-                    while(j!=0){
+                else if(backSlash[z]==true){
+                    for(int k = 0; k < j; k++){
                         map+=" ";
-                        j--;
                     }
                     map+="\\";
-                    while(3-j!=0){
+                    for(int k = 0; k < 4 - j; k++){
                         map+=" ";
-                        (3-j)--;
                     }
                 }
-                if(line[z]==false)
-                    map+=" ";
-                if(z!=5){
-                    if(slash[z+1]==false && backSlash[z]==false)
-                        map+="     ";
-                }
-                if(z==5)
-                    map+=" ";
+                else
+                    map+="     ";
             }
-            map+="\n";
+            if(line[5] == true)
+                map+="|";
+            map+=" \n";
         }     
     }
     for(int i=0;i<3;i++){
         for(int j=0;j<6;j++){
-            if(generateEncounter[14][j]==" ")
+            if(generateEncounter[9][j]=="")
                 map+="   ";
-            if(generateEncounter[14][j]=="Hospital")
+            if(generateEncounter[9][j]=="Hospital")
                 map+="+++";
-            if(generateEncounter[14][j]=="Shop")
+            if(generateEncounter[9][j]=="Shop")
                 map+="$$$";
-            if(generateEncounter[14][j]=="Random")
+            if(generateEncounter[9][j]=="Random")
                map+="???";
-            if(generateEncounter[14][j]=="Fight"){
-                if(z==0)
+            if(generateEncounter[9][j]=="Fight"){
+                if(i==0)
                     map+=" - ";
-                if(z==1)
+                if(i==1)
                     map+="/ \\";
-                if(z==2)
+                if(i==2)
                     map+=" | ";
             }
-            if(generateEncounter[14][j]=="MiniBoss"){
-                if(z==0)
+            if(generateEncounter[9][j]=="MiniBoss"){
+                if(i==0)
                     map+="*_*";
-                if(z==1)
+                if(i==1)
                     map+=" | ";
-                if(z==2)
+                if(i==2)
                     map+="/ \\";                    
             }
+            map+="   ";
         }
         map+="\n";            
     }
@@ -556,3 +558,13 @@ string Map::getMap() { return ShowMap;}
 pair<int , int> Map :: getCurrentNode(){return CurrentNode;}
 
 void Map::setCurrentNode(pair<int,int> CurrentNode){this->CurrentNode = CurrentNode;}
+
+int main(){
+    vector<int> a , b , c , d;
+    a = PathFinding1();
+    b = PathFinding2(a);
+    c = PathFinding3(a , b);
+    d = PathFinding4(a , b , c);
+    vector<vector<string>> e = generateEncounters(a , b , c , d);
+    cout << Showmap(a , b , c , d , e);
+}
