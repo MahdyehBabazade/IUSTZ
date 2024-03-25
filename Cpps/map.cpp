@@ -209,7 +209,7 @@ vector<int> PathFinding4(vector<int> path1,vector<int> path2,vector<int>path3){
             ||(path2[i-1]==path[i-1]+1 && path2[i]==path[i-1] && path3[i-1]==path[i-1]-1 && path3[i]==path[i-1])){
                 path[i]=path[i-1];
             }
-            else if((path1[i-1]=path[i-1]+1 && path1[i]==path[i-1])
+            else if((path1[i-1]==path[i-1]+1 && path1[i]==path[i-1])
             || (path2[i-1]==path[i-1]+1 && path2[i]==path[i-1]) 
             || (path3[i-1]==path[i-1]+1 && path3[i]==path[i-1])){
                 vector<int> nexthome={path[i-1],path[i-1]-1};
@@ -218,7 +218,7 @@ vector<int> PathFinding4(vector<int> path1,vector<int> path2,vector<int>path3){
                 shuffle(nexthome.begin(), nexthome.end(), abs);
                 path[i]=nexthome[0];
             }
-            else if((path1[i-1]=path[i-1]-1 && path1[i]==path[i-1])
+            else if((path1[i-1]==path[i-1]-1 && path1[i]==path[i-1])
             || (path2[i-1]==path[i-1]-1 && path2[i]==path[i-1]) 
             || (path3[i-1]==path[i-1]-1 && path3[i]==path[i-1])){
                 vector<int> nexthome={path[i-1],path[i-1]+1};
@@ -422,7 +422,131 @@ vector<vector<string>> generateEncounters(vector<int> path1 , vector<int> path2 
 }
 
 
-string Showmap(vector<int> path1, vector<int> path2, vector<int> path3 ,vector<int> path4,vector<vector<Encounter*>> generateEncounter);
+string Showmap(vector<int> path1, vector<int> path2, vector<int> path3 ,vector<int> path4,vector<vector<string>> generateEncounter){
+    string map;
+    for(int i=0; i<14 ;i++){
+        vector<bool> slash={false,false,false,false,false,false}
+        vector<bool> backSlash={false,false,false,false,false,false}
+        vector<bool> line={false,false,false,false,false,false}
+        if(path1[i+1]==path1[i]+1 )
+            backSlash[path1[i]]=true;
+        if(path2[i+1]==path2[i]+1 )
+            backSlash[path2[i]]=true;
+        if(path3[i+1]==path3[i]+1)
+            backSlash[path3[i]]=true;
+        if(path1[i+1]==path1[i]-1 )
+            slash[path1[i]]=true;
+        if(path2[i+1]==path2[i]-1 )
+            slash[path2[i]]=true;
+        if(path3[i+1]==path3[i]-1)
+            slash[path3[i]]=true;
+        if(path1[i+1]==path1[i] )  
+            line[path1[i]]=true;
+        if(path2[i+1]==path2[i])
+            line[path2[i]]=true;
+        if(path3[i+1]==path3[i])
+            line[path3[i]]=true;
+        for(int z=0;z<3;z++){
+            for(int j=0;j<6;j++){
+                if(generateEncounter[i][j]==" ")
+                    map+="   ";
+                if(generateEncounter[i][j]=="Hospital")
+                    map+="+++";
+                if(generateEncounter[i][j]=="Shop")
+                    map+="$$$";
+                if(generateEncounter[i][j]=="Random")
+                    map+="???";
+                if(generateEncounter[i][j]=="Fight"){
+                    if(z==0)
+                        map+=" - ";
+                    if(z==1)
+                        map+="/ \\";
+                    if(z==2)
+                        map+=" | ";
+                }
+                if(generateEncounter[i][j]=="MiniBoss"){
+                    if(z==0)
+                        map+="*_*";
+                    if(z==1)
+                        map+=" | ";
+                    if(z==2)
+                        map+="/ \\";                    
+                }
+            }
+            map+="\n";
+        }
+        
+        for(int j=0;j<4 ;j++){
+            for(int z=0;z<6;z++){
+                if(z==0)
+                map+=" ";
+                if(line[z]==true)
+                    map+="|";
+                if(slash[z]==true){
+                    while(3-j!=0){
+                        map+=" ";
+                        (3-j)--;
+                    }
+                    map+="/";
+                    while(j+1!=0){
+                        map+=" ";
+                        (j+1)--;
+                    }
+                }
+                if(backSlash[z]==true){
+                    while(j!=0){
+                        map+=" ";
+                        j--;
+                    }
+                    map+="\\";
+                    while(3-j!=0){
+                        map+=" ";
+                        (3-j)--;
+                    }
+                }
+                if(line[z]==false)
+                    map+=" ";
+                if(z!=5){
+                    if(slash[z+1]==false && backSlash[z]==false)
+                        map+="     ";
+                }
+                if(z==5)
+                    map+=" ";
+            }
+            map+="\n";
+        }     
+    }
+    for(int i=0;i<3;i++){
+        for(int j=0;j<6;j++){
+            if(generateEncounter[14][j]==" ")
+                map+="   ";
+            if(generateEncounter[14][j]=="Hospital")
+                map+="+++";
+            if(generateEncounter[14][j]=="Shop")
+                map+="$$$";
+            if(generateEncounter[14][j]=="Random")
+               map+="???";
+            if(generateEncounter[14][j]=="Fight"){
+                if(z==0)
+                    map+=" - ";
+                if(z==1)
+                    map+="/ \\";
+                if(z==2)
+                    map+=" | ";
+            }
+            if(generateEncounter[14][j]=="MiniBoss"){
+                if(z==0)
+                    map+="*_*";
+                if(z==1)
+                    map+=" | ";
+                if(z==2)
+                    map+="/ \\";                    
+            }
+        }
+        map+="\n";            
+    }
+    return map;
+}
 
 Map::Map(int floor,string map,vector<int> path1, vector<int> path2, vector<int> path3 ,vector<int> path4 ,vector<vector<Encounter*>> generateEncounter)
 : Floor(floor),ShowMap(map), Path1(path1), Path2(path2), Path3(path3) ,Path4(path4) ,GenerateEncounter(generateEncounter){}
