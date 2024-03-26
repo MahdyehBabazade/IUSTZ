@@ -25,4 +25,5 @@ public:
     vector<int> getPassedNodes();
     void addPassedNodes(int Node);
     vector<bool> PossibleWays();
+    void move();
 };
