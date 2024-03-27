@@ -16,10 +16,6 @@ const string green("\033[1;32m");
 const string magenta("\033[0;35m");
 const string grey("\033[90m");
 
-void clearLine(){
-    cout << "\033[2k";
-}
-
 void clearScreen(){
     system("cls");
 }
@@ -130,7 +126,6 @@ vector<int> PathFinding3(vector<int> path1,vector<int> path2){
     do{
         path[0]=rand() %6;
     }while(path[0]==path1[0] || path[0]==path2[0]);
-    path[0]=rand()% 6;
     for(int i=1;i<15;i++){
         if(path[i-1]==0){
             if((path1[i-1]==1&& path1[i]==0)||(path2[i-1]==1&&path2[i]==0)){
@@ -162,7 +157,7 @@ vector<int> PathFinding3(vector<int> path1,vector<int> path2){
                 path[i]==path[i-1];
             }
             else if((path2[i-1]==path[i-1]+1 && path2[i]==path[i-1])
-            ||(path1[i-1]==path[i-1]+1 && path2[i]==path[i-1])){
+            ||(path1[i-1]==path[i-1]+1 && path1[i]==path[i-1])){
                 vector<int> nexthome={path[i-1],path[i-1]-1};
                 random_device rd;
                 default_random_engine abs(rd());
@@ -617,16 +612,18 @@ string Map :: ShowMap(){
                 if(z==0)
                     map+=" ";
                 if(line[z]==true){
-                    if(i < PassedNodes.size() - 1 && z == PassedNodes[i] && z==PassedNodes[i + 1])
-                        map += green;
+                    if(i < PassedNodes.size() - 1 && !PassedNodes.empty())
+                        if(z == PassedNodes[i] && z==PassedNodes[i + 1])
+                            map += green;
                     map+="|";
                     map+=reset;
                 }
                 else
                     map+=" ";
                 if(slash[z]==true){
-                    if(i < PassedNodes.size() - 1 && z == PassedNodes[i] - 1 && z == PassedNodes[i + 1])
-                        map += green;
+                    if(i < PassedNodes.size() - 1 && !PassedNodes.empty())
+                        if(z == PassedNodes[i] - 1 && z == PassedNodes[i + 1])
+                            map += green;
                     for(int k = 0; k < 4 - j; k++){
                         map+=" ";
                     }
@@ -636,8 +633,9 @@ string Map :: ShowMap(){
                     }
                 }
                 else if(backSlash[z]==true){
-                    if(i < PassedNodes.size() - 1 && z == PassedNodes[i] && z ==PassedNodes[i + 1] - 1)
-                        map += green;
+                    if(i < PassedNodes.size() - 1 && !PassedNodes.empty())
+                        if(z == PassedNodes[i] && z ==PassedNodes[i + 1] - 1)
+                            map += green;
                     for(int k = 0; k < j; k++){
                         map+=" ";
                     }
@@ -651,7 +649,7 @@ string Map :: ShowMap(){
                 map += reset;
             }
             if(line[5] == true){
-                if(i < PassedNodes.size() - 1 && 5 == PassedNodes[i] && 5 == PassedNodes[i + 1])
+                if(i < PassedNodes.size() - 1 && !PassedNodes.empty() && 5 == PassedNodes[i] && 5 == PassedNodes[i + 1])
                     map += green;
                 map+="|";
                 map+=reset;
@@ -662,7 +660,7 @@ string Map :: ShowMap(){
     }
     for(int i=0;i<3;i++){
         for(int j=0;j<6;j++){
-            if(PassedNodes.size() < 15)
+            if(PassedNodes.size() == 15)
                 if(PassedNodes[14] == j)
                     map += green;
             if(CurrentNode.first==14 && CurrentNode.second == j)
@@ -681,7 +679,7 @@ string Map :: ShowMap(){
 Map::Map(int floor , vector<int> path1 , vector<int> path2 , vector<int> path3 , vector<int> path4 ,
 vector<int> path5 , vector<vector<string>> generateEncounter)
 : Floor(floor), Path1(path1), Path2(path2), Path3(path3) ,Path4(path4) , Path5(path5) , GenerateEncounter(generateEncounter){
-    this->PassedNodes={};
+    this->PassedNodes = {};
     this->CurrentNode=make_pair(-1,-1);
 }
 
@@ -739,7 +737,7 @@ vector<bool> Map::PossibleWays(){
 }
 
 void Map::move(){
-    cout << ShowMap() << "\n\n\n";
+    string map = ShowMap();
     if(CurrentNode.first == -1){
         string sizecounter = "";
         vector<int> Options;
@@ -750,6 +748,8 @@ void Map::move(){
         int m = 0;
         bool breaker = true;
         while(breaker){
+            clearScreen();
+            cout << map << "\n\n\n";
             sizecounter = "";
             for(int i = 0; i < 6; i++){
                 if(GenerateEncounter[0][i] == "")
@@ -759,7 +759,7 @@ void Map::move(){
                 sizecounter += to_string(i + 1) + ". " + GenerateEncounter[0][i] + "\n";
                 sizecounter += reset;
             }
-            sizecounter += "Move between options with W & S.\n";
+            sizecounter += "Move between options with W & S and choose the option with Enter.\n";
             cout << sizecounter;
             char key = _getch();
             switch (key)
@@ -770,15 +770,14 @@ void Map::move(){
             case 's':
                 m++;
                 break;
-            case '\n':
+            case '\r':
                 breaker = false;
                 break;
             default:
                 break;
             }
-            for(int i = 0; i < sizecounter.size(); i++){
-                cout << "\b";
-            }
+            for(int i = 0; i < 7; i++)
+                cout << "\r\b";
         }
         CurrentNode = make_pair(0 , Options[m % Options.size()]);
         addPassedNodes(Options[m % Options.size()]);
@@ -794,6 +793,8 @@ void Map::move(){
         bool breaker = true;
         string sizecounter;
         while(breaker){
+            clearScreen();
+            cout << map << "\n\n\n";
             sizecounter = "";
             for(int i = 0; i < 3; i++){
                 if(i == Options[m % Options.size()])
@@ -808,7 +809,7 @@ void Map::move(){
                     sizecounter += to_string(i + 1) + ". Bottom Right\n";
                 sizecounter += reset;
             }
-            sizecounter += "Move between options with W & S.\n";
+            sizecounter += "Move between options with W & S and choose the option with Enter.\n";
             cout << sizecounter;
             char key = _getch();
             switch (key)
@@ -819,113 +820,100 @@ void Map::move(){
             case 's':
                 m++;
                 break;
-            case '\n':
+            case '\r':
                 breaker = false;
                 break;
             default:
                 break;
             }
-            for(int i = 0; i < sizecounter.size(); i++){
-                cout << "\b";
-            }
         }
-        CurrentNode = make_pair(CurrentNode.first + 1 , Options[m % Options.size()]);
-        addPassedNodes(Options[m % Options.size()]);
+        CurrentNode = make_pair(CurrentNode.first + 1 , CurrentNode.second + Options[(m % Options.size())] - 1);
+        addPassedNodes(CurrentNode.second);
     }
 }
 
 int main(){
     srand(time(0));
-    vector<int> a , b , c , d , f;
-    a = PathFinding1();
-    b = PathFinding2(a);
-    c = PathFinding3(a , b);
-    d = PathFinding4(a , b , c);
-    f = PathFinding5(a , b , c , d);
-    vector<vector<string>> e = generateEncounters(a , b , c , d , f);
-    Map map(1 , a , b , c , d , f , e);
-    for(int i = 0; i < 15 ; i++){
-        map.addPassedNodes(a[i]);
+    bool first = true;
+    while(first){
+        vector<int> path1 , path2 , path3 , path4 , path5;
+        vector<vector<string>> Encounters;
+        path1 = PathFinding1();
+        path2 = PathFinding2(path1);
+        path3 = PathFinding3(path1 , path2);
+        path4 = PathFinding4(path1 , path2 , path3);
+        path5 = PathFinding5(path1 , path2 , path3 , path4);
+        Encounters = generateEncounters(path1 , path2 , path3 , path4 , path5);
+        Map map(1 , path1 , path2 , path3 , path4 , path5 , Encounters);
+        bool second = true;
+        int m = 0;
+        vector<bool> pos = {true , true , true , true};
+        vector<int> Options =  {0 , 1 , 2 , 3};
+        string sizecounter;
+        while(second){
+            clearScreen();
+            bool third = true;
+            while(third){
+                clearScreen();
+                sizecounter = "";
+                for(int i = 0; i < 4; i++){
+                    if(i == Options[m % Options.size()])
+                        sizecounter += green;
+                    if(!pos[i])
+                        sizecounter += grey;
+                    if(i == 0)
+                        sizecounter += "1. Generate another map\n";
+                    if(i == 1)
+                        sizecounter += "2. Show the map\n";
+                    if(i == 2)
+                        sizecounter += "3. Move in map\n";
+                    if(i == 3)
+                        sizecounter += "4. Exit\n";
+                    sizecounter += reset;
+                }
+                cout << sizecounter;
+                cout << "Move between Options with W & S choose the option with Enter.\n";
+                char key = _getch();
+                switch (key)
+                {
+                case 'w':
+                    m--;
+                    break;
+                case 's':
+                    m++;
+                    break;
+                case '\r':
+                    third = false;
+                    break;
+                default:
+                    break;
+                }
+            }
+            clearScreen();
+            switch (Options[m % Options.size()])
+            {
+            case 0:
+                second = false;
+                break;
+            case 1:{
+                cout << map.ShowMap();
+                getch();
+                break;
+            }
+            case 2:{
+                map.move();
+                if(map.getCurrentNode().first == 14){
+                    Options = {0 , 1 , 3};
+                    pos[2] = false;
+                }
+                break;
+            }
+            default:{
+                second = false;
+                first = false;
+                break;
+            }
+            }
+        }
     }
-    map.setCurrentNode(make_pair(14 , a[14]));
-    cout<<map.ShowMap();
 }
-
-// int main(){
-//     bool first = true;
-//     while(first){
-//         vector<int> path1 , path2 , path3 , path4 , path5;
-//         vector<vector<string>> Encounters;
-//         path1 = PathFinding1();
-//         path2 = PathFinding2(path1);
-//         path3 = PathFinding3(path1 , path2);
-//         path4 = PathFinding4(path1 , path2 , path3);
-//         path5 = PathFinding5(path1 , path2 , path3 , path4);
-//         Encounters = generateEncounters(path1 , path2 , path3 , path4 , path5);
-//         Map map(1 , path1 , path2 , path3 , path4 , path5 , Encounters);
-//         bool second = true;
-//         int m = 0;
-//         vector<bool> pos = {true , true , true , true};
-//         vector<int> Options =  {0 , 1 , 2 , 3};
-//         string sizecounter;
-//         while(second){
-//             clearScreen();
-//             bool third = true;
-//             while(third){
-//                 clearScreen();
-//                 sizecounter = "";
-//                 for(int i = 0; i < 4; i++){
-//                     if(i == Options[m % Options.size()])
-//                         sizecounter += green;
-//                     if(!pos[i])
-//                         sizecounter += grey;
-//                     if(i == 0)
-//                         sizecounter += "1. Generate another map\n";
-//                     if(i == 1)
-//                         sizecounter += "2. Show the map\n";
-//                     if(i == 2)
-//                         sizecounter += "3. Move in map\n";
-//                     if(i == 3)
-//                         sizecounter += "4. Exit\n";
-//                     sizecounter += reset;
-//                 }
-//                 cout << sizecounter;
-//                 char key = _getch();
-//                 switch (key)
-//                 {
-//                 case 'w':
-//                     m--;
-//                     break;
-//                 case 's':
-//                     m++;
-//                     break;
-//                 case 'm':
-//                     third = false;
-//                     break;
-//                 default:
-//                     break;
-//                 }
-//                 for(int i = 0; i < 5 ; i++)
-//                     clearLine();
-//             }
-//             clearScreen();
-//             switch (Options[m % Options.size()])
-//             {
-//             case 0:
-//                 second = false;
-//                 break;
-//             case 1:
-//                 map.ShowMap();
-//                 break;
-//             case 2:
-//                 map.move();
-//                 break;
-//             default:{
-//                 second = false;
-//                 first = false;
-//                 break;
-//             }
-//             }
-//         }
-//     }
-// }
