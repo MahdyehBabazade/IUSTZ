@@ -101,8 +101,14 @@ public:
     void Attack(vector<Character*> &characters , Weapon* weapon , int choice); // Attack function
 };
 
-class HumanEnemy: public Character{
 
+enum State{
+        Heal,
+        Shield,
+        Attack,
+        Reload
+};
+class HumanEnemy: public Character{
 private:
     vector<pair<Consumable* , int>> Consumables;
     
@@ -112,6 +118,10 @@ private:
     
     // fun little Dialogues :)
     void RajazKhani();
+    
+    
+    State state;
+    void StateMachine();
 
 public:
     

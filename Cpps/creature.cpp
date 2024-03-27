@@ -616,6 +616,7 @@ void Player :: Consume(Consumable* Consumable){
     }
 }
 
+
 void HumanEnemy :: RajazKhani(){
     vector<string> curse ={"MOTHER FUCKER" , "BITCH" , "Asshole" };
     string RajazKhani = "Got u, " + ShuffleVec(curse)[0];
@@ -631,6 +632,46 @@ HumanEnemy :: HumanEnemy(string Name , int MaxHP , double Armor , vector<pair<It
     : Character(Name , MaxHP , Items , Weapons){
     this->Consumables = Consumables;
     setArmor(Armor);
+    state = State::Heal;
+    StateMachine();
+}
+void HumanEnemy :: StateMachine(){
+    while(true){
+        switch (state)
+        {
+        case State::Heal:
+            for(pair<Consumable* , int> x:Consumables){
+                Consumable* Potion = x.first;
+                if(Potion->getType() == "HPPotion"){
+                    Consume(Potion);
+                    break;
+                }
+            }
+            state = State::Shield;
+            continue;
+        
+        case State::Shield:
+            for(pair<Consumable* , int> x:Consumables){
+                Consumable* Potion = x.first;
+                if(Potion->getType() == "HPPotion"){
+                    Consume(Potion);
+                    break;
+                }
+            }
+            state = State::Attack;
+            continue;
+            
+        case State::Attack:
+        // attack functions
+            for(pair<Weapon*,int> x:Weapons){
+                
+            }
+            break;
+        default:
+            break;
+        }
+        break;
+    }
 }
 
 HumanEnemy :: ~HumanEnemy(){
