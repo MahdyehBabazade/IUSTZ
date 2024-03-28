@@ -111,6 +111,8 @@ enum State{
 class HumanEnemy: public Character{
 private:
     vector<pair<Consumable* , int>> Consumables;
+    vector<pair<Gun*,int>> Guns;
+    vector<pair<Weapon*,int>> nonGuns;
     
     // Updates the list of Specific types of Items after they are thrown or used
     void removeConsumable(Consumable* Consumable);
@@ -122,6 +124,7 @@ private:
     
     State state;
     void StateMachine();
+    bool hasAttacked;
 
 public:
     

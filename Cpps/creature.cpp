@@ -8,11 +8,20 @@
 #include <typeinfo>
 using namespace std;
 
-vector<string> ShuffleVec(vector<string> vec){ // Shuffles a vector
+template <typename T>
+vector<T> ShuffleVec(vector<T> vec){ // Shuffles a vector
     random_device rd;
     default_random_engine abs(rd());
-    shuffle(vec.begin(), vec.end(), abs);
+    shuffle(vec.begin(), vec.end(), abs);   
     return vec;
+}
+
+int random_num(int min,int max){
+    random_device dev;
+    mt19937 rng(dev());
+    uniform_int_distribution<std::mt19937::result_type> dist(min,max); 
+
+    return dist(rng);
 }
 
 Character :: Character(string Name , int MaxHP , vector<pair<Item* , int>> Items , vector<pair<Weapon*,int>> Weapons){
@@ -632,8 +641,17 @@ HumanEnemy :: HumanEnemy(string Name , int MaxHP , double Armor , vector<pair<It
     : Character(Name , MaxHP , Items , Weapons){
     this->Consumables = Consumables;
     setArmor(Armor);
+    hasAttacked = false;
     state = State::Heal;
-    StateMachine();
+    
+    for(pair<Weapon*,int> x : Weapons){
+        if(typeid(x.first) == typeid(Gun)){
+            Guns.emplace_back(dynamic_cast<Gun*>(x.first),x.second);
+        }else {
+            nonGuns.emplace_back(x);
+        }
+    }
+    
 }
 void HumanEnemy :: StateMachine(){
     while(true){
@@ -663,13 +681,58 @@ void HumanEnemy :: StateMachine(){
             
         case State::Attack:
         // attack functions
-            for(pair<Weapon*,int> x:Weapons){
-                
+            if(!Guns.empty()){    // attacks with a gun 
+                ShuffleVec(Guns);
+                for(pair<Gun*,int> x:Guns){
+                    if(x.first->getAmmo() >= 0){
+                        //attacks 
+                        hasAttacked = true;
+                        break;
+                    }
+                }
+            }   
+            if(hasAttacked){ //if there was no loaded gun this wouldnt trigger
+                break; 
+            }  
+              
+            if(!nonGuns.empty() && !Guns.empty()){ 
+                if(random_num(1,2) == 2){            // if there were both guns and other types it would randomly choose between realoding and using other types
+                    Weapon* weapon = nonGuns[random_num(0,nonGuns.size()-1)].first;
+                    if(typeid(weapon) == typeid(ColdWeapon)){    // 20% chance of throwing the cold weapon
+                        if(random_num(1,5) == 5){
+                            // throw
+                        }else{
+                            // Attack
+                        }
+                    }else if (typeid(weapon) == typeid(Throwable)){
+                        ///throw
+                    }
+                }else{
+                    Guns[0].first->Reload();
+                    break;
+                }   
+            }else if(!nonGuns.empty() && Guns.empty()){
+                Weapon* weapon = nonGuns[random_num(0,nonGuns.size()-1)].first;
+                if(typeid(weapon) == typeid(ColdWeapon)){    // 20% chance of throwing the cold weapon
+                    if(random_num(1,5) == 5){
+                        // throw
+                    }else{
+                        // Attack
+                    }
+                }else if (typeid(weapon) == typeid(Throwable)){
+                    ///throw
+                }
+            }else if(nonGuns.empty() && !Guns.empty()){ // there are only guns available
+                Guns[0].first->Reload();
+                break;
             }
+            
             break;
+            
         default:
             break;
         }
+
         break;
     }
 }
