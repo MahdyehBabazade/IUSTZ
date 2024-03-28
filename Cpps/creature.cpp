@@ -648,7 +648,7 @@ HumanEnemy :: HumanEnemy(string Name , int MaxHP , double Armor , vector<pair<It
         if(typeid(x.first) == typeid(Gun)){
             Guns.emplace_back(dynamic_cast<Gun*>(x.first),x.second);
         }else {
-            nonGuns.emplace_back(x);
+            noneGuns.emplace_back(x);
         }
     }
     
@@ -665,71 +665,82 @@ void HumanEnemy :: StateMachine(){
                     break;
                 }
             }
+            if(getHP() >=getMaxHP()){
+                    break;
+            }
             state = State::Shield;
             continue;
-        
-        case State::Shield:
+            
+        case State::Shield:        
             for(pair<Consumable* , int> x:Consumables){
                 Consumable* Potion = x.first;
-                if(Potion->getType() == "HPPotion"){
+                if(Potion->getType() == "ShieldPotion"){
                     Consume(Potion);
-                    break;
                 }
             }
+            
             state = State::Attack;
             continue;
             
-        case State::Attack:
-        // attack functions
-            if(!Guns.empty()){    // attacks with a gun 
-                ShuffleVec(Guns);
-                for(pair<Gun*,int> x:Guns){
-                    if(x.first->getAmmo() >= 0){
-                        //attacks 
-                        hasAttacked = true;
-                        break;
-                    }
-                }
-            }   
-            if(hasAttacked){ //if there was no loaded gun this wouldnt trigger
-                break; 
-            }  
-              
-            if(!nonGuns.empty() && !Guns.empty()){ 
-                if(random_num(1,2) == 2){            // if there were both guns and other types it would randomly choose between realoding and using other types
-                    Weapon* weapon = nonGuns[random_num(0,nonGuns.size()-1)].first;
-                    if(typeid(weapon) == typeid(ColdWeapon)){    // 20% chance of throwing the cold weapon
-                        if(random_num(1,5) == 5){
-                            // throw
-                        }else{
-                            // Attack
-                        }
-                    }else if (typeid(weapon) == typeid(Throwable)){
-                        ///throw
-                    }
+        case State::NoneGunAttack:
+            noneGuns = ShuffleVec(noneGuns);
+            Weapon* weapon = noneGuns[0].first;
+            if(typeid(weapon) == typeid(ColdWeapon)){   
+                if(random_num(1,5) == 5){                 // 20% chance of throwing the cold weapon
+                    // throw ----
                     removeItem(weapon);
                 }else{
-                    Guns[0].first->Reload();
-                    break;
-                }   
-            }else if(!nonGuns.empty() && Guns.empty()){
-                Weapon* weapon = nonGuns[random_num(0,nonGuns.size()-1)].first;
-                if(typeid(weapon) == typeid(ColdWeapon)){    // 20% chance of throwing the cold weapon
-                    if(random_num(1,5) == 5){
-                        // throw
-                    }else{
-                        // Attack
-                    }
-                }else if (typeid(weapon) == typeid(Throwable)){
-                    ///throw
+                    // Attack ---
                 }
+            }else if (typeid(weapon) == typeid(Throwable)){
+                ///throw ---
                 removeItem(weapon);
-            }else if(nonGuns.empty() && !Guns.empty()){ // there are only guns available
-                Guns[0].first->Reload();
-                break;
             }
+            
+            break;
+        
+        case State::Reload:
+            Guns[0].first->Reload();
             break;
             
+        case State::GunAttack:
+            Guns = ShuffleVec(Guns);
+            
+            for(pair<Gun*,int> x:Guns){
+                if(x.first->getAmmo() >= 0){
+                    //attacks -----
+                    hasAttacked = true;
+                    break;
+                }
+            }
+            
+            if(hasAttacked){
+                break;
+            }
+            
+            if(!noneGuns.empty()){
+                if(random_num(1,2) == 1){ 
+                    state = State::Reload;
+                    continue;
+                }else{
+                    state = State::NoneGunAttack;
+                    continue;
+                }
+            }else{
+                state = State::Reload;
+                continue;
+            }
+            
+            
+        case State::Attack:
+            if(!Guns.empty()){   
+                state = State::GunAttack;
+            }else{
+                state = State::NoneGunAttack;
+                
+            }
+            
+            continue;
         default:
             break;
         }
@@ -807,12 +818,12 @@ void HumanEnemy::removeWeapon(Weapon* Weapon){
                 Weapons[i].second--;
         }
     }
-    for(int i = 0; i < nonGuns.size(); i++){
-        if(*nonGuns[i].first == *Weapon){
-            if(nonGuns[i].second == 1)
-                nonGuns.erase(nonGuns.begin()+ i);
+    for(int i = 0; i < noneGuns.size(); i++){
+        if(*noneGuns[i].first == *Weapon){
+            if(noneGuns[i].second == 1)
+                noneGuns.erase(noneGuns.begin()+ i);
             else
-                nonGuns[i].second--;
+                noneGuns[i].second--;
         }
     }
 }

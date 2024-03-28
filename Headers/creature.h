@@ -106,13 +106,15 @@ enum State{
         Heal,
         Shield,
         Attack,
-        Reload
+        Reload,
+        GunAttack,
+        NoneGunAttack,
 };
 class HumanEnemy: public Character{
 private:
     vector<pair<Consumable* , int>> Consumables;
     vector<pair<Gun*,int>> Guns;
-    vector<pair<Weapon*,int>> nonGuns;
+    vector<pair<Weapon*,int>> noneGuns;
     
     // Updates the list of Specific types of Items after they are thrown or used
     void removeConsumable(Consumable* Consumable);
