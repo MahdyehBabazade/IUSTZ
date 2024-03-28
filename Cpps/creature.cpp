@@ -707,6 +707,7 @@ void HumanEnemy :: StateMachine(){
                     }else if (typeid(weapon) == typeid(Throwable)){
                         ///throw
                     }
+                    removeItem(weapon);
                 }else{
                     Guns[0].first->Reload();
                     break;
@@ -722,11 +723,11 @@ void HumanEnemy :: StateMachine(){
                 }else if (typeid(weapon) == typeid(Throwable)){
                     ///throw
                 }
+                removeItem(weapon);
             }else if(nonGuns.empty() && !Guns.empty()){ // there are only guns available
                 Guns[0].first->Reload();
                 break;
             }
-            
             break;
             
         default:
@@ -804,6 +805,14 @@ void HumanEnemy::removeWeapon(Weapon* Weapon){
                 Weapons.erase(Weapons.begin()+ i);
             else
                 Weapons[i].second--;
+        }
+    }
+    for(int i = 0; i < nonGuns.size(); i++){
+        if(*nonGuns[i].first == *Weapon){
+            if(nonGuns[i].second == 1)
+                nonGuns.erase(nonGuns.begin()+ i);
+            else
+                nonGuns[i].second--;
         }
     }
 }
