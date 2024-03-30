@@ -9,6 +9,13 @@ vector<T> ShuffleVec(vector<T> vec){ // Shuffles a vector
     return vec;
 }
 
+int Index_Weighted_Random(vector<int> weights){
+    random_device rd;
+    default_random_engine gen(rd());
+    discrete_distribution<> dist(weights.begin(),weights.end());
+    return dist(gen);
+}
+
 void ShopFactory :: Generate(Shop* shop){
     // Guns 
     Shotgun* shotgun = new Shotgun("shotgun", 19, 25, 25, 1, 2, 3, 25, 3);
@@ -73,30 +80,75 @@ void ShopFactory :: Generate(Shop* shop){
 
     vector<Weapon*> AllWeapons = {shotgun, shotgun2, shotgun3, snipe, snipe2, snipe3, smg, smg2, smg3, rifle, rifle2, rifle3, 
     coldweapon, coldweapon2, coldweapon3, grenade, grenade2, grenade3, boomerang, boomerang2, boomerang3};
-    vector<Weapon*> Weapons = ShuffleVec(AllWeapons);
 
     vector<Consumable*> AllConsumables ={ShieldConsumable, ShieldConsumable2, ShieldConsumable3, HPConsumable, HPConsumable2, 
     HPConsumable3, EnergyConsumable, EnergyConsumable2, EnergyConsumable3};
-    vector<Consumable*> Consumables = ShuffleVec(AllConsumables);
 
     vector<Equipment*> AllEquipments = {vest, vest2, vest3, headgear, headgear2, headgear3, footwear, footwear2, footwear3, boot, 
     boot2, boot3};
-    vector<Equipment*> Equipments = ShuffleVec(AllEquipments);
 
-    while (Weapons.size() != 7)
+    vector<Weapon*> Weapons;
+    vector<Consumable*> Consumables;
+    vector<Equipment*> Equipments;
+
+    if (map->getFloor() == 1)
     {
-        Weapons.pop_back();
+        int item_index = Index_Weighted_Random({3,2,1,3,2,1,3,2,1,3,2,1,3,2,1,3,2,1,3,2,1});
+        for (int i = 0; i < 7; i++)
+        {
+            Weapons[i] = AllWeapons[item_index];
+        }
+        item_index = Index_Weighted_Random({3,2,1,3,2,1,3,2,1});
+        for (int i = 0; i < 3; i++)
+        {
+            Consumables[i] = AllConsumables[i];
+        }
+        item_index = Index_Weighted_Random({3,2,1,3,2,1,3,2,1,3,2,1});
+        for (int i = 0; i < 2; i++)
+        {
+            Equipments[i] = AllEquipments[item_index];
+        }
     }
-    while (Consumables.size() != 3)
+    else if (map->getFloor() == 2)
     {
-        Consumables.pop_back();
+        int item_index = Index_Weighted_Random({2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1});
+        for (int i = 0; i < 7; i++)
+        {
+            Weapons[i] = AllWeapons[item_index];
+        }
+        item_index = Index_Weighted_Random({2,3,1,2,3,1,2,3,1});
+        for (int i = 0; i < 3; i++)
+        {
+            Consumables[i] = AllConsumables[i];
+        }
+        item_index = Index_Weighted_Random({2,3,1,2,3,1,2,3,1,2,3,1});
+        for (int i = 0; i < 2; i++)
+        {
+            Equipments[i] = AllEquipments[item_index];
+        }
     }
-    while (Equipments.size() != 4)
+    else if (map->getFloor() == 3)
     {
-        Equipments.pop_back();
+        int item_index = Index_Weighted_Random({1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3});
+        for (int i = 0; i < 7; i++)
+        {
+            Weapons[i] = AllWeapons[item_index];
+        }
+        item_index = Index_Weighted_Random({1,2,3,1,2,3,1,2,3});
+        for (int i = 0; i < 3; i++)
+        {
+            Consumables[i] = AllConsumables[i];
+        }
+        item_index = Index_Weighted_Random({1,2,3,1,2,3,1,2,3});
+        for (int i = 0; i < 2; i++)
+        {
+            Equipments[i] = AllEquipments[item_index];
+        }
     }
 
     shop->setWeapons(Weapons);
     shop->setConsumables(Consumables);
     shop->setEquipments(Equipments);
+
+     
 }
