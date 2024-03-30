@@ -91,9 +91,11 @@ void ShopFactory :: Generate(Shop* shop){
     vector<Consumable*> Consumables;
     vector<Equipment*> Equipments;
 
+    int item_index;
+    
     if (map->getFloor() == 1)
     {
-        int item_index = Index_Weighted_Random({3,2,1,3,2,1,3,2,1,3,2,1,3,2,1,3,2,1,3,2,1});
+        item_index = Index_Weighted_Random({3,2,1,3,2,1,3,2,1,3,2,1,3,2,1,3,2,1,3,2,1});
         for (int i = 0; i < 7; i++)
         {
             Weapons[i] = AllWeapons[item_index];
@@ -111,7 +113,7 @@ void ShopFactory :: Generate(Shop* shop){
     }
     else if (map->getFloor() == 2)
     {
-        int item_index = Index_Weighted_Random({2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1});
+        item_index = Index_Weighted_Random({2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1});
         for (int i = 0; i < 7; i++)
         {
             Weapons[i] = AllWeapons[item_index];
@@ -129,7 +131,7 @@ void ShopFactory :: Generate(Shop* shop){
     }
     else if (map->getFloor() == 3)
     {
-        int item_index = Index_Weighted_Random({1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3});
+        item_index = Index_Weighted_Random({1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3});
         for (int i = 0; i < 7; i++)
         {
             Weapons[i] = AllWeapons[item_index];
