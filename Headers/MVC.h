@@ -10,7 +10,7 @@ namespace View{
             FightView() = default;
             int PlayerMenu(); //player options
             int GunMenu(); //weapon options(reload and attack)
-            Consumable* ChooseConsumable(vector<Weapon*> Consumables);
+            Consumable* ChooseConsumable(vector<Consumable*> Consumables);
             Weapon* ChooseWeapon(vector<Weapon*> Weapons);
             Character* ChooseEnemy(vector<Character*> Enemies);
             
