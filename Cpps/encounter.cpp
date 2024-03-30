@@ -47,11 +47,12 @@ vector<Equipment*> Shop :: getEquipments(){return equipments;}
 
 string UpgradeNameChange(string name, int upgradeAmount){
 
-    if(upgradeAmount != 0){
+    if(upgradeAmount > 1){
         int spaceIndex = name.find_last_of(' ');
-        name = name.substr(0,spaceIndex);   
+        name = name.substr(0,spaceIndex);  
+        name += " " + to_string(upgradeAmount) +"+"; 
     }
-    name += " " + to_string(upgradeAmount+1) +"+";
+    
     return name;
 }
 
@@ -82,11 +83,11 @@ void Shop :: Upgrade(Weapon* weapon){
                 case 1:
                     player->removeItem(weapon);
                     
+                    weapon->setUpgradeAmount(weapon->getUpgradeAmount()+1);
                     weapon->setPrice(weapon->getPrice() + int(BaseUpgradePrice * weapon->getUpgradeAmount() * 0.8));
                     weapon->setName(UpgradeNameChange(weapon->getName(),weapon->getUpgradeAmount()));
                     weapon->setDamage(int(weapon->getDamage()*1.5));
                     
-                    weapon->setUpgradeAmount(weapon->getUpgradeAmount()+1);
                     UpgradesLeft --;
                     
                     player->addItem(weapon);
@@ -98,9 +99,9 @@ void Shop :: Upgrade(Weapon* weapon){
                     weapon->setPrice(weapon->getPrice() + int(BaseUpgradePrice * weapon->getUpgradeAmount() * 0.8));
                     weapon->setName(UpgradeNameChange(weapon->getName(),weapon->getUpgradeAmount()));
                     Shotgun* shotgun = dynamic_cast<Shotgun*>(weapon);
+                    shotgun->setUpgradeAmount(shotgun->getUpgradeAmount()+1);
                     shotgun->setMinDamagePercent(shotgun->getMinDamagePercent() + 10);
                     
-                    shotgun->setUpgradeAmount(shotgun->getUpgradeAmount()+1);
                     UpgradesLeft --;
                     
                     player->addItem(shotgun);
@@ -137,11 +138,11 @@ void Shop :: Upgrade(Weapon* weapon){
                 case 1:
                     player->removeItem(weapon);
                     
+                    weapon->setUpgradeAmount(weapon->getUpgradeAmount()+1);
                     weapon->setPrice(weapon->getPrice() + int(BaseUpgradePrice * weapon->getUpgradeAmount() * 0.8));
                     weapon->setName(UpgradeNameChange(weapon->getName(),weapon->getUpgradeAmount()));
                     weapon->setDamage(int(weapon->getDamage()*1.5));
                     
-                    weapon->setUpgradeAmount(weapon->getUpgradeAmount()+1);
                     UpgradesLeft --;
                     
                     player->addItem(weapon);
@@ -153,9 +154,9 @@ void Shop :: Upgrade(Weapon* weapon){
                     weapon->setPrice(weapon->getPrice() + int(BaseUpgradePrice * weapon->getUpgradeAmount() * 0.8));
                     weapon->setName(UpgradeNameChange(weapon->getName(),weapon->getUpgradeAmount()));
                     Rifle* rifle = dynamic_cast<Rifle*>(weapon);
+                    rifle->setUpgradeAmount(weapon->getUpgradeAmount()+1);
                     rifle->setMaxAttackAmount(rifle->getMaxAttackAmount() + 10);
                     
-                    rifle->setUpgradeAmount(weapon->getUpgradeAmount()+1);
                     UpgradesLeft --;
                     
                     player->addItem(rifle);
@@ -190,11 +191,11 @@ void Shop :: Upgrade(Weapon* weapon){
                 case 1:
                     player->removeItem(weapon);
                     
+                    weapon->setUpgradeAmount(weapon->getUpgradeAmount()+1);
                     weapon->setPrice(weapon->getPrice() + int(BaseUpgradePrice * weapon->getUpgradeAmount() * 0.8));
                     weapon->setName(UpgradeNameChange(weapon->getName(),weapon->getUpgradeAmount()));
                     weapon->setDamage(int(weapon->getDamage()*1.5));
                     
-                    weapon->setUpgradeAmount(weapon->getUpgradeAmount()+1);
                     UpgradesLeft --;
                     
                     player->addItem(weapon);
