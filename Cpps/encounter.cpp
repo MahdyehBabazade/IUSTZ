@@ -45,6 +45,12 @@ vector<Consumable*> Shop :: getConsumables(){return consumables;}
 
 vector<Equipment*> Shop :: getEquipments(){return equipments;}
 
+void Shop :: setWeapons(vector<Weapon*> weapons){this -> weapons = weapons;}
+
+void Shop :: setConsumables(vector<Consumable*> consumables){this -> consumables = consumables;}
+
+void Shop :: setEquipments(vector<Equipment*> equipments){this -> equipments = equipments;}
+
 string UpgradeNameChange(string name, int upgradeAmount){
 
     if(upgradeAmount > 1){

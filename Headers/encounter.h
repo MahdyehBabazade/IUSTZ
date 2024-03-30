@@ -29,15 +29,16 @@ public:
     // Constructor
     Shop(Player* player, vector<Weapon*> weapons, vector<Consumable*> consumables, vector<Equipment*> equipments, Shopkeeper* shopkeeper,string Story);
     Shop() = default;
+    
     // Getters
     vector<Weapon*> getWeapons();
     vector<Consumable*> getConsumables();
     vector<Equipment*> getEquipments();
     
     // Setters
-    // void setWeapons(vector<Weapon*> weapons);
-    // void setConsumables(vector<Consumable*> consumables);
-    // void setEquipments(vector<Equipment*> equipments);
+    void setWeapons(vector<Weapon*> weapons);
+    void setConsumables(vector<Consumable*> consumables);
+    void setEquipments(vector<Equipment*> equipments);
     
     // Other Functions
     void Upgrade(Weapon* Weapon);
