@@ -56,7 +56,7 @@ string UpgradeNameChange(string name, int upgradeAmount){
 }
 
 void Shop :: Upgrade(Weapon* weapon){
-    if(typeid(weapon) == typeid(Shotgun)){
+    if(typeid(*weapon) == typeid(Shotgun)){
         while(true){
             if(weapon->getUpgradeAmount() >= weapon->getUpgradeLimit()){
                 cout << shopkeeper->UpgradeLimitDialogue(weapon);
@@ -111,7 +111,7 @@ void Shop :: Upgrade(Weapon* weapon){
             break;   
         }
         
-    }else if(typeid(weapon) == typeid(Rifle)){
+    }else if(typeid(*weapon) == typeid(Rifle)){
         while(true){
             if(weapon->getUpgradeAmount() >= weapon->getUpgradeLimit()){
                 cout << shopkeeper->UpgradeLimitDialogue(weapon);
@@ -233,11 +233,11 @@ void Shop :: Buy(Item* item){ // Shopkeeper buys, Player sells
 }
 
 void Shop::addItem(Item* item){
-    if(typeid(item) == typeid(Weapon)){
+    if(typeid(*item) == typeid(Weapon)){
         weapons.push_back(dynamic_cast<Weapon*>(item));
-    }else if(typeid(item) == typeid(Consumable)){
+    }else if(typeid(*item) == typeid(Consumable)){
         consumables.push_back(dynamic_cast<Consumable*>(item));
-    }else if(typeid(item) == typeid(Equipment)){
+    }else if(typeid(*item) == typeid(Equipment)){
         equipments.push_back(dynamic_cast<Equipment*>(item));
     }
 }

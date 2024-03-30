@@ -360,9 +360,12 @@ void Player :: removeItem(Item* Item){ //deletes the items considering their num
                 Items[i].second--;
         }
     }
-    if(typeid(*Item) == typeid(Weapon))
+    if(typeid(*Item) == typeid(Shotgun) || typeid(*Item) == typeid(Snipe) || typeid(*Item) == typeid(SMG) ||
+    typeid(*Item) == typeid(Rifle) || typeid(*Item) == typeid(ColdWeapon) || typeid(*Item) == typeid(Grenade) ||
+    typeid(*Item) == typeid(BoomRang))
         removeWeapon(dynamic_cast<Weapon *>(Item));
-    else if(typeid(*Item) == typeid(Equipment))
+    else if(typeid(*Item) == typeid(HeadGear) || typeid(*Item) == typeid(Vest) || typeid(*Item) == typeid(FootWear) ||
+    typeid(*Item) == typeid(Boot))
         removeEquipment(dynamic_cast<Equipment *>(Item));
     else if(typeid(*Item) == typeid(Consumable))
         removeConsumable(dynamic_cast<Consumable *>(Item));
@@ -645,7 +648,8 @@ HumanEnemy :: HumanEnemy(string Name , int MaxHP , double Armor , vector<pair<It
     state = State::Heal;
     
     for(pair<Weapon*,int> x : Weapons){
-        if(typeid(x.first) == typeid(Gun)){
+        if(typeid(*x.first) == typeid(Shotgun) || typeid(*x.first) == typeid(Snipe) || typeid(*x.first) == typeid(Rifle)
+        || typeid(*x.first) == typeid(SMG)){
             Guns.emplace_back(dynamic_cast<Gun*>(x.first),x.second);
         }else {
             noneGuns.emplace_back(x);
@@ -685,14 +689,14 @@ void HumanEnemy :: StateMachine(){
         case State::NoneGunAttack:
             noneGuns = ShuffleVec(noneGuns);
             Weapon* weapon = noneGuns[0].first;
-            if(typeid(weapon) == typeid(ColdWeapon)){   
+            if(typeid(*weapon) == typeid(ColdWeapon)){   
                 if(random_num(1,5) == 5){                 // 20% chance of throwing the cold weapon
                     // throw ----
                     removeItem(weapon);
                 }else{
                     // Attack ---
                 }
-            }else if (typeid(weapon) == typeid(Throwable)){
+            }else if (typeid(*weapon) == typeid(Throwable)){
                 ///throw ---
                 removeItem(weapon);
             }
@@ -837,7 +841,9 @@ void HumanEnemy :: removeItem(Item* Item){ //deletes the items considering their
                 Items[i].second--;
         }
     }
-    if(typeid(*Item) == typeid(Weapon))
+    if(typeid(*Item) == typeid(Shotgun) || typeid(*Item) == typeid(Snipe) || typeid(*Item) == typeid(SMG) ||
+    typeid(*Item) == typeid(Rifle) || typeid(*Item) == typeid(ColdWeapon) || typeid(*Item) == typeid(Grenade) ||
+    typeid(*Item) == typeid(BoomRang))
         removeWeapon(dynamic_cast<Weapon *>(Item));
     else if(typeid(*Item) == typeid(Consumable))
         removeConsumable(dynamic_cast<Consumable *>(Item));
@@ -890,8 +896,8 @@ string Shopkeeper::UpgradeLimitDialogue(Weapon* weapon){
 }
 
 string Shopkeeper::UpgradeLimitDialogue(){
-    vector<string> UpgradeLimit = {"i'm so tired!" , "i can't refine your items anymore!" , 
-    "i'm out of refinement resources."};
+    vector<string> UpgradeLimit = {"I'm so tired!" , "I can't refine your items anymore!" , 
+    "I'm out of refinement resources."};
     return ShuffleVec(UpgradeLimit)[0] + "\n";
 }
 
