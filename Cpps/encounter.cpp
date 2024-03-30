@@ -213,7 +213,7 @@ void Shop :: Sell(Item* item){ // Shopkeeper sells, Player buys
     if (player->getCoin() >= item->getPrice()){
         player->removeCoin(item->getPrice());
         
-        item->setPrice(int(item->getPrice()*0.75));
+        item->setPrice(int(item->getPrice()*0.8));
         player->addItem(item);
         cout << shopkeeper->SellDialogue(item);
         removeItem(item);
@@ -228,7 +228,7 @@ void Shop :: Buy(Item* item){ // Shopkeeper buys, Player sells
     player->removeItem(item);
     shopkeeper->BuyDialogue(item);
     
-    item->setPrice(int(item->getPrice()* 1.2)); // adds 20 precent to item's orignial price 
+    item->setPrice(int(item->getPrice()* 1.25)); // adds 20 precent to item's orignial price 
     addItem(item);
 }
 
@@ -451,9 +451,17 @@ RandomEncounter :: RandomEncounter(Player* player){
     Menu();
 }
 
+int Index_Weighted_Random(vector<int> weights){
+    random_device rd;
+    default_random_engine gen(rd());
+    discrete_distribution<> dist(weights.begin(),weights.end());
+    return dist(gen);
+}
+
 void RandomEncounter :: Menu(){
 
-    int RandomChoice = rand() % 4;
+    int RandomChoice = Index_Weighted_Random({1,1,4,5});
+    
     
     switch (RandomChoice)
     {
