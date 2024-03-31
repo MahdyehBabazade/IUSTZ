@@ -20,67 +20,73 @@ int Index_Weighted_Random(vector<int> weights){
     return dist(gen);
 }
 
-void ShopFactory :: Generate(Shop* shop){
+ShopFactory :: ShopFactory(Map* map, Player* player, Shopkeeper* shopkeeper){
+    this -> map = map;
+    this -> player = player;
+    this -> shopkeeper = shopkeeper;
+
+}
+
+Shop* ShopFactory :: Generate(){
     // Guns 
-    Shotgun* shotgun = new Shotgun("Reaper", 19, 25, 25, 1, 2, 3, 25, 3);
-    Shotgun* shotgun2 = new Shotgun("Death Dealer", 19, 30, 35, 1, 2, 5, 27, 3);
-    Shotgun* shotgun3 = new Shotgun("Hell Fire", 19, 40, 45, 1, 2, 4, 28, 3); // A better shotgun
+    Shotgun* shotgun = new Shotgun("Reaper", 20, 30, 25, 1, 2, 3, 25, 3);
+    Shotgun* shotgun2 = new Shotgun("Death Dealer", 20, 40, 35, 1, 2, 5, 27, 3);
+    Shotgun* shotgun3 = new Shotgun("Hellfire", 20, 60, 50, 1, 2, 4, 28, 3); // A better shotgun
 
-    Snipe* snipe = new Snipe("Fury", 23, 20, 20, 1, 2, 4, 3);
-    Snipe* snipe2 = new Snipe("Sharpshooter", 23, 30, 40, 1, 2, 5, 3);
-    Snipe* snipe3 = new Snipe("Ghostfire", 23, 40, 50, 1, 2, 6, 3); // A better sniper
+    Snipe* snipe = new Snipe("Fury", 25, 40, 35, 1, 2, 1, 3);
+    Snipe* snipe2 = new Snipe("Sharpshooter", 25, 50, 45, 1, 2, 1, 3);
+    Snipe* snipe3 = new Snipe("Ghostfire", 25, 70, 60, 1, 2, 2, 3); // A better sniper
 
-    SMG* smg = new SMG("smg", 15, 20, 20, 1, 2, 3, 2);
-    SMG* smg2 = new SMG("smg2", 15, 30, 30, 1, 2, 4, 2);
-    SMG* smg3 = new SMG("smg3", 15, 40, 40, 1, 2, 5, 3); // A better SMG
+    SMG* smg = new SMG("Venom", 15, 25, 20, 1, 2, 3, 2);
+    SMG* smg2 = new SMG("Hurricane", 15, 35, 30, 1, 2, 4, 2);
+    SMG* smg3 = new SMG("Rapidfire", 15, 50, 45, 1, 2, 5, 3); // A better SMG
 
     Rifle* rifle = new Rifle("rifle", 20, 40, 30, 2, 2, 3, 1, 2);
     Rifle* rifle2 = new Rifle("rifle2", 20, 50, 40, 2, 2, 4, 2, 2);
-    Rifle* rifle3 = new Rifle("rifle3", 20, 60, 50, 2, 2, 4, 3, 3); // A better rifle
+    Rifle* rifle3 = new Rifle("rifle3", 20, 65, 55, 2, 2, 4, 3, 3); // A better rifle
 
     // Cold Weapons
-    ColdWeapon* coldweapon = new ColdWeapon("coldweapon", 10, 15, 15, 1, 1);
-    ColdWeapon* coldweapon2 = new ColdWeapon("coldweapon2", 10, 20, 25, 1, 2);
-    ColdWeapon* coldweapon3 = new ColdWeapon("coldweapon3", 10, 30, 35, 1, 3); // Better
+    ColdWeapon* coldweapon = new ColdWeapon("coldweapon", 10, 30, 15, 1, 1);
+    ColdWeapon* coldweapon2 = new ColdWeapon("coldweapon2", 10, 40, 20, 1, 2);
+    ColdWeapon* coldweapon3 = new ColdWeapon("coldweapon3", 10, 55, 35, 1, 3); // Better
 
     // Throwables
-    Grenade* grenade = new Grenade("grenade", 7, 30, 30, 1, 1);
-    Grenade* grenade2 = new Grenade("grenade2", 7, 50, 40, 1, 2);
-    Grenade* grenade3 = new Grenade("grenade3", 7, 70, 60, 1, 3); // Better
+    Grenade* grenade = new Grenade("grenade", 7, 10, 30, 1, 1);
+    Grenade* grenade2 = new Grenade("grenade2", 7, 15, 40, 1, 2);
+    Grenade* grenade3 = new Grenade("grenade3", 7, 25, 60, 1, 3); // Better
 
     BoomRang* boomerang = new BoomRang("boomerang", 15, 15, 15, 1, 2);
     BoomRang* boomerang2 = new BoomRang("boomerang2", 15, 20, 20, 1, 2);
-    BoomRang* boomerang3 = new BoomRang("boomerabg3", 15, 25, 25, 1, 2); // Better
+    BoomRang* boomerang3 = new BoomRang("boomerabg3", 15, 30, 30, 1, 2); // Better
 
     // Consumables
     Consumable* ShieldConsumable = new Consumable("ShieldConsumable", "ShieldPotion", 7, 20, 20);
-    Consumable* ShieldConsumable2 = new Consumable("ShieldConsumable2", "ShieldPotion", 7, 50, 50);
-    Consumable* ShieldConsumable3 = new Consumable("ShieldConsumable3", "ShieldPotion", 7, 80, 80);
+    Consumable* ShieldConsumable2 = new Consumable("ShieldConsumable2", "ShieldPotion", 7, 25, 30);
+    Consumable* ShieldConsumable3 = new Consumable("ShieldConsumable3", "ShieldPotion", 7, 35, 45);
 
-    Consumable* HPConsumable = new Consumable("HPConsumable", "HPPotion", 8, 30, 30);
-    Consumable* HPConsumable2 = new Consumable("HPConsumable2", "HPPotion", 8, 60, 60);
-    Consumable* HPConsumable3 = new Consumable("HPConsumable3", "HPPotion", 8, 90, 90);
+    Consumable* HPConsumable = new Consumable("HPConsumable", "HPPotion", 8, 25, 30);
+    Consumable* HPConsumable2 = new Consumable("HPConsumable2", "HPPotion", 8, 30, 50);
+    Consumable* HPConsumable3 = new Consumable("HPConsumable3", "HPPotion", 8, 40, 75);
 
-    Consumable* EnergyConsumable = new Consumable("EnergyConsumable", "Ene rgyPotion", 7, 30, 1);
+    Consumable* EnergyConsumable = new Consumable("EnergyConsumable", "EnergyPotion", 7, 30, 1);
     Consumable* EnergyConsumable2 = new Consumable("EnergyConsumable2", "EnergyPotion", 7, 60, 2);
-    //Consumable* EnergyConsumable3 = new Consumable("EnergyConsumable3", "EnergyPotion", 7, 40, 6);
 
     // Equipments
     Vest* vest = new Vest("vest", 0, 40, 20);
-    Vest* vest2 = new Vest("vest2", 0, 60, 30);
-    Vest* vest3 = new Vest("vest3", 0, 80, 40);
+    Vest* vest2 = new Vest("vest2", 0, 50, 25);
+    Vest* vest3 = new Vest("vest3", 0, 70, 40);
 
     HeadGear* headgear = new HeadGear("headgear", 0, 30, 15);
-    HeadGear* headgear2 = new HeadGear("headgear2", 0, 60, 30);
-    HeadGear* headgear3 = new HeadGear("headgear3", 0, 90, 45); 
+    HeadGear* headgear2 = new HeadGear("headgear2", 0, 50, 25);
+    HeadGear* headgear3 = new HeadGear("headgear3", 0, 80, 45); 
 
     FootWear* footwear = new FootWear("footwear", 0, 15, 10);
-    FootWear* footwear2 = new FootWear("footwear2", 0, 45, 30);
+    FootWear* footwear2 = new FootWear("footwear2", 0, 30, 20);
     FootWear* footwear3 = new FootWear("footwear3", 0, 75, 50);
 
-    Boot* boot = new Boot("boot", 0, 10, 10);
-    Boot* boot2 = new Boot("boot2", 0, 20, 20);
-    Boot* boot3 = new Boot("boot3", 0, 30, 30);
+    Boot* boot = new Boot("boot", 0, 15, 10);
+    Boot* boot2 = new Boot("boot2", 0, 30, 15);
+    Boot* boot3 = new Boot("boot3", 0, 40, 25);
 
     vector<Weapon*> AllWeapons = {shotgun, shotgun2, shotgun3, snipe, snipe2, snipe3, smg, smg2, smg3, rifle, rifle2, rifle3, 
     coldweapon, coldweapon2, coldweapon3, grenade, grenade2, grenade3, boomerang, boomerang2, boomerang3};
@@ -102,7 +108,7 @@ void ShopFactory :: Generate(Shop* shop){
         
         for (int i = 0; i < 5; i++)
         {
-            item_index = Index_Weighted_Random({5,2,1,5,2,1,5,2,1,5,2,1,5,2,1,5,2,1,5,2,1});
+            item_index = Index_Weighted_Random({5,2,1,5,2,1,5,2,1,5,2,1,6,3,2,5,2,1,5,2,1});
             Weapons[i] = AllWeapons[item_index];
         }
         
@@ -122,7 +128,7 @@ void ShopFactory :: Generate(Shop* shop){
     {
         for (int i = 0; i < 5; i++)
         {
-            item_index = Index_Weighted_Random({2,5,1,2,5,1,2,5,1,2,5,1,2,5,1,2,5,1,2,5,1});
+            item_index = Index_Weighted_Random({2,5,1,2,5,1,2,5,1,2,5,1, 3,6,2 ,2,5,1,2,5,1});
             Weapons[i] = AllWeapons[item_index];
         }
         
@@ -143,7 +149,7 @@ void ShopFactory :: Generate(Shop* shop){
         
         for (int i = 0; i < 5; i++)
         {
-            item_index = Index_Weighted_Random({1,2,5,1,2,5,1,2,5,1,2,5,1,2,5,1,2,5,1,2,5});
+            item_index = Index_Weighted_Random({1,2,5,1,2,5,1,2,5,1,2,5, 2,3,6, 1,2,5,1,2,5});
             Weapons[i] = AllWeapons[item_index];
         }
         
@@ -159,9 +165,8 @@ void ShopFactory :: Generate(Shop* shop){
             Equipments[i] = AllEquipments[item_index];
         }
     }
-    shop->setWeapons(Weapons);
-    shop->setConsumables(Consumables);
-    shop->setEquipments(Equipments);     
+    Shop* shop = new Shop(player, Weapons, Consumables, Equipments, shopkeeper);
+    return shop;
 }
 
 EnemyFactory :: EnemyFactory(Map* map){this -> map = map;}
@@ -898,3 +903,82 @@ Map* MapFactory :: GenerateMap(){
     return map;
 }
 
+
+FightFactory :: FightFactory(Player* player){this -> player = player;}
+
+Fight* FightFactory :: GenerateFight(){
+    // Guns 
+    Shotgun* shotgun = new Shotgun("Reaper", 20, 30, 25, 1, 2, 3, 25, 3);
+    Shotgun* shotgun2 = new Shotgun("Death Dealer", 20, 40, 35, 1, 2, 5, 27, 3);
+    Shotgun* shotgun3 = new Shotgun("Hellfire", 20, 60, 50, 1, 2, 4, 28, 3); // A better shotgun
+
+    Snipe* snipe = new Snipe("Fury", 25, 40, 35, 1, 2, 1, 3);
+    Snipe* snipe2 = new Snipe("Sharpshooter", 25, 50, 45, 1, 2, 1, 3);
+    Snipe* snipe3 = new Snipe("Ghostfire", 25, 70, 60, 1, 2, 2, 3); // A better sniper
+
+    SMG* smg = new SMG("Venom", 15, 25, 20, 1, 2, 3, 2);
+    SMG* smg2 = new SMG("Hurricane", 15, 35, 30, 1, 2, 4, 2);
+    SMG* smg3 = new SMG("Rapidfire", 15, 50, 45, 1, 2, 5, 3); // A better SMG
+
+    Rifle* rifle = new Rifle("rifle", 20, 40, 30, 2, 2, 3, 1, 2);
+    Rifle* rifle2 = new Rifle("rifle2", 20, 50, 40, 2, 2, 4, 2, 2);
+    Rifle* rifle3 = new Rifle("rifle3", 20, 65, 55, 2, 2, 4, 3, 3); // A better rifle
+
+    // Cold Weapons
+    ColdWeapon* coldweapon = new ColdWeapon("coldweapon", 10, 30, 15, 1, 1);
+    ColdWeapon* coldweapon2 = new ColdWeapon("coldweapon2", 10, 40, 20, 1, 2);
+    ColdWeapon* coldweapon3 = new ColdWeapon("coldweapon3", 10, 55, 35, 1, 3); // Better
+
+    // Throwables
+    Grenade* grenade = new Grenade("grenade", 7, 10, 30, 1, 1);
+    Grenade* grenade2 = new Grenade("grenade2", 7, 15, 40, 1, 2);
+    Grenade* grenade3 = new Grenade("grenade3", 7, 25, 60, 1, 3); // Better
+
+    BoomRang* boomerang = new BoomRang("boomerang", 15, 15, 15, 1, 2);
+    BoomRang* boomerang2 = new BoomRang("boomerang2", 15, 20, 20, 1, 2);
+    BoomRang* boomerang3 = new BoomRang("boomerabg3", 15, 30, 30, 1, 2); // Better
+
+    // Consumables
+    Consumable* ShieldConsumable = new Consumable("ShieldConsumable", "ShieldPotion", 7, 20, 20);
+    Consumable* ShieldConsumable2 = new Consumable("ShieldConsumable2", "ShieldPotion", 7, 25, 30);
+    Consumable* ShieldConsumable3 = new Consumable("ShieldConsumable3", "ShieldPotion", 7, 35, 45);
+
+    Consumable* HPConsumable = new Consumable("HPConsumable", "HPPotion", 8, 25, 30);
+    Consumable* HPConsumable2 = new Consumable("HPConsumable2", "HPPotion", 8, 30, 50);
+    Consumable* HPConsumable3 = new Consumable("HPConsumable3", "HPPotion", 8, 40, 75);
+
+    Consumable* EnergyConsumable = new Consumable("EnergyConsumable", "EnergyPotion", 7, 30, 1);
+    Consumable* EnergyConsumable2 = new Consumable("EnergyConsumable2", "EnergyPotion", 7, 60, 2);
+
+    // Equipments
+    Vest* vest = new Vest("vest", 0, 40, 20);
+    Vest* vest2 = new Vest("vest2", 0, 50, 25);
+    Vest* vest3 = new Vest("vest3", 0, 70, 40);
+
+    HeadGear* headgear = new HeadGear("headgear", 0, 30, 15);
+    HeadGear* headgear2 = new HeadGear("headgear2", 0, 50, 25);
+    HeadGear* headgear3 = new HeadGear("headgear3", 0, 80, 45); 
+
+    FootWear* footwear = new FootWear("footwear", 0, 15, 10);
+    FootWear* footwear2 = new FootWear("footwear2", 0, 30, 20);
+    FootWear* footwear3 = new FootWear("footwear3", 0, 75, 50);
+
+    Boot* boot = new Boot("boot", 0, 15, 10);
+    Boot* boot2 = new Boot("boot2", 0, 30, 15);
+    Boot* boot3 = new Boot("boot3", 0, 40, 25);
+
+    vector<Weapon*> AllWeapons = {shotgun, shotgun2, shotgun3, snipe, snipe2, snipe3, smg, smg2, smg3, rifle, rifle2, rifle3, 
+    coldweapon, coldweapon2, coldweapon3, grenade, grenade2, grenade3, boomerang, boomerang2, boomerang3};
+
+    vector<Consumable*> AllConsumables ={ShieldConsumable, ShieldConsumable2, ShieldConsumable3, HPConsumable, HPConsumable2, 
+    HPConsumable3, EnergyConsumable, EnergyConsumable2};
+
+    vector<Equipment*> AllEquipments = {vest, vest2, vest3, headgear, headgear2, headgear3, footwear, footwear2, footwear3, boot, 
+    boot2, boot3};
+
+    vector<Weapon*> Weapons;
+    vector<Consumable*> Consumables;
+    vector<Equipment*> Equipments;
+
+    // To be continued
+}

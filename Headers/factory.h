@@ -7,11 +7,11 @@ using namespace std;
 class ShopFactory{
 private:
     Map* map;
-    Shop* shop;
+    Player* player;
+    Shopkeeper* shopkeeper;
 public:
-    ShopFactory() = default;
-    ShopFactory(Map* map, Shop* shop);
-    void Generate(Shop* shop);
+    ShopFactory(Map* map, Player* player, Shopkeeper* shopkeeper);
+    Shop* Generate();
 };
 
 class EnemyFactory{
@@ -51,4 +51,12 @@ private:
 public:
     MapFactory(int floor);
     Map* GenerateMap();
+};
+
+class FightFactory{
+private:
+    Player* player;
+public:
+    FightFactory(Player* player);
+    Fight* GenerateFight();
 };

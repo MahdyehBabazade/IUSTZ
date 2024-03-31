@@ -13,7 +13,7 @@ Encounter :: Encounter(string Story){this -> Story = Story;}
 
 string Encounter :: getStory(){return Story;}
 
-Shop :: Shop(Player* player, vector<Weapon*> weapons, vector<Consumable*> consumables, vector<Equipment*> equipments, Shopkeeper* shopkeeper, string Story){
+Shop :: Shop(Player* player, vector<Weapon*> weapons, vector<Consumable*> consumables, vector<Equipment*> equipments, Shopkeeper* shopkeeper){
 
     this -> player = player;
     this -> weapons = weapons;
@@ -553,6 +553,10 @@ void RandomEncounter :: Menu(){
     default:
         break;
     }
-    
+}
 
+Fight :: Fight(Player* player, vector<Character*> enemies, vector<Item*> items){
+    this -> player = player;
+    this -> enemies = enemies;
+    this -> items = items;
 }
