@@ -1,24 +1,10 @@
 #pragma once
 #include "../Headers/factory.h"
+#include "functions.cpp"
 #include <random>
 #include<algorithm>
 
 using namespace std;
-
-template <typename T>
-vector<T> ShuffleVec(vector<T> vec){ // Shuffles a vector
-    random_device rd;
-    default_random_engine abs(rd());
-    shuffle(vec.begin(), vec.end(), abs);   
-    return vec;
-}
-
-int Index_Weighted_Random(vector<int> weights){
-    random_device rd;
-    default_random_engine gen(rd());
-    discrete_distribution<> dist(weights.begin(),weights.end());
-    return dist(gen);
-}
 
 ShopFactory :: ShopFactory(Map* map, Player* player, Shopkeeper* shopkeeper){
     this -> map = map;
@@ -388,7 +374,10 @@ vector<Character*> EnemyFactory :: MiniBossEnemy(){
     return Enemies;
 }
 
-vector<Character*> EnemyFactory :: BossEnemy(){}
+vector<Character*> EnemyFactory :: BossEnemy(){
+    vector<Character*> enemies = {};
+    return enemies;
+}
 
 vector<int> MapFactory :: PathFinding1(){
     vector<int> path={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};

@@ -1,4 +1,5 @@
 #include "../Headers/creature.h"
+#include "functions.cpp"
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -7,22 +8,6 @@
 #include <string>
 #include <typeinfo>
 using namespace std;
-
-template <typename T>
-vector<T> ShuffleVec(vector<T> vec){ // Shuffles a vector
-    random_device rd;
-    default_random_engine abs(rd());
-    shuffle(vec.begin(), vec.end(), abs);   
-    return vec;
-}
-
-int random_num(int min,int max){
-    random_device dev;
-    mt19937 rng(dev());
-    uniform_int_distribution<std::mt19937::result_type> dist(min,max); 
-
-    return dist(rng);
-}
 
 Character :: Character(string Name , int MaxHP , vector<pair<Item* , int>> Items , vector<pair<Weapon*,int>> Weapons){
     this -> Name = Name;
