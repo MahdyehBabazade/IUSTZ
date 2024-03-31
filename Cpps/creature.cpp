@@ -94,6 +94,7 @@ Weapon* Player::ChooseWeapon(){ // Lists the weapons for you and the lets you ch
     choice --;
     return Weapons[choice].first;
 }
+/*
 void Player :: Attack(vector<Character *> &characters , Weapon* weapon , int choice){ 
     //attacks the enemies with guns, cold weapons or throwables
     if(getEnergy()>=weapon->getEnergyNeeded()){
@@ -127,7 +128,7 @@ void Player :: Attack(vector<Character *> &characters , Weapon* weapon , int cho
         setEnergy(getEnergy()-weapon->getEnergyNeeded()); //reduces the energy needed to use that kind of weapon from the energy the character has
     }
 
-}
+}*/
 
 Player :: Player(string Name, int MaxHP , int BackPackCapacity , int BackPackWeight
 , int MaxEnergy , int Coin ,vector<pair<Item* , int>> Items

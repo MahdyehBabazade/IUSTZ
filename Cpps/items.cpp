@@ -43,26 +43,8 @@ void Weapon::setDamage(int damage) {Damage = damage;}
 
 void Weapon::setEnergyNeeded(int energy) {EnergyNeeded = energy;}
 
-
-
-Character* choose_character(vector<Character*> &characters){
-    cout << "choose the enemy you want to attack: \n";
-    int x = 0;
-    for(Character* &character:  characters){
-        x++;
-        cout << x << ". " << character->getStat() << endl;
-    }
-    int choice;
-    cout << "choose: ";
-    cin >> choice;
-    choice -=1;
-    return characters[choice];
-    
-}
-
-void Weapon::Attack(vector<Character*> &Chars) {
-    Character* Character = choose_character(Chars);
-    Character->takeDamage(Damage);
+void Weapon::Attack(Character* Enemey) {
+    Enemey->takeDamage(Damage);
 }
 
 string Weapon::getStat() {
@@ -104,19 +86,20 @@ void Gun::setReloadEnergy(int reloadEnergy) {ReloadEnergy=reloadEnergy;}
 
 //void Gun::Attack(vector<Character*> &characters) {};
 void Gun::Reload() {Ammo = MaxAmmo;}
-
+void Gun::Attack(Character* Target){
+    Target->takeDamage(getDamage());
+    Ammo-=1;
+}
 //..............
 Shotgun ::Shotgun(string name, int capacity,int price, int damage, int energyNeeded,int reloadEnergy,int ammo,int minDamagePercent,int upgradeLimit)
         : Gun(name,  capacity, price, damage,  energyNeeded,reloadEnergy, ammo,upgradeLimit), MinDamagePercent(minDamagePercent){}
 
-void Shotgun ::Attack(vector<Character*> &characters) {
-    Character* character = choose_character(characters);
-    int EnemyDistance = characters.size() - (find(characters.begin(), characters.end(),character) - characters.begin());
-    double damage1 = double(EnemyDistance)/characters.size()*getDamage();
+void Shotgun ::Attack(vector<Character*> Targets,Character* Target) {
+    int EnemyDistance = Targets.size() - (find(Targets.begin(), Targets.end(),Target) - Targets.begin());
+    double damage1 = double(EnemyDistance)/Targets.size()*getDamage();
     double damage2 = double(getDamage())*(MinDamagePercent/100);
     int damage = max(damage1,damage2);
-    character->takeDamage(damage);
-    
+    Target->takeDamage(damage);
     setAmmo(getAmmo()-1);
 }
 int Shotgun::getMinDamagePercent() {return MinDamagePercent;}
@@ -145,12 +128,11 @@ string Shotgun::getShortStat(){
 Snipe ::Snipe(std::string name, int capacity, int price, int damage, int energyNeeded,int reloadEnergy, int ammo,int upgradeLimit)
         : Gun(name,  capacity, price, damage,  energyNeeded,reloadEnergy, ammo,upgradeLimit) {}
 
-void Snipe ::Attack(vector<Character*> &characters) {
-    Character* character= choose_character(characters);
-    int index= find(characters.begin(),characters.end(),character) - characters.begin();
-    character->takeDamage(getDamage());
-    if(characters.size() > index+1){
-        characters[index+1]->takeDamage(getDamage()/2);
+void Snipe ::Attack(vector<Character*> Targets,Character* Target) {
+    int index= find(Targets.begin(),Targets.end(),Target) - Targets.begin();
+    Target->takeDamage(getDamage());
+    if(Targets.size()-1 > index){
+        Targets[index+1]->takeDamage(getDamage()/2);
     }
     
     setAmmo(getAmmo()-1);
@@ -160,24 +142,24 @@ SMG ::SMG(string name, int capacity, int price, int damage, int energyNeeded, in
     : Gun(name,  capacity, price, damage,  energyNeeded,reloadEnergy, ammo,upgradeLimit) {};
 
 
-void SMG ::Attack(vector<Character *> &characters) {
-    for (Character* character: characters){
-        character->takeDamage(getDamage());
+void SMG ::Attack(vector<Character*> Targets) {
+    for (Character* Target: Targets){
+        Target->takeDamage(getDamage());
     }
-    setAmmo(getAmmo()-characters.size());
+    setAmmo(getAmmo()-Targets.size());
 }
 
 //..
 Rifle ::Rifle(std::string name, int capacity, int price , int damage, int energyNeeded,int reloadEnergy, int ammo,int maxAttackAmount,int upgradeLimit)
         : Gun( name,  capacity, price, damage,  energyNeeded,reloadEnergy, ammo,upgradeLimit),MaxAttackAmount(maxAttackAmount){}
 
-void Rifle ::Attack(vector<Character*> &characters){
-    int damage=getDamage()/characters.size();
-    for(Character* character: characters){
-        character->takeDamage(damage);
+void Rifle ::Attack(vector<Character*> Targets){
+    int damage=getDamage()/Targets.size();
+    for(Character* Target: Targets){
+        Target->takeDamage(damage);
     }
     
-    setAmmo(getAmmo() - characters.size());
+    setAmmo(getAmmo() - Targets.size());
 }
 
 void Rifle ::setMaxAttackAmount(int maxAttackAmount) {MaxAttackAmount = maxAttackAmount;}
@@ -188,7 +170,7 @@ string Rifle::getStat() {
                     ", Ammo: " + to_string(Ammo) + "/" + to_string(MaxAmmo)+
                     ", Energy Needed: " + to_string(EnergyNeeded) +
                     ", Reload Energy: " + to_string(ReloadEnergy) +
-                    "Max Attackable Enemies:"+ to_string(MaxAttackAmount) + ", Price: "+to_string(Price)+"$"+", Capacity: "+ to_string(Capacity)+")";
+                    "Max Attackable Targets:"+ to_string(MaxAttackAmount) + ", Price: "+to_string(Price)+"$"+", Capacity: "+ to_string(Capacity)+")";
     return outPut;
 }
 string Rifle::getShortStat(){
@@ -196,38 +178,40 @@ string Rifle::getShortStat(){
                     ", Ammo: " + to_string(Ammo) + "/" + to_string(MaxAmmo)+
                     ", Energy Needed: " + to_string(EnergyNeeded) +
                     ", Reload Energy: " + to_string(ReloadEnergy) +
-                    "Max Attackable Enemies:"+ to_string(MaxAttackAmount) +")";
+                    "Max Attackable Targets:"+ to_string(MaxAttackAmount) +")";
     return outPut;
 }
 //..
 ColdWeapon ::ColdWeapon(string name, int capacity,int price, int damage, int energyNeeded,int upgradeLimit)
         : Weapon( name, capacity, price, damage, energyNeeded,upgradeLimit){}
 
-void ColdWeapon :: Throw(vector<Character*> &characters){
-    Character* character= choose_character(characters);
-    character->takeDamage(int(this->getDamage()*((100+ThrowDamagePercent)/100)));
+void ColdWeapon :: Throw(Character* Target){
+    Target->takeDamage(int(this->getDamage()*((100+ThrowDamagePercent)/100)));
 }
 int ColdWeapon::getThrowDamagePercent(){return ThrowDamagePercent;}
 void ColdWeapon:: setThrowDamagePercent(int throwDamagePercent){ThrowDamagePercent=throwDamagePercent;}
-//..
+
+//-----------------------------
 Throwable :: Throwable(string name, int capacity,int price, int damage, int energyNeeded,int upgradeLimit)
         : Weapon( name, capacity, price, damage, energyNeeded,upgradeLimit) {}
 
+void Throwable :: Attack(vector<Character*> Targets) {
+    for(Character* Target: Targets){
+        Target->takeDamage(getDamage());
+    }
+}
+
+//..
 Grenade :: Grenade(string name, int capacity, int price, int damage, int energyNeeded,int upgradeLimit)
         : Throwable(name,capacity,price,damage,energyNeeded,upgradeLimit){};
 
-void Grenade :: Attack(vector<Character*> &characters) {
-    for(Character* character: characters){
-        character->takeDamage(this->getDamage());
-    }
-}
 //..
 BoomRang::BoomRang(string name, int capacity, int price, int damage, int energyNeeded,int upgradeLimit)
     :Throwable(name,capacity,price,damage,energyNeeded,upgradeLimit){}
 
-void BoomRang ::Attack(vector<Character*> &characters) {
-    for(Character* character:characters){
-        character->takeDamage(this->getDamage()*2);
+void BoomRang ::Attack(vector<Character*> Targets) {
+    for(Character* Target:Targets){
+        Target->takeDamage(getDamage()*2);
     }
 }
 

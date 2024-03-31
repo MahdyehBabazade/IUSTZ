@@ -32,7 +32,7 @@ namespace Model{
             FightModel(Player* player,vector<Character*> Enemies); //sets the player and the enemies and also the round to zero
             
             Player* getPlayer();
-            vector<Character*> getEnemies;
+            vector<Character*> getEnemies();
             int getRound();
     };
 }

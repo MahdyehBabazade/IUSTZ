@@ -12,6 +12,14 @@ void clearScreen(){
     system("cls");
 }
 
+template <typename T>
+vector<T> ShuffleVec(vector<T> vec){
+    random_device rd;
+    default_random_engine abs(rd());
+    shuffle(vec.begin(), vec.end(), abs);   
+    return vec;
+}
+
 Consumable* View::FightView::ChooseConsumable(vector<pair<Consumable*,int>> Consumables){
     vector<string> options;
     for(pair<Consumable*,int> x:Consumables){
@@ -261,34 +269,97 @@ void Control::FightControl::PlayerTurn(){
         switch (choice)
         {
             case 1:
-                Weapon* weapon = view.ChooseWeapon(model.getPlayer()->getWeapons());
-                if(weapon == nullptr)
-                    continue;
-                
-                if(weapon->getEnergyNeeded() > weapon->getEnergyNeeded())
-                    view.Prompt("Not Enough Energy");
-                    continue;
+                while(true){
+                    Weapon* weapon = view.ChooseWeapon(model.getPlayer()->getWeapons());
+                    if(weapon == nullptr)
+                        break;
                     
-                if(typeid(weapon) == typeid(Gun)){
-                    Gun* gun = dynamic_cast<Gun*>(weapon);
-                    if(typeid(gun) == typeid(Rifle)){
-                        // choose some enemies
-                    }else if(typeid(gun) == typeid(SMG)){
-                        // attack some enemies
-                    }else{
+                    if(weapon->getEnergyNeeded() > model.getPlayer()->getEnergy())
+                        view.Prompt("Not Enough Energy");
+                        continue;
                         
+                    if(typeid(weapon) == typeid(Gun)){
+                        Gun* gun = dynamic_cast<Gun*>(weapon);
+                        
+                        if(gun->getAmmo() ==0)
+                                view.Prompt("Not Enough Ammo");
+                                continue;
+                        
+                        if(typeid(gun) == typeid(Rifle)){
+                            Rifle* rifle = dynamic_cast<Rifle*>(gun);
+                            vector<Character*> chosenEnemies = view.ChooseEnemies(model.getEnemies(),min(rifle->getMaxAttackAmount(),rifle->getAmmo()));
+                            rifle->Attack(chosenEnemies);
+                            
+                        }else if(typeid(gun) == typeid(SMG)){
+                            SMG* smg = dynamic_cast<SMG*>(gun);
+                            vector<Character*> ShuffledEnemies = ShuffleVec(model.getEnemies());
+                            vector<Character*> ChosenEnemies;
+                            for(int i=0; i < min(int(ShuffledEnemies.size()-1),smg->getAmmo());i++){
+                                ChosenEnemies.push_back(ShuffledEnemies[i]);
+                            }
+                            smg->Attack(ChosenEnemies);
+                            
+                        }else if(typeid(gun) == typeid(Shotgun)){
+                            Shotgun* shotGun = dynamic_cast<Shotgun*>(gun);
+                            shotGun->Attack(model.getEnemies(),view.ChooseEnemy(model.getEnemies()));
+                            
+                        }else if(typeid(gun) == typeid(Snipe)){
+                            Snipe* snipe = dynamic_cast<Snipe*>(gun);
+                            snipe->Attack(model.getEnemies(),view.ChooseEnemy(model.getEnemies()));
+                            
+                        }
+                        else{    
+                            Character* enemy = view.ChooseEnemy(model.getEnemies());
+                            gun->Attack(enemy);
+                            
+                        }
+                    }else if(typeid(weapon) == typeid(Throwable)){
+                        Throwable* throwable = dynamic_cast<Throwable*>(weapon);
+                        throwable->Attack(model.getEnemies());
+                        model.getPlayer()->removeItem(throwable);
+                        
+                    }else if(typeid(weapon) == typeid(ColdWeapon)){
+                        int option = view.ColdWeaponMenu();
+                        ColdWeapon* coldWeapon = dynamic_cast<ColdWeapon*>(weapon);
+                        while (true)
+                        {
+                            switch (option)
+                            {
+                                case 1:
+                                    coldWeapon->Attack(view.ChooseEnemy(model.getEnemies()));
+                                    break;
+                                case 2:
+                                    coldWeapon->Throw(view.ChooseEnemy(model.getEnemies()));
+                                    model.getPlayer()->removeItem(coldWeapon);
+                                    break;
+                                case 3:
+                                    break;
+                                default:
+                                    continue;
+                            }
+                            break;    
+                        }  
+                    }else{
+                        weapon->Attack(view.ChooseEnemy(model.getEnemies()));
                     }
-                }else if(typeid(weapon) == typeid(Throwable)){
-                    
-                }else{
-                    
+                    model.getPlayer()->setEnergy(model.getPlayer()->getEnergy()-weapon->getEnergyNeeded());
+                }
+                continue;
+            case 2:
+                while (true)
+                {
+                    Consumable* consumable = view.ChooseConsumable(model.getPlayer()->getConsumables());
+                    if(consumable == nullptr)
+                        break;
+                    model.getPlayer()->Consume(consumable);
                 }
                 
-            case 2:
-            
+            case 3:
+                break;
             default:
-                continue;;
+                continue;
         }
+        break;
     }
 }
 

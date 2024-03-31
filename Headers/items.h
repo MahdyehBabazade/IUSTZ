@@ -40,7 +40,7 @@ protected:
     int UpgradeLimit;
 public:
     Weapon(string name,int capacity,int damage,int price,int energyNeeded,int UpgradeLimit);
-    virtual void Attack(vector<Character*> &characters); // takes an enemy and calls its TakeDamage function
+    virtual void Attack(Character* Target); // takes an enemy and calls its TakeDamage function
     void setDamage(int damage);
     void setEnergyNeeded(int energy);
     int getDamage();
@@ -67,7 +67,7 @@ protected:
 public:
     void setAmmo(int ammo);
     int getAmmo();
-    //void Attack(vector<Character*> &characters);
+    void Attack(Character* Enemey);
     int getReloadEnergy();
     void setReloadEnergy(int reloadEnergy);
     void Reload();
@@ -82,7 +82,7 @@ private:
 public:
     int getMinDamagePercent();
     void setMinDamagePercent(int minDamagePercent);
-    void Attack(vector<Character*> &characters) override; // checks the range and deals damage based on it
+    void Attack(vector<Character*> Targets,Character* Target); // checks the range and deals damage based on it
     Shotgun(string name,int capacity, int price ,int damage,int energyNeeded,int reloadEnergy,int ammo,int minDamagePercent,int upgradeLimit);
 
     string getStat() override;
@@ -91,14 +91,14 @@ public:
 
 class Snipe: public Gun{
 public:
-    void Attack(vector<Character*> &characters) override; // takes a character and attacks both the selected character and the one behind it
+    void Attack(vector<Character*> Targets,Character* Target); // takes a character and attacks both the selected character and the one behind it
     Snipe(string name,int capacity, int price,int damage,int energyNeeded,int reloadEnergy,int ammo,int upgradeLimit);
 };
 
 class SMG: public Gun{
 public:
     SMG(string name,int capacity, int price ,int damage,int energyNeeded,int reloadEnergy,int ammo,int upgradeLimit);
-    void Attack(vector<Character*> &characters) override; // attacks every enemy
+    void Attack(vector<Character*> Targets); // attacks every enemy
 };
 
 class Rifle: public Gun{
@@ -107,7 +107,7 @@ private:
 public:
     int getMaxAttackAmount();
     void setMaxAttackAmount(int maxAttackAmount);
-    void Attack(vector<Character*> &characters) override; // attacks chooses a certain amount of enemies and the damage is divided between them
+    void Attack(vector<Character*> Targets); // attacks chooses a certain amount of enemies and the damage is divided between them
     Rifle(string name,int capacity, int price ,int damage,int energyNeeded,int reloadEnergy,int ammo,int maxAttackAmount,int upgradeLimit);
     string getStat() override;
     string getShortStat() override;
@@ -119,25 +119,25 @@ private:
 public:
     int getThrowDamagePercent();
     void setThrowDamagePercent(int throwDamagePercent);
-    void Throw(vector<Character*> &characters); //throws the coldWeapon and removes it from the items
+    void Throw(Character* Target); //throws the coldWeapon and removes it from the items
     ColdWeapon(string name,int capacity,int price ,int damage,int energyNeeded,int upgradeLimit);
 };
 
 class Throwable: public Weapon {
 public:
     Throwable(string name,int capacity, int price,int damage,int energyNeeded,int upgradeLimit);
+    virtual void Attack(vector<Character*> Targets);
 };
 
 class Grenade: public Throwable{
 public:
     Grenade(string name,int capacity, int price,int damage,int energyNeeded,int upgradeLimit);
-    void Attack(vector<Character*> &characters) override;
 };
 
 class BoomRang: public Throwable{
 public:
     BoomRang(string name,int capacity, int price,int damage,int energyNeeded,int upgradeLimit);
-    void Attack(vector<Character*> &characters) override; // attacks all the characters twice
+    void Attack(vector<Character*> Targets) override; // attacks all the characters twice
 };
 
 //--------------------------------
