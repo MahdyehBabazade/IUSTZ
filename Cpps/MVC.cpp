@@ -12,48 +12,49 @@ void clearScreen(){
     system("cls");
 }
 
-Consumable* View::FightView::ChooseConsumable(vector<Consumable*> Consumables){
-    string sizecounter;
-    bool breaker=true;
-    int m=0;
-    while(breaker){
-        clearScreen();
-        sizecounter += "";
-        for(int i=0 ; i < Consumables.size() + 1; i++){
-            if(i < Consumables.size() )
-            {
-                if(i == m % (Consumables.size() + 1))
-                    sizecounter += green;
-                sizecounter += to_string(i+1) + ". " + Consumables[i]->getShortStat() + "\n";
-                sizecounter += reset;
-            }else{
-                if(i == m % (Consumables.size() + 1))
-                    sizecounter += green;
-                sizecounter += "Back";
-                sizecounter += reset;
-            }
-        }
-        cout << sizecounter;
-        char key = _getch();
-        switch(key)
-        {
-            case 'w':
-                m--;
-                break;
-            case 's':
-                m++;
-                break;
-            case '\r':
-                breaker=false;
-                break;
-            default:
-                break;
+Consumable* View::FightView::ChooseConsumable(vector<pair<Consumable*,int>> Consumables){
+    vector<string> options;
+    for(pair<Consumable*,int> x:Consumables){
+        if(x.second > 1){
+            options.push_back(x.first->getShortStat() + " " + to_string(x.second) +"x");
+        }else{
+            options.push_back(x.first->getShortStat());
         }
     }
-    if((m % Consumables.size() + 1) == Consumables.size())
+    options.push_back("back");
+    
+    int option=0;
+    int vecSize = options.size();
+    while(true){
+        clearScreen();
+        for(int i=0 ; i < vecSize; i++){
+            if(i == option%vecSize){
+                cout << green << options[i] << reset;
+            }else{
+                cout << options[i];
+            }
+        }
+        char key = _getch();
+        switch(tolower(key))
+        {
+            case 'w':
+                option--;
+                continue;
+            case 's':
+                option++;
+                continue;
+            case '\r':
+                break;
+            default:
+                continue;
+        }
+        break;
+    }
+    
+    if(option % vecSize == vecSize-1)
         return nullptr;
-    return Consumables[m % Consumables.size()];
-    // lists enemies and the player can then navigate and choose an enemy (returns null if nothing is chosen)
+        
+    return Consumables[option % vecSize].first;
 }
 
 Character* View::FightView::ChooseEnemy(vector<Character*> Enemies){
@@ -97,9 +98,9 @@ Character* View::FightView::ChooseEnemy(vector<Character*> Enemies){
     if((m % Enemies.size() + 1) == Enemies.size())
         return nullptr;
     return Enemies[m % Enemies.size()];
-    // lists enemies and the player can then navigate and choose an enemy (returns null if nothing is chosen)
 }
-Weapon* View::FightView::ChooseWeapon(vector<Weapon*> Weapons){
+
+Weapon* View::FightView::ChooseWeapon(vector<pair<Weapon*,int>> Weapons){
     string sizecounter;
     bool breaker=true;
     int m=0;
@@ -111,7 +112,7 @@ Weapon* View::FightView::ChooseWeapon(vector<Weapon*> Weapons){
             {
                 if(i == m % (Weapons.size() + 1))
                     sizecounter += green;
-                sizecounter += to_string(i+1) + ". " + Weapons[i]->getShortStat() + "\n";
+                sizecounter += to_string(i+1) + ". " + Weapons[i].first->getShortStat() + "\n";
                 sizecounter += reset;
             }else{
                 if(i == m % (Weapons.size() + 1))
@@ -139,17 +140,16 @@ Weapon* View::FightView::ChooseWeapon(vector<Weapon*> Weapons){
     }
     if((m % Weapons.size() + 1) == Weapons.size())
         return nullptr;
-    return Weapons[m % Weapons.size()];
-    // lists weapons and the player can then navigate and choose a weapon (returns null if nothing is chosen)
+    return Weapons[m % Weapons.size()].first;
 }
 
 int View::FightView::PlayerMenu(){
+    // 1. weapons  2.consumables 3.endround
     string sizecounter;
     bool breaker=true;
     int m=0;
     while(breaker){
         clearScreen();
-        sizecounter += "Choose one of these options:\n";
         if( m % 3 == 0)
             sizecounter += green;
         sizecounter += "1. Weapons\n";
@@ -183,10 +183,6 @@ int View::FightView::PlayerMenu(){
         }
     }
     return (m % 3 + 1);
-    // navigate through the menu below and return the option
-    //1. Weapons
-    //2. Consumables
-    //3. end round
 }
 
 int View::FightView::GunMenu(){
@@ -195,7 +191,6 @@ int View::FightView::GunMenu(){
     int m=0;
     while(breaker){
         clearScreen();
-        sizecounter += "Choose one of these options:\n";
         if( m % 3 == 0)
             sizecounter += green;
         sizecounter += "1. attack\n";
@@ -229,16 +224,11 @@ int View::FightView::GunMenu(){
         }
     }
     return (m % 3 + 1);
-    // navigate through the menu below and return the option
-    //1. attack
-    //2. reload(for Guns)
-    //3. back
 }
 
 void View::FightView::Prompt(string entry){
-    cout << entry <<endl << "Press any key to continue\n";
-    char key = _getch();
-    //print the entry and waits for an input to go back (like when the player wants to attack but doesnt have energy)
+    cout << entry << endl << "Press any key to continue\n";
+    _getch();
 }
 
 
@@ -248,7 +238,6 @@ Model::FightModel::FightModel(Player* player,vector<Character*> Enemies){
     this -> player = player;
     this -> Enemies = Enemies;
     Round=0;
-    //set the player and enemies to the entry
 }
 
 void Model::FightModel::setRound(int round){ Round = round ;}
@@ -266,7 +255,41 @@ void Control::FightControl::StartFight(){
 }
 
 void Control::FightControl::PlayerTurn(){
-    //a while loop that shows different menus and alows the player to choose different options
+    //1. weapons  2.consumables 3.endround
+    while(true){
+        int choice = view.PlayerMenu();
+        switch (choice)
+        {
+            case 1:
+                Weapon* weapon = view.ChooseWeapon(model.getPlayer()->getWeapons());
+                if(weapon == nullptr)
+                    continue;
+                
+                if(weapon->getEnergyNeeded() > weapon->getEnergyNeeded())
+                    view.Prompt("Not Enough Energy");
+                    continue;
+                    
+                if(typeid(weapon) == typeid(Gun)){
+                    Gun* gun = dynamic_cast<Gun*>(weapon);
+                    if(typeid(gun) == typeid(Rifle)){
+                        // choose some enemies
+                    }else if(typeid(gun) == typeid(SMG)){
+                        // attack some enemies
+                    }else{
+                        
+                    }
+                }else if(typeid(weapon) == typeid(Throwable)){
+                    
+                }else{
+                    
+                }
+                
+            case 2:
+            
+            default:
+                continue;;
+        }
+    }
 }
 
 void Control::FightControl::EnemiesTurn(){

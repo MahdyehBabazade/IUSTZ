@@ -10,8 +10,8 @@ namespace View{
             FightView() = default;
             int PlayerMenu(); //player options
             int GunMenu(); //weapon options(reload and attack)
-            Consumable* ChooseConsumable(vector<Consumable*> Consumables);
-            Weapon* ChooseWeapon(vector<Weapon*> Weapons);
+            Consumable* ChooseConsumable(vector<pair<Consumable*,int>> Consumables);
+            Weapon* ChooseWeapon(vector<pair<Weapon*,int>> Weapons);
             Character* ChooseEnemy(vector<Character*> Enemies);
             
             void Prompt(string entry);
@@ -31,6 +31,9 @@ namespace Model{
             FightModel() = default;
             FightModel(Player* player,vector<Character*> Enemies); //sets the player and the enemies and also the round to zero
             
+            Player* getPlayer();
+            vector<Character*> getEnemies;
+            int getRound();
     };
 }
 
@@ -38,7 +41,7 @@ namespace Model{
 namespace Control{
     class FightControl{
         private:
-            Model::FightModel Model;
+            Model::FightModel model;
             View::FightView view;
             void StartFight();
             void PlayerTurn();
