@@ -1,17 +1,17 @@
 #pragma once
-#include "../Headers/items.h"
-#include "../Headers/creature.h"
-#include "../Headers/map.h"
+#include "../Cpps/creature.cpp"
+#include "../Cpps/map.cpp"
+#include "../Cpps/encounter.cpp"
 using namespace std;
 
 class ShopFactory{
 private:
     Map* map;
-    Shop* shop;
+    Player* player;
+    Shopkeeper* shopkeeper;
 public:
-    ShopFactory() = default;
-    ShopFactory(Map* map, Shop* shop);
-    void Generate(Shop* shop);
+    ShopFactory(Map* map, Player* player, Shopkeeper* shopkeeper);
+    Shop* Generate();
 };
 
 class EnemyFactory{
@@ -19,6 +19,7 @@ class EnemyFactory{
 private:
     Map* map;
     int Difficulty;
+    void setDifficulty(int Difficulty);
     string ZombieNameset();
     string HumanEnemyNameset();
     double Armorset();
@@ -31,7 +32,6 @@ private:
 
 public:
     EnemyFactory(Map* map);
-    void setDifficulty(int Difficulty);
     vector<Character*> FightEnemy();
     vector<Character*> MiniBossEnemy();
     vector<Character*> BossEnemy();
@@ -51,4 +51,12 @@ private:
 public:
     MapFactory(int floor);
     Map* GenerateMap();
+};
+
+class FightFactory{
+private:
+    Player* player;
+public:
+    FightFactory(Player* player);
+    Fight* GenerateFight();
 };

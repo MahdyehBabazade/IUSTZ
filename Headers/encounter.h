@@ -27,7 +27,7 @@ private:
     
 public:
     // Constructor
-    Shop(Player* player, vector<Weapon*> weapons, vector<Consumable*> consumables, vector<Equipment*> equipments, Shopkeeper* shopkeeper,string Story);
+    Shop(Player* player, vector<Weapon*> weapons, vector<Consumable*> consumables, vector<Equipment*> equipments, Shopkeeper* shopkeeper);
     Shop() = default;
     
     // Getters
@@ -80,8 +80,15 @@ public:
 };
 
 class Fight : public Encounter{
+private:
+    Player* player;
+    //vector<Character*> players;
+    vector<Character*> enemies;
+    vector<Item*> items;
+
 public:
     Fight()=default;
+    Fight(Player* player, vector<Character*> enemies, vector<Item*> items);
 };
 
 class MiniBoss : public Encounter{

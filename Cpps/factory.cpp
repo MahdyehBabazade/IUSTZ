@@ -1,3 +1,4 @@
+#pragma once
 #include "../Headers/factory.h"
 #include <random>
 #include<algorithm>
@@ -19,73 +20,79 @@ int Index_Weighted_Random(vector<int> weights){
     return dist(gen);
 }
 
-void ShopFactory :: Generate(Shop* shop){
+ShopFactory :: ShopFactory(Map* map, Player* player, Shopkeeper* shopkeeper){
+    this -> map = map;
+    this -> player = player;
+    this -> shopkeeper = shopkeeper;
+
+}
+
+Shop* ShopFactory :: Generate(){
     // Guns 
-    Shotgun* shotgun = new Shotgun("shotgun", 19, 25, 25, 1, 2, 3, 25, 3);
-    Shotgun* shotgun2 = new Shotgun("shotgun2", 19, 30, 30, 1, 2, 5, 27, 3);
-    Shotgun* shotgun3 = new Shotgun("shotgun3", 19, 35, 35, 1, 2, 4, 28, 3); // A better shotgun
+    Shotgun* shotgun = new Shotgun("Reaper", 20, 30, 25, 1, 2, 3, 25, 3);
+    Shotgun* shotgun2 = new Shotgun("Death Dealer", 20, 40, 35, 1, 2, 5, 27, 3);
+    Shotgun* shotgun3 = new Shotgun("Hellfire", 20, 60, 50, 1, 2, 4, 28, 3); // A better shotgun
 
-    Snipe* snipe = new Snipe("snipe", 23, 20, 21, 1, 2, 4, 3);
-    Snipe* snipe2 = new Snipe("snipe2", 23, 20, 20, 1, 2, 5, 3);
-    Snipe* snipe3 = new Snipe("snipe3", 23, 25, 23, 1, 2, 6, 3); // A better sniper
+    Snipe* snipe = new Snipe("Fury", 25, 40, 35, 1, 2, 1, 3);
+    Snipe* snipe2 = new Snipe("Sharpshooter", 25, 50, 45, 1, 2, 1, 3);
+    Snipe* snipe3 = new Snipe("Ghostfire", 25, 70, 60, 1, 2, 2, 3); // A better sniper
 
-    SMG* smg = new SMG("smg", 15, 18, 18, 1, 2, 3, 2);
-    SMG* smg2 = new SMG("smg2", 15, 19, 18, 1, 2, 4, 2);
-    SMG* smg3 = new SMG("smg3", 15, 22, 19, 1, 2, 5, 3); // A better SMG
+    SMG* smg = new SMG("Venom", 15, 25, 20, 1, 2, 3, 2);
+    SMG* smg2 = new SMG("Hurricane", 15, 35, 30, 1, 2, 4, 2);
+    SMG* smg3 = new SMG("Rapidfire", 15, 50, 45, 1, 2, 5, 3); // A better SMG
 
-    Rifle* rifle = new Rifle("rifle", 20, 24, 25, 2, 2, 3, 1, 2);
-    Rifle* rifle2 = new Rifle("rifle2", 20, 27, 27, 2, 2, 4, 2, 2);
-    Rifle* rifle3 = new Rifle("rifle3", 20, 30, 28, 2, 2, 4, 3, 3); // A better rifle
+    Rifle* rifle = new Rifle("rifle", 20, 40, 30, 2, 2, 3, 1, 2);
+    Rifle* rifle2 = new Rifle("rifle2", 20, 50, 40, 2, 2, 4, 2, 2);
+    Rifle* rifle3 = new Rifle("rifle3", 20, 65, 55, 2, 2, 4, 3, 3); // A better rifle
 
     // Cold Weapons
-    ColdWeapon* coldweapon = new ColdWeapon("coldweapon", 10, 15, 15, 1, 1);
-    ColdWeapon* coldweapon2 = new ColdWeapon("coldweapon2", 10, 15, 17, 1, 2);
-    ColdWeapon* coldweapon3 = new ColdWeapon("coldweapon3", 10, 18, 20, 1, 3); // Better
+    ColdWeapon* coldweapon = new ColdWeapon("coldweapon", 10, 30, 15, 1, 1);
+    ColdWeapon* coldweapon2 = new ColdWeapon("coldweapon2", 10, 40, 20, 1, 2);
+    ColdWeapon* coldweapon3 = new ColdWeapon("coldweapon3", 10, 55, 35, 1, 3); // Better
 
     // Throwables
-    Grenade* grenade = new Grenade("grenade", 7, 16, 17, 1, 1);
-    Grenade* grenade2 = new Grenade("grenade2", 7, 18, 18, 1, 2);
-    Grenade* grenade3 = new Grenade("grenade3", 7, 20, 20, 1, 3); // Better
+    Grenade* grenade = new Grenade("grenade", 7, 10, 30, 1, 1);
+    Grenade* grenade2 = new Grenade("grenade2", 7, 15, 40, 1, 2);
+    Grenade* grenade3 = new Grenade("grenade3", 7, 25, 60, 1, 3); // Better
 
-    BoomRang* boomerang = new BoomRang("boomerang", 15, 16, 10, 1, 2);
-    BoomRang* boomerang2 = new BoomRang("boomerang2", 15, 17, 11, 1, 2);
-    BoomRang* boomerang3 = new BoomRang("boomerabg3", 15, 18, 13, 1, 2); // Better
+    BoomRang* boomerang = new BoomRang("boomerang", 15, 15, 15, 1, 2);
+    BoomRang* boomerang2 = new BoomRang("boomerang2", 15, 20, 20, 1, 2);
+    BoomRang* boomerang3 = new BoomRang("boomerabg3", 15, 30, 30, 1, 2); // Better
 
     // Consumables
-    Consumable* ShieldConsumable = new Consumable("ShieldConsumable", "ShieldPotion", 7, 25, 10);
-    Consumable* ShieldConsumable2 = new Consumable("ShieldConsumable2", "ShieldPotion", 7, 30, 12);
-    Consumable* ShieldConsumable3 = new Consumable("ShieldConsumable3", "ShieldPotion", 7, 35, 14);
+    Consumable* ShieldConsumable = new Consumable("ShieldConsumable", "ShieldPotion", 7, 20, 20);
+    Consumable* ShieldConsumable2 = new Consumable("ShieldConsumable2", "ShieldPotion", 7, 25, 30);
+    Consumable* ShieldConsumable3 = new Consumable("ShieldConsumable3", "ShieldPotion", 7, 35, 45);
 
-    Consumable* HPConsumable = new Consumable("HPConsumable", "HPPotion", 8, 20, 6);
-    Consumable* HPConsumable2 = new Consumable("HPConsumable2", "HPPotion", 8, 25, 7);
-    Consumable* HPConsumable3 = new Consumable("HPConsumable3", "HPPotion", 8, 30, 8);
+    Consumable* HPConsumable = new Consumable("HPConsumable", "HPPotion", 8, 25, 30);
+    Consumable* HPConsumable2 = new Consumable("HPConsumable2", "HPPotion", 8, 30, 50);
+    Consumable* HPConsumable3 = new Consumable("HPConsumable3", "HPPotion", 8, 40, 75);
 
-    Consumable* EnergyConsumable = new Consumable("EnergyConsumable", "EnergyPotion", 7, 30, 4);
-    Consumable* EnergyConsumable2 = new Consumable("EnergyConsumable2", "EnergyPotion", 7, 35, 5);
-    Consumable* EnergyConsumable3 = new Consumable("EnergyConsumable3", "EnergyPotion", 7, 40, 6);
+    Consumable* EnergyConsumable = new Consumable("EnergyConsumable", "EnergyPotion", 7, 30, 1);
+    Consumable* EnergyConsumable2 = new Consumable("EnergyConsumable2", "EnergyPotion", 7, 60, 2);
 
     // Equipments
-    Vest* vest = new Vest("vest", 0, 40, 15);
-    Vest* vest2 = new Vest("vest2", 0, 45, 17);
-    Vest* vest3 = new Vest("vest3", 0, 50, 19);
+    Vest* vest = new Vest("vest", 0, 40, 20);
+    Vest* vest2 = new Vest("vest2", 0, 50, 25);
+    Vest* vest3 = new Vest("vest3", 0, 70, 40);
 
-    HeadGear* headgear = new HeadGear("headgear", 0, 35, 10);
-    HeadGear* headgear2 = new HeadGear("headgear2", 0, 40, 13);
-    HeadGear* headgear3 = new HeadGear("headgear3", 0, 45, 16); 
+    HeadGear* headgear = new HeadGear("headgear", 0, 30, 15);
+    HeadGear* headgear2 = new HeadGear("headgear2", 0, 50, 25);
+    HeadGear* headgear3 = new HeadGear("headgear3", 0, 80, 45); 
 
-    FootWear* footwear = new FootWear("footwear", 0, 30, 7);
-    FootWear* footwear2 = new FootWear("footwear2", 0, 35, 10);
-    FootWear* footwear3 = new FootWear("footwear3", 0, 40, 13);
+    FootWear* footwear = new FootWear("footwear", 0, 15, 10);
+    FootWear* footwear2 = new FootWear("footwear2", 0, 30, 20);
+    FootWear* footwear3 = new FootWear("footwear3", 0, 75, 50);
 
-    Boot* boot = new Boot("boot", 0, 34, 5);
-    Boot* boot2 = new Boot("boot2", 0, 36, 8);
-    Boot* boot3 = new Boot("boot3", 0, 38, 11);
+    Boot* boot = new Boot("boot", 0, 15, 10);
+    Boot* boot2 = new Boot("boot2", 0, 30, 15);
+    Boot* boot3 = new Boot("boot3", 0, 40, 25);
 
     vector<Weapon*> AllWeapons = {shotgun, shotgun2, shotgun3, snipe, snipe2, snipe3, smg, smg2, smg3, rifle, rifle2, rifle3, 
     coldweapon, coldweapon2, coldweapon3, grenade, grenade2, grenade3, boomerang, boomerang2, boomerang3};
 
     vector<Consumable*> AllConsumables ={ShieldConsumable, ShieldConsumable2, ShieldConsumable3, HPConsumable, HPConsumable2, 
-    HPConsumable3, EnergyConsumable, EnergyConsumable2, EnergyConsumable3};
+    HPConsumable3, EnergyConsumable, EnergyConsumable2};
 
     vector<Equipment*> AllEquipments = {vest, vest2, vest3, headgear, headgear2, headgear3, footwear, footwear2, footwear3, boot, 
     boot2, boot3};
@@ -98,64 +105,68 @@ void ShopFactory :: Generate(Shop* shop){
     
     if (map->getFloor() == 1)
     {
-        item_index = Index_Weighted_Random({3,2,1,3,2,1,3,2,1,3,2,1,3,2,1,3,2,1,3,2,1});
-        for (int i = 0; i < 7; i++)
+        
+        for (int i = 0; i < 5; i++)
         {
+            item_index = Index_Weighted_Random({5,2,1,5,2,1,5,2,1,5,2,1,6,3,2,5,2,1,5,2,1});
             Weapons[i] = AllWeapons[item_index];
         }
-        item_index = Index_Weighted_Random({3,2,1,3,2,1,3,2,1});
-        for (int i = 0; i < 3; i++)
+        
+        for (int i = 0; i < 4; i++)
         {
+            item_index = Index_Weighted_Random({5,2,1,5,2,1,5,2,1});
             Consumables[i] = AllConsumables[i];
         }
-        item_index = Index_Weighted_Random({3,2,1,3,2,1,3,2,1,3,2,1});
+        
         for (int i = 0; i < 2; i++)
         {
+            item_index = Index_Weighted_Random({5,2,1,5,2,1,5,2,1,5,2,1});
             Equipments[i] = AllEquipments[item_index];
         }
     }
     else if (map->getFloor() == 2)
     {
-        item_index = Index_Weighted_Random({2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1});
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < 5; i++)
         {
+            item_index = Index_Weighted_Random({2,5,1,2,5,1,2,5,1,2,5,1, 3,6,2 ,2,5,1,2,5,1});
             Weapons[i] = AllWeapons[item_index];
         }
-        item_index = Index_Weighted_Random({2,3,1,2,3,1,2,3,1});
-        for (int i = 0; i < 3; i++)
+        
+        for (int i = 0; i < 4; i++)
         {
+            item_index = Index_Weighted_Random({2,5,1,2,5,1,2,5,1});
             Consumables[i] = AllConsumables[i];
         }
-        item_index = Index_Weighted_Random({2,3,1,2,3,1,2,3,1,2,3,1});
+        
         for (int i = 0; i < 2; i++)
         {
+            item_index = Index_Weighted_Random({2,5,1,2,5,1,2,5,1,2,5,1});
             Equipments[i] = AllEquipments[item_index];
         }
     }
     else if (map->getFloor() == 3)
     {
-        item_index = Index_Weighted_Random({1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3});
-        for (int i = 0; i < 7; i++)
+        
+        for (int i = 0; i < 5; i++)
         {
+            item_index = Index_Weighted_Random({1,2,5,1,2,5,1,2,5,1,2,5, 2,3,6, 1,2,5,1,2,5});
             Weapons[i] = AllWeapons[item_index];
         }
-        item_index = Index_Weighted_Random({1,2,3,1,2,3,1,2,3});
-        for (int i = 0; i < 3; i++)
+        
+        for (int i = 0; i < 4; i++)
         {
+            item_index = Index_Weighted_Random({1,2,5,1,2,5,1,2,5});
             Consumables[i] = AllConsumables[i];
         }
-        item_index = Index_Weighted_Random({1,2,3,1,2,3,1,2,3});
+        
         for (int i = 0; i < 2; i++)
         {
+            item_index = Index_Weighted_Random({1,2,5,1,2,5,1,2,5});
             Equipments[i] = AllEquipments[item_index];
         }
     }
-
-    shop->setWeapons(Weapons);
-    shop->setConsumables(Consumables);
-    shop->setEquipments(Equipments);
-
-     
+    Shop* shop = new Shop(player, Weapons, Consumables, Equipments, shopkeeper);
+    return shop;
 }
 
 EnemyFactory :: EnemyFactory(Map* map){this -> map = map;}
@@ -200,8 +211,13 @@ vector<pair<Weapon* , int>> EnemyFactory :: Weaponset(int type){
                 AllWeapons.push_back(make_pair(new Shotgun("Shotgun" , 0 , 0 , 
                 ceil(9 + 2.5 * pow(1.1 , Difficulty/3 + Index_Weighted_Random(weights))) , 0 , 0 , 2 , 100 , 0) , 1));
         }
-        AllWeapons.push_back(make_pair(new ColdWeapon("Sword" , 0 , 0 , 
-        ceil(4 + 2 * pow(1.1 , Difficulty/3 + Index_Weighted_Random(weights))) , 0 , 0) , Index_Weighted_Random(weights) + 1));
+        int Coldrandom = rand() % 2;
+        if(Coldrandom == 0)
+            AllWeapons.push_back(make_pair(new ColdWeapon("Sword" , 0 , 0 , 
+            ceil(4 + 2 * pow(1.1 , Difficulty/3 + Index_Weighted_Random(weights))) , 0 , 0) , Index_Weighted_Random(weights) + 1));
+        else
+            AllWeapons.push_back(make_pair(new ColdWeapon("Katana" , 0 , 0 , 
+            ceil(5.5 + 1.9 * pow(1.09 , Difficulty/3 + Index_Weighted_Random(weights))) , 0 , 0) , Index_Weighted_Random(weights) + 1));
         if(Difficulty >= 8){
             int random = rand() % 2 + 1;
             for(int i = 0 ; i < random; i++){
@@ -245,8 +261,134 @@ vector<pair<Weapon* , int>> EnemyFactory :: Weaponset(int type){
 
 vector<pair<Consumable* , int>> EnemyFactory :: Consumableset(int type){
     vector<pair<Consumable* , int>> Consumables = {};
-    if(type == 1){}
+    Consumables.push_back(make_pair(new Consumable("Healing tonic" , "HPPotion" , 0 , 0 , 20) , 0));
+    Consumables.push_back(make_pair(new Consumable("Elexir of vitality" , "HPPotion" , 0 , 0 , 50) , 0));
+    Consumables.push_back(make_pair(new Consumable("Divin Essence" , "HPPotion" , 0 , 0 , 80) , 0));
+    Consumables.push_back(make_pair(new Consumable("Barrier Shield" , "ShieldPotion" , 0 , 0 , 30) , 0));
+    Consumables.push_back(make_pair(new Consumable("Gaurdian Brew" , "ShieldPotion" , 0 , 0 , 60) , 0));
+    Consumables.push_back(make_pair(new Consumable("Aegis Elixir" , "ShieldPotion" , 0 , 0 , 90) , 0));
+    vector<int> weights = {0 , 0 , 0 , 0 , 0 , 0};
+    if(type == 1){
+        if(Difficulty >= 8)
+            weights = {5 , 1 , 0 , 5 , 1 , 0};
+        else if(Difficulty >= 22)
+            weights = {7 , 3 , 0 , 7 , 3 , 0};
+        else if(Difficulty >= 36)
+            weights = {10 , 5 , 1 , 10 , 5 , 1};
+        else if(Difficulty >= 50)
+            weights = {12 , 7 , 3 , 12 , 7 , 3};
+        if(Difficulty >= 8)
+            Consumables[Index_Weighted_Random(weights)].second++;
+        else if(Difficulty >= 22)
+            for(int i = 0 ; i < 2; i++)
+                Consumables[Index_Weighted_Random(weights)].second++;
+        else if(Difficulty >= 36)
+            for(int i = 0; i < 2; i++)
+                Consumables[Index_Weighted_Random(weights)].second++;
+        else if(Difficulty >= 50)
+            for(int i = 0; i < 3; i++)
+                Consumables[Index_Weighted_Random(weights)].second++;
+    }
+    return Consumables;
 }
+
+vector<pair<Item* , int>> EnemyFactory :: Itemset(vector<pair<Weapon* , int>> Weapons, 
+vector<pair<Consumable* , int>> Consumables){
+    vector<pair<Item* , int>> Items;
+    for(int i = 0; i < Weapons.size(); i++)
+        Items.push_back(Weapons[i]);
+    for(int i = 0; i < Consumables.size(); i++)
+        Items.push_back(Consumables[i]);
+    return Items;
+}
+
+HumanEnemy* EnemyFactory :: HumanEnemyMaker(){
+    string Name = HumanEnemyNameset();
+    int MaxHP = MaxHPset();
+    double Armor = Armorset();
+    vector<pair<Weapon* , int>> weapons = Weaponset(1);
+    vector<pair<Consumable* , int>> Consumables = Consumableset(1);
+    vector<pair<Item* , int>> Items = Itemset(weapons , Consumables);
+    return new HumanEnemy(Name , MaxHP , Armor , Items , weapons , Consumables);    
+}
+
+Zombie* EnemyFactory :: ZombieMaker(){
+    string Name = ZombieNameset();
+    int MaxHP = MaxHPset();
+    double Armor = Armorset();
+    vector<pair<Weapon* , int>> weapons = Weaponset(2);
+    vector<pair<Consumable* , int>> Consumables = Consumableset(2);
+    vector<pair<Item* , int>> Items = Itemset(weapons , Consumables);
+    return new Zombie(Name , MaxHP , Armor , Items , weapons);    
+}
+
+vector<Character*> EnemyFactory :: FightEnemy(){
+    setDifficulty((map->getFloor() - 1) * 15 + map->getCurrentNode().first);
+    vector<Character*> Enemies;
+    int ZorH = rand() % 3;
+    if(ZorH == 2){
+        if(Difficulty % 6 == 0 || Difficulty % 6 == 1)
+            Enemies.push_back(HumanEnemyMaker());
+        else if(Difficulty % 6 == 2 || Difficulty % 6 == 3){
+            Enemies.push_back(HumanEnemyMaker());
+            Enemies.push_back(HumanEnemyMaker());
+        }
+        else if(Difficulty % 6 == 4 || Difficulty % 6 == 5){
+            Enemies.push_back(HumanEnemyMaker());
+            Enemies.push_back(HumanEnemyMaker());
+            Enemies.push_back(HumanEnemyMaker());
+        }
+    }
+    else{
+        if(Difficulty % 6 == 0 || Difficulty % 6 == 1)
+            Enemies.push_back(ZombieMaker());
+        else if(Difficulty % 6 == 2 || Difficulty % 6 == 3){
+            Enemies.push_back(ZombieMaker());
+            Enemies.push_back(ZombieMaker());
+        }
+        else if(Difficulty % 6 == 4 || Difficulty % 6 == 5){
+            Enemies.push_back(ZombieMaker());
+            Enemies.push_back(ZombieMaker());
+            Enemies.push_back(ZombieMaker());
+        }
+    }
+    return Enemies;
+}
+
+vector<Character*> EnemyFactory :: MiniBossEnemy(){
+    setDifficulty((map->getFloor() - 1) * 15 + map->getCurrentNode().first + 21);
+    vector<Character*> Enemies;
+    int ZorH = rand() % 3;
+    if(ZorH == 2){
+        if(Difficulty % 6 == 0 || Difficulty % 6 == 1)
+            Enemies.push_back(HumanEnemyMaker());
+        else if(Difficulty % 6 == 2 || Difficulty % 6 == 3){
+            Enemies.push_back(HumanEnemyMaker());
+            Enemies.push_back(HumanEnemyMaker());
+        }
+        else if(Difficulty % 6 == 4 || Difficulty % 6 == 5){
+            Enemies.push_back(HumanEnemyMaker());
+            Enemies.push_back(HumanEnemyMaker());
+            Enemies.push_back(HumanEnemyMaker());
+        }
+    }
+    else{
+        if(Difficulty % 6 == 0 || Difficulty % 6 == 1)
+            Enemies.push_back(ZombieMaker());
+        else if(Difficulty % 6 == 2 || Difficulty % 6 == 3){
+            Enemies.push_back(ZombieMaker());
+            Enemies.push_back(ZombieMaker());
+        }
+        else if(Difficulty % 6 == 4 || Difficulty % 6 == 5){
+            Enemies.push_back(ZombieMaker());
+            Enemies.push_back(ZombieMaker());
+            Enemies.push_back(ZombieMaker());
+        }
+    }
+    return Enemies;
+}
+
+vector<Character*> EnemyFactory :: BossEnemy(){}
 
 vector<int> MapFactory :: PathFinding1(){
     vector<int> path={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
@@ -759,4 +901,84 @@ Map* MapFactory :: GenerateMap(){
     GenerateEncounters = generateEncounters(path1 , path2 , path3 , path4 , path5);
     Map* map = new Map(Floor , path1 , path2 , path3 , path4 , path5 , GenerateEncounters);
     return map;
+}
+
+
+FightFactory :: FightFactory(Player* player){this -> player = player;}
+
+Fight* FightFactory :: GenerateFight(){
+    // Guns 
+    Shotgun* shotgun = new Shotgun("Reaper", 20, 30, 25, 1, 2, 3, 25, 3);
+    Shotgun* shotgun2 = new Shotgun("Death Dealer", 20, 40, 35, 1, 2, 5, 27, 3);
+    Shotgun* shotgun3 = new Shotgun("Hellfire", 20, 60, 50, 1, 2, 4, 28, 3); // A better shotgun
+
+    Snipe* snipe = new Snipe("Fury", 25, 40, 35, 1, 2, 1, 3);
+    Snipe* snipe2 = new Snipe("Sharpshooter", 25, 50, 45, 1, 2, 1, 3);
+    Snipe* snipe3 = new Snipe("Ghostfire", 25, 70, 60, 1, 2, 2, 3); // A better sniper
+
+    SMG* smg = new SMG("Venom", 15, 25, 20, 1, 2, 3, 2);
+    SMG* smg2 = new SMG("Hurricane", 15, 35, 30, 1, 2, 4, 2);
+    SMG* smg3 = new SMG("Rapidfire", 15, 50, 45, 1, 2, 5, 3); // A better SMG
+
+    Rifle* rifle = new Rifle("rifle", 20, 40, 30, 2, 2, 3, 1, 2);
+    Rifle* rifle2 = new Rifle("rifle2", 20, 50, 40, 2, 2, 4, 2, 2);
+    Rifle* rifle3 = new Rifle("rifle3", 20, 65, 55, 2, 2, 4, 3, 3); // A better rifle
+
+    // Cold Weapons
+    ColdWeapon* coldweapon = new ColdWeapon("coldweapon", 10, 30, 15, 1, 1);
+    ColdWeapon* coldweapon2 = new ColdWeapon("coldweapon2", 10, 40, 20, 1, 2);
+    ColdWeapon* coldweapon3 = new ColdWeapon("coldweapon3", 10, 55, 35, 1, 3); // Better
+
+    // Throwables
+    Grenade* grenade = new Grenade("grenade", 7, 10, 30, 1, 1);
+    Grenade* grenade2 = new Grenade("grenade2", 7, 15, 40, 1, 2);
+    Grenade* grenade3 = new Grenade("grenade3", 7, 25, 60, 1, 3); // Better
+
+    BoomRang* boomerang = new BoomRang("boomerang", 15, 15, 15, 1, 2);
+    BoomRang* boomerang2 = new BoomRang("boomerang2", 15, 20, 20, 1, 2);
+    BoomRang* boomerang3 = new BoomRang("boomerabg3", 15, 30, 30, 1, 2); // Better
+
+    // Consumables
+    Consumable* ShieldConsumable = new Consumable("ShieldConsumable", "ShieldPotion", 7, 20, 20);
+    Consumable* ShieldConsumable2 = new Consumable("ShieldConsumable2", "ShieldPotion", 7, 25, 30);
+    Consumable* ShieldConsumable3 = new Consumable("ShieldConsumable3", "ShieldPotion", 7, 35, 45);
+
+    Consumable* HPConsumable = new Consumable("HPConsumable", "HPPotion", 8, 25, 30);
+    Consumable* HPConsumable2 = new Consumable("HPConsumable2", "HPPotion", 8, 30, 50);
+    Consumable* HPConsumable3 = new Consumable("HPConsumable3", "HPPotion", 8, 40, 75);
+
+    Consumable* EnergyConsumable = new Consumable("EnergyConsumable", "EnergyPotion", 7, 30, 1);
+    Consumable* EnergyConsumable2 = new Consumable("EnergyConsumable2", "EnergyPotion", 7, 60, 2);
+
+    // Equipments
+    Vest* vest = new Vest("vest", 0, 40, 20);
+    Vest* vest2 = new Vest("vest2", 0, 50, 25);
+    Vest* vest3 = new Vest("vest3", 0, 70, 40);
+
+    HeadGear* headgear = new HeadGear("headgear", 0, 30, 15);
+    HeadGear* headgear2 = new HeadGear("headgear2", 0, 50, 25);
+    HeadGear* headgear3 = new HeadGear("headgear3", 0, 80, 45); 
+
+    FootWear* footwear = new FootWear("footwear", 0, 15, 10);
+    FootWear* footwear2 = new FootWear("footwear2", 0, 30, 20);
+    FootWear* footwear3 = new FootWear("footwear3", 0, 75, 50);
+
+    Boot* boot = new Boot("boot", 0, 15, 10);
+    Boot* boot2 = new Boot("boot2", 0, 30, 15);
+    Boot* boot3 = new Boot("boot3", 0, 40, 25);
+
+    vector<Weapon*> AllWeapons = {shotgun, shotgun2, shotgun3, snipe, snipe2, snipe3, smg, smg2, smg3, rifle, rifle2, rifle3, 
+    coldweapon, coldweapon2, coldweapon3, grenade, grenade2, grenade3, boomerang, boomerang2, boomerang3};
+
+    vector<Consumable*> AllConsumables ={ShieldConsumable, ShieldConsumable2, ShieldConsumable3, HPConsumable, HPConsumable2, 
+    HPConsumable3, EnergyConsumable, EnergyConsumable2};
+
+    vector<Equipment*> AllEquipments = {vest, vest2, vest3, headgear, headgear2, headgear3, footwear, footwear2, footwear3, boot, 
+    boot2, boot3};
+
+    vector<Weapon*> Weapons;
+    vector<Consumable*> Consumables;
+    vector<Equipment*> Equipments;
+
+    // To be continued
 }
