@@ -20,6 +20,7 @@ public:
     Map(int floor,vector<int> path1, vector<int> path2, vector<int> path3 ,vector<int> path4,
     vector<int> Path5 , vector<vector<string>> generateEncounter);
     string ShowMap();
+    int getFloor();
     pair<int , int> getCurrentNode();
     void setCurrentNode(pair<int , int> CurrentNode);
     vector<int> getPassedNodes();

@@ -1,5 +1,8 @@
 #include "../Headers/factory.h"
 #include <random>
+#include<algorithm>
+
+using namespace std;
 
 template <typename T>
 vector<T> ShuffleVec(vector<T> vec){ // Shuffles a vector
@@ -153,4 +156,607 @@ void ShopFactory :: Generate(Shop* shop){
     shop->setEquipments(Equipments);
 
      
+}
+
+EnemyFactory :: EnemyFactory(Map* map){this -> map = map;}
+
+void EnemyFactory :: setDifficulty(int Difficulty){this -> Difficulty = Difficulty;}
+
+string EnemyFactory :: ZombieNameset(){
+    vector<string> Names = {"Tank" , "Agile"};
+    return ShuffleVec(Names)[0];
+}
+
+string EnemyFactory :: HumanEnemyNameset(){
+    vector<string> Names = {"Steve" , "Donald" , "Megan" , "Myria" , "James" , "Jhon" , "Sarah" , "Jennifer" ,
+    "Selena" , "Jake" , "Jimmy" , "James" , "Emma" , "Olivia" , "William" , "Ava" , "Benjamin" , "Sophia" , "Noah" ,
+    "Oliver" , "Mia" , "Jackson" , "Alexander" , "Micheal" , "Ethan" , "Abigail" , "Danial" , "Lucas" , "Grace" ,
+    "Henry" , "Lily" ,"Tom"};
+    return ShuffleVec(Names)[0];
+}
+
+double EnemyFactory :: Armorset(){
+    vector<int> weights = {4 , 3 , 2 , 1};
+    vector<double> armorsets = {7.5 , 10 , 12.5 , 15 , 17.25 , 20 , 22.5 , 25 , 27.5 , 30 , 32.5 , 35 , 37.5 , 40 ,
+    42.5 , 45 , 47.5 , 50};
+    return armorsets[min(17 , Index_Weighted_Random(weights) + Difficulty/4)];
+}
+
+int EnemyFactory :: MaxHPset(){
+    vector<int> weights = {4 , 3 , 2 , 1};
+    return 30 + 10 * pow(1.1 , Difficulty/2 + Index_Weighted_Random(weights));
+}
+
+vector<pair<Weapon* , int>> EnemyFactory :: Weaponset(int type){
+    if(type == 1){
+        vector<pair<Weapon* , int>> AllWeapons;
+        vector<int> weights = {4 , 3 , 2};
+        for(int i = 0 ; i < 2; i++){
+            int random = rand() % 2;
+            if(random == 0)
+                AllWeapons.push_back(make_pair(new Shotgun("Shotgun" , 0 , 0 , 
+                ceil(6 + 3 * pow(1.1 , Difficulty/3 + Index_Weighted_Random(weights))) , 0 , 0 , 2 , 100 , 0) , 1));
+            else
+                AllWeapons.push_back(make_pair(new Shotgun("Shotgun" , 0 , 0 , 
+                ceil(9 + 2.5 * pow(1.1 , Difficulty/3 + Index_Weighted_Random(weights))) , 0 , 0 , 2 , 100 , 0) , 1));
+        }
+        AllWeapons.push_back(make_pair(new ColdWeapon("Sword" , 0 , 0 , 
+        ceil(4 + 2 * pow(1.1 , Difficulty/3 + Index_Weighted_Random(weights))) , 0 , 0) , Index_Weighted_Random(weights) + 1));
+        if(Difficulty >= 8){
+            int random = rand() % 2 + 1;
+            for(int i = 0 ; i < random; i++){
+                int random = rand() % 5;
+                switch(random){
+                    case 0:
+                        AllWeapons.push_back(make_pair(new BoomRang("boomrang" , 0 , 0 ,
+                        ceil(10 + 2 * pow(1.1 , Difficulty/3 + Index_Weighted_Random(weights))) , 0 , 0) , 2));
+                        break;
+                    case 1:
+                        AllWeapons.push_back(make_pair(new BoomRang("boomrang" , 0 , 0 ,
+                        ceil(10 + 2 * pow(1.1 , Difficulty/3 + Index_Weighted_Random(weights))) , 0 , 0) , 1));
+                        break;
+                    case 2:
+                        AllWeapons.push_back(make_pair(new Grenade("Grenade" , 0 , 0 ,
+                        ceil(10 + 2.5 * pow(1.1 , Difficulty/3 + Index_Weighted_Random(weights))) , 0 , 0) , 2));
+                        break;
+                    case 3:
+                        AllWeapons.push_back(make_pair(new Grenade("Grenade" , 0 , 0 ,
+                        ceil(10 + 2 * pow(1.1 , Difficulty/3 + Index_Weighted_Random(weights))) , 0 , 0) , 1));
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        return AllWeapons;
+    }
+    else{
+        vector<pair<Weapon* , int>> Allweapons;
+        vector<int> weights = {5 , 4 , 3 , 2 , 1};
+        Allweapons.push_back(make_pair(new Punch("Claw" , 0 , 
+        ceil(6 + 2 * pow(1.08 , Difficulty/3.5 + Index_Weighted_Random(weights))) , 0 , 0) , 1));
+        Allweapons.push_back(make_pair(new Punch("Claw" , 0 , 
+        ceil(8 + 2 * pow(1.09 , Difficulty/3.5 + Index_Weighted_Random(weights))) , 0 , 0) , 1));
+        Allweapons.push_back(make_pair(new Punch("Claw" , 0 , 
+        ceil(10 + 2 * pow(1.1 , Difficulty/3.5 + Index_Weighted_Random(weights))) , 0 , 0) , 1));
+        return Allweapons;
+    }
+}
+
+vector<pair<Consumable* , int>> EnemyFactory :: Consumableset(int type){
+    vector<pair<Consumable* , int>> Consumables = {};
+    if(type == 1){}
+}
+
+vector<int> MapFactory :: PathFinding1(){
+    vector<int> path={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    path[0]=rand() %6;
+    for(int i=1;i<15;i++){
+        if(path[i-1]==0){
+            vector<int> nexthome={path[i-1],path[i-1]+1};
+            random_device rd;
+            default_random_engine abs(rd());
+            shuffle(nexthome.begin(), nexthome.end(), abs);
+            path[i]=nexthome[0];
+        }
+        else if(path[i-1]==5){
+            vector<int> nexthome={path[i-1],path[i-1]-1};
+            random_device rd;
+            default_random_engine abs(rd());
+            shuffle(nexthome.begin(), nexthome.end(), abs);
+            path[i]=nexthome[0];
+        }
+        else{
+            vector<int> nexthome={path[i-1],path[i-1]+1,path[i-1]-1};
+            random_device rd;
+            default_random_engine abs(rd());
+            shuffle(nexthome.begin(), nexthome.end(), abs);
+            path[i]=nexthome[0];
+        }
+    }
+    return path;
+}
+
+vector<int> MapFactory :: PathFinding2(vector<int> path1){
+    vector<int> path={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    do{
+        path[0]=rand() %6;
+    }while(path[0]==path1[0]);
+    for(int i=1;i<15;i++){
+        if(path[i-1]==0){
+            if((path1[i-1]==1)&&(path1[i]==0)){
+                path[i]=0;
+            }
+            else{
+                vector<int> nexthome={path[i-1],path[i-1]+1};
+                random_device rd;
+                default_random_engine abs(rd());
+                shuffle(nexthome.begin(), nexthome.end(), abs);
+                path[i]=nexthome[0];
+            }
+        }
+        else if(path[i-1]==5){
+            if((path1[i-1]==4)&&(path1[i]==5)){
+                path[i]=5;
+            }
+            else{
+                vector<int> nexthome={path[i-1],path[i-1]-1};
+                random_device rd;
+                default_random_engine abs(rd());
+                shuffle(nexthome.begin(), nexthome.end(), abs);
+                path[i]=nexthome[0];
+            }
+        }
+        else{
+            if((path1[i-1]==path[i-1]+1)&&(path1[i]==path[i-1])){
+                vector<int> nexthome={path[i-1],path[i-1]-1};
+                random_device rd;
+                default_random_engine abs(rd());
+                shuffle(nexthome.begin(), nexthome.end(), abs);
+                path[i]=nexthome[0];
+            }
+            else if((path1[i-1]==path[i-1]-1)&&(path1[i]==path[i-1])){
+                vector<int> nexthome={path[i-1],path[i-1]+1};
+                random_device rd;
+                default_random_engine abs(rd());
+                shuffle(nexthome.begin(), nexthome.end(), abs);
+                path[i]=nexthome[0];
+            }
+            else{
+                vector<int> nexthome={path[i-1],path[i-1]+1,path[i-1]-1};
+                random_device rd;
+                default_random_engine abs(rd());
+                shuffle(nexthome.begin(), nexthome.end(), abs);
+                path[i]=nexthome[0];
+            }
+        }
+    }
+    return path;
+}
+
+vector<int> MapFactory :: PathFinding3(vector<int> path1,vector<int> path2){
+    vector<int> path={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    do{
+        path[0]=rand() %6;
+    }while(path[0]==path1[0] || path[0]==path2[0]);
+    for(int i=1;i<15;i++){
+        if(path[i-1]==0){
+            if((path1[i-1]==1&& path1[i]==0)||(path2[i-1]==1&&path2[i]==0)){
+                path[i]=0;
+            }
+            else{
+                vector<int> nexthome={path[i-1],path[i-1]+1};
+                random_device rd;
+                default_random_engine abs(rd());
+                shuffle(nexthome.begin(), nexthome.end(), abs);
+                path[i]=nexthome[0];
+            }
+        }
+        else if(path[i-1]==5){
+            if((path1[i-1]==4 && path1[i]==5)||(path2[i-1]==4 &&path2[i]==5)){
+                path[i]=5;
+            }
+            else{
+                vector<int> nexthome={path[i-1],path[i-1]-1};
+                random_device rd;
+                default_random_engine abs(rd());
+                shuffle(nexthome.begin(), nexthome.end(), abs);
+                path[i]=nexthome[0];
+            }
+        }
+        else{
+            if((path1[i-1]==path[i-1]+1 && path1[i]==path[i-1] && path2[i-1]==path[i-1]-1 && path2[i]==path[i-1])
+            || (path2[i-1]==path[i-1]+1 && path2[i]==path[i-1] && path1[i-1]==path[i-1]-1 && path1[i]==path[i-1])){
+                path[i]==path[i-1];
+            }
+            else if((path2[i-1]==path[i-1]+1 && path2[i]==path[i-1])
+            ||(path1[i-1]==path[i-1]+1 && path1[i]==path[i-1])){
+                vector<int> nexthome={path[i-1],path[i-1]-1};
+                random_device rd;
+                default_random_engine abs(rd());
+                shuffle(nexthome.begin(), nexthome.end(), abs);
+                path[i]=nexthome[0];
+            }
+            else if((path2[i-1]==path[i-1]-1 && path2[i]==path[i-1])
+            || (path1[i-1]==path[i-1]-1 && path1[i]==path[i-1])){
+                vector<int> nexthome={path[i-1],path[i-1]+1};
+                random_device rd;
+                default_random_engine abs(rd());
+                shuffle(nexthome.begin(), nexthome.end(), abs);
+                path[i]=nexthome[0];
+            }
+            else{
+                vector<int> nexthome={ path[i-1], path[i-1]+1, path[i-1]-1};
+                random_device rd;
+                default_random_engine abs(rd());
+                shuffle(nexthome.begin(), nexthome.end(), abs);
+                path[i]=nexthome[0];
+            }
+        }
+    }
+    return path;
+}
+
+vector<int> MapFactory :: PathFinding4(vector<int> path1,vector<int> path2,vector<int>path3){
+    vector<int> path={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    path[0]=rand() %6;
+    for(int i=1; i<15 ;i++){
+        if(path[i-1]==0){
+            if((path1[i-1]==path[i-1]+1 && path1[i]==path[i-1])
+            || (path2[i-1]==path[i-1]+1 && path2[i]==path[i-1])
+            || (path3[i-1]==path[i-1]+1 && path3[i]==path[i-1])){
+                path[i]=0;
+            }
+            else{
+                vector<int> nexthome={path[i-1],path[i-1]+1};
+                random_device rd;
+                default_random_engine abs(rd());
+                shuffle(nexthome.begin(), nexthome.end(), abs);
+                path[i]=nexthome[0];
+            }
+        }
+        else if(path[i-1]==5){
+            if((path1[i-1]==path[i-1]-1 && path1[i]==path[i-1])
+            || (path2[i-1]==path[i-1]-1 && path2[i]==path[i-1])
+            || (path3[i-1]==path[i-1]-1 && path3[i]==path[i-1])){
+                path[i]=5;
+            }
+            else{
+                vector<int> nexthome={path[i-1],path[i-1]-1};
+                random_device rd;
+                default_random_engine abs(rd());
+                shuffle(nexthome.begin(), nexthome.end(), abs);
+                path[i]=nexthome[0];
+            }
+        }
+        else{
+            if((path1[i-1]==path[i-1]+1 && path1[i]==path[i-1] && path2[i-1]==path[i-1]-1 && path2[i]==path[i-1])
+            ||(path1[i-1]==path[i-1]-1 && path1[i]==path[i-1] && path2[i-1]==path[i-1]+1 && path2[i]==path[i-1])
+            ||(path1[i-1]==path[i-1]-1 && path1[i]==path[i-1] && path3[i-1]==path[i-1]+1 && path3[i]==path[i-1])
+            ||(path1[i-1]==path[i-1]+1 && path1[i]==path[i-1] && path3[i-1]==path[i-1]-1 && path3[i]==path[i-1])
+            ||(path2[i-1]==path[i-1]-1 && path2[i]==path[i-1] && path3[i-1]==path[i-1]+1 && path3[i]==path[i-1])
+            ||(path2[i-1]==path[i-1]+1 && path2[i]==path[i-1] && path3[i-1]==path[i-1]-1 && path3[i]==path[i-1])){
+                path[i]=path[i-1];
+            }
+            else if((path1[i-1]==path[i-1]+1 && path1[i]==path[i-1])
+            || (path2[i-1]==path[i-1]+1 && path2[i]==path[i-1]) 
+            || (path3[i-1]==path[i-1]+1 && path3[i]==path[i-1])){
+                vector<int> nexthome={path[i-1],path[i-1]-1};
+                random_device rd;
+                default_random_engine abs(rd());
+                shuffle(nexthome.begin(), nexthome.end(), abs);
+                path[i]=nexthome[0];
+            }
+            else if((path1[i-1]==path[i-1]-1 && path1[i]==path[i-1])
+            || (path2[i-1]==path[i-1]-1 && path2[i]==path[i-1]) 
+            || (path3[i-1]==path[i-1]-1 && path3[i]==path[i-1])){
+                vector<int> nexthome={path[i-1],path[i-1]+1};
+                random_device rd;
+                default_random_engine abs(rd());
+                shuffle(nexthome.begin(), nexthome.end(), abs);
+                path[i]=nexthome[0];
+            }
+            else{
+                vector<int> nexthome={path[i-1],path[i-1]-1,path[i-1]+1};
+                random_device rd;
+                default_random_engine abs(rd());
+                shuffle(nexthome.begin(), nexthome.end(), abs);
+                path[i]=nexthome[0];
+            }
+        }
+    }
+    return path;
+}
+
+vector<int> MapFactory :: PathFinding5(vector<int> path1,vector<int> path2,vector<int>path3 , vector<int> path4){
+    vector<int> path={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    path[0]=rand() %6;
+    for(int i=1; i<15 ;i++){
+        if(path[i-1]==0){
+            if((path1[i-1]==path[i-1]+1 && path1[i]==path[i-1])
+            || (path2[i-1]==path[i-1]+1 && path2[i]==path[i-1])
+            || (path3[i-1]==path[i-1]+1 && path3[i]==path[i-1])
+            || (path4[i-1]==path[i-1]+1 && path4[i]==path[i-1])){
+                path[i]=0;
+            }
+            else{
+                vector<int> nexthome={path[i-1],path[i-1]+1};
+                random_device rd;
+                default_random_engine abs(rd());
+                shuffle(nexthome.begin(), nexthome.end(), abs);
+                path[i]=nexthome[0];
+            }
+        }
+        else if(path[i-1]==5){
+            if((path1[i-1]==path[i-1]-1 && path1[i]==path[i-1])
+            || (path2[i-1]==path[i-1]-1 && path2[i]==path[i-1])
+            || (path3[i-1]==path[i-1]-1 && path3[i]==path[i-1])
+            || (path4[i-1]==path[i-1]-1 && path4[i]==path[i-1])){
+                path[i]=5;
+            }
+            else{
+                vector<int> nexthome={path[i-1],path[i-1]-1};
+                random_device rd;
+                default_random_engine abs(rd());
+                shuffle(nexthome.begin(), nexthome.end(), abs);
+                path[i]=nexthome[0];
+            }
+        }
+        else{
+            if((path1[i-1]==path[i-1]+1 && path1[i]==path[i-1] && path2[i-1]==path[i-1]-1 && path2[i]==path[i-1])
+            ||(path1[i-1]==path[i-1]-1 && path1[i]==path[i-1] && path2[i-1]==path[i-1]+1 && path2[i]==path[i-1])
+            ||(path1[i-1]==path[i-1]-1 && path1[i]==path[i-1] && path3[i-1]==path[i-1]+1 && path3[i]==path[i-1])
+            ||(path1[i-1]==path[i-1]+1 && path1[i]==path[i-1] && path3[i-1]==path[i-1]-1 && path3[i]==path[i-1])
+            ||(path2[i-1]==path[i-1]-1 && path2[i]==path[i-1] && path3[i-1]==path[i-1]+1 && path3[i]==path[i-1])
+            ||(path2[i-1]==path[i-1]+1 && path2[i]==path[i-1] && path3[i-1]==path[i-1]-1 && path3[i]==path[i-1])
+            ||(path1[i-1]==path[i-1]-1 && path1[i]==path[i-1] && path4[i-1]==path[i-1]+1 && path4[i]==path[i-1])
+            ||(path1[i-1]==path[i-1]+1 && path1[i]==path[i-1] && path4[i-1]==path[i-1]-1 && path4[i]==path[i-1])
+            ||(path2[i-1]==path[i-1]-1 && path2[i]==path[i-1] && path4[i-1]==path[i-1]+1 && path4[i]==path[i-1])
+            ||(path2[i-1]==path[i-1]+1 && path2[i]==path[i-1] && path4[i-1]==path[i-1]-1 && path4[i]==path[i-1])
+            ||(path4[i-1]==path[i-1]-1 && path4[i]==path[i-1] && path3[i-1]==path[i-1]+1 && path3[i]==path[i-1])
+            ||(path4[i-1]==path[i-1]+1 && path4[i]==path[i-1] && path3[i-1]==path[i-1]-1 && path3[i]==path[i-1])){
+                path[i]=path[i-1];
+            }
+            else if((path1[i-1]==path[i-1]+1 && path1[i]==path[i-1])
+            || (path2[i-1]==path[i-1]+1 && path2[i]==path[i-1]) 
+            || (path3[i-1]==path[i-1]+1 && path3[i]==path[i-1])
+            || (path4[i-1]==path[i-1]+1 && path4[i]==path[i-1])){
+                vector<int> nexthome={path[i-1],path[i-1]-1};
+                random_device rd;
+                default_random_engine abs(rd());
+                shuffle(nexthome.begin(), nexthome.end(), abs);
+                path[i]=nexthome[0];
+            }
+            else if((path1[i-1]==path[i-1]-1 && path1[i]==path[i-1])
+            || (path2[i-1]==path[i-1]-1 && path2[i]==path[i-1]) 
+            || (path3[i-1]==path[i-1]-1 && path3[i]==path[i-1])
+            || (path4[i-1]==path[i-1]-1 && path4[i]==path[i-1])){
+                vector<int> nexthome={path[i-1],path[i-1]+1};
+                random_device rd;
+                default_random_engine abs(rd());
+                shuffle(nexthome.begin(), nexthome.end(), abs);
+                path[i]=nexthome[0];
+            }
+            else{
+                vector<int> nexthome={path[i-1],path[i-1]-1,path[i-1]+1};
+                random_device rd;
+                default_random_engine abs(rd());
+                shuffle(nexthome.begin(), nexthome.end(), abs);
+                path[i]=nexthome[0];
+            }
+        }
+    }
+    return path;
+}
+
+vector<vector<string>> MapFactory :: generateEncounters(vector<int> path1 , vector<int> path2 , vector<int> path3 , 
+vector<int> path4 , vector<int> path5){
+    vector<vector<string>> Encounters = {};
+    vector<vector<int>> VisitedNodes = {};
+    for(int i = 0; i < 15; i++){
+        VisitedNodes.push_back({});
+        VisitedNodes[i].push_back(path1[i]);
+        if(path2[i] != path1[i])
+            VisitedNodes[i].push_back(path2[i]);
+        if(path3[i] != path1[i] && path2[i] != path3[i])
+            VisitedNodes[i].push_back(path3[i]);
+        if(path4[i] != path3[i] && path4[i] != path1[i] && path2[i] != path4[i])
+            VisitedNodes[i].push_back(path4[i]);
+        if(path5[i] != path3[i] && path5[i] != path1[i] && path2[i] != path5[i] && path5[i] != path4[i])
+            VisitedNodes[i].push_back(path5[i]);
+    }
+    for(int i = 0; i < 15 ; i++){
+        Encounters.push_back({});
+        for(int j = 0; j < 6; j++){
+            Encounters[i].push_back("");
+        }
+        if(i == 0){
+            for(int j = 0; j < VisitedNodes[0].size();j++){
+                Encounters[i][VisitedNodes[0][j]] = "Fight"; // Encounter generation to be included
+            }
+        }
+        else if(i < 5){
+            for(int j = 0; j < VisitedNodes[i].size();j++){
+                vector<int> Visits , inRow , weights = {40 , 25 , 9};
+                if(path1[i] == VisitedNodes[i][j])
+                    Visits.push_back(path1[i-1]);
+                if(path2[i] == VisitedNodes[i][j])
+                    Visits.push_back(path2[i-1]);
+                if(path3[i] == VisitedNodes[i][j])
+                    Visits.push_back(path3[i-1]);
+                if(path4[i] == VisitedNodes[i][j])
+                    Visits.push_back(path4[i-1]);
+                if(path5[i] == VisitedNodes[i][j])
+                    Visits.push_back(path5[i-1]);
+                for(int m = 0; m < Visits.size(); m++){
+                    if(path1[i - 1] == Visits[m] && path1[i] != VisitedNodes[i][j])
+                        inRow.push_back(path1[i]);
+                    if(path2[i - 1] == Visits[m] && path2[i] != VisitedNodes[i][j])
+                        inRow.push_back(path2[i]);
+                    if(path3[i - 1] == Visits[m] && path3[i] != VisitedNodes[i][j])
+                        inRow.push_back(path3[i]);
+                    if(path4[i - 1] == Visits[m] && path4[i] != VisitedNodes[i][j])
+                        inRow.push_back(path4[i]);
+                    if(path5[i - 1] == Visits[m] && path5[i] != VisitedNodes[i][j])
+                        inRow.push_back(path5[i]);
+                    if(Encounters[i - 1][Visits[m]] == "Shop")
+                        weights[2] = 0;
+                }
+                for(int m = 0; m < inRow.size(); m++){
+                    if(Encounters[i][inRow[m]] == "Fight")
+                        weights[0] = 0;
+                    else if(Encounters[i][inRow[m]] == "Random")
+                        weights[1] = 0;
+                    else if(Encounters[i][inRow[m]] == "Shop")
+                        weights[2] = 0;
+                }
+                int enc = Index_Weighted_Random(weights);
+                if(enc == 0){
+                    Encounters[i][VisitedNodes[i][j]] = "Fight"; //Fight Constructor to be included
+                }
+                if(enc == 1){
+                    Encounters[i][VisitedNodes[i][j]] = "Random"; //Random Constructor to be included
+                }
+                if(enc == 2){
+                    Encounters[i][VisitedNodes[i][j]] = "Shop"; //Shop Constructor to be included
+                }
+            }
+        }
+        else if(i < 13){
+            for(int j = 0; j < VisitedNodes[i].size();j++){
+                vector<int> Visits , inRow , weights = {40 , 25 , 16 , 10 , 9};
+                if(path1[i] == VisitedNodes[i][j])
+                    Visits.push_back(path1[i-1]);
+                if(path2[i] == VisitedNodes[i][j])
+                    Visits.push_back(path2[i-1]);
+                if(path3[i] == VisitedNodes[i][j])
+                    Visits.push_back(path3[i-1]);
+                if(path4[i] == VisitedNodes[i][j])
+                    Visits.push_back(path4[i-1]);
+                if(path5[i] == VisitedNodes[i][j])
+                    Visits.push_back(path5[i-1]);
+                for(int m = 0; m < Visits.size(); m++){
+                    if(path1[i - 1] == Visits[m] && path1[i] != VisitedNodes[i][j])
+                        inRow.push_back(path1[i]);
+                    if(path2[i - 1] == Visits[m] && path2[i] != VisitedNodes[i][j])
+                        inRow.push_back(path2[i]);
+                    if(path3[i - 1] == Visits[m] && path3[i] != VisitedNodes[i][j])
+                        inRow.push_back(path3[i]);
+                    if(path4[i - 1] == Visits[m] && path4[i] != VisitedNodes[i][j])
+                        inRow.push_back(path4[i]);
+                    if(path5[i - 1] == Visits[m] && path5[i] != VisitedNodes[i][j])
+                        inRow.push_back(path5[i]);
+                    if(Encounters[i - 1][Visits[m]] == "MiniBoss")
+                        weights[2] = 0;
+                    else if(Encounters[i - 1][Visits[m]] == "Hospital")
+                        weights[3] = 0;
+                    else if(Encounters[i - 1][Visits[m]] == "Shop")
+                        weights[4] = 0;
+                }
+                for(int m = 0; m < inRow.size(); m++){
+                    if(Encounters[i][inRow[m]] == "Fight")
+                        weights[0] = 0;
+                    else if(Encounters[i][inRow[m]] == "Random")
+                        weights[1] = 0;
+                    else if(Encounters[i][inRow[m]] == "MiniBoss")
+                        weights[2] = 0;
+                    else if(Encounters[i][inRow[m]] == "Hospital")
+                        weights[3] = 0;
+                    else if(Encounters[i][inRow[m]] == "Shop")
+                        weights[4] = 0;
+                }
+                int enc = Index_Weighted_Random(weights);
+                if(enc == 0){
+                    Encounters[i][VisitedNodes[i][j]] =  "Fight"; //Fight Constructor to be included
+                }
+                if(enc == 1){
+                    Encounters[i][VisitedNodes[i][j]] =  "Random"; //Random Constructor to be included
+                }
+                if(enc == 2){
+                    Encounters[i][VisitedNodes[i][j]] =  "MiniBoss"; //MiniBoss Constructor to be included
+                }
+                if(enc == 3){
+                    Encounters[i][VisitedNodes[i][j]] =  "Hospital"; //Hospital Constructor to be included
+                }
+                if(enc == 4){
+                    Encounters[i][VisitedNodes[i][j]] =  "Shop"; //Shop Constructor to be included
+                }
+            }
+        }
+        else if(i == 13){
+            for(int j = 0; j < VisitedNodes[i].size();j++){
+                vector<int> Visits , inRow , weights = {40 , 25 , 16 , 9};
+                if(path1[i] == VisitedNodes[i][j])
+                    Visits.push_back(path1[i-1]);
+                if(path2[i] == VisitedNodes[i][j])
+                    Visits.push_back(path2[i-1]);
+                if(path3[i] == VisitedNodes[i][j])
+                    Visits.push_back(path3[i-1]);
+                if(path4[i] == VisitedNodes[i][j])
+                    Visits.push_back(path4[i-1]);
+                if(path5[i] == VisitedNodes[i][j])
+                    Visits.push_back(path5[i-1]);
+                for(int m = 0; m < Visits.size(); m++){
+                    if(path1[i - 1] == Visits[m] && path1[i] != VisitedNodes[i][j])
+                        inRow.push_back(path1[i]);
+                    if(path2[i - 1] == Visits[m] && path2[i] != VisitedNodes[i][j])
+                        inRow.push_back(path2[i]);
+                    if(path3[i - 1] == Visits[m] && path3[i] != VisitedNodes[i][j])
+                        inRow.push_back(path3[i]);
+                    if(path4[i - 1] == Visits[m] && path4[i] != VisitedNodes[i][j])
+                        inRow.push_back(path4[i]);
+                    if(path5[i - 1] == Visits[m] && path5[i] != VisitedNodes[i][j])
+                        inRow.push_back(path5[i]);
+                    if(Encounters[i - 1][Visits[m]] == "MiniBoss")
+                        weights[2] = 0;
+                    else if(Encounters[i - 1][Visits[m]] == "Shop")
+                        weights[3] = 0;
+                }
+                for(int m = 0; m < inRow.size(); m++){
+                    if(Encounters[i][inRow[m]] == "Fight")
+                        weights[0] = 0;
+                    else if(Encounters[i][inRow[m]] == "Random")
+                        weights[1] = 0;
+                    else if(Encounters[i - 1][inRow[m]] == "MiniBoss")
+                        weights[2] = 0;
+                    else if(Encounters[i][inRow[m]] == "Shop")
+                        weights[3] = 0;
+                }
+                int enc = Index_Weighted_Random(weights);
+                if(enc == 0){
+                    Encounters[i][VisitedNodes[i][j]] = "Fight"; //Fight Constructor to be included
+                }
+                if(enc == 1){
+                    Encounters[i][VisitedNodes[i][j]] = "Random"; //Random Constructor to be included
+                }
+                if(enc == 2){
+                    Encounters[i][VisitedNodes[i][j]] = "MiniBoss"; //MiniBoss Constructor to be included
+                }
+                if(enc == 3){
+                    Encounters[i][VisitedNodes[i][j]] = "Shop"; //Hospital Constructor to be included
+                }
+            }
+        }
+        else{
+            for(int j = 0; j < VisitedNodes[i].size(); j++){
+                Encounters[i][VisitedNodes[i][j]] = "Hospital"; // Hospital Constructor to be included
+            }
+        }
+    }
+    return Encounters;
+}
+
+MapFactory :: MapFactory(int floor){this -> Floor = floor;}
+
+Map* MapFactory :: GenerateMap(){
+    vector<int> path1 , path2 , path3 , path4 , path5;
+    vector<vector<string>> GenerateEncounters;
+    path1 = PathFinding1();
+    path2 = PathFinding2(path1);
+    path3 = PathFinding3(path1 , path2);
+    path4 = PathFinding4(path1 , path2 , path3);
+    path5 = PathFinding5(path1 , path2 , path3 , path4);
+    GenerateEncounters = generateEncounters(path1 , path2 , path3 , path4 , path5);
+    Map* map = new Map(Floor , path1 , path2 , path3 , path4 , path5 , GenerateEncounters);
+    return map;
 }
