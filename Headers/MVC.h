@@ -33,7 +33,6 @@ namespace Model{
             
             Player* getPlayer();
             vector<Character*> getEnemies;
-            int getRound();
     };
 }
 

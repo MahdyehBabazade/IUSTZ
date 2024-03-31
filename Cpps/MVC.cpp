@@ -16,12 +16,12 @@ Consumable* View::FightView::ChooseConsumable(vector<pair<Consumable*,int>> Cons
     vector<string> options;
     for(pair<Consumable*,int> x:Consumables){
         if(x.second > 1){
-            options.push_back(x.first->getShortStat() + " " + to_string(x.second) +"x");
+            options.push_back(x.first->getShortStat() + " x" + to_string(x.second) +"\n");
         }else{
-            options.push_back(x.first->getShortStat());
+            options.push_back(x.first->getShortStat() + "\n");
         }
     }
-    options.push_back("back");
+    options.push_back("Back");
     
     int option=0;
     int vecSize = options.size();
@@ -101,46 +101,48 @@ Character* View::FightView::ChooseEnemy(vector<Character*> Enemies){
 }
 
 Weapon* View::FightView::ChooseWeapon(vector<pair<Weapon*,int>> Weapons){
-    string sizecounter;
-    bool breaker=true;
-    int m=0;
-    while(breaker){
-        clearScreen();
-        sizecounter += "";
-        for(int i=0 ; i < Weapons.size() + 1; i++){
-            if(i < Weapons.size() )
-            {
-                if(i == m % (Weapons.size() + 1))
-                    sizecounter += green;
-                sizecounter += to_string(i+1) + ". " + Weapons[i].first->getShortStat() + "\n";
-                sizecounter += reset;
-            }else{
-                if(i == m % (Weapons.size() + 1))
-                    sizecounter += green;
-                sizecounter += "Back";
-                sizecounter += reset;
-            }
-        }
-        cout << sizecounter;
-        char key = _getch();
-        switch(key)
-        {
-            case 'w':
-                m--;
-                break;
-            case 's':
-                m++;
-                break;
-            case '\r':
-                breaker=false;
-                break;
-            default:
-                break;
+    vector<string> options;
+    for(pair<Weapon*,int> x : Weapons){
+        if(x.second > 1){
+            options.push_back(x.first->getShortStat() + " x" + to_string(x.second) +"\n");
+        }else{
+            options.push_back(x.first->getShortStat() + "\n");
         }
     }
-    if((m % Weapons.size() + 1) == Weapons.size())
+    options.push_back("Back");
+    
+    int option=0;
+    int vecSize = options.size();
+    while(true){
+        clearScreen();
+        for(int i=0 ; i < vecSize; i++){
+            if(i == option%vecSize){
+                cout << green << options[i] << reset;
+            }else{
+                cout << options[i];
+            }
+        }
+        char key = _getch();
+        switch(tolower(key))
+        {
+            case 'w':
+                option--;
+                continue;
+            case 's':
+                option++;
+                continue;
+            case '\r':
+                break;
+            default:
+                continue;
+        }
+        break;
+    }
+    
+    if(option % vecSize == vecSize-1)
         return nullptr;
-    return Weapons[m % Weapons.size()].first;
+        
+    return Weapons[option % vecSize].first;
 }
 
 int View::FightView::PlayerMenu(){
@@ -244,8 +246,13 @@ void Model::FightModel::setRound(int round){ Round = round ;}
 
 int Model::FightModel::getRound(){ return Round; }
 
+Player* Model::FightModel::getPlayer(){ return player;}
+
+vector<Character*> Model::FightModel::getEnemies(){ return Enemies;}
+
+
 //---------------------------------------------------------------------------------------------
-Control::FightControl::FightControl(Player* player,vector<Character*> Enemies){
+Control::FightControl::FightControl(Player* player,vector<Character*> Enemies) {
     //construct a model and a view and set control's model and view to the constructed ones
 }
 
@@ -287,7 +294,7 @@ void Control::FightControl::PlayerTurn(){
             case 2:
             
             default:
-                continue;;
+                continue;
         }
     }
 }
