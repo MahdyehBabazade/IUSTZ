@@ -1,7 +1,7 @@
 #pragma once
-#include "../Headers/items.h"
-#include "../Headers/creature.h"
-#include "../Headers/map.h"
+#include "../Cpps/creature.cpp"
+#include "../Cpps/map.cpp"
+#include "../Cpps/encounter.cpp"
 using namespace std;
 
 class ShopFactory{
@@ -19,6 +19,7 @@ class EnemyFactory{
 private:
     Map* map;
     int Difficulty;
+    void setDifficulty(int Difficulty);
     string ZombieNameset();
     string HumanEnemyNameset();
     double Armorset();
@@ -31,7 +32,6 @@ private:
 
 public:
     EnemyFactory(Map* map);
-    void setDifficulty(int Difficulty);
     vector<Character*> FightEnemy();
     vector<Character*> MiniBossEnemy();
     vector<Character*> BossEnemy();
