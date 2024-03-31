@@ -245,11 +245,15 @@ void View::FightView::Prompt(string entry){
 
 //---------------------------------------------------------------------------------------------
 Model::FightModel::FightModel(Player* player,vector<Character*> Enemies){
-
+    this -> player = player;
+    this -> Enemies = Enemies;
+    Round=0;
     //set the player and enemies to the entry
 }
 
+void Model::FightModel::setRound(int round){ Round = round ;}
 
+int Model::FightModel::getRound(){ return Round; }
 
 //---------------------------------------------------------------------------------------------
 Control::FightControl::FightControl(Player* player,vector<Character*> Enemies){

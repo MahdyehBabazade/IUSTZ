@@ -26,6 +26,8 @@ namespace Model{
             Player* player;
             int Round;
         public:
+            void setRound(int round);
+            int getRound();
             FightModel() = default;
             FightModel(Player* player,vector<Character*> Enemies); //sets the player and the enemies and also the round to zero
             
