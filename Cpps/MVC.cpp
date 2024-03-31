@@ -1,4 +1,5 @@
 #include "../Headers/MVC.h"
+#include "functions.cpp"
 #include <vector>
 #include <string>
 #include <conio.h>
@@ -7,18 +8,6 @@ using namespace std;
 
 const string reset("\033[0m");
 const string green("\033[1;32m");
-
-void clearScreen(){
-    system("cls");
-}
-
-template <typename T>
-vector<T> ShuffleVec(vector<T> vec){
-    random_device rd;
-    default_random_engine abs(rd());
-    shuffle(vec.begin(), vec.end(), abs);   
-    return vec;
-}
 
 Consumable* View::FightView::ChooseConsumable(vector<pair<Consumable*,int>> Consumables){
     vector<string> options;
