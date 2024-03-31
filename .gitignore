@@ -16,3 +16,5 @@ Headers/cmake-build-debug/
 Headers/*.txt
 
 .vscode/
+Headers/*.exe
+Cpps/*.exe
