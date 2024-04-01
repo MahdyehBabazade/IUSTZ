@@ -615,14 +615,12 @@ void Player :: Consume(Consumable* Consumable){
 }
 
 
-void HumanEnemy :: RajazKhani(){
+string HumanEnemy :: RajazKhani(){
     vector<string> curse ={"MOTHER FUCKER" , "BITCH" , "Asshole" };
     string RajazKhani = "Got u, " + ShuffleVec(curse)[0];
     vector<string> Rajaz = {RajazKhani , "Loser" , "Almost there!" , "You think you can defeat me? Pathetic!" , 
         "I'll crush you like a bug!" , "You're nothing but a stain on the battlefield!"};
-    if (rand() % 5 == 0){ // There is a 1/5 chance that human enemy insult the player befor attacking him/her
-        cout << ShuffleVec(Rajaz)[0];
-    }
+    return ShuffleVec(Rajaz)[0];
 }
 
 HumanEnemy :: HumanEnemy(string Name , int MaxHP , double Armor , vector<pair<Item* , int>> Items ,
@@ -643,53 +641,59 @@ HumanEnemy :: HumanEnemy(string Name , int MaxHP , double Armor , vector<pair<It
     }
     
 }
-void HumanEnemy :: StateMachine(){
+void HumanEnemy :: StateMachine(Player* player,Control::FightControl* fightControl){
     while(true){
         switch (state)
         {
         case State::Heal:
+            if(getHP() > getMaxHP()/2)
+                state = State::Shield;
+                continue;
             for(pair<Consumable* , int> x:Consumables){
                 Consumable* Potion = x.first;
                 if(Potion->getType() == "HPPotion"){
                     Consume(Potion);
+                    fightControl->getView()->print("hp +" + to_string(Potion->getAmount()));
                     break;
                 }
             }
-            if(getHP() >=getMaxHP()){
-                    break;
-            }
-            state = State::Shield;
             continue;
-            
-        case State::Shield:        
+        case State::Shield:
+            if(getShield() > getMaxHP()/4) // cahracters can have max shield of maxhp/2
+                state = State::Attack;
+                continue;        
             for(pair<Consumable* , int> x:Consumables){
+                if(getShield() >= getMaxHP()/2)
+                    break;
+                    
                 Consumable* Potion = x.first;
                 if(Potion->getType() == "ShieldPotion"){
                     Consume(Potion);
+                    fightControl->getView()->print("Sheild " + to_string(getShield()) + " Damage");
                 }
             }
             
-            state = State::Attack;
             continue;
-            
         case State::NoneGunAttack:
             noneGuns = ShuffleVec(noneGuns);
             Weapon* weapon = noneGuns[0].first;
             if(typeid(*weapon) == typeid(ColdWeapon)){   
                 if(random_num(1,5) == 5){                 // 20% chance of throwing the cold weapon
-                    // throw ----
+                    Attack(player,weapon,1);
                     removeItem(weapon);
                 }else{
-                    // Attack ---
+                    Attack(player,weapon,0);
                 }
             }else if (typeid(*weapon) == typeid(Throwable)){
-                ///throw ---
+                Attack(player,weapon,0);
                 removeItem(weapon);
             }
             
+            fightControl->getView()->print("Dealt " + to_string(weapon->getDamage()) + " Damage");
             break;
         
         case State::Reload:
+            fightControl->getView()->print("Reloaded!");
             Guns[0].first->Reload();
             break;
             
@@ -698,7 +702,8 @@ void HumanEnemy :: StateMachine(){
             
             for(pair<Gun*,int> x:Guns){
                 if(x.first->getAmmo() >= 0){
-                    //attacks -----
+                    Attack(player,x.first,0);
+                    fightControl->getView()->print("Dealt " + to_string(x.first->getDamage()) + " Damage");
                     hasAttacked = true;
                     break;
                 }
@@ -784,7 +789,6 @@ void HumanEnemy::Attack(Player* player , Weapon* weapon , int choice){
     else{
         weapon->Attack(player);
     }
-    RajazKhani();
 }
 
 void HumanEnemy :: removeConsumable(Consumable* Consumable){ //deletes the consumable considering its numbers, thus an item is also deleted (for throwables)
@@ -857,7 +861,7 @@ Zombie :: ~Zombie(){
     cout << ShuffleVec(ZombieDeathQuotes)[0];
 }
 
-void Zombie :: Attack(vector<Character*> &player , Punch* punch){
+void Zombie :: Attack(Player* player , Punch* punch){
     punch->Attack(player);
 }
 

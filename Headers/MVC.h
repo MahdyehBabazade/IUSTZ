@@ -15,6 +15,7 @@ namespace View{
             Character* ChooseEnemy(vector<Character*> Enemies);
             
             void Prompt(string entry);
+            void print(string entry);
     };
 }
 
@@ -41,12 +42,13 @@ namespace Model{
 namespace Control{
     class FightControl{
         private:
-            Model::FightModel model;
-            View::FightView view;
+            Model::FightModel* model;
+            View::FightView* view;
             void StartFight();
             void PlayerTurn();
             void EnemiesTurn();
         public:
             FightControl(Player* player,vector<Character*> Enemies); //constructs the Model and the View and also calls startFight func
+            View::FightView* getView();
     };
 }

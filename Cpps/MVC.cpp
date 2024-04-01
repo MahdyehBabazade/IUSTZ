@@ -229,6 +229,9 @@ void View::FightView::Prompt(string entry){
     cout << entry << endl << "Press any key to continue\n";
     _getch();
 }
+void View::FightView::print(string entry){
+    cout << entry << endl;
+}
 
 
 
@@ -261,17 +264,17 @@ void Control::FightControl::StartFight(){
 void Control::FightControl::PlayerTurn(){
     //1. weapons  2.consumables 3.endround
     while(true){
-        int choice = view.PlayerMenu();
+        int choice = view->PlayerMenu();
         switch (choice)
         {
             case 1:
                 while(true){
-                    Weapon* weapon = view.ChooseWeapon(model.getPlayer()->getWeapons());
+                    Weapon* weapon = view->ChooseWeapon(model->getPlayer()->getWeapons());
                     if(weapon == nullptr)
                         break;
     
-                    if(weapon->getEnergyNeeded() > model.getPlayer()->getEnergy())
-                        view.Prompt("Not Enough Energy");
+                    if(weapon->getEnergyNeeded() > model->getPlayer()->getEnergy())
+                        view->Prompt("Not Enough Energy");
                         continue;
                         
                     if(typeid(weapon) == typeid(Gun)){
@@ -280,22 +283,22 @@ void Control::FightControl::PlayerTurn(){
                         while (true)
                         {
                             // 1.attack   2.reload  3.back
-                            int option = view.GunMenu();
+                            int option = view->GunMenu();
                             switch (option)
                             {
                                 case 1:
                                     if(gun->getAmmo() ==0)
-                                            view.Prompt("Not Enough Ammo");
+                                            view->Prompt("Not Enough Ammo");
                                             continue;
                                     
                                     if(typeid(gun) == typeid(Rifle)){
                                         Rifle* rifle = dynamic_cast<Rifle*>(gun);
-                                        vector<Character*> chosenEnemies = view.ChooseEnemies(model.getEnemies(),min(rifle->getMaxAttackAmount(),rifle->getAmmo()));
+                                        vector<Character*> chosenEnemies = view->ChooseEnemies(model->getEnemies(),min(rifle->getMaxAttackAmount(),rifle->getAmmo()));
                                         rifle->Attack(chosenEnemies);
                                         
                                     }else if(typeid(gun) == typeid(SMG)){
                                         SMG* smg = dynamic_cast<SMG*>(gun);
-                                        vector<Character*> ShuffledEnemies = ShuffleVec(model.getEnemies());
+                                        vector<Character*> ShuffledEnemies = ShuffleVec(model->getEnemies());
                                         vector<Character*> ChosenEnemies;
                                         for(int i=0; i < min(int(ShuffledEnemies.size()-1),smg->getAmmo());i++){
                                             ChosenEnemies.push_back(ShuffledEnemies[i]);
@@ -304,15 +307,15 @@ void Control::FightControl::PlayerTurn(){
                                         
                                     }else if(typeid(gun) == typeid(Shotgun)){
                                         Shotgun* shotGun = dynamic_cast<Shotgun*>(gun);
-                                        shotGun->Attack(model.getEnemies(),view.ChooseEnemy(model.getEnemies()));
+                                        shotGun->Attack(model->getEnemies(),view->ChooseEnemy(model->getEnemies()));
                                         
                                     }else if(typeid(gun) == typeid(Snipe)){
                                         Snipe* snipe = dynamic_cast<Snipe*>(gun);
-                                        snipe->Attack(model.getEnemies(),view.ChooseEnemy(model.getEnemies()));
+                                        snipe->Attack(model->getEnemies(),view->ChooseEnemy(model->getEnemies()));
                                         
                                     }
                                     else{    
-                                        Character* enemy = view.ChooseEnemy(model.getEnemies());
+                                        Character* enemy = view->ChooseEnemy(model->getEnemies());
                                         gun->Attack(enemy);
                                         
                                     }
@@ -320,11 +323,11 @@ void Control::FightControl::PlayerTurn(){
                                 
                                     continue;
                                 case 2:
-                                    if(model.getPlayer()->getEnergy() < gun->getReloadEnergy()){
-                                        view.Prompt("Not Enough Energy");
+                                    if(model->getPlayer()->getEnergy() < gun->getReloadEnergy()){
+                                        view->Prompt("Not Enough Energy");
                                     }else{
                                         gun->Reload();
-                                        model.getPlayer()->setEnergy(model.getPlayer()->getEnergy() - gun->getReloadEnergy());
+                                        model->getPlayer()->setEnergy(model->getPlayer()->getEnergy() - gun->getReloadEnergy());
                                     }
                                     continue;
                                 case 3:
@@ -337,22 +340,22 @@ void Control::FightControl::PlayerTurn(){
                             
                     }else if(typeid(weapon) == typeid(Throwable)){
                         Throwable* throwable = dynamic_cast<Throwable*>(weapon);
-                        throwable->Attack(model.getEnemies());
-                        model.getPlayer()->removeItem(throwable);
+                        throwable->Attack(model->getEnemies());
+                        model->getPlayer()->removeItem(throwable);
                         
                     }else if(typeid(weapon) == typeid(ColdWeapon)){
-                        int option = view.ColdWeaponMenu();
+                        int option = view->ColdWeaponMenu();
                         ColdWeapon* coldWeapon = dynamic_cast<ColdWeapon*>(weapon);
                         while (true)
                         {
                             switch (option)
                             {
                                 case 1:
-                                    coldWeapon->Attack(view.ChooseEnemy(model.getEnemies()));
+                                    coldWeapon->Attack(view->ChooseEnemy(model->getEnemies()));
                                     break;
                                 case 2:
-                                    coldWeapon->Throw(view.ChooseEnemy(model.getEnemies()));
-                                    model.getPlayer()->removeItem(coldWeapon);
+                                    coldWeapon->Throw(view->ChooseEnemy(model->getEnemies()));
+                                    model->getPlayer()->removeItem(coldWeapon);
                                     break;
                                 case 3:
                                     break;
@@ -362,18 +365,18 @@ void Control::FightControl::PlayerTurn(){
                             break;    
                         }  
                     }else{
-                        weapon->Attack(view.ChooseEnemy(model.getEnemies()));
+                        weapon->Attack(view->ChooseEnemy(model->getEnemies()));
                     }
-                    model.getPlayer()->setEnergy(model.getPlayer()->getEnergy()-weapon->getEnergyNeeded());
+                    model->getPlayer()->setEnergy(model->getPlayer()->getEnergy()-weapon->getEnergyNeeded());
                 }
                 continue;
             case 2:
                 while (true)
                 {
-                    Consumable* consumable = view.ChooseConsumable(model.getPlayer()->getConsumables());
+                    Consumable* consumable = view->ChooseConsumable(model->getPlayer()->getConsumables());
                     if(consumable == nullptr)
                         break;
-                    model.getPlayer()->Consume(consumable);
+                    model->getPlayer()->Consume(consumable);
                 }
                 
             case 3:
@@ -386,5 +389,18 @@ void Control::FightControl::PlayerTurn(){
 }
 
 void Control::FightControl::EnemiesTurn(){
-    //iterats through the lists of enemeies and calls their attack function or state machine
+    for(Character* Enemy: model->getEnemies()){
+        if(typeid(Enemy) == typeid(HumanEnemy)){
+            HumanEnemy* humanEnemy = dynamic_cast<HumanEnemy*>(Enemy);
+            
+            view->print(humanEnemy->getName() + ": " + humanEnemy->RajazKhani());
+            humanEnemy->StateMachine(model->getPlayer(),this);
+            view->print("");
+        }else{
+            //zombies attack
+        }
+    }
+    view->Prompt("press any key to proceed...");
 }
+
+View::FightView* Control::FightControl::getView(){return view;}

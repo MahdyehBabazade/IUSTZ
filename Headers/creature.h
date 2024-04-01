@@ -1,8 +1,10 @@
 #pragma once
 #include "../Headers/items.h"
+#include "../Headers/MVC.h"
 #include <vector>
 #include <string>
 using namespace std;
+
 
 // explainings to be included
 class Character{
@@ -43,6 +45,7 @@ public:
     void death(); // Character dies
 
     string getStat(); // To be deleted later
+    
 };
 
 class Player : public Character{
@@ -120,12 +123,8 @@ private:
     void removeConsumable(Consumable* Consumable);
     void removeWeapon(Weapon* Weapon);
     
-    // fun little Dialogues :)
-    void RajazKhani();
-    
     
     State state;
-    void StateMachine();
     bool hasAttacked;
 
 public:
@@ -135,6 +134,10 @@ public:
     vector<pair<Weapon* , int>> Weapons , vector<pair<Consumable* , int>> Consumables); //items to add?!
     ~HumanEnemy();
 
+    // fun little Dialogues :)
+    string RajazKhani();
+    
+    void StateMachine(Player* player,Control::FightControl* fightControl);
     void Attack(Player* player , Weapon* weapon , int choice); // Attack function
     void Consume(Consumable* consumable); // When a Consumable is used
     void removeItem(Item* item); // when a throwable is thrown or a Consumable is used;
@@ -148,7 +151,7 @@ public:
     vector<pair<Weapon* , int>> Weapons);
     ~Zombie();
 
-    void Attack(vector<Character*> &player , Punch* punch); // Attack function for zombie it can only attack with its Punch
+    void Attack(Player* player , Punch* punch); // Attack function for zombie it can only attack with its Punch
 };
 
 class Shopkeeper{
