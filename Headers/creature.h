@@ -135,7 +135,7 @@ public:
     vector<pair<Weapon* , int>> Weapons , vector<pair<Consumable* , int>> Consumables); //items to add?!
     ~HumanEnemy();
 
-    void Attack(vector<Character*> player , Weapon* weapon , int choice); // Attack function
+    void Attack(Player* player , Weapon* weapon , int choice); // Attack function
     void Consume(Consumable* consumable); // When a Consumable is used
     void removeItem(Item* item); // when a throwable is thrown or a Consumable is used;
 };

@@ -748,31 +748,41 @@ HumanEnemy :: ~HumanEnemy(){
     cout << ShuffleVec(EnemyDeathQuotes)[0];
 }
 
-void HumanEnemy::Attack(vector<Character*> characters , Weapon* weapon , int choice){
+void HumanEnemy::Attack(Player* player , Weapon* weapon , int choice){
     if (typeid(*weapon) == typeid(Gun)) {
-        Gun *gun = dynamic_cast<Gun *>(weapon);
-        if (gun->getAmmo() >= characters.size()) {
-            gun->Attack(characters);
-            gun->setAmmo(gun->getAmmo()-characters.size()); //reduces the number of ammos after the gun shot.
+        if(typeid(weapon) == typeid(Shotgun)){
+            Shotgun* shotgun = dynamic_cast<Shotgun*>(weapon);
+            shotgun->Attack({player},player);
+        }else if(typeid(weapon) == typeid(Snipe)){
+            Snipe* snipe = dynamic_cast<Snipe*>(weapon);
+            snipe->Attack({player},player);
+        }else if(typeid(weapon) == typeid(Rifle)){
+            Rifle* rifle = dynamic_cast<Rifle*>(weapon);
+            rifle->Attack({player});
+        }else if(typeid(weapon) == typeid(Rifle)){
+            SMG* smg = dynamic_cast<SMG*>(weapon);
+            smg->Attack({player});
+        }else{
+            weapon->Attack(player);
         }
     }
     else if(typeid(*weapon) == typeid(Throwable)){
         Throwable *throwable = dynamic_cast<Throwable *>(weapon);
-        throwable->Attack(characters);
+        throwable->Attack({player});
         removeItem(throwable); //removes the throwable from the backpack after it dropped
     }
     else if(typeid(*weapon) == typeid(ColdWeapon)){
         ColdWeapon *coldWeapon = dynamic_cast<ColdWeapon *>(weapon);
         if(choice ==1){
-            coldWeapon->Attack(characters); //if attack, it calls the Attack function of the cold weapon
+            coldWeapon->Attack(player); //if attack, it calls the Attack function of the cold weapon
         }
         else{
-            coldWeapon->Throw(characters); //if throw, it calls the Throw function of the cold weapon then removes it from the backpack
+            coldWeapon->Throw(player); //if throw, it calls the Throw function of the cold weapon then removes it from the backpack
             removeItem(coldWeapon); 
         }
     }
     else{
-        weapon->Attack(characters);
+        weapon->Attack(player);
     }
     RajazKhani();
 }
