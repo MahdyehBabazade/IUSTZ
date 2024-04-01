@@ -1,8 +1,10 @@
 #include "../Headers/MVC.h"
+#include "../Headers/creature.h"
 #include "functions.cpp"
 #include <vector>
 #include <string>
 #include <conio.h>
+#include <iomanip>
 
 using namespace std;
 
@@ -55,46 +57,92 @@ Consumable* View::FightView::ChooseConsumable(vector<pair<Consumable*,int>> Cons
 }
 
 Character* View::FightView::ChooseEnemy(vector<Character*> Enemies){
-    string sizecounter;
-    bool breaker=true;
-    int m=0;
-    while(breaker){
-        clearScreen();
-        sizecounter += "";
-        for(int i=0 ; i < Enemies.size() + 1; i++){
-            if(i < Enemies.size() )
-            {
-                if(i == m % (Enemies.size() + 1))
-                    sizecounter += green;
-                sizecounter += to_string(i+1) + ". " + Enemies[i]->getStat() + "\n";
-                sizecounter += reset;
-            }else{
-                if(i == m % (Enemies.size() + 1))
-                    sizecounter += green;
-                sizecounter += "Back";
-                sizecounter += reset;
+    int vecSize = Enemies.size();
+    vector<vector<string>> options(4, vector<string>(vecSize+1));
+    for(int i=0 ; i<4 ; i++){
+        for(int j=0 ; j<vecSize +1 ; j++){
+            if(i == 0){
+                if(j == vecSize)
+                    options[i][j] = "back";
+                else
+                    options[i][j] = Enemies[j]->getName();
+            }
+            if(i == 1){
+                if(j == vecSize)
+                    options[i][j] = " ";
+                else
+                    options[i][j] = "HP:" + Enemies[j]->getHP();
+            }
+            if(i == 2){
+                if(j == vecSize)
+                    options[i][j] = " ";
+                else
+                    options[i][j] = "Armor:" + Enemies[j]->getArmor();
+            }
+            if(i == 3){
+                if(j == vecSize)
+                    options[i][j] = " ";
+                else
+                    options[i][j] = "Shield:" + Enemies[j]->getShield();
             }
         }
-        cout << sizecounter;
-        char key = _getch();
-        switch(key)
-        {
-            case 'w':
-                m--;
-                break;
-            case 's':
-                m++;
-                break;
-            case '\r':
-                breaker=false;
-                break;
-            default:
-                break;
+    }
+    // this will be function
+    int rows = options.size();
+    int width = 0;
+    for(int i=0 ; i<rows ; i++){
+        for(int j=0; j<options[i].size() ; j++){
+            int len = options[i][j].length();
+            if(len > width)
+                width = len;
         }
     }
-    if((m % Enemies.size() + 1) == Enemies.size())
+    int m = 0;
+    while(true){
+        clearScreen();
+        for(int i=0 ; i<4 ; i++){
+            for(int j=0 ; j<vecSize+1 ; j++){
+                if(j == m % options[i].size()){
+                    cout<< green ;
+                    if( j > 0){
+                        cout << left << setw(width) << options[i][j] << " " ;
+                    }else{
+                        cout<< left << setw(4) << options[i][j];
+                    }
+                    cout<< reset << endl;
+                }else{
+                    if( j > 0){
+                        cout << left << setw(width) << options[i][j] << " " ;
+                    }else{
+                        cout<< left << setw(4) << options[i][j];
+                    }
+                    cout<< reset << endl;                    
+                }
+            }
+        }
+        char key = _getch();
+        switch(tolower(key))
+        {
+            case 'a':
+                m--;
+                continue;
+            case 'd':
+                m++;
+                continue;
+            case '\r':
+                break;
+            default:
+                continue;
+        }
+        break;
+    }
+    if(m % (vecSize + 1) == vecSize)
         return nullptr;
-    return Enemies[m % Enemies.size()];
+    return Enemies[m % (vecSize + 1)];    
+}
+
+vector<Character*> View::FightView::ChooseEnemies(vector<Character*> Enemies , int amount){
+
 }
 
 Weapon* View::FightView::ChooseWeapon(vector<pair<Weapon*,int>> Weapons){
@@ -184,7 +232,8 @@ int View::FightView::PlayerMenu(){
     return (m % 3 + 1);
 }
 
-int View::FightView::GunMenu(){
+int View::FightView::ColdWeaponMenu(){
+    // 1.attack  2.throw  3.back
     string sizecounter;
     bool breaker=true;
     int m=0;
@@ -192,17 +241,17 @@ int View::FightView::GunMenu(){
         clearScreen();
         if( m % 3 == 0)
             sizecounter += green;
-        sizecounter += "1. attack\n";
+        sizecounter += "1. Attack\n";
         sizecounter += reset;
 
         if( m % 3 == 1)
             sizecounter += green;
-        sizecounter += "2. reload\n";
+        sizecounter += "2. Throw\n";
         sizecounter += reset;
 
         if( m % 3 == 2)
             sizecounter += green;
-        sizecounter += "3. back\n";
+        sizecounter += "3. Back\n";
         sizecounter += reset;
 
         cout << sizecounter;
@@ -223,6 +272,102 @@ int View::FightView::GunMenu(){
         }
     }
     return (m % 3 + 1);
+}
+
+int View::FightView::GunMenu(){
+    // 1.attack  2.reload  3.back
+    string sizecounter;
+    bool breaker=true;
+    int m=0;
+    while(breaker){
+        clearScreen();
+        if( m % 3 == 0)
+            sizecounter += green;
+        sizecounter += "1. Attack\n";
+        sizecounter += reset;
+
+        if( m % 3 == 1)
+            sizecounter += green;
+        sizecounter += "2. Reload\n";
+        sizecounter += reset;
+
+        if( m % 3 == 2)
+            sizecounter += green;
+        sizecounter += "3. Back\n";
+        sizecounter += reset;
+
+        cout << sizecounter;
+        char key = _getch();
+        switch(key)
+        {
+            case 'w':
+                m--;
+                break;
+                case 's':
+                m++;
+                break;
+            case '\r':
+                breaker=false;
+                break;
+            default:
+                break;
+        }
+    }
+    return (m % 3 + 1);
+}
+
+void View::FightView::ShowEnemies(vector<Character*> Enemies){
+    int vecSize = Enemies.size();
+    vector<vector<string>> options(4, vector<string>(vecSize+1));
+    for(int i=0 ; i<4 ; i++){
+        for(int j=0 ; j<vecSize +1 ; j++){
+            if(i == 0){
+                if(j == vecSize)
+                    options[i][j] = "back";
+                else
+                    options[i][j] = Enemies[j]->getName();
+            }
+            if(i == 1){
+                if(j == vecSize)
+                    options[i][j] = " ";
+                else
+                    options[i][j] = "HP:" + Enemies[j]->getHP();
+            }
+            if(i == 2){
+                if(j == vecSize)
+                    options[i][j] = " ";
+                else
+                    options[i][j] = "Armor:" + Enemies[j]->getArmor();
+            }
+            if(i == 3){
+                if(j == vecSize)
+                    options[i][j] = " ";
+                else
+                    options[i][j] = "Shield:" + Enemies[j]->getShield();
+            }
+        }
+    }
+    int rows = options.size();
+    int width = 0;
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < options[i].size(); j++) {
+            int len = options[i][j].length();
+            if (len > width) {
+                width = len;
+            }
+        }
+    }
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < options[i].size(); j++) {
+            if(j > 0){
+                cout << left << setw(width) << options[i][j] << " ";
+            }else{
+                cout << left << setw(4) << options[i][j];
+            }
+
+        }
+        cout << endl;
+    }
 }
 
 void View::FightView::Prompt(string entry){
@@ -253,11 +398,19 @@ vector<Character*> Model::FightModel::getEnemies(){ return Enemies;}
 
 //---------------------------------------------------------------------------------------------
 Control::FightControl::FightControl(Player* player,vector<Character*> Enemies) {
-    //construct a model and a view and set control's model and view to the constructed ones
+    model = new Model::FightModel(player, Enemies);
 }
 
 
 void Control::FightControl::StartFight(){
+    while(true){
+        int i = model->getRound();
+        if(i % 2 != 0)
+            PlayerTurn();
+        else if(i % 2 == 0)
+            EnemiesTurn();
+        model->setRound(i + 1);
+    }
     // a while loop that increaes model's round in each iteration and calls playerturn() or enemiesturn() functions accordingly
 }
 

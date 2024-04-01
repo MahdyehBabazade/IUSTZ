@@ -10,10 +10,13 @@ namespace View{
             FightView() = default;
             int PlayerMenu(); //player options
             int GunMenu(); //weapon options(reload and attack)
+            int ColdWeaponMenu();
+            vector<Character*> ChooseEnemies(vector<Character*> Enemies,int amount);
             Consumable* ChooseConsumable(vector<pair<Consumable*,int>> Consumables);
             Weapon* ChooseWeapon(vector<pair<Weapon*,int>> Weapons);
             Character* ChooseEnemy(vector<Character*> Enemies);
-            
+
+            void ShowEnemies(vector<Character*> Enemies);
             void Prompt(string entry);
             void print(string entry);
     };
@@ -34,7 +37,6 @@ namespace Model{
             
             Player* getPlayer();
             vector<Character*> getEnemies();
-            int getRound();
     };
 }
 
