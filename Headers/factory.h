@@ -56,7 +56,11 @@ public:
 class FightFactory{
 private:
     Player* player;
+    Map* map;
+    
 public:
-    FightFactory(Player* player);
-    Fight* GenerateFight();
+    FightFactory(Player* player, Map* map);
+    Fight* GenerateNormalFight();
+    Fight* GenerateMiniBoss();
+    Fight* GenerateBoss();
 };

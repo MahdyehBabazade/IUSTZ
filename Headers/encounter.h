@@ -83,12 +83,14 @@ class Fight : public Encounter{
 private:
     Player* player;
     //vector<Character*> players;
+    int type; // 0 for normal fight, 1 for miniboss, 2 for boss
     vector<Character*> enemies;
     vector<Item*> items;
 
 public:
     Fight()=default;
-    Fight(Player* player, vector<Character*> enemies, vector<Item*> items);
+    Fight(Player* player, int type, vector<Character*> enemies, vector<Item*> items);
+
 };
 
 class MiniBoss : public Encounter{
