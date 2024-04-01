@@ -45,6 +45,8 @@ public:
     void death(); // Character dies
 
     string getStat(); // To be deleted later
+    virtual ~Character();
+    virtual string DeathDialogue();
     
 };
 
@@ -132,8 +134,10 @@ public:
     // Constructor and Destructor
     HumanEnemy(string Name , int MaxHP , double Armor, vector<pair<Item* , int>> Items ,
     vector<pair<Weapon* , int>> Weapons , vector<pair<Consumable* , int>> Consumables); //items to add?!
-    ~HumanEnemy();
-
+    
+    //~HumanEnemy();
+    string DeathDialogue() override;
+    
     // fun little Dialogues :)
     string RajazKhani();
     
@@ -149,9 +153,10 @@ public:
     // Constructor and Destructor
     Zombie(string Name , int MaxHP , double Armor, vector<pair<Item* , int>> Items , 
     vector<pair<Weapon* , int>> Weapons);
-    ~Zombie();
+    //~Zombie();
+    string DeathDialogue() override;
 
-    void Attack(Player* player , Punch* punch); // Attack function for zombie it can only attack with its Punch
+    void Attack(Player* player,Control::FightControl* fightControl); // Attack function for zombie it can only attack with its Punch
 };
 
 class Shopkeeper{

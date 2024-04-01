@@ -414,6 +414,26 @@ void Control::FightControl::StartFight(){
     // a while loop that increaes model's round in each iteration and calls playerturn() or enemiesturn() functions accordingly
 }
 
+void Control::FightControl::RemoveEnemies(){
+    bool hascleared = false;
+    vector<Character*> Enemies = model->getEnemies();
+    for(int i = 0 ; i < Enemies.size() ; i++){
+        Character* Enemy = Enemies[i];
+        if(Enemy->getHP() <=0){
+            if(!hascleared){
+                clearScreen();
+                hascleared = true;
+            }
+            Enemies.erase(Enemies.begin() + i);
+            view->print(Enemy->getName() + Enemy->DeathDialogue());
+            //~Enemy();
+        }
+    }
+    if(hascleared){
+        view->Prompt("\npress any key to proceed...");
+    }
+}
+
 void Control::FightControl::PlayerTurn(){
     //1. weapons  2.consumables 3.endround
     while(true){
@@ -472,7 +492,7 @@ void Control::FightControl::PlayerTurn(){
                                         gun->Attack(enemy);
                                         
                                     }
-                            
+                                    RemoveEnemies();
                                 
                                     continue;
                                 case 2:
@@ -550,7 +570,10 @@ void Control::FightControl::EnemiesTurn(){
             humanEnemy->StateMachine(model->getPlayer(),this);
             view->print("");
         }else{
-            //zombies attack
+            Zombie* zombie = dynamic_cast<Zombie*>(Enemy);
+            view->print(zombie->getName() + ": ");
+            zombie->Attack(model->getPlayer(),this);
+            view->print("");
         }
     }
     view->Prompt("press any key to proceed...");

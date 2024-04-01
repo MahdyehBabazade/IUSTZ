@@ -49,6 +49,7 @@ namespace Control{
             void StartFight();
             void PlayerTurn();
             void EnemiesTurn();
+            void RemoveEnemies();
         public:
             FightControl(Player* player,vector<Character*> Enemies); //constructs the Model and the View and also calls startFight func
             View::FightView* getView();

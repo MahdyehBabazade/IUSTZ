@@ -744,13 +744,13 @@ void HumanEnemy :: StateMachine(Player* player,Control::FightControl* fightContr
     }
 }
 
-HumanEnemy :: ~HumanEnemy(){
-    // What the enemy says when he/she dies
+
+string HumanEnemy::DeathDialogue(){
     vector<string> EnemyDeathQuotes = { "I can't believe this is how it all ends!", "You fucking bastard!",
     "Wasted!" , "Nooo, I can't die yet!" , "My child , take care o..." , "I'll damn you" , 
     "My brother will get my revenge!!!" , "I'll be waiting , you SoB!!!" , "That was a fun fight" , 
     "See you on the other side"};
-    cout << ShuffleVec(EnemyDeathQuotes)[0];
+    return ShuffleVec(EnemyDeathQuotes)[0];
 }
 
 void HumanEnemy::Attack(Player* player , Weapon* weapon , int choice){
@@ -856,13 +856,16 @@ Zombie :: Zombie(string Name , int MaxHP , double Armor , vector<pair<Item* , in
     setArmor(Armor);
 }
 
-Zombie :: ~Zombie(){
+
+string Zombie::DeathDialogue(){
     vector<string> ZombieDeathQuotes = {"Aaauugh!!!!" , "Haaauugh!!!" , "Blauugh!" , "Guaargh!!" , "Bluargh!!!"};
-    cout << ShuffleVec(ZombieDeathQuotes)[0];
+    return ShuffleVec(ZombieDeathQuotes)[0];
 }
 
-void Zombie :: Attack(Player* player , Punch* punch){
+void Zombie :: Attack(Player* player,Control::FightControl* fightControl){
+    Weapon* punch = ShuffleVec(Weapons)[0].first;
     punch->Attack(player);
+    fightControl->getView()->print("Dealt " + to_string(punch->getDamage()) + " damge");
 }
 
 Shopkeeper :: Shopkeeper(string Name){this->Name = Name;}
