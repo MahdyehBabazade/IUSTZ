@@ -160,7 +160,10 @@ Shop* ShopFactory :: Generate(){
     return shop;
 }
 
-EnemyFactory :: EnemyFactory(Map* map){this -> map = map;}
+EnemyFactory :: EnemyFactory(Map* map , Player* player){
+    this -> map = map;
+    this -> player = player;
+}
 
 void EnemyFactory :: setDifficulty(int Difficulty){this -> Difficulty = Difficulty;}
 
@@ -267,20 +270,25 @@ vector<pair<Consumable* , int>> EnemyFactory :: Consumableset(int type){
         else if(Difficulty >= 36)
             weights = {10 , 5 , 1 , 10 , 5 , 1};
         else if(Difficulty >= 50)
-            weights = {12 , 7 , 3 , 12 , 7 , 3};
+            weights = {10 , 7 , 3 , 10 , 7 , 3};
         if(Difficulty >= 8)
             Consumables[Index_Weighted_Random(weights)].second++;
         else if(Difficulty >= 22)
             for(int i = 0 ; i < 2; i++)
                 Consumables[Index_Weighted_Random(weights)].second++;
         else if(Difficulty >= 36)
-            for(int i = 0; i < 2; i++)
-                Consumables[Index_Weighted_Random(weights)].second++;
-        else if(Difficulty >= 50)
             for(int i = 0; i < 3; i++)
                 Consumables[Index_Weighted_Random(weights)].second++;
+        else if(Difficulty >= 50)
+            for(int i = 0; i < 4; i++)
+                Consumables[Index_Weighted_Random(weights)].second++;
     }
-    return Consumables;
+    vector<pair<Consumable* , int>> Consum;
+    for(int i = 0; i < 6 ; i++){
+        if(Consumables[i].second != 0)
+            Consum.push_back(Consumables[i]);
+    }
+    return Consum;
 }
 
 vector<pair<Item* , int>> EnemyFactory :: Itemset(vector<pair<Weapon* , int>> Weapons, 
@@ -351,27 +359,17 @@ vector<Character*> EnemyFactory :: MiniBossEnemy(){
     vector<Character*> Enemies;
     int ZorH = rand() % 3;
     if(ZorH == 2){
-        if(Difficulty % 6 == 0 || Difficulty % 6 == 1)
+        if(Difficulty % 6 == 0 || Difficulty % 6 == 1 || Difficulty % 6 == 2)
             Enemies.push_back(HumanEnemyMaker());
-        else if(Difficulty % 6 == 2 || Difficulty % 6 == 3){
-            Enemies.push_back(HumanEnemyMaker());
-            Enemies.push_back(HumanEnemyMaker());
-        }
-        else if(Difficulty % 6 == 4 || Difficulty % 6 == 5){
-            Enemies.push_back(HumanEnemyMaker());
+        else{
             Enemies.push_back(HumanEnemyMaker());
             Enemies.push_back(HumanEnemyMaker());
         }
     }
     else{
-        if(Difficulty % 6 == 0 || Difficulty % 6 == 1)
+        if(Difficulty % 6 == 0 || Difficulty % 6 == 1 || Difficulty % 6 == 2)
             Enemies.push_back(ZombieMaker());
-        else if(Difficulty % 6 == 2 || Difficulty % 6 == 3){
-            Enemies.push_back(ZombieMaker());
-            Enemies.push_back(ZombieMaker());
-        }
-        else if(Difficulty % 6 == 4 || Difficulty % 6 == 5){
-            Enemies.push_back(ZombieMaker());
+        else{
             Enemies.push_back(ZombieMaker());
             Enemies.push_back(ZombieMaker());
         }
@@ -380,8 +378,120 @@ vector<Character*> EnemyFactory :: MiniBossEnemy(){
 }
 
 vector<Character*> EnemyFactory :: BossEnemy(){
-    vector<Character*> enemies = {};
-    return enemies;
+    if(map->getBoss() == "Cowboy"){
+        setDifficulty(28);
+        vector<Character*> Enemies = {HumanEnemyMaker() , HumanEnemyMaker()};
+        vector<pair<Weapon* , int>> weapons;
+        vector<pair<Consumable* , int>> Consumables;
+        vector<pair<Item* , int>> Items;
+        weapons.push_back(make_pair(new Shotgun("doublebarrel" , 0 , 0 , 26 , 0 , 0 , 2 , 100 , 0) , 1));
+        weapons.push_back(make_pair(new Shotgun("doublebarrel" , 0 , 0 , 28 , 0 , 0 , 2 , 100 , 0) , 1));
+        weapons.push_back(make_pair(new Shotgun("doublebarrel" , 0 , 0 , 32 , 0 , 0 , 2 , 100 , 0) , 1));
+        Consumables.push_back(make_pair(new Consumable("HP" , "HPPotion" , 0 , 0 , 95) , 3));
+        Items = Itemset(weapons , Consumables);
+        Enemies.push_back(new HumanEnemy("Cowboy" , 95 , 25 , Items , weapons , Consumables));
+        return Enemies;
+    }
+    else if(map->getBoss() == "Zombie"){
+        setDifficulty(32);
+        vector<Character*> Enemies = {ZombieMaker() , ZombieMaker() , ZombieMaker() , ZombieMaker() , ZombieMaker()};
+        return Enemies;
+    }
+    else if(map->getBoss() == "Samurai"){
+        vector<Character*> Enemies = {};
+        for(int i = 0; i < 4; i++){
+            vector<pair<Weapon* , int>> weapons;
+            weapons.push_back(make_pair(new ColdWeapon("Katana" , 0 , 0 , 20 , 0 , 0) , 2));
+            weapons.push_back(make_pair(new ColdWeapon("Katana" , 0 , 0 , 23 , 0 , 0) , 2));
+            weapons.push_back(make_pair(new ColdWeapon("Katana" , 0 , 0 , 28 , 0 , 0) , 2));
+            vector<pair<Consumable* , int>> Consumables = {};
+            Consumables.push_back(make_pair(new Consumable("HP" , "HPPotion" , 0 , 0 , 40) , 1));
+            Consumables.push_back(make_pair(new Consumable("HP" , "HPPotion" , 0 , 0 , 35) , 1));
+            Consumables.push_back(make_pair(new Consumable("HP" , "HPPotion" , 0 , 0 , 30) , 1));
+            Consumables.push_back(make_pair(new Consumable("Shield" , "ShieldPotion" , 0 , 0 , 40) , 1));
+            Consumables.push_back(make_pair(new Consumable("Shield" , "ShieldPotion" , 0 , 0 , 35) , 1));
+            Consumables.push_back(make_pair(new Consumable("Shield" , "ShieldPotion" , 0 , 0 , 30) , 2));
+            vector<pair<Item* , int>> Items = Itemset(weapons , Consumables);
+            Enemies.push_back(new HumanEnemy(HumanEnemyNameset() , 145 + rand() % 16 , 40 , Items , weapons , Consumables));
+        }
+        return Enemies;
+    }
+    else if(map->getBoss() == "Frank"){
+        vector<Character*> Enemies = {};
+        vector<pair<Weapon* , int>> weapons;
+        weapons.push_back(make_pair(new Punch("Punch" , 0 , 16 , 0 , 0) , 1));
+        weapons.push_back(make_pair(new Punch("Punch" , 0 , 17 , 0 , 0) , 1));
+        weapons.push_back(make_pair(new Punch("Punch" , 0 , 19 , 0 , 0) , 1));
+        setDifficulty(47);
+        Enemies.push_back(new Zombie("Frank" , 200 , 75 , Itemset(weapons , {}) , weapons));
+        Enemies.push_back(ZombieMaker());
+        Enemies.push_back(ZombieMaker());
+        return Enemies;
+    }
+    else if(map->getBoss() == "Dokkaebi"){
+        vector<Character*> Enemies;
+        vector<pair<Weapon* , int>> weapons = {make_pair(new Punch("Punch" , 0 , 20 , 0 , 0) , 1)};
+        Enemies.push_back(new HumanEnemy("Dokkaebi" , 60 , 25 , Itemset(weapons , {}) , weapons , {}));
+        Enemies.push_back(new HumanEnemy(player->getName() , max(player->getMaxHP() + 15 , 200) , 
+        max(player->getArmor() + 5 , 25) , player->getItems() , player->getWeapons() , player->getConsumables()));
+        Enemies.push_back(new HumanEnemy(player->getName() , max(player->getMaxHP() + 30 , 230) , 
+        max(player->getArmor() , 20 ) , player->getItems() , player->getWeapons() , player->getConsumables()));
+        return Enemies;
+    }
+    else if(map->getBoss() == "Khonshu"){
+        setDifficulty(60);
+        vector<Character*> Enemies = {ZombieMaker() , ZombieMaker()};
+        vector<pair<Weapon* , int>> weapons;
+        weapons.push_back(make_pair(new Grenade("Grenade" , 0 , 0 , 35 , 0 , 0) , 5));
+        weapons.push_back(make_pair(new Grenade("Grenade" , 0 , 0 , 30 , 0 , 0) , 15));
+        weapons.push_back(make_pair(new Grenade("Grenade" , 0 , 0 , 38 , 0 , 0) , 5));
+        weapons.push_back(make_pair(new BoomRang("BoomRang" , 0 , 0 , 17 , 0 , 0) , 5));
+        weapons.push_back(make_pair(new BoomRang("BoomRang" , 0 , 0 , 15 , 0 , 0) , 15));
+        weapons.push_back(make_pair(new BoomRang("BoomRang" , 0 , 0 , 18 , 0 , 0) , 5));
+        vector<pair<Consumable* , int>> Consumables;
+        Consumables.push_back(make_pair(new Consumable("HP" , "HPPotion" , 0 , 0 , 20) , 15));
+        Enemies.push_back(new HumanEnemy("Khonshu" , 250 , 47.5 , Itemset(weapons , Consumables) , weapons , Consumables));
+        return Enemies;
+    }
+}
+
+string MapFactory :: BossName(){
+    if(Floor == 1){
+        int random = rand() % 2;
+        switch (random)
+        {
+        case 0:
+            return "Cowboy"; // complete later
+            break;
+        default:
+            return "Zombie"; // complete later
+            break;
+        }
+    }
+    if(Floor == 2){
+        int random = rand() % 2;
+        switch (random)
+        {
+        case 0:
+            return "Samurai"; // complete later
+            break;
+        default:
+            return "Frank"; // complete later
+            break;
+        }
+    }
+    if(Floor == 3){
+        int random = rand() % 2;
+        switch (random)
+        {
+        case 0:
+            return "Dokkaebi"; // complete later
+            break;
+        default:
+            return "Khonshu"; // complete later
+            break;
+        }
+    }
 }
 
 vector<int> MapFactory :: PathFinding1(){
@@ -887,13 +997,14 @@ MapFactory :: MapFactory(int floor){this -> Floor = floor;}
 Map* MapFactory :: GenerateMap(){
     vector<int> path1 , path2 , path3 , path4 , path5;
     vector<vector<string>> GenerateEncounters;
+    string BOSS = BossName();
     path1 = PathFinding1();
     path2 = PathFinding2(path1);
     path3 = PathFinding3(path1 , path2);
     path4 = PathFinding4(path1 , path2 , path3);
     path5 = PathFinding5(path1 , path2 , path3 , path4);
     GenerateEncounters = generateEncounters(path1 , path2 , path3 , path4 , path5);
-    Map* map = new Map(Floor , path1 , path2 , path3 , path4 , path5 , GenerateEncounters);
+    Map* map = new Map(Floor , BOSS , path1 , path2 , path3 , path4 , path5 , GenerateEncounters);
     return map;
 }
 
@@ -934,7 +1045,7 @@ Fight* FightFactory :: GenerateNormalFight(){
         item_index = Index_Weighted_Random(weights);
         Items[i] = AllItems[item_index];
     }
-    EnemyFactory* enemyfactory = new EnemyFactory(map);
+    EnemyFactory* enemyfactory = new EnemyFactory(map , player);
     vector<Character*> Enemies = enemyfactory->FightEnemy();
     Fight* fight = new Fight(player, 0, Enemies, Items);
     return fight;
@@ -971,7 +1082,7 @@ Fight* FightFactory :: GenerateMiniBoss(){
         item_index = Index_Weighted_Random(weights);
         Items[i] = AllItems[item_index];
     }
-    EnemyFactory* enemyfactory = new EnemyFactory(map);
+    EnemyFactory* enemyfactory = new EnemyFactory(map , player);
     vector<Character*> Enemies = enemyfactory->MiniBossEnemy();
     Fight* fight = new Fight(player, 1, Enemies, Items);
     return fight;
@@ -1008,7 +1119,7 @@ Fight* FightFactory :: GenerateBoss(){
         item_index = Index_Weighted_Random(weights);
         Items[i] = AllItems[item_index];
     }
-    EnemyFactory* enemyfactory = new EnemyFactory(map);
+    EnemyFactory* enemyfactory = new EnemyFactory(map , player);
     vector<Character*> Enemies = enemyfactory->BossEnemy();
     Fight* fight = new Fight(player, 2, Enemies, Items);
     return fight;

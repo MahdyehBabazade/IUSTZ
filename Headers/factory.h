@@ -18,6 +18,7 @@ class EnemyFactory{
 
 private:
     Map* map;
+    Player* player;
     int Difficulty;
     void setDifficulty(int Difficulty);
     string ZombieNameset();
@@ -31,7 +32,7 @@ private:
     Zombie* ZombieMaker();
 
 public:
-    EnemyFactory(Map* map);
+    EnemyFactory(Map* map , Player* player);
     vector<Character*> FightEnemy();
     vector<Character*> MiniBossEnemy();
     vector<Character*> BossEnemy();
@@ -41,6 +42,7 @@ class MapFactory{
 
 private:
     int Floor;
+    string BossName();
     vector<int> PathFinding1();
     vector<int> PathFinding2(vector<int> path1);
     vector<int> PathFinding3(vector<int> path1 , vector<int> path2);
