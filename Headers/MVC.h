@@ -3,7 +3,12 @@
 #include "../Headers/creature.h"
 #include <iostream>
 using namespace std;
-
+class Character;
+class Player;
+class HumanEnemy;
+class Zombie;
+class ShopKeeper;
+class Medic;
 namespace View{
     class FightView{
         public:

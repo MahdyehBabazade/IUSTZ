@@ -37,7 +37,11 @@ int Weapon::getEnergyNeeded(){return EnergyNeeded;}
 
 int Weapon::getUpgradeAmount(){return UpgradeAmount;}
 
+int Weapon::getUpgradeLimit(){return UpgradeLimit;}
+
 void Weapon::setUpgradeAmount(int upgrades){UpgradeAmount = upgrades;}
+
+void Weapon::setUpgradeLimit(int upgradeLimit){UpgradeLimit = upgradeLimit;}
 
 void Weapon::setDamage(int damage) {Damage = damage;}
 
