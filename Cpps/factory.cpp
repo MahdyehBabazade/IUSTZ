@@ -1009,9 +1009,10 @@ Map* MapFactory :: GenerateMap(){
 }
 
 
-FightFactory :: FightFactory(Player* player, Map* map){
+FightFactory :: FightFactory(Player* player, Map* map, vector<Relic*> relics){
     this -> player = player;
     this -> map = map;
+    this -> relics = relics;
 }
 
 Fight* FightFactory :: GenerateNormalFight(){
@@ -1119,6 +1120,30 @@ Fight* FightFactory :: GenerateBoss(){
         item_index = Index_Weighted_Random(weights);
         Items[i] = AllItems[item_index];
     }
+
+    bool isExisted = false;
+    int m = 0;
+    while (m != 3)
+    {
+        item_index = rand() % relics.size();
+        for (int j = 0; j < player->getRelic().size(); j++)
+        {
+            if (relics[item_index] == player->getRelic()[j])
+            {
+                isExisted = true;
+            }   
+        }
+        if (!(isExisted))
+        {
+            relics[m] == relics[item_index];
+            m++;
+        }
+    }
+    while (relics.size() != 3)
+    {
+        relics.pop_back();
+    }
+    
     EnemyFactory* enemyfactory = new EnemyFactory(map , player);
     vector<Character*> Enemies = enemyfactory->BossEnemy();
     Fight* fight = new Fight(player, 2, Enemies, Items);
