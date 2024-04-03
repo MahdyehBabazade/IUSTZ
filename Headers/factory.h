@@ -59,10 +59,9 @@ class FightFactory{
 private:
     Player* player;
     Map* map;
-    vector<Relic*> relics;
     
 public:
-    FightFactory(Player* player, Map* map, vector<Relic*> relics);
+    FightFactory(Player* player, Map* map);
     Fight* GenerateNormalFight();
     Fight* GenerateMiniBoss();
     Fight* GenerateBoss();
