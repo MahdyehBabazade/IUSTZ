@@ -1009,10 +1009,9 @@ Map* MapFactory :: GenerateMap(){
 }
 
 
-FightFactory :: FightFactory(Player* player, Map* map, vector<Relic*>& relics){
+FightFactory :: FightFactory(Player* player, Map* map){
     this -> player = player;
     this -> map = map;
-    this -> relics = relics;
 }
 
 Fight* FightFactory :: GenerateNormalFight(){
@@ -1046,21 +1045,6 @@ Fight* FightFactory :: GenerateNormalFight(){
         item_index = Index_Weighted_Random(weights);
         Items[i] = AllItems[item_index];
     }
-
-    vector<Relic*> UltimateRelic;
-    for (int i = 0; i < 3; i++)
-    {
-        item_index = rand() % relics.size();
-        for (int j = 0; j < player->getRelic().size(); i++)
-        {
-            if (relics[item_index] != player->getRelic()[j])
-            {
-                UltimateRelic[i] == relics[item_index];
-            }   
-        }
-    }
-    relics = UltimateRelic;
-    
     EnemyFactory* enemyfactory = new EnemyFactory(map , player);
     vector<Character*> Enemies = enemyfactory->FightEnemy();
     Fight* fight = new Fight(player, 0, Enemies, Items);
@@ -1098,21 +1082,6 @@ Fight* FightFactory :: GenerateMiniBoss(){
         item_index = Index_Weighted_Random(weights);
         Items[i] = AllItems[item_index];
     }
-
-    vector<Relic*> UltimateRelic;
-    for (int i = 0; i < 3; i++)
-    {
-        item_index = rand() % relics.size();
-        for (int j = 0; j < player->getRelic().size(); i++)
-        {
-            if (relics[item_index] != player->getRelic()[j])
-            {
-                UltimateRelic[i] == relics[item_index];
-            }   
-        }
-    }
-    relics = UltimateRelic;
-
     EnemyFactory* enemyfactory = new EnemyFactory(map , player);
     vector<Character*> Enemies = enemyfactory->MiniBossEnemy();
     Fight* fight = new Fight(player, 1, Enemies, Items);
@@ -1150,21 +1119,6 @@ Fight* FightFactory :: GenerateBoss(){
         item_index = Index_Weighted_Random(weights);
         Items[i] = AllItems[item_index];
     }
-
-    vector<Relic*> UltimateRelic;
-    for (int i = 0; i < 3; i++)
-    {
-        item_index = rand() % relics.size();
-        for (int j = 0; j < player->getRelic().size(); i++)
-        {
-            if (relics[item_index] != player->getRelic()[j])
-            {
-                UltimateRelic[i] == relics[item_index];
-            }   
-        }
-    }
-    relics = UltimateRelic;
-    
     EnemyFactory* enemyfactory = new EnemyFactory(map , player);
     vector<Character*> Enemies = enemyfactory->BossEnemy();
     Fight* fight = new Fight(player, 2, Enemies, Items);
