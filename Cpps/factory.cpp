@@ -19,52 +19,63 @@ using namespace std;
     SMG* smg2 = new SMG("Hurricane", 15, 35, 30, 1, 2, 4, 2);
     SMG* smg3 = new SMG("Rapidfire", 15, 50, 45, 1, 2, 5, 3); // A better SMG
 
-    Rifle* rifle = new Rifle("rifle", 20, 40, 30, 2, 2, 3, 1, 2);
-    Rifle* rifle2 = new Rifle("rifle2", 20, 50, 40, 2, 2, 4, 2, 2);
-    Rifle* rifle3 = new Rifle("rifle3", 20, 65, 55, 2, 2, 4, 3, 3); // A better rifle
+    Rifle* rifle = new Rifle("Twilight Rifle", 20, 40, 30, 2, 2, 3, 1, 2);
+    Rifle* rifle2 = new Rifle("Inferno Hunter", 20, 50, 40, 2, 2, 4, 2, 2);
+    Rifle* rifle3 = new Rifle("Dawnbreaker", 20, 65, 55, 2, 2, 4, 3, 3); // A better rifle
 
     // Cold Weapons
-    ColdWeapon* coldweapon = new ColdWeapon("coldweapon", 10, 30, 15, 1, 1);
-    ColdWeapon* coldweapon2 = new ColdWeapon("coldweapon2", 10, 40, 20, 1, 2);
-    ColdWeapon* coldweapon3 = new ColdWeapon("coldweapon3", 10, 55, 35, 1, 3); // Better
+    ColdWeapon* coldweapon = new ColdWeapon("Blizzard Blade", 10, 30, 15, 1, 1);
+    ColdWeapon* coldweapon2 = new ColdWeapon("Snowfall Sword", 10, 40, 20, 1, 2);
+    ColdWeapon* coldweapon3 = new ColdWeapon("Ice Dagger", 10, 55, 35, 1, 3); // Better
 
     // Throwables
-    Grenade* grenade = new Grenade("grenade", 7, 10, 30, 1, 1);
-    Grenade* grenade2 = new Grenade("grenade2", 7, 15, 40, 1, 2);
-    Grenade* grenade3 = new Grenade("grenade3", 7, 25, 60, 1, 3); // Better
+    Grenade* grenade = new Grenade("Chill Grenade", 7, 10, 30, 1, 1);
+    Grenade* grenade2 = new Grenade("Firebomb", 7, 15, 40, 1, 2);
+    Grenade* grenade3 = new Grenade("Snowball", 7, 25, 60, 1, 3); // Better
 
-    BoomRang* boomerang = new BoomRang("boomerang", 15, 15, 15, 1, 2);
-    BoomRang* boomerang2 = new BoomRang("boomerang2", 15, 20, 20, 1, 2);
-    BoomRang* boomerang3 = new BoomRang("boomerabg3", 15, 30, 30, 1, 2); // Better
+    BoomRang* boomerang = new BoomRang("SpinStorm", 15, 15, 15, 1, 2);
+    BoomRang* boomerang2 = new BoomRang("BoomerBoost", 15, 20, 20, 1, 2);
+    BoomRang* boomerang3 = new BoomRang("FuryFlight", 15, 30, 30, 1, 2); // Better
 
     // Consumables
-    Consumable* ShieldConsumable = new Consumable("ShieldConsumable", "ShieldPotion", 7, 20, 20);
-    Consumable* ShieldConsumable2 = new Consumable("ShieldConsumable2", "ShieldPotion", 7, 25, 30);
-    Consumable* ShieldConsumable3 = new Consumable("ShieldConsumable3", "ShieldPotion", 7, 35, 45);
+    Consumable* ShieldConsumable = new Consumable("ShieldBoost", "ShieldPotion", 7, 20, 20);
+    Consumable* ShieldConsumable2 = new Consumable("GuardPotion", "ShieldPotion", 7, 25, 30);
+    Consumable* ShieldConsumable3 = new Consumable("SafeguardSip", "ShieldPotion", 7, 35, 45);
 
-    Consumable* HPConsumable = new Consumable("HPConsumable", "HPPotion", 8, 25, 30);
-    Consumable* HPConsumable2 = new Consumable("HPConsumable2", "HPPotion", 8, 30, 50);
-    Consumable* HPConsumable3 = new Consumable("HPConsumable3", "HPPotion", 8, 40, 75);
+    Consumable* HPConsumable = new Consumable("HealthBoost", "HPPotion", 8, 25, 30);
+    Consumable* HPConsumable2 = new Consumable("StaminaSip", "HPPotion", 8, 30, 50);
+    Consumable* HPConsumable3 = new Consumable("Lifespring", "HPPotion", 8, 40, 75);
 
-    Consumable* EnergyConsumable = new Consumable("EnergyConsumable", "EnergyPotion", 7, 30, 1);
-    Consumable* EnergyConsumable2 = new Consumable("EnergyConsumable2", "EnergyPotion", 7, 60, 2);
+    Consumable* EnergyConsumable = new Consumable("Energy Elixir", "EnergyPotion", 7, 30, 1);
+    Consumable* EnergyConsumable2 = new Consumable("Energy Boost", "EnergyPotion", 7, 60, 2);
 
     // Equipments
-    Vest* vest = new Vest("vest", 0, 40, 20);
-    Vest* vest2 = new Vest("vest2", 0, 50, 25);
-    Vest* vest3 = new Vest("vest3", 0, 70, 40);
+    Vest* vest = new Vest("ShieldSkin", 0, 40, 20);
+    Vest* vest2 = new Vest("GuardianShell", 0, 50, 25);
+    Vest* vest3 = new Vest("ArmorGuard", 0, 70, 40);
 
-    HeadGear* headgear = new HeadGear("headgear", 0, 30, 15);
-    HeadGear* headgear2 = new HeadGear("headgear2", 0, 50, 25);
-    HeadGear* headgear3 = new HeadGear("headgear3", 0, 80, 45); 
+    HeadGear* headgear = new HeadGear("Armor Crown", 0, 30, 15);
+    HeadGear* headgear2 = new HeadGear("Warding Helmet", 0, 50, 25);
+    HeadGear* headgear3 = new HeadGear("Helm of Valor", 0, 80, 45); 
 
-    FootWear* footwear = new FootWear("footwear", 0, 15, 10);
-    FootWear* footwear2 = new FootWear("footwear2", 0, 30, 20);
-    FootWear* footwear3 = new FootWear("footwear3", 0, 75, 50);
+    FootWear* footwear = new FootWear("Safeguard Shoes", 0, 15, 10);
+    FootWear* footwear2 = new FootWear("Shielded Steps", 0, 30, 20);
+    FootWear* footwear3 = new FootWear("Fortress Footwear", 0, 75, 50);
 
-    Boot* boot = new Boot("boot", 0, 15, 10);
-    Boot* boot2 = new Boot("boot2", 0, 30, 15);
-    Boot* boot3 = new Boot("boot3", 0, 40, 25);
+    Boot* boot = new Boot("Defender's Boots", 0, 15, 10);
+    Boot* boot2 = new Boot("Ironstride Boots", 0, 30, 15);
+    Boot* boot3 = new Boot("Sentinel Boots", 0, 40, 25);
+
+    // Relics
+    Relic* relic = new Relic("Sunstone", 0, 0, 0.1, 0.25);
+    Relic* relic2 = new Relic("Earthstone", 0, 0, 0.5, 0.25);
+    Relic* relic3 = new Relic("Moonlight Amulet", 0, 0, 0.15, 0.5);
+    Relic* relic4 = new Relic("Bloodmoon Relic", 0, 0, 0.2, 0.5);
+    Relic* relic5 = new Relic("Starfall Shard", 0, 0, 0.25, 0.5);
+    Relic* relic6 = new Relic("Crystal Tear", 0, 0, 0.3, 0.5);
+    Relic* relic7 = new Relic("Crown of Destiny", 0, 0, 0.35, 0.25);
+    Relic* relic8 = new Relic("Titan's Heartstone", 0, 0, 0.4, 0.25);
+    Relic* relic9 = new Relic("Celestial Compass", 0, 0, 0.45, 0.25);
 
 //-----------------------------------------------------------------
 
@@ -1045,6 +1056,33 @@ Fight* FightFactory :: GenerateNormalFight(){
         item_index = Index_Weighted_Random(weights);
         Items[i] = AllItems[item_index];
     }
+
+    vector<Relic*> relics = {relic, relic2, relic3, relic4, relic5, relic6, relic7, relic8, relic9};
+    relics = ShuffleVec(relics);
+
+    bool isExisted = false;
+    int m = 0;
+    while (m != 3)
+    {
+        item_index = rand() % relics.size();
+        for (int j = 0; j < player->getRelic().size(); j++)
+        {
+            if (relics[item_index] == player->getRelic()[j])
+            {
+                isExisted = true;
+            }   
+        }
+        if (!(isExisted))
+        {
+            relics[m] == relics[item_index];
+            m++;
+        }
+    }
+    while (relics.size() != 3)
+    {
+        relics.pop_back();
+    }
+
     EnemyFactory* enemyfactory = new EnemyFactory(map , player);
     vector<Character*> Enemies = enemyfactory->FightEnemy();
     Fight* fight = new Fight(player, 0, Enemies, Items);
@@ -1082,6 +1120,33 @@ Fight* FightFactory :: GenerateMiniBoss(){
         item_index = Index_Weighted_Random(weights);
         Items[i] = AllItems[item_index];
     }
+
+    vector<Relic*> relics = {relic, relic2, relic3, relic4, relic5, relic6, relic7, relic8, relic9};
+    relics = ShuffleVec(relics);
+
+    bool isExisted = false;
+    int m = 0;
+    while (m != 3)
+    {
+        item_index = rand() % relics.size();
+        for (int j = 0; j < player->getRelic().size(); j++)
+        {
+            if (relics[item_index] == player->getRelic()[j])
+            {
+                isExisted = true;
+            }   
+        }
+        if (!(isExisted))
+        {
+            relics[m] == relics[item_index];
+            m++;
+        }
+    }
+    while (relics.size() != 3)
+    {
+        relics.pop_back();
+    }
+
     EnemyFactory* enemyfactory = new EnemyFactory(map , player);
     vector<Character*> Enemies = enemyfactory->MiniBossEnemy();
     Fight* fight = new Fight(player, 1, Enemies, Items);
@@ -1119,6 +1184,33 @@ Fight* FightFactory :: GenerateBoss(){
         item_index = Index_Weighted_Random(weights);
         Items[i] = AllItems[item_index];
     }
+    
+    vector<Relic*> relics = {relic, relic2, relic3, relic4, relic5, relic6, relic7, relic8, relic9};
+    relics = ShuffleVec(relics);
+
+    bool isExisted = false;
+    int m = 0;
+    while (m != 3)
+    {
+        item_index = rand() % relics.size();
+        for (int j = 0; j < player->getRelic().size(); j++)
+        {
+            if (relics[item_index] == player->getRelic()[j])
+            {
+                isExisted = true;
+            }   
+        }
+        if (!(isExisted))
+        {
+            relics[m] == relics[item_index];
+            m++;
+        }
+    }
+    while (relics.size() != 3)
+    {
+        relics.pop_back();
+    }
+    
     EnemyFactory* enemyfactory = new EnemyFactory(map , player);
     vector<Character*> Enemies = enemyfactory->BossEnemy();
     Fight* fight = new Fight(player, 2, Enemies, Items);
