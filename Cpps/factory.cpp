@@ -1046,6 +1046,30 @@ Fight* FightFactory :: GenerateNormalFight(){
         item_index = Index_Weighted_Random(weights);
         Items[i] = AllItems[item_index];
     }
+
+    bool isExisted = false;
+    int m = 0;
+    while (m != 3)
+    {
+        item_index = rand() % relics.size();
+        for (int j = 0; j < player->getRelic().size(); j++)
+        {
+            if (relics[item_index] == player->getRelic()[j])
+            {
+                isExisted = true;
+            }   
+        }
+        if (!(isExisted))
+        {
+            relics[m] == relics[item_index];
+            m++;
+        }
+    }
+    while (relics.size() != 3)
+    {
+        relics.pop_back();
+    }
+    
     EnemyFactory* enemyfactory = new EnemyFactory(map , player);
     vector<Character*> Enemies = enemyfactory->FightEnemy();
     Fight* fight = new Fight(player, 0, Enemies, Items);
@@ -1083,6 +1107,30 @@ Fight* FightFactory :: GenerateMiniBoss(){
         item_index = Index_Weighted_Random(weights);
         Items[i] = AllItems[item_index];
     }
+
+    bool isExisted = false;
+    int m = 0;
+    while (m != 3)
+    {
+        item_index = rand() % relics.size();
+        for (int j = 0; j < player->getRelic().size(); j++)
+        {
+            if (relics[item_index] == player->getRelic()[j])
+            {
+                isExisted = true;
+            }   
+        }
+        if (!(isExisted))
+        {
+            relics[m] == relics[item_index];
+            m++;
+        }
+    }
+    while (relics.size() != 3)
+    {
+        relics.pop_back();
+    }
+
     EnemyFactory* enemyfactory = new EnemyFactory(map , player);
     vector<Character*> Enemies = enemyfactory->MiniBossEnemy();
     Fight* fight = new Fight(player, 1, Enemies, Items);
