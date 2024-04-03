@@ -74,7 +74,7 @@ Character* View::FightView::ChooseEnemy(vector<Character*> Enemies){
                 if(j == vecSize)
                     options[i][j] = " ";
                 else
-                    options[i][j] = "HP:" + Enemies[j]->getHP();
+                    options[i][j] = "HP:[" + to_string(Enemies[j]->getHP()) + "/" + to_string(Enemies[j]->getMaxHP()) + "]";
             }
             else if(i == 2){
                 if(j == vecSize)
@@ -162,7 +162,7 @@ vector<Character*> View::FightView::ChooseEnemies(vector<Character*> Enemies , i
                 if(j == vecSize || j == vecSize + 1)
                     options[i][j] = " ";
                 else
-                    options[i][j] = "HP:" + Enemies[j]->getHP();
+                    options[i][j] = "HP:[" + to_string(Enemies[j]->getHP()) + "/" + to_string(Enemies[j]->getMaxHP()) + "]";
             }
             else if(i == 2){
                 if(j == vecSize || j == vecSize + 1)
@@ -192,7 +192,7 @@ vector<Character*> View::FightView::ChooseEnemies(vector<Character*> Enemies , i
     for(int i = 0; i < Enemies.size() + 1 ; i++)
         option.push_back(0);
     
-    while(breaker){
+    while(true){
         clearScreen();
         for(int i=0 ; i<4 ; i++){
             for(int j=0 ; j<vecSize + 2 ; j++){
@@ -215,57 +215,62 @@ vector<Character*> View::FightView::ChooseEnemies(vector<Character*> Enemies , i
     switch(tolower(key))
     {
         case 'a':
-            if(option[(m - 1) % vecSize + 2] == 0)
+            if(option[(m - 1) % (vecSize + 2)] == 0)
             {
-                option[m % vecSize + 2] = 0;
+                option[m % (vecSize + 2)] = 0;
                 m--;
-                option[m % vecSize + 2] = 1; 
+                option[m % (vecSize + 2)] = 1; 
             }else{
-                option[m % vecSize + 2] = 0;
-                auto n = find(option.begin(), option.end(), 0);
-                m = distance(option.begin(), n);
-                option[m] = 1;
+                option[m % (vecSize + 2)] = 0;
+                m = find(option.rbegin() + option.size() - (m % (vecSize + 2)), option.rend(), 0) - option.rbegin();
+                if(m == option.size())  // there is not any zero
+                    m = vecSize + 1;
+                    option[m] = 1;
             }
-            break;
+            continue;
         case 'd':
-            if(option[(m + 1) % vecSize + 2] == 0)
+            if(option[(m + 1) % (vecSize + 2)] == 0)
             {
-                option[m % vecSize + 2] = 0;
+                option[m % (vecSize + 2)] = 0;
                 m++;
-                option[m % vecSize + 2] = 1; 
+                option[m % (vecSize + 2)] = 1; 
             }else{
-                option[m % vecSize + 2] = 0;
-                auto n = find(option.begin(), option.end(), 0);
-                m = distance(option.begin(), n);
+                option[m % (vecSize + 2)] = 0;
+                m = find(option.begin() + (m % (vecSize + 2)) , option.end(), 0) - option.begin();
                 option[m] = 1;
             }
-            break;
+            continue;
         case '\r':
-            if(m % vecSize + 2 == vecSize ){  // if it was reset
+            if(m % (vecSize + 2) == vecSize ){  // if it was reset
                 for(int i=0 ; i< vecSize + 2; i++)
                     option[i] = 0;
-                option[m % vecSize + 2] = 1;
-            }else if(m % vecSize + 2 == vecSize + 1){ // if it was done
-                breaker = false;
+                option[m % (vecSize + 2)] = 1;
+            }else if(m % (vecSize + 2) == vecSize + 1){ // if it was done
+                vector<Character*> selected;
+                for(int i=0; i < option.size() ; i++){
+                    if(option[i] == 2)
+                        selected.push_back(Enemies[i]);
+                }
+                return selected;
             }else{
                 if(count(option.begin(), option.end(), 2) < amount - 1){
-                    option[m % vecSize + 2] = 2;
-                    option[(m + 1) % vecSize + 2] = 1;
+                    option[m % (vecSize + 2)] = 2;
+                    option[(m + 1) % (vecSize + 2)] = 1;
                 }
                 else{
-                    option[m % vecSize + 2] = 2;
+                    option[m % (vecSize + 2)] = 2;
                     for(int i = 0 ; i < vecSize ; i++){
                         if(option[i] != 2)
                             option[i] = 4;
                     }
-                auto n = find(option.begin(), option.end(), 0);
-                m = distance(option.begin(), n);
+                m = find(option.begin(), option.end(), 0) - option.begin();
                 option[m] = 1;
                 }
             }
         default:
-            break;
+            continue;
         }
+        break;
     }   
 }
 
@@ -513,17 +518,26 @@ vector<Character*> Model::FightModel::getEnemies(){ return Enemies;}
 //---------------------------------------------------------------------------------------------
 Control::FightControl::FightControl(Player* player,vector<Character*> Enemies) {
     model = new Model::FightModel(player, Enemies);
+    view = new View::FightView();
 }
 
 
 void Control::FightControl::StartFight(){
     while(true){
-        int i = model->getRound();
-        if(i % 2 != 0)
-            PlayerTurn();
-        else if(i % 2 == 0)
-            EnemiesTurn();
-        model->setRound(i + 1);
+        int round = model->getRound();
+        if(round % 2 != 0){
+            if(model->getEnemies().empty())
+                break;
+            else
+                PlayerTurn();
+        }
+        else if(round % 2 == 0){ // enemy turn
+            if(model->getPlayer()->getHP() <= 0)
+                break;
+            else
+                EnemiesTurn();
+        }
+        model->setRound(round + 1);
     }
     // a while loop that increaes model's round in each iteration and calls playerturn() or enemiesturn() functions accordingly
 }
