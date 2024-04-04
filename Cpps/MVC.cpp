@@ -215,30 +215,20 @@ vector<Character*> View::FightView::ChooseEnemies(vector<Character*> Enemies , i
     switch(tolower(key))
     {
         case 'a':
-            if(option[(m - 1) % (vecSize + 2)] == 0)
-            {
-                option[m % (vecSize + 2)] = 0;
-                m--;
-                option[m % (vecSize + 2)] = 1; 
-            }else{
                 option[m % (vecSize + 2)] = 0;
                 m = find(option.rbegin() + option.size() - (m % (vecSize + 2)), option.rend(), 0) - option.rbegin();
-                if(m == option.size())  // there is not any zero
+                if(m == option.size()) {
                     m = vecSize + 1;
                     option[m] = 1;
-            }
+                }else{
+                    m = option.size() - (m + 1);
+                    option[m] = 1;
+                }
             continue;
         case 'd':
-            if(option[(m + 1) % (vecSize + 2)] == 0)
-            {
                 option[m % (vecSize + 2)] = 0;
-                m++;
-                option[m % (vecSize + 2)] = 1; 
-            }else{
-                option[m % (vecSize + 2)] = 0;
-                m = find(option.begin() + (m % (vecSize + 2)) , option.end(), 0) - option.begin();
+                m = find(option.begin() + (m % (vecSize + 2)) + 1 , option.end(), 0) - option.begin();
                 option[m] = 1;
-            }
             continue;
         case '\r':
             if(m % (vecSize + 2) == vecSize ){  // if it was reset
@@ -255,7 +245,8 @@ vector<Character*> View::FightView::ChooseEnemies(vector<Character*> Enemies , i
             }else{
                 if(count(option.begin(), option.end(), 2) < amount - 1){
                     option[m % (vecSize + 2)] = 2;
-                    option[(m + 1) % (vecSize + 2)] = 1;
+                    m = find(option.begin() + (m % (vecSize + 2)) + 1 , option.end(), 0) - option.begin();
+                    option[m] = 1;
                 }
                 else{
                     option[m % (vecSize + 2)] = 2;
@@ -454,7 +445,7 @@ void View::FightView::ShowEnemies(vector<Character*> Enemies){
                 options[i][j] = Enemies[j]->getName();
             }
             else if(i == 1){
-                options[i][j] = "HP:" + Enemies[j]->getHP();
+                options[i][j] = "HP:[" + to_string(Enemies[j]->getHP()) + "/" + to_string(Enemies[j]->getMaxHP()) + "]";
             }
             else if(i == 2){
                 options[i][j] = "Armor:" + Enemies[j]->getArmor();
@@ -526,16 +517,14 @@ void Control::FightControl::StartFight(){
     while(true){
         int round = model->getRound();
         if(round % 2 != 0){
+            PlayerTurn();
             if(model->getEnemies().empty())
                 break;
-            else
-                PlayerTurn();
         }
-        else if(round % 2 == 0){ // enemy turn
+        else if(round % 2 == 0){
+            EnemiesTurn();
             if(model->getPlayer()->getHP() <= 0)
                 break;
-            else
-                EnemiesTurn();
         }
         model->setRound(round + 1);
     }

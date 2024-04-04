@@ -641,7 +641,7 @@ HumanEnemy :: HumanEnemy(string Name , int MaxHP , double Armor , vector<pair<It
     }
     
 }
-void HumanEnemy :: StateMachine(Player* player,Control::FightControl* fightControl){
+void HumanEnemy :: StateMachine(Player* player,Control::FightControl* &fightControl){
     while(true){
         switch (state)
         {
@@ -862,7 +862,7 @@ string Zombie::DeathDialogue(){
     return ShuffleVec(ZombieDeathQuotes)[0];
 }
 
-void Zombie :: Attack(Player* player,Control::FightControl* fightControl){
+void Zombie :: Attack(Player* player,Control::FightControl* &fightControl){
     Weapon* punch = ShuffleVec(Weapons)[0].first;
     punch->Attack(player);
     fightControl->getView()->print("Dealt " + to_string(punch->getDamage()) + " damge");

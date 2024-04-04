@@ -4,7 +4,9 @@
 #include <vector>
 #include <string>
 using namespace std;
-
+namespace Control{
+    class FightControl;
+}
 
 // explainings to be included
 class Character{
@@ -141,7 +143,7 @@ public:
     // fun little Dialogues :)
     string RajazKhani();
     
-    void StateMachine(Player* player,Control::FightControl* fightControl);
+    void StateMachine(Player* player,Control::FightControl* &fightControl);
     void Attack(Player* player , Weapon* weapon , int choice); // Attack function
     void Consume(Consumable* consumable); // When a Consumable is used
     void removeItem(Item* item); // when a throwable is thrown or a Consumable is used;
@@ -156,7 +158,7 @@ public:
     //~Zombie();
     string DeathDialogue() override;
 
-    void Attack(Player* player,Control::FightControl* fightControl); // Attack function for zombie it can only attack with its Punch
+    void Attack(Player* player,Control::FightControl* &fightControl); // Attack function for zombie it can only attack with its Punch
 };
 
 class Shopkeeper{
