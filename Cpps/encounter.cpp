@@ -542,9 +542,10 @@ void RandomEncounter :: Menu(){
     }
 }
 
-Fight :: Fight(Player* player, int type, vector<Character*> enemies, vector<Item*> items){
+Fight :: Fight(Player* player, int type, vector<Character*> enemies, vector<Item*> items, vector<Relic*> relics){
     this -> player = player;
     this -> type = type;
     this -> enemies = enemies;
     this -> items = items;
+    this -> relics = relics;
 }

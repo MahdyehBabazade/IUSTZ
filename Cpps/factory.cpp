@@ -1087,7 +1087,7 @@ Fight* FightFactory :: GenerateNormalFight(){
 
     EnemyFactory* enemyfactory = new EnemyFactory(map , player);
     vector<Character*> Enemies = enemyfactory->FightEnemy();
-    Fight* fight = new Fight(player, 0, Enemies, Items);
+    Fight* fight = new Fight(player, 0, Enemies, Items, relics);
     return fight;
 }
 
@@ -1151,7 +1151,7 @@ Fight* FightFactory :: GenerateMiniBoss(){
 
     EnemyFactory* enemyfactory = new EnemyFactory(map , player);
     vector<Character*> Enemies = enemyfactory->MiniBossEnemy();
-    Fight* fight = new Fight(player, 1, Enemies, Items);
+    Fight* fight = new Fight(player, 1, Enemies, Items, relics);
     return fight;
 }
 
@@ -1215,6 +1215,6 @@ Fight* FightFactory :: GenerateBoss(){
     
     EnemyFactory* enemyfactory = new EnemyFactory(map , player);
     vector<Character*> Enemies = enemyfactory->BossEnemy();
-    Fight* fight = new Fight(player, 2, Enemies, Items);
+    Fight* fight = new Fight(player, 2, Enemies, Items, relics);
     return fight;
 }
