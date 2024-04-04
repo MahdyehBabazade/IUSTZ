@@ -302,6 +302,8 @@ vector<int> Map::getPassedNodes(){return PassedNodes;}
 
 void Map::addPassedNodes(int Node){PassedNodes.push_back(Node);}
 
+vector<vector<string>> Map::getEncounters(){return GenerateEncounter;}
+
 vector<bool> Map::PossibleWays(){
     vector<bool> possibleways = {false , false , false};
     if(Path1[CurrentNode.first] == CurrentNode.second){
@@ -401,16 +403,13 @@ void Map::move(){
             char key = _getch();
             switch (key)
             {
-            case 'w':
-                break;
-            case 's':
-                break;
             case '\r':
                 breaker = false;
                 break;
             default:
                 break;
             }
+            CurrentNode = make_pair(15 , 0);
         }
     }
     else{

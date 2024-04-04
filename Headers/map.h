@@ -28,5 +28,6 @@ public:
     void setCurrentNode(pair<int , int> CurrentNode);
     vector<int> getPassedNodes();
     void addPassedNodes(int Node);
+    vector<vector<string>> getEncounters();
     void move();
 };
