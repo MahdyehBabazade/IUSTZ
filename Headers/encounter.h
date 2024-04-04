@@ -92,13 +92,3 @@ public:
     Fight(Player* player, int type, vector<Character*> enemies, vector<Item*> items);
 
 };
-
-class MiniBoss : public Encounter{
-public:
-    MiniBoss()=default;
-};
-class Boss : public Encounter{
-public:
-    Boss() = default;
-    
-};

@@ -79,10 +79,9 @@ using namespace std;
 
 //-----------------------------------------------------------------
 
-ShopFactory :: ShopFactory(Map* map, Player* player, Shopkeeper* shopkeeper){
+ShopFactory :: ShopFactory(Map* map, Player* player){
     this -> map = map;
     this -> player = player;
-    this -> shopkeeper = shopkeeper;
 }
 
 Shop* ShopFactory :: Generate(){
@@ -167,6 +166,9 @@ Shop* ShopFactory :: Generate(){
         break;
     }
 
+    vector<string> ShopkeeperNames = {"Ethan", "Eddie", "Jule", "Jessica", "Muhammad", "Noah", "John", "Benjamin", "Mia", "Paul"};
+    ShopkeeperNames = ShuffleVec(ShopkeeperNames);
+    Shopkeeper* shopkeeper = new Shopkeeper(ShopkeeperNames[0]);
     Shop* shop = new Shop(player, Weapons, Consumables, Equipments, shopkeeper);
     return shop;
 }
