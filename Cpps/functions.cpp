@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <random>
 #include <vector>
@@ -87,10 +88,50 @@ int Choose(vector<string> Options){
         }
         break;
     }
-    return option+1;
+    return option % Options.size() +1;
 }
 
 
+int Choose(vector<string> Descriptions ,vector<string> Options){
+    int option =0;
+    int vecSize = Options.size();
+    while(true){
+        clearScreen();
+        for(int i = 0; i < Descriptions.size() ; i++){
+            cout << Descriptions[i];
+        }
+        for(int i = 0; i < Options.size() ; i++){
+            if(i == option % Options.size()){
+                cout << green <<Options[i] << reset << endl;
+            }else {
+                cout << Options[i] << endl;
+            }
+        }
+        char input = _getch();
+        switch(tolower(input)){
+            case 'w':
+            {
+                option --;
+                option %= vecSize;
+                continue;
+            }
+            case 's':
+            {
+                option++;
+                option %=vecSize;
+                continue;
+            }
+            case '\r':
+                break;
+            
+            default:
+                continue;
+                
+        }
+        break;
+    }
+    return option % Options.size() + 1;
+}
 
 int Choose(vector<string> Options,vector<bool> Chooseable){
     int option =find(Chooseable.begin(),Chooseable.end(),true) - Chooseable.begin();
@@ -139,5 +180,5 @@ int Choose(vector<string> Options,vector<bool> Chooseable){
         }
         break;
     }
-    return option+1;
+    return option % Options.size() + 1;
 }

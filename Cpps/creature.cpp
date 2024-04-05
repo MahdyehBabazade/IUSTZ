@@ -26,7 +26,7 @@ void Character :: setName(string Name){this -> Name = Name;}
 
 int Character :: getHP(){return HP;}
 
-void Character :: setHP(int HP){this -> HP = HP;}
+void Character :: setHP(int HP){this -> HP = min(HP , MaxHP);}
 
 int Character :: getMaxHP(){return MaxHP;}
 
@@ -937,14 +937,4 @@ string Medic :: NoMoneyDialogue(){
         return "...";
     }
     return ShuffleVec(PoorSoldier)[0] + "\n";
-}
-
-void Medic :: Heal(Player player){
-    player.setHP(min(player.getMaxHP() , (int)(player.getHP() + player.getMaxHP() * 0.5)));
-    HealDialogue();
-}
-
-void Medic :: MaxHPIncrease(Player player){
-    player.setMaxHP((int)player.getMaxHP() * 1.1);
-    HealDialogue();
 }

@@ -60,7 +60,7 @@ private:
     int HalfHealPrice;
     bool HasHealed;
 public:
-    Hospital(Player* player,Medic* medic,int MaxHpIncresePrice,int FullHealPrice,int HalfHealPrice,string Story);
+    Hospital(Player* player,Medic* medic);
     Hospital()=default;
     
     void MaxHpIncrease();

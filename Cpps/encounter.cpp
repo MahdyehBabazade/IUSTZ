@@ -380,12 +380,12 @@ void Shop :: Menu(){
     cout << shopkeeper->ByeDialogue();
 }
     
-Hospital :: Hospital(Player* player, Medic* medic, int MaxHpIncresePrice, int FullHealPrice, int HalfHealPrice, string Story){
+Hospital :: Hospital(Player* player, Medic* medic){
     this->player = player;
     this->medic = medic;
-    this->MaxHpIncreasePrice = MaxHpIncreasePrice;
-    this->FullHealPrice = FullHealPrice;
-    this->HalfHealPrice = HalfHealPrice;
+    this->MaxHpIncreasePrice = 40;
+    this->FullHealPrice = 30;
+    this->HalfHealPrice = 20;
     this->HasHealed = false;
 
     string CrowdedCityStory = "As you walk through the crowded street with a limp, a little girl screams seeing your body and face "
@@ -427,15 +427,15 @@ void Hospital :: MaxHpIncrease(){
         cout << medic->NoMoneyDialogue();
         return;
     }
-    player->setHP(int(player->getMaxHP()*1.2));
+    player->setMaxHP(int(player->getMaxHP()*1.2));
+    player->setHP(int(player->getMaxHP() * 0.2 / 1.2 + player->getHP()));
     cout << medic->HealDialogue();
     HasHealed = true;
 }
 
 void Hospital :: Menu(){
-    cout << medic->HiDialogue();
     while(!HasHealed){
-        int choice = Choose({
+        int choice = Choose({Story + "\n" ,medic->getName() + ": " + medic->HiDialogue()} , {
                 "Restore half HP ( " + to_string(HalfHealPrice) + "$)",
                 "Restore full HP ( " + to_string(FullHealPrice) + "$)", 
                 "Increase max HP by 20% ( " + to_string(MaxHpIncreasePrice) + "$)",
@@ -455,13 +455,16 @@ void Hospital :: Menu(){
                 break;
             case 4:
                 HasHealed = true;
+                exit(0);
                 break;
             default:
                 continue;
         }
     }
-    
-    cout <<  medic->ByeDialogue();
+    clearScreen();
+    cout <<  medic->getName() << ": " << medic->ByeDialogue();
+    cout << "Press anything to Continue\n";
+    getch();
 }
 
 RandomEncounter :: RandomEncounter(Player* player){

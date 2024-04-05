@@ -194,7 +194,4 @@ public:
     string HealDialogue();
     string ByeDialogue();
     string NoMoneyDialogue();
-
-    void Heal(Player player);
-    void MaxHPIncrease(Player player);
 };
