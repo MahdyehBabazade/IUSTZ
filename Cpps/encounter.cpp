@@ -94,6 +94,7 @@ void Shop :: Upgrade(Weapon* weapon){
                     
                     continue;
                 case 2:
+                {
                     player->removeItem(weapon);
                     
                     weapon->setPrice(weapon->getPrice() + int(BaseUpgradePrice * weapon->getUpgradeAmount() * 0.8));
@@ -106,6 +107,7 @@ void Shop :: Upgrade(Weapon* weapon){
                     
                     player->addItem(shotgun);
                     continue;
+                }
                 default:
                     continue;
             }
@@ -149,6 +151,7 @@ void Shop :: Upgrade(Weapon* weapon){
                     
                     continue;
                 case 2:
+                {
                     player->removeItem(weapon);
                     
                     weapon->setPrice(weapon->getPrice() + int(BaseUpgradePrice * weapon->getUpgradeAmount() * 0.8));
@@ -161,6 +164,7 @@ void Shop :: Upgrade(Weapon* weapon){
                     
                     player->addItem(rifle);
                     continue;
+                }
                 default:
                     continue;
             }
