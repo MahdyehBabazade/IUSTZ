@@ -365,7 +365,7 @@ void Shop :: Menu(){
     cout << shopkeeper->ByeDialogue();
 }
     
-Hospital :: Hospital(Player* player, Medic* medic, int MaxHpIncresePrice, int FullHealPrice, int HalfHealPrice, string Story){
+Hospital :: Hospital(Player* player, Medic* medic, int MaxHpIncresePrice, int FullHealPrice, int HalfHealPrice){
     this->player = player;
     this->medic = medic;
     this->MaxHpIncreasePrice = MaxHpIncreasePrice;

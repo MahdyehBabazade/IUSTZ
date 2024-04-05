@@ -60,7 +60,7 @@ private:
     int HalfHealPrice;
     bool HasHealed;
 public:
-    Hospital(Player* player,Medic* medic,int MaxHpIncresePrice,int FullHealPrice,int HalfHealPrice,string Story);
+    Hospital(Player* player,Medic* medic,int MaxHpIncresePrice,int FullHealPrice,int HalfHealPrice);
     Hospital()=default;
     
     void MaxHpIncrease();
@@ -86,7 +86,7 @@ private:
     int type; // 0 for normal fight, 1 for miniboss, 2 for boss
     vector<Character*> enemies;
     vector<Item*> items;
-    vector<Relic*> relics;
+    vector<Relic*> relics = {nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
 
 public:
     Fight()=default;
