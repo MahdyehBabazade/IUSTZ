@@ -1,3 +1,4 @@
+#pragma once
 #include "../Headers/MVC.h"
 #include "../Headers/creature.h"
 #include "functions.cpp"
@@ -8,11 +9,6 @@
 #include <algorithm>
 
 using namespace std;
-
-const string reset("\033[0m");
-const string green("\033[1;32m");
-const string yellow("\033[1;33m");
-const string grey("\033[90m");
 
 Consumable* View::FightView::ChooseConsumable(vector<pair<Consumable*,int>> Consumables){
     vector<string> options;
@@ -263,6 +259,7 @@ vector<Character*> View::FightView::ChooseEnemies(vector<Character*> Enemies , i
         }
         break;
     }   
+    return {};
 }
 
 Weapon* View::FightView::ChooseWeapon(vector<pair<Weapon*,int>> Weapons){
@@ -684,12 +681,12 @@ void Control::FightControl::EnemiesTurn(){
             HumanEnemy* humanEnemy = dynamic_cast<HumanEnemy*>(Enemy);
             
             view->print(humanEnemy->getName() + ": " + humanEnemy->RajazKhani());
-            humanEnemy->StateMachine(model->getPlayer(),this);
+            // humanEnemy->StateMachine(model->getPlayer(),this);
             view->print("");
         }else{
             Zombie* zombie = dynamic_cast<Zombie*>(Enemy);
             view->print(zombie->getName() + ": ");
-            zombie->Attack(model->getPlayer(),this);
+            // zombie->Attack(model->getPlayer(),this);
             view->print("");
         }
     }

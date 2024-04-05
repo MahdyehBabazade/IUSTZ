@@ -464,6 +464,7 @@ vector<Character*> EnemyFactory :: BossEnemy(){
         Enemies.push_back(new HumanEnemy("Khonshu" , 250 , 47.5 , Itemset(weapons , Consumables) , weapons , Consumables));
         return Enemies;
     }
+    return {};
 }
 
 string MapFactory :: BossName(){
@@ -503,6 +504,7 @@ string MapFactory :: BossName(){
             break;
         }
     }
+    return "";
 }
 
 vector<int> MapFactory :: PathFinding1(){

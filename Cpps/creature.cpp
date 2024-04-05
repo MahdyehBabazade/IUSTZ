@@ -1,3 +1,4 @@
+#pragma once
 #include "../Headers/creature.h"
 #include "functions.cpp"
 #include <iostream>
@@ -62,6 +63,8 @@ string Character :: getStat(){
     return Name + "\t" + to_string(getHP()) + "/" + to_string(getMaxHP()) + "\t" + to_string(getShield()) + "\t"
     + to_string(getArmor());
 }
+
+string Character :: DeathDialogue(){return "";}
 
 vector<pair<Item* , int>> Character :: getItems(){return Items;} // Returns the Items the character owns
 
@@ -674,7 +677,7 @@ void HumanEnemy :: StateMachine(Player* player,Control::FightControl* &fightCont
             }
             
             continue;
-        case State::NoneGunAttack:
+        case State::NoneGunAttack:{
             noneGuns = ShuffleVec(noneGuns);
             Weapon* weapon = noneGuns[0].first;
             if(typeid(*weapon) == typeid(ColdWeapon)){   
@@ -691,7 +694,7 @@ void HumanEnemy :: StateMachine(Player* player,Control::FightControl* &fightCont
             
             fightControl->getView()->print("Dealt " + to_string(weapon->getDamage()) + " Damage");
             break;
-        
+        }
         case State::Reload:
             fightControl->getView()->print("Reloaded!");
             Guns[0].first->Reload();

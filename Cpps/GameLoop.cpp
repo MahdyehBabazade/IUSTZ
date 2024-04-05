@@ -1,3 +1,4 @@
+#pragma once
 #include "../Headers/creature.h"
 #include "../Headers/encounter.h"
 #include "../Headers/factory.h"
@@ -8,13 +9,11 @@
 using namespace std;
 
 void GameLoopFunction(){
-    while(true){
-        int Menu_Choice;
+    // while(true){
+        int Menu_Choice = 1;
         srand(time(0));
         Player *player;
         Map *map;
-        FightFactory fight(player , map);
-        ShopFactory shop(map , player);
         switch(Menu_Choice){
         case 1:{
             MapFactory Mapfactory(1);
@@ -27,30 +26,37 @@ void GameLoopFunction(){
             break;
         }
         }
-        while(map->getFloor() != 4){
-            while(map->getCurrentNode().first != 15){
+        MapFactory Mapfactory(1);
+        Mapfactory.GenerateMap();
+        for(int i = 0; i < 3; i++){
+            Shopkeeper* ShopKeeper = new Shopkeeper("Amir");
+            Medic* medic = new Medic("Bahram");
+            FightFactory fight(player , map);
+            ShopFactory shop(map , player , ShopKeeper);
+            while(map->getCurrentNode().first != 14){
                 map->move();
                 if(map->getEncounters()[map->getCurrentNode().first][map->getCurrentNode().second] == "Fight"){
                     // to be filled later
                 }
                 else if(map->getEncounters()[map->getCurrentNode().first][map->getCurrentNode().second] == "Shop"){
-                    shop.Generate()->Menu();
+                    // shop.Generate()->Menu();
                 }
                 else if(map->getEncounters()[map->getCurrentNode().first][map->getCurrentNode().second] == "Hospital"){
-                    // to compelete later
+                    // Hospital hospital(player , medic , 0 , 0 , 0 , "");
+                    // hospital.Menu();
                 }
                 else if(map->getEncounters()[map->getCurrentNode().first][map->getCurrentNode().second] == "Random"){
-                    RandomEncounter* Random = new RandomEncounter(player);
-                    Random->Menu();
+                    // RandomEncounter* Random = new RandomEncounter(player);
+                    // Random->Menu();
                 }
                 else if(map->getEncounters()[map->getCurrentNode().first][map->getCurrentNode().second] == "MiniBoss"){
                     // to be filled later
                 }
             }
             map->move();
-            fight.GenerateBoss(); // to compelete later
+            // fight.GenerateBoss(); // to compelete later
             MapFactory Mapfactory(map->getFloor() + 1);
             map = Mapfactory.GenerateMap();
         }
-    }
+    // }
 }

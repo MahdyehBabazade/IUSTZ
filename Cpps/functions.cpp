@@ -7,6 +7,15 @@
 
 using namespace std;
 
+const string yellow("\033[1;33m");
+const string red("\033[0;31m");
+const string reset("\033[0m");
+const string cyan("\033[0;36m");
+const string green("\033[1;32m");
+const string magenta("\033[0;35m");
+const string grey("\033[90m");
+
+
 int random_num(int min,int max){
     random_device dev;
     mt19937 rng(dev());

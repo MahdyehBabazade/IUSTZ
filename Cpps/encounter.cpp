@@ -1,3 +1,4 @@
+#pragma once
 #include "../Headers/encounter.h"
 #include "functions.cpp"
 #include <iostream>

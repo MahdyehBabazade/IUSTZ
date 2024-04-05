@@ -1,7 +1,7 @@
 #pragma once
-#include "../Cpps/creature.cpp"
-#include "../Cpps/map.cpp"
-#include "../Cpps/encounter.cpp"
+#include "creature.h"
+#include "map.h"
+#include "encounter.h"
 using namespace std;
 
 class ShopFactory{

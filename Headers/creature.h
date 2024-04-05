@@ -47,7 +47,7 @@ public:
     void death(); // Character dies
 
     string getStat(); // To be deleted later
-    virtual string DeathDialogue() = 0;
+    virtual string DeathDialogue();
     
 };
 
