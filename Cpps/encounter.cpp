@@ -1,4 +1,3 @@
-#pragma once
 #include "../Headers/encounter.h"
 #include "functions.cpp"
 #include <iostream>
@@ -72,15 +71,10 @@ void Shop :: Upgrade(Weapon* weapon){
                 cout << shopkeeper->NoMoneyDialogue();
                 break;;
             }
-            cout << "1. Damage" << endl <<
-                    "2. Min Damage Percent" << endl <<
-                    "Choose an option (0 to go back): ";
-            int choice;
-            cin >> choice;
-            
+            int choice = Choose({"Damage",
+                                "Min Damage Percent",
+                                "Back"});
             switch (choice){
-                case 0:
-                    break;
                 case 1:
                     player->removeItem(weapon);
                     
@@ -109,6 +103,8 @@ void Shop :: Upgrade(Weapon* weapon){
                     player->addItem(shotgun);
                     continue;
                 }
+                case 3:
+                    break;
                 default:
                     continue;
             }
@@ -129,15 +125,11 @@ void Shop :: Upgrade(Weapon* weapon){
                 cout << shopkeeper->NoMoneyDialogue();
                 break;;
             }
-            cout << "1. Damage" << endl <<
-                    "2. Max Attack Amount" << endl <<
-                    "Choose an option (0 to go back): ";
-            int choice;
-            cin >> choice;
+            int choice = Choose({"Damage",
+                                "Max Attack Amount",
+                                "Back"});
             
             switch (choice){
-                case 0:
-                    break;
                 case 1:
                     player->removeItem(weapon);
                     
@@ -166,6 +158,8 @@ void Shop :: Upgrade(Weapon* weapon){
                     player->addItem(rifle);
                     continue;
                 }
+                case 3:
+                    break;
                 default:
                     continue;
             }
@@ -185,15 +179,12 @@ void Shop :: Upgrade(Weapon* weapon){
                 cout << shopkeeper->NoMoneyDialogue();
                 break;;
             }
-            cout << "1. Damage" << endl <<
-                    "Choose an option (0 to go back): ";
-            int choice;
-            cin >> choice;
+            
+            int choice = Choose({"Damage",
+                                "Back"});
             
             switch (choice){
                 case 0:
-                    break;
-                case 1:
                     player->removeItem(weapon);
                     
                     weapon->setUpgradeAmount(weapon->getUpgradeAmount()+1);
@@ -206,6 +197,8 @@ void Shop :: Upgrade(Weapon* weapon){
                     player->addItem(weapon);
                     
                     continue;
+                case 1:
+                    break;
                 default:
                     continue;
             }
@@ -259,78 +252,93 @@ void Shop::removeItem(Item* item){
 }
 
 void Shop :: Menu(){
-
     shopkeeper->HiDialogue();
     while (!WantsToQuit){
-        cout << "1. Buy \n" // Player buys, Shopkeeper sells ( Sell(Item* item) should be called ) 
-                "2. Sell \n"
-                "3. Upgrade \n"
-                "4. Quit \n";
-        int choice;
-        cin >> choice;
+        int choice = Choose({"Buy",           // Player buys, Shopkeeper sells ( Sell(Item* item) should be called ) 
+                            "Sell",
+                            "Upgrade",
+                            "Quit"});
+        
         switch (choice){
             case 1: // Player buys an item
-                cout << "1. Weapons" << endl;
-                cout << "2. Consumables" << endl;
-                cout << "3. Equipments" << endl;
-                cin >> choice;
+                choice = Choose({"Weapons",           // Player buys, Shopkeeper sells ( Sell(Item* item) should be called ) 
+                                "Consumables",
+                                "Equipments",
+                                "Back"});
+                
                 switch (choice){
                     case 1:
+                    {
                         while(true){
-                            for (int i = 0; i < weapons.size(); i++){
-                            cout << i+1 << ". " << weapons[i]->getStat() << endl;
+                            vector<string> Options;
+                            for(Weapon* weapon: weapons){
+                                Options.push_back(weapon->getStat());
                             }
-                            cout << "Choose a weapon to buy (0 to go back): ";
-                            cin >> choice;
-                            if(choice == 0){
+                            Options.push_back("Back");
+                            
+                            int choice = Choose(Options);
+                            if(choice == Options.size()){
                                 break;
                             }
                             Sell(weapons[choice-1]);
                         }
-                        break;
+                        continue;
+                    }
                     case 2:
+                    {
                         while (true){
-                            for (int i = 0; i < consumables.size(); i++){
-                                cout << i+1 << ". " << consumables[i]->getStat() << endl;
+                            vector<string> Options;
+                            for(Consumable* consumable: consumables){
+                                Options.push_back(consumable->getStat());
                             }
-                            cout << "Choose a consumable to buy (0 to go back): ";
-                            cin >> choice;
-                            if(choice == 0){
+                            Options.push_back("Back");
+                            
+                            int choice = Choose(Options);
+                            if(choice == Options.size()){
                                 break;
                             }
                             Sell(consumables[choice-1]);
                         }
-                        break;
+                        continue;
+                    }
                     case 3:
+                    {
                         while(true){
-                            for (int i = 0; i < equipments.size(); i++){
-                                cout << i+1 << equipments[i]->getStat() << endl;
+                            vector<string> Options;
+                            for(Equipment* equipment: equipments){
+                                Options.push_back(equipment->getStat());
                             }
-                            cout << "Choose a consumable to buy (0 to go back): ";
-                            cin >> choice;
-                            if(choice == 0){
+                            Options.push_back("Back");
+                            
+                            int choice = Choose(Options);
+                            if(choice == Options.size()){
                                 break;
                             }
                             Sell(equipments[choice-1]);
                         }
+                        continue;
+                    }
+                    case 4:
                         break;
                     default:
                         continue;
                 }   
-    
+                continue;
             case 2: // Player sells an item
                 while(true){
-                    for (int i = 0; i < player->getItems().size(); i++){
-                        cout << i+1 << ". " << player->getItems()[i].first->getStat() << endl;
+                    vector<string> Options;
+                    for(pair<Item*,int> item: player->getItems()){
+                        Options.push_back(item.first->getStat());
                     }
-                    cout << "Choose an item you want to sell (0 to go back): ";
-                    cin >> choice;
-                    if(choice == 0){
+                    Options.push_back("Back");
+                    
+                    int choice = Choose(Options);
+                    if(choice == Options.size()){
                         break;
                     }
-                    Buy(player->getItems()[choice-1].first);   
+                    Buy(player->getItems()[choice-1].first);
                 }
-                break;
+                continue;
             case 3: // Player upgrades a gun
                 if(UpgradesLeft<=0){
                         cout << shopkeeper->UpgradeLimitDialogue();
@@ -338,12 +346,14 @@ void Shop :: Menu(){
                 }
                 
                 while(true){
-                    for (int i = 0; i < player->getWeapons().size(); i++){
-                        cout << i+1 << ". " << (player->getWeapons()[i].first)->getStat()<< endl;
+                    vector<string> Options;
+                    for(pair<Weapon*,int> weapon: player->getWeapons()){
+                        Options.push_back(weapon.first->getStat());
                     }
-                    cout << "Choose a weapon you want to upgrade (0 to go back): ";
-                    cin >> choice;
-                    if(choice == 0){
+                    Options.push_back("Back");
+                    
+                    int choice = Choose(Options);
+                    if(choice == Options.size()){
                         break;
                     }
                     
@@ -359,7 +369,7 @@ void Shop :: Menu(){
                     }
                     Upgrade(ChosenWeapon);   
                 }
-                break;
+                continue;
             case 4: // Player quits
                 WantsToQuit = true;
                 break;
@@ -425,13 +435,13 @@ void Hospital :: MaxHpIncrease(){
 void Hospital :: Menu(){
     cout << medic->HiDialogue();
     while(!HasHealed){
-        cout << "1. Restore half HP ( " << HalfHealPrice << "$)" << endl <<
-                "2. Restore full HP ( " << FullHealPrice << "$)" << endl <<
-                "3. Increase max HP by 20% ( " << MaxHpIncreasePrice << "$)" << endl <<
-                "4. quit" << endl <<
-                "Choose an option: ";
-        int choice;
-        cin >> choice;
+        int choice = Choose({
+                "Restore half HP ( " + to_string(HalfHealPrice) + "$)",
+                "Restore full HP ( " + to_string(FullHealPrice) + "$)", 
+                "Increase max HP by 20% ( " + to_string(MaxHpIncreasePrice) + "$)",
+                "quit"}
+                );
+                
         
         switch (choice){
             case 1:
@@ -444,12 +454,14 @@ void Hospital :: Menu(){
                 MaxHpIncrease();
                 break;
             case 4:
+                HasHealed = true;
                 break;
             default:
                 continue;
         }
     }
-   cout <<  medic->ByeDialogue();
+    
+    cout <<  medic->ByeDialogue();
 }
 
 RandomEncounter :: RandomEncounter(Player* player){

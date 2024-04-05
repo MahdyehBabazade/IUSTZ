@@ -1,4 +1,3 @@
-#pragma once
 #include "../Headers/items.h"
 #include "../Headers/creature.h"
 #include <iostream>

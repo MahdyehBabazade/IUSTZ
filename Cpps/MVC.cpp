@@ -1,4 +1,3 @@
-#pragma once
 #include "../Headers/MVC.h"
 #include "../Headers/creature.h"
 #include "functions.cpp"
@@ -681,12 +680,12 @@ void Control::FightControl::EnemiesTurn(){
             HumanEnemy* humanEnemy = dynamic_cast<HumanEnemy*>(Enemy);
             
             view->print(humanEnemy->getName() + ": " + humanEnemy->RajazKhani());
-            // humanEnemy->StateMachine(model->getPlayer(),this);
+            humanEnemy->StateMachine(model->getPlayer(),this);
             view->print("");
         }else{
             Zombie* zombie = dynamic_cast<Zombie*>(Enemy);
             view->print(zombie->getName() + ": ");
-            // zombie->Attack(model->getPlayer(),this);
+            zombie->Attack(model->getPlayer(),this);
             view->print("");
         }
     }
