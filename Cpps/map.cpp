@@ -367,7 +367,7 @@ void Map::move(){
             sizecounter += "Move between options with W & S and choose the option with Enter.\n";
             cout << sizecounter;
             char key = _getch();
-            switch (key)
+            switch (tolower(key))
             {
             case 'w':
                 m--;

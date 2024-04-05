@@ -56,8 +56,8 @@ string UpgradeNameChange(string name, int upgradeAmount){
     return name;
 }
 
-void Shop :: Upgrade(Weapon* weapon){
-    if(typeid(*weapon) == typeid(Shotgun)){
+void Shop :: Upgrade(Weapon* weapon , string dialogue){
+    if(dynamic_cast<Shotgun*>(weapon) != nullptr){
         while(true){
             if(weapon->getUpgradeAmount() >= weapon->getUpgradeLimit()){
                 cout << shopkeeper->UpgradeLimitDialogue(weapon);
@@ -71,7 +71,8 @@ void Shop :: Upgrade(Weapon* weapon){
                 cout << shopkeeper->NoMoneyDialogue();
                 break;;
             }
-            int choice = Choose({"Damage",
+            int choice = Choose(Story + "\n" + shopkeeper->getName() + ": " + dialogue ,
+                                {"Damage",
                                 "Min Damage Percent",
                                 "Back"});
             switch (choice){
@@ -81,7 +82,7 @@ void Shop :: Upgrade(Weapon* weapon){
                     weapon->setUpgradeAmount(weapon->getUpgradeAmount()+1);
                     weapon->setPrice(weapon->getPrice() + int(BaseUpgradePrice * weapon->getUpgradeAmount() * 0.8));
                     weapon->setName(UpgradeNameChange(weapon->getName(),weapon->getUpgradeAmount()));
-                    weapon->setDamage(int(weapon->getDamage()*1.5));
+                    weapon->setDamage(int(weapon->getDamage()*1.4));
                     
                     UpgradesLeft --;
                     
@@ -111,7 +112,7 @@ void Shop :: Upgrade(Weapon* weapon){
             break;   
         }
         
-    }else if(typeid(*weapon) == typeid(Rifle)){
+    }else if(dynamic_cast<Rifle*>(weapon) != nullptr){
         while(true){
             if(weapon->getUpgradeAmount() >= weapon->getUpgradeLimit()){
                 cout << shopkeeper->UpgradeLimitDialogue(weapon);
@@ -125,7 +126,8 @@ void Shop :: Upgrade(Weapon* weapon){
                 cout << shopkeeper->NoMoneyDialogue();
                 break;;
             }
-            int choice = Choose({"Damage",
+            int choice = Choose(Story + "\n" +shopkeeper->getName() + ": " + dialogue ,
+                                {"Damage",
                                 "Max Attack Amount",
                                 "Back"});
             
@@ -136,7 +138,7 @@ void Shop :: Upgrade(Weapon* weapon){
                     weapon->setUpgradeAmount(weapon->getUpgradeAmount()+1);
                     weapon->setPrice(weapon->getPrice() + int(BaseUpgradePrice * weapon->getUpgradeAmount() * 0.8));
                     weapon->setName(UpgradeNameChange(weapon->getName(),weapon->getUpgradeAmount()));
-                    weapon->setDamage(int(weapon->getDamage()*1.5));
+                    weapon->setDamage(int(weapon->getDamage()*1.4));
                     
                     UpgradesLeft --;
                     
@@ -180,24 +182,25 @@ void Shop :: Upgrade(Weapon* weapon){
                 break;;
             }
             
-            int choice = Choose({"Damage",
+            int choice = Choose(Story + "\n" +shopkeeper->getName() + ": " + dialogue ,
+                                {"Damage",
                                 "Back"});
             
             switch (choice){
-                case 0:
+                case 1:
                     player->removeItem(weapon);
                     
                     weapon->setUpgradeAmount(weapon->getUpgradeAmount()+1);
                     weapon->setPrice(weapon->getPrice() + int(BaseUpgradePrice * weapon->getUpgradeAmount() * 0.8));
                     weapon->setName(UpgradeNameChange(weapon->getName(),weapon->getUpgradeAmount()));
-                    weapon->setDamage(int(weapon->getDamage()*1.5));
+                    weapon->setDamage(int(weapon->getDamage()*1.4));
                     
                     UpgradesLeft --;
                     
                     player->addItem(weapon);
                     
                     continue;
-                case 1:
+                case 2:
                     break;
                 default:
                     continue;
@@ -219,6 +222,8 @@ void Shop :: Sell(Item* item){ // Shopkeeper sells, Player buys
     }
     else{
         cout << shopkeeper->NoMoneyDialogue();
+        cout << "Press anything to Continue\n";
+        getch();
     }
 }
 
@@ -232,36 +237,38 @@ void Shop :: Buy(Item* item){ // Shopkeeper buys, Player sells
 }
 
 void Shop::addItem(Item* item){
-    if(typeid(*item) == typeid(Weapon)){
+    if(dynamic_cast<Weapon*>(item) != nullptr){
         weapons.push_back(dynamic_cast<Weapon*>(item));
-    }else if(typeid(*item) == typeid(Consumable)){
+    }else if(dynamic_cast<Consumable*>(item) != nullptr){
         consumables.push_back(dynamic_cast<Consumable*>(item));
-    }else if(typeid(*item) == typeid(Equipment)){
+    }else if(dynamic_cast<Equipment*>(item) != nullptr){
         equipments.push_back(dynamic_cast<Equipment*>(item));
     }
 }
 
 void Shop::removeItem(Item* item){
-    if(typeid(item) == typeid(Weapon)){
+    if(dynamic_cast<Weapon*>(item) != nullptr){
         weapons.erase(remove(weapons.begin(),weapons.end(),dynamic_cast<Weapon*>(item)),weapons.end());
-    }else if(typeid(item) == typeid(Consumable)){
+    }else if(dynamic_cast<Consumable*>(item) != nullptr){
         consumables.erase(remove(consumables.begin(),consumables.end(),dynamic_cast<Consumable*>(item)),consumables.end());
-    }else if(typeid(item) == typeid(Equipment)){
+    }else if(dynamic_cast<Equipment*>(item) != nullptr){
         equipments.erase(remove(equipments.begin(),equipments.end(),dynamic_cast<Equipment*>(item)),equipments.end());
     }
 }
 
 void Shop :: Menu(){
-    shopkeeper->HiDialogue();
+    string dialogue = shopkeeper->HiDialogue();
     while (!WantsToQuit){
-        int choice = Choose({"Buy",           // Player buys, Shopkeeper sells ( Sell(Item* item) should be called ) 
+        int choice = Choose(Story + "\n" +shopkeeper->getName() + ": " + dialogue , 
+                            {"Buy",           // Player buys, Shopkeeper sells ( Sell(Item* item) should be called ) 
                             "Sell",
                             "Upgrade",
                             "Quit"});
         
         switch (choice){
             case 1: // Player buys an item
-                choice = Choose({"Weapons",           // Player buys, Shopkeeper sells ( Sell(Item* item) should be called ) 
+                choice = Choose(Story + "\n" +shopkeeper->getName() + ": " + dialogue ,
+                                {"Weapons",           // Player buys, Shopkeeper sells ( Sell(Item* item) should be called ) 
                                 "Consumables",
                                 "Equipments",
                                 "Back"});
@@ -276,7 +283,7 @@ void Shop :: Menu(){
                             }
                             Options.push_back("Back");
                             
-                            int choice = Choose(Options);
+                            int choice = Choose(Story + "\n" +shopkeeper->getName() + ": " + dialogue , Options);
                             if(choice == Options.size()){
                                 break;
                             }
@@ -293,7 +300,8 @@ void Shop :: Menu(){
                             }
                             Options.push_back("Back");
                             
-                            int choice = Choose(Options);
+                            int choice = Choose(Story + "\n" +shopkeeper->getName() + ": " + dialogue ,
+                            Options);
                             if(choice == Options.size()){
                                 break;
                             }
@@ -310,7 +318,8 @@ void Shop :: Menu(){
                             }
                             Options.push_back("Back");
                             
-                            int choice = Choose(Options);
+                            int choice = Choose(Story + "\n" +shopkeeper->getName() + ": " + dialogue ,
+                            Options);
                             if(choice == Options.size()){
                                 break;
                             }
@@ -332,7 +341,8 @@ void Shop :: Menu(){
                     }
                     Options.push_back("Back");
                     
-                    int choice = Choose(Options);
+                    int choice = Choose(Story + "\n" +shopkeeper->getName() + ": " + dialogue ,
+                    Options);
                     if(choice == Options.size()){
                         break;
                     }
@@ -352,7 +362,8 @@ void Shop :: Menu(){
                     }
                     Options.push_back("Back");
                     
-                    int choice = Choose(Options);
+                    int choice = Choose(Story + "\n" +shopkeeper->getName() + ": " + dialogue ,
+                    Options);
                     if(choice == Options.size()){
                         break;
                     }
@@ -367,11 +378,12 @@ void Shop :: Menu(){
                         cout << shopkeeper->NoMoneyDialogue();
                         continue;
                     }
-                    Upgrade(ChosenWeapon);   
+                    Upgrade(ChosenWeapon , dialogue);   
                 }
                 continue;
             case 4: // Player quits
                 WantsToQuit = true;
+                exit(0);
                 break;
             default:
                 continue;    
@@ -435,8 +447,8 @@ void Hospital :: MaxHpIncrease(){
 
 void Hospital :: Menu(){
     while(!HasHealed){
-        int choice = Choose({Story + "\n" ,medic->getName() + ": " + medic->HiDialogue()} , {
-                "Restore half HP ( " + to_string(HalfHealPrice) + "$)",
+        int choice = Choose(Story + "\n" +medic->getName() + ": " + medic->HiDialogue() , 
+                {"Restore half HP ( " + to_string(HalfHealPrice) + "$)",
                 "Restore full HP ( " + to_string(FullHealPrice) + "$)", 
                 "Increase max HP by 20% ( " + to_string(MaxHpIncreasePrice) + "$)",
                 "quit"}

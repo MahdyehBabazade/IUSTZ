@@ -41,7 +41,7 @@ public:
     void setEquipments(vector<Equipment*> equipments);
     
     // Other Functions
-    void Upgrade(Weapon* Weapon);
+    void Upgrade(Weapon* Weapon , string dialogue);
     void Sell(Item* item); // The shopkeeper sells sth to the player
     void Buy(Item* item); // The shopkeeper buys sth from the player
     void Menu(); 
