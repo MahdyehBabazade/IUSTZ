@@ -9,6 +9,92 @@
 
 using namespace std;
 
+
+Item* View::FightView::ChooseItem(vector<Item*> Items){
+    vector<string> options;
+    for(Item* item: Items){
+        options.push_back(item->getStat());
+    }
+    
+    options.push_back("Back");
+    
+    int option=0;
+    int vecSize = options.size();
+    while(true){
+        clearScreen();
+        for(int i=0 ; i < vecSize; i++){
+            if(i == option%vecSize){
+                cout << green << options[i] << reset;
+            }else{
+                cout << options[i];
+            }
+        }
+        char key = _getch();
+        switch(tolower(key))
+        {
+            case 'w':
+                option--;
+                continue;
+            case 's':
+                option++;
+                continue;
+            case '\r':
+                break;
+            default:
+                continue;
+        }
+        break;
+    }
+    
+    if(option % vecSize == vecSize-1)
+        return nullptr;
+        
+    return Items[option % vecSize];
+}
+
+Relic* ChooseRelic(vector<Relic*> Relics){
+    vector<string> options;
+    for(Item* relic: Relics){
+        options.push_back(relic->getStat());
+    }
+    
+    options.push_back("None");
+    
+    int option=0;
+    int vecSize = options.size();
+    while(true){
+        clearScreen();
+        for(int i=0 ; i < vecSize; i++){
+            if(i == option%vecSize){
+                cout << green << options[i] << reset;
+            }else{
+                cout << options[i];
+            }
+        }
+        char key = _getch();
+        switch(tolower(key))
+        {
+            case 'w':
+                option--;
+                continue;
+            case 's':
+                option++;
+                continue;
+            case '\r':
+                break;
+            default:
+                continue;
+        }
+        break;
+    }
+    
+    if(option % vecSize == vecSize-1)
+        return nullptr;
+        
+    return Relics[option % vecSize];
+}
+
+
 Consumable* View::FightView::ChooseConsumable(vector<pair<Consumable*,int>> Consumables){
     vector<string> options;
     for(pair<Consumable*,int> x:Consumables){
@@ -487,9 +573,12 @@ void View::FightView::print(string entry){
 
 
 //---------------------------------------------------------------------------------------------
-Model::FightModel::FightModel(Player* player,vector<Character*> Enemies){
+Model::FightModel::FightModel(Player* player,vector<Character*> Enemies,vector<Item*> Items,int droppedCoins,vector<Relic*> Relics){
     this -> player = player;
     this -> Enemies = Enemies;
+    this -> Items = Items;
+    this -> droppedCoins = droppedCoins;
+    this -> Relics = Relics;
     Round=0;
 }
 
@@ -499,12 +588,16 @@ int Model::FightModel::getRound(){ return Round; }
 
 Player* Model::FightModel::getPlayer(){ return player;}
 
+
 vector<Character*> Model::FightModel::getEnemies(){ return Enemies;}
 
+int Model::FightModel::getCoins(){ return droppedCoins;}
+
+vector<Item*> Model::FightModel::getItems(){return Items;}
 
 //---------------------------------------------------------------------------------------------
-Control::FightControl::FightControl(Player* player,vector<Character*> Enemies) {
-    model = new Model::FightModel(player, Enemies);
+Control::FightControl::FightControl(Player* player,vector<Character*> Enemies,vector<Item*> Items,int droppedCoins,vector<Relic*> Relics) {
+    model = new Model::FightModel(player, Enemies,Items,droppedCoins,Relics);
     view = new View::FightView();
 }
 
@@ -520,10 +613,12 @@ void Control::FightControl::StartFight(){
         else if(round % 2 == 0){
             EnemiesTurn();
             if(model->getPlayer()->getHP() <= 0)
+                delete model->getPlayer();
                 break;
         }
         model->setRound(round + 1);
     }
+    EndFight();
     // a while loop that increaes model's round in each iteration and calls playerturn() or enemiesturn() functions accordingly
 }
 
@@ -693,3 +788,33 @@ void Control::FightControl::EnemiesTurn(){
 }
 
 View::FightView* Control::FightControl::getView(){return view;}
+
+void Control::FightControl::EndFight(){
+    if(model->getPlayer() != nullptr)
+        model->getPlayer()->addCoin(model->getCoins());
+        while ((true))
+        {
+            Item* ChosenItem = view->ChooseItem(model->getItems());
+            if(ChosenItem == nullptr){
+                break;
+            }else{
+                if (ChosenItem->getCapacity() < (model->getPlayer()->getBackPackCapacity() - model->getPlayer()->getBackPackWeight()))
+                {
+                   view->Prompt("Not Enough BackPack Space");
+                   continue;
+                }else{
+                    break;
+                }
+                
+            }
+            
+        }
+        
+        Relic* relic = ChooseRelic(model->getRelics());
+        if(relic != nullptr)  
+            model->getPlayer()->addRelic(relic);
+        
+        
+        
+        
+}

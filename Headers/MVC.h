@@ -20,10 +20,14 @@ namespace View{
             Consumable* ChooseConsumable(vector<pair<Consumable*,int>> Consumables);
             Weapon* ChooseWeapon(vector<pair<Weapon*,int>> Weapons);
             Character* ChooseEnemy(vector<Character*> Enemies);
+            
+            
+            Item* ChooseItem(vector<Item*> Items);
 
             void ShowEnemies(vector<Character*> Enemies);
             void Prompt(string entry);
             void print(string entry);
+            
     };
 }
 
@@ -34,14 +38,24 @@ namespace Model{
             vector<Character*> Enemies;
             Player* player;
             int Round;
+            
+            vector<Item*> Items;
+            int droppedCoins;
+            
+            vector<Relic*> Relics;
         public:
             void setRound(int round);
             int getRound();
             FightModel() = default;
-            FightModel(Player* player,vector<Character*> Enemies); //sets the player and the enemies and also the round to zero
+            FightModel(Player* player,vector<Character*> Enemies,vector<Item*> Items,int droppedCoins,vector<Relic*> Relics); //sets the player and the enemies and also the round to zero
             
             Player* getPlayer();
             vector<Character*> getEnemies();
+            
+            vector<Item*> getItems();
+            int getCoins();
+            
+            vector<Relic*> getRelics();
     };
 }
 
@@ -54,8 +68,9 @@ namespace Control{
             void PlayerTurn();
             void EnemiesTurn();
             void RemoveEnemies();
+            void EndFight();
         public:
-            FightControl(Player* player,vector<Character*> Enemies); //constructs the Model and the View and also calls startFight func
+            FightControl(Player* player,vector<Character*> Enemies,vector<Item*> Items,int droppedCoins,vector<Relic*> Relics); //constructs the Model and the View and also calls startFight func
             View::FightView* getView();
             void StartFight();
     };
