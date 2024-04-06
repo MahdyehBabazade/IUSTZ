@@ -393,9 +393,9 @@ Weapon* View::FightView::ChooseWeapon(vector<pair<Weapon*,int>> Weapons){
 }
 
 int View::FightView::PlayerMenu(){
-    // 1. weapons  2.consumables 3.endround
+    // 1. weapons   2.consumables  3.show enemies  4.endround
     int option = 0;
-    vector<string> options = {"Weapons","Consumables","End Round"};
+    vector<string> options = {"Weapons","Consumables","show enemies","End Round"};
     
     int vecSize = options.size();
     while(true){
@@ -537,8 +537,7 @@ void View::FightView::ShowEnemies(vector<Character*> Enemies){
         }
         cout << endl;
     }
-    cout << "Press any key to continue\n";
-    char key = _getch();
+    Prompt("");
 }
 
 void View::FightView::Prompt(string entry){
@@ -594,9 +593,10 @@ void Control::FightControl::StartFight(){
         }
         else if(round % 2 == 0){
             EnemiesTurn();
-            if(model->getPlayer()->getHP() <= 0)
+            if(model->getPlayer()->getHP() <= 0){
                 delete model->getPlayer();
                 break;
+            }
         }
     }
     EndFight();
@@ -609,22 +609,23 @@ void Control::FightControl::RemoveEnemies(){
     for(int i = 0 ; i < Enemies.size() ; i++){
         Character* Enemy = Enemies[i];
         if(Enemy->getHP() <=0){
+            view->Prompt("low enemy hp");
             if(!hascleared){
                 clearScreen();
                 hascleared = true;
             }
             Enemies.erase(Enemies.begin() + i);
-            view->print(Enemy->getName() + Enemy->DeathDialogue());
+            view->print(Enemy->getName() + ":" +Enemy->DeathDialogue());
             //~Enemy();
         }
     }
     if(hascleared){
-        view->Prompt("\npress any key to proceed...");
+        view->Prompt("");
     }
 }
 
 void Control::FightControl::PlayerTurn(){
-    //1. weapons  2.consumables 3.endround
+    //1. weapons  2.consumables  3.show enemies  4.end round
     while(true){
         int choice = view->PlayerMenu();
         switch (choice)
@@ -743,6 +744,9 @@ void Control::FightControl::PlayerTurn(){
                 continue;
                 
             case 3:
+                view->ShowEnemies(model->getEnemies());
+                continue;
+            case 4:
                 break;
             default:
                 continue;
@@ -766,7 +770,7 @@ void Control::FightControl::EnemiesTurn(){
             view->print("");
         }
     }
-    view->Prompt("press any key to proceed...");
+    view->Prompt("");
 }
 
 View::FightView* Control::FightControl::getView(){return view;}
