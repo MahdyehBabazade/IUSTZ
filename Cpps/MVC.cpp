@@ -394,44 +394,37 @@ Weapon* View::FightView::ChooseWeapon(vector<pair<Weapon*,int>> Weapons){
 
 int View::FightView::PlayerMenu(){
     // 1. weapons  2.consumables 3.endround
-    string sizecounter;
-    bool breaker=true;
-    int m=0;
-    while(breaker){
+    int option = 0;
+    vector<string> options = {"Weapons","Consumables","End Round"};
+    
+    int vecSize = options.size();
+    while(true){
         clearScreen();
-        if( m % 3 == 0)
-            sizecounter += green;
-        sizecounter += "1. Weapons\n";
-        sizecounter += reset;
-
-        if( m % 3 == 1)
-            sizecounter += green;
-        sizecounter += "2. Consumables\n";
-        sizecounter += reset;
-
-        if( m % 3 == 2)
-            sizecounter += green;
-        sizecounter += "3. end round\n";
-        sizecounter += reset;
-
-        cout << sizecounter;
+        for(int i=0 ; i < vecSize; i++){
+            if(i == option%vecSize){
+                cout << green << options[i] << reset;
+            }else{
+                cout << options[i];
+            }
+        }
         char key = _getch();
-        switch(key)
+        switch(tolower(key))
         {
             case 'w':
-                m--;
-                break;
-                case 's':
-                m++;
-                break;
+                option--;
+                continue;
+            case 's':
+                option++;
+                continue;
             case '\r':
-                breaker=false;
                 break;
             default:
-                break;
+                continue;
         }
+        break;
     }
-    return (m % 3 + 1);
+    
+    return (option % vecSize);
 }
 
 int View::FightView::ColdWeaponMenu(){
