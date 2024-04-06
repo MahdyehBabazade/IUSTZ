@@ -64,3 +64,27 @@ void GameLoopFunction(){
         }
     // }
 }
+
+void PlayerGenerate(){
+//---------------------------- All items --------------------------
+// Weapons  
+    Shotgun* shotgun = new Shotgun("Reaper", 20, 30, 25, 1, 2, 3, 25, 3);
+
+    Snipe* snipe = new Snipe("Fury", 25, 40, 35, 1, 2, 1, 3);
+
+    SMG* smg = new SMG("Venom", 15, 25, 20, 1, 2, 3, 2);
+ 
+    Rifle* rifle = new Rifle("Twilight Rifle", 20, 40, 30, 2, 2, 3, 1, 2);
+
+    ColdWeapon* coldweapon = new ColdWeapon("Blizzard Blade", 10, 30, 15, 1, 1);
+// Remember to delete these variables later (include sth)
+//-----------------------------------------------------------------
+    string name;
+    cin >> name;
+    vector<Weapon*> AllWeapons = {shotgun, snipe, smg, rifle, coldweapon};
+    int item_index = rand() % 5;
+    vector<pair<Weapon*, int>> weapons = {make_pair(AllWeapons[item_index], 1)};
+    vector<pair<Item*, int>> items = {make_pair(AllWeapons[item_index], 1)};
+    Player* player = new Player(name, 100, 60, 0, 4, 0, items, weapons);
+    vector<string> stories; // Stories to be added
+}
