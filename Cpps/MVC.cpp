@@ -682,6 +682,7 @@ void Control::FightControl::PlayerTurn(){
                                         gun->Attack(enemy);
                                         
                                     }
+                                    model->getPlayer()->setEnergy(model->getPlayer()->getEnergy() - weapon->getEnergyNeeded());
                                     RemoveEnemies();
                                 
                                     continue;
