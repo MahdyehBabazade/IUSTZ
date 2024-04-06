@@ -33,18 +33,18 @@ using namespace std;
     Grenade* grenade2 = new Grenade("Firebomb", 7, 15, 40, 1, 2);
     Grenade* grenade3 = new Grenade("Snowball", 7, 25, 60, 1, 3); // Better
 
-    BoomRang* boomerang = new BoomRang("SpinStorm", 15, 15, 15, 1, 2);
-    BoomRang* boomerang2 = new BoomRang("BoomerBoost", 15, 20, 20, 1, 2);
-    BoomRang* boomerang3 = new BoomRang("FuryFlight", 15, 30, 30, 1, 2); // Better
+    BoomRang* boomerang = new BoomRang("SpinStorm", 8, 15, 15, 1, 2);
+    BoomRang* boomerang2 = new BoomRang("BoomerBoost", 8, 20, 20, 1, 2);
+    BoomRang* boomerang3 = new BoomRang("FuryFlight", 8, 30, 30, 1, 2); // Better
 
     // Consumables
-    Consumable* ShieldConsumable = new Consumable("ShieldBoost", "ShieldPotion", 7, 20, 20);
-    Consumable* ShieldConsumable2 = new Consumable("GuardPotion", "ShieldPotion", 7, 25, 30);
-    Consumable* ShieldConsumable3 = new Consumable("SafeguardSip", "ShieldPotion", 7, 35, 45);
+    Consumable* ShieldConsumable = new Consumable("ShieldBoost", "ShieldPotion", 5, 20, 20);
+    Consumable* ShieldConsumable2 = new Consumable("GuardPotion", "ShieldPotion", 5, 25, 30);
+    Consumable* ShieldConsumable3 = new Consumable("SafeguardSip", "ShieldPotion", 5, 35, 45);
 
-    Consumable* HPConsumable = new Consumable("HealthBoost", "HPPotion", 8, 25, 30);
-    Consumable* HPConsumable2 = new Consumable("StaminaSip", "HPPotion", 8, 30, 50);
-    Consumable* HPConsumable3 = new Consumable("Lifespring", "HPPotion", 8, 40, 75);
+    Consumable* HPConsumable = new Consumable("HealthBoost", "HPPotion", 6, 25, 30);
+    Consumable* HPConsumable2 = new Consumable("StaminaSip", "HPPotion", 6, 30, 50);
+    Consumable* HPConsumable3 = new Consumable("Lifespring", "HPPotion", 6, 40, 75);
 
     Consumable* EnergyConsumable = new Consumable("Energy Elixir", "EnergyPotion", 7, 30, 1);
     Consumable* EnergyConsumable2 = new Consumable("Energy Boost", "EnergyPotion", 7, 60, 2);
@@ -111,7 +111,7 @@ Shop* ShopFactory :: Generate(){
         
         for (int i = 0; i < 4; i++)
         {
-            item_index = Index_Weighted_Random({5,2,1,5,2,1,5,2,1});
+            item_index = Index_Weighted_Random({5,2,1,5,2,1,5,2});
             Consumables.push_back(AllConsumables[i]);
         }
         
@@ -131,7 +131,7 @@ Shop* ShopFactory :: Generate(){
         
         for (int i = 0; i < 4; i++)
         {
-            item_index = Index_Weighted_Random({2,5,1,2,5,1,2,5,1});
+            item_index = Index_Weighted_Random({2,5,1,2,5,1,2,5});
             Consumables.push_back(AllConsumables[i]);
         }
         
@@ -151,7 +151,7 @@ Shop* ShopFactory :: Generate(){
         
         for (int i = 0; i < 4; i++)
         {
-            item_index = Index_Weighted_Random({1,2,5,1,2,5,1,2,5});
+            item_index = Index_Weighted_Random({1,2,5,1,2,5,2,5});
             Consumables.push_back(AllConsumables[i]);
         }
         
@@ -1046,18 +1046,18 @@ Fight* FightFactory :: GenerateNormalFight(){
     {
     case 1:
         weights = {6,2,1, 6,2,1, 5,2,1, 5,1,1, 5,2,1, 5,2,1, 8,3,1, 10,5,3, 12,7,3, 7,3, 5,2,1, 6,2,1, 6,2,1, 5,2,1};
-        coins = {6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
+        coins = {11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25};
         droppedCoins = coins[Index_Weighted_Random({1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5, 4, 3, 2, 1})];
         break;
 
     case 2:
         weights = {2,6,1, 2,6,1, 2,5,1, 1,5,1, 2,5,1, 2,5,1, 3,8,1, 5,10,3, 7,12,3, 5,5, 2,5,1, 2,6,1, 2,6,1, 2,5,1};
-        coins = {11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25};
+        coins = {16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30};
         droppedCoins = coins[Index_Weighted_Random({1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5, 4, 3, 2, 1})];
         break;
     case 3:
         weights = {1,2,6, 1,2,6, 1,2,5, 1,1,5, 1,2,5, 1,2,5, 1,3,8, 3,5,10, 3,7,12, 3,7, 1,2,5, 1,2,6, 1,2,6, 1,2,5};
-        coins = {16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30};
+        coins = {21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35};
         droppedCoins = coins[Index_Weighted_Random({1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5, 4, 3, 2, 1})];
     default:
         break;
@@ -1077,9 +1077,9 @@ Fight* FightFactory :: GenerateNormalFight(){
     while (m != 3)
     {
         item_index = rand() % relics.size();
-        for (int j = 0; j < player->getRelic().size(); j++)
+        for (int i = 0; i < player->getRelic().size(); i++)
         {
-            if (relics[item_index] == player->getRelic()[j])
+            if (relics[item_index] == player->getRelic()[i])
             {
                 isExisted = true;
             }   
@@ -1119,18 +1119,18 @@ Fight* FightFactory :: GenerateMiniBoss(){
     {
     case 1:
         weights = {6,2,1, 6,2,1, 5,2,1, 5,1,1, 5,2,1, 5,2,1, 8,3,1, 10,5,3, 12,7,3, 7,3, 5,2,1, 6,2,1, 6,2,1, 5,2,1};
-        coins = {11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25};
+        coins = {16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30};
         droppedCoins = coins[Index_Weighted_Random({1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5, 4, 3, 2, 1})];
         break;
 
     case 2:
         weights = {2,6,1, 2,6,1, 2,5,1, 1,5,1, 2,5,1, 2,5,1, 3,8,1, 5,10,3, 7,12,3, 5,5, 2,5,1, 2,6,1, 2,6,1, 2,5,1};
-        coins = {16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30};
+        coins = {21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35};
         droppedCoins = coins[Index_Weighted_Random({1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5, 4, 3, 2, 1})];
         break;
     case 3:
         weights = {1,2,6, 1,2,6, 1,2,5, 1,1,5, 1,2,5, 1,2,5, 1,3,8, 3,5,10, 3,7,12, 3,7, 1,2,5, 1,2,6, 1,2,6, 1,2,5};
-        coins = {21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35};
+        coins = {26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40};
         droppedCoins = coins[Index_Weighted_Random({1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5, 4, 3, 2, 1})];
     default:
         break;
@@ -1150,9 +1150,9 @@ Fight* FightFactory :: GenerateMiniBoss(){
     while (m != 3)
     {
         item_index = rand() % relics.size();
-        for (int j = 0; j < player->getRelic().size(); j++)
+        for (int i = 0; i < player->getRelic().size(); i++)
         {
-            if (relics[item_index] == player->getRelic()[j])
+            if (relics[item_index] == player->getRelic()[i])
             {
                 isExisted = true;
             }   
@@ -1192,18 +1192,18 @@ Fight* FightFactory :: GenerateBoss(){
     {
     case 1:
         weights = {6,2,1, 6,2,1, 5,2,1, 5,1,1, 5,2,1, 5,2,1, 8,3,1, 10,5,3, 12,7,3, 7,3, 5,2,1, 6,2,1, 6,2,1, 5,2,1};
-        coins = {16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30};
+        coins = {21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35};
         droppedCoins = coins[Index_Weighted_Random({1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5, 4, 3, 2, 1})];
         break;
 
     case 2:
         weights = {2,6,1, 2,6,1, 2,5,1, 1,5,1, 2,5,1, 2,5,1, 3,8,1, 5,10,3, 7,12,3, 5,5, 2,5,1, 2,6,1, 2,6,1, 2,5,1};
-        coins = {21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35};
+        coins = {26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40};
         droppedCoins = coins[Index_Weighted_Random({1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5, 4, 3, 2, 1})];
         break;
     case 3:
         weights = {1,2,6, 1,2,6, 1,2,5, 1,1,5, 1,2,5, 1,2,5, 1,3,8, 3,5,10, 3,7,12, 3,7, 1,2,5, 1,2,6, 1,2,6, 1,2,5};
-        coins = {26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40};
+        coins = {31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45};
         droppedCoins = coins[Index_Weighted_Random({1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5, 4, 3, 2, 1})];
     default:
         break;
@@ -1224,9 +1224,9 @@ Fight* FightFactory :: GenerateBoss(){
     while (m != 3)
     {
         item_index = rand() % relics.size();
-        for (int j = 0; j < player->getRelic().size(); j++)
+        for (int i = 0; i < player->getRelic().size(); i++)
         {
-            if (relics[item_index] == player->getRelic()[j])
+            if (relics[item_index] == player->getRelic()[i])
             {
                 isExisted = true;
             }   
