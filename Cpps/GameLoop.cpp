@@ -12,7 +12,7 @@ void GameLoopFunction(){
     // while(true){
         int Menu_Choice = 1;
         srand(time(0));
-        Player *player = new Player("Amir" , 100 , 200 , 0 , 4 , 200 , {make_pair(new Shotgun("Reaper", 20, 30, 25, 1, 2, 3, 25, 3) , 1)} , {make_pair(new Shotgun("Reaper", 20, 30, 25, 1, 2, 3, 25, 3) , 1)});
+        Player *player = new Player("Amir" , 100 , 200 , 0 , 100 , 200 , {make_pair(new Shotgun("Reaper", 20, 30, 25, 1, 2, 3, 25, 3) , 1)} , {make_pair(new Shotgun("Reaper", 20, 30, 25, 1, 2, 3, 25, 3) , 1)});
         Map *map;
         switch(Menu_Choice){
         case 1:{
@@ -33,12 +33,14 @@ void GameLoopFunction(){
             Medic* medic = new Medic("Bahram");
             FightFactory fight(player , map);
             ShopFactory shop(map , player);
+            EnemyFactory enemies(map , player);
             while(map->getCurrentNode().first != 14){
                 // if(player == nullptr)
                 //    break;
                 map->move();
                 if(map->getEncounters()[map->getCurrentNode().first][map->getCurrentNode().second] == "Fight"){
-                    fight.GenerateNormalFight()->start();
+                    Fight* fight = new Fight(player , 1 , enemies.FightEnemy() , {} , 10 , {});
+                    fight->start();
                 }
                 else if(map->getEncounters()[map->getCurrentNode().first][map->getCurrentNode().second] == "Shop"){
                     shop.Generate()->Menu();
@@ -64,7 +66,6 @@ void GameLoopFunction(){
         }
     // }
 }
-
 void PlayerGenerate(){
 //---------------------------- All items --------------------------
 // Weapons  
