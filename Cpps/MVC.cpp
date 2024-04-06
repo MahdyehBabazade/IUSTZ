@@ -24,9 +24,9 @@ Item* View::FightView::ChooseItem(vector<Item*> Items){
         clearScreen();
         for(int i=0 ; i < vecSize; i++){
             if(i == option%vecSize){
-                cout << green << options[i] << reset;
+                cout << green << options[i] << reset << endl;
             }else{
-                cout << options[i];
+                cout << options[i] << endl;
             }
         }
         char key = _getch();
@@ -66,9 +66,9 @@ Relic* ChooseRelic(vector<Relic*> Relics){
         clearScreen();
         for(int i=0 ; i < vecSize; i++){
             if(i == option%vecSize){
-                cout << green << options[i] << reset;
+                cout << green << options[i] << reset << endl;
             }else{
-                cout << options[i];
+                cout << options[i] << endl;
             }
         }
         char key = _getch();
@@ -112,9 +112,9 @@ Consumable* View::FightView::ChooseConsumable(vector<pair<Consumable*,int>> Cons
         clearScreen();
         for(int i=0 ; i < vecSize; i++){
             if(i == option%vecSize){
-                cout << green << options[i] << reset;
+                cout << green << options[i] << reset << endl;
             }else{
-                cout << options[i];
+                cout << options[i] << endl;
             }
         }
         char key = _getch();
@@ -402,9 +402,9 @@ int View::FightView::PlayerMenu(){
         clearScreen();
         for(int i=0 ; i < vecSize; i++){
             if(i == option%vecSize){
-                cout << green << options[i] << reset;
+                cout << green << options[i] << reset << endl;
             }else{
-                cout << options[i];
+                cout << options[i] << endl;
             }
         }
         char key = _getch();
@@ -424,7 +424,7 @@ int View::FightView::PlayerMenu(){
         break;
     }
     
-    return (option % vecSize);
+    return (option % vecSize +1);
 }
 
 int View::FightView::ColdWeaponMenu(){
@@ -599,6 +599,7 @@ Control::FightControl::FightControl(Player* player,vector<Character*> Enemies,ve
 
 void Control::FightControl::StartFight(){
     while(true){
+        model->setRound(model->getRound() + 1);
         int round = model->getRound();
         if(round % 2 != 0){
             PlayerTurn();
@@ -611,7 +612,6 @@ void Control::FightControl::StartFight(){
                 delete model->getPlayer();
                 break;
         }
-        model->setRound(round + 1);
     }
     EndFight();
     // a while loop that increaes model's round in each iteration and calls playerturn() or enemiesturn() functions accordingly
@@ -639,6 +639,8 @@ void Control::FightControl::RemoveEnemies(){
 
 void Control::FightControl::PlayerTurn(){
     //1. weapons  2.consumables 3.endround
+    cout << "player";
+    getch;
     while(true){
         int choice = view->PlayerMenu();
         switch (choice)
