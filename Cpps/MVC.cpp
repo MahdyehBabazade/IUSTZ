@@ -682,8 +682,6 @@ void Control::FightControl::PlayerTurn(){
                                         gun->Attack(enemy);
                                         
                                     }
-                                    model->getPlayer()->setEnergy(model->getPlayer()->getEnergy() - weapon->getEnergyNeeded());
-                                    RemoveEnemies();
                                 
                                     continue;
                                 case 2:
@@ -706,6 +704,9 @@ void Control::FightControl::PlayerTurn(){
                         Throwable* throwable = dynamic_cast<Throwable*>(weapon);
                         throwable->Attack(model->getEnemies());
                         model->getPlayer()->removeItem(throwable);
+                        
+                        model->getPlayer()->setEnergy(model->getPlayer()->getEnergy() - weapon->getEnergyNeeded());
+                        
                         
                     }else if(dynamic_cast<ColdWeapon *>(weapon) != nullptr){
                         int option = view->ColdWeaponMenu();
@@ -731,6 +732,7 @@ void Control::FightControl::PlayerTurn(){
                     }else{
                         weapon->Attack(view->ChooseEnemy(model->getEnemies()));
                     }
+                    RemoveEnemies();
                     model->getPlayer()->setEnergy(model->getPlayer()->getEnergy()-weapon->getEnergyNeeded());
                 }
                 continue;
