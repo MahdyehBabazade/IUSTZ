@@ -88,23 +88,14 @@ private:
     vector<Character*> enemies;
     vector<Item*> items;
     int droppedCoins;
-    
+    vector<Relic*> relics;
+
     Control::FightControl* fightControl;
     
     
 public:
     Fight()=default;
-    Fight(Player* player, int type, vector<Character*> enemies, vector<Item*> items,int droppedCoins);
+    Fight(Player* player, int type, vector<Character*> enemies, vector<Item*> items, int droppedCoins, vector<Relic*> relics);
     
     void start();
-};
-
-class MiniBoss : public Encounter{
-public:
-    MiniBoss()=default;
-};
-class Boss : public Encounter{
-public:
-    Boss() = default;
-    
 };

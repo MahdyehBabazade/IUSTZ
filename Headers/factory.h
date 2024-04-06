@@ -8,9 +8,9 @@ class ShopFactory{
 private:
     Map* map;
     Player* player;
-    Shopkeeper* shopkeeper;
+
 public:
-    ShopFactory(Map* map, Player* player, Shopkeeper* shopkeeper);
+    ShopFactory(Map* map, Player* player);
     Shop* Generate();
 };
 

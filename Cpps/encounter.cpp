@@ -244,16 +244,19 @@ void Shop :: Upgrade(Weapon* weapon , string dialogue){
 void Shop :: Sell(Item* item){ // Shopkeeper sells, Player buys
 
     if (player->getCoin() >= item->getPrice()){
-        player->removeCoin(item->getPrice());
-        
-        item->setPrice(int(item->getPrice()*0.8));
-        player->addItem(item);
-        clearScreen();
-        cout << Story;
-        cout << shopkeeper->SellDialogue(item);
-        cout << "Press anything to continue";
-        getch();
-        removeItem(item);
+        if (player->getBackPackCapacity() > item->getCapacity()+player->getBackPackWeight())
+        {
+            player->removeCoin(item->getPrice());
+
+            item->setPrice(int(item->getPrice()*0.8));
+            player->addItem(item);
+            clearScreen();
+            cout << Story;
+            cout << shopkeeper->SellDialogue(item);
+            cout << "Press anything to continue";
+            getch();
+            removeItem(item);
+        }
     }
     else{
         clearScreen();
@@ -569,7 +572,6 @@ void RandomEncounter :: Menu(){
 
     int RandomChoice = Index_Weighted_Random({1,1,4,5});
     
-    
     switch (RandomChoice)
     {
     case 0: // Fight
@@ -655,12 +657,13 @@ void RandomEncounter :: Menu(){
     }
 }
 
-Fight :: Fight(Player* player, int type, vector<Character*> enemies, vector<Item*> items, int droppedCoins){
+Fight :: Fight(Player* player, int type, vector<Character*> enemies, vector<Item*> items, int droppedCoins, vector<Relic*> relics){
     this -> player = player;
     this -> type = type;
     this -> enemies = enemies;
     this -> items = items;
     this -> droppedCoins = droppedCoins;
+    this -> relics = relics;
     fightControl = new Control::FightControl(player,enemies);
 }
 
