@@ -420,7 +420,7 @@ void Shop :: Menu(){
                 continue;
             case 4: // Player quits
                 WantsToQuit = true;
-                exit(0);
+                // exit(0);
                 break;
             default:
                 continue;    

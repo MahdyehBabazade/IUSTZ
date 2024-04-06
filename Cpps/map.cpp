@@ -359,7 +359,7 @@ void Map::move(){
             for(int i = 0; i < 6; i++){
                 if(GenerateEncounter[0][i] == "")
                     sizecounter += grey;
-                if(i == Options[m % Options.size()])
+                if(i == Options[m])
                     sizecounter += green;
                 sizecounter += to_string(i + 1) + ". " + GenerateEncounter[0][i] + "\n";
                 sizecounter += reset;
@@ -370,10 +370,10 @@ void Map::move(){
             switch (tolower(key))
             {
             case 'w':
-                m--;
+                m = (m - 1 + Options.size()) % Options.size();
                 break;
             case 's':
-                m++;
+                m = (m + 1 + Options.size()) % Options.size();
                 break;
             case '\r':
                 breaker = false;
@@ -383,7 +383,7 @@ void Map::move(){
             }
         }
         CurrentNode = make_pair(0 , Options[m % Options.size()]);
-        addPassedNodes(Options[m % Options.size()]);
+        addPassedNodes(Options[m]);
     }
     else if(CurrentNode.first == 14){
         bool breaker = true;

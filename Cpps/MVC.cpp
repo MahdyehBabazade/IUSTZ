@@ -588,6 +588,8 @@ int Model::FightModel::getCoins(){ return droppedCoins;}
 
 vector<Item*> Model::FightModel::getItems(){return Items;}
 
+vector<Relic*> Model::FightModel::getRelics(){return Relics;}
+
 //---------------------------------------------------------------------------------------------
 Control::FightControl::FightControl(Player* player,vector<Character*> Enemies,vector<Item*> Items,int droppedCoins,vector<Relic*> Relics) {
     model = new Model::FightModel(player, Enemies,Items,droppedCoins,Relics);

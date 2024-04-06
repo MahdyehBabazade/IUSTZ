@@ -93,13 +93,13 @@ int Choose(vector<string> Options){
 
 
 int Choose(string Descriptions ,vector<string> Options){
-    int option =0;
+    int option = 0;
     while(true){
         clearScreen();
         cout << Descriptions;
         for(int i = 0; i < Options.size() ; i++){
-            if(i == option % Options.size()){
-                cout << green <<Options[i] << reset << endl;
+            if(i == option){
+                cout << green << Options[i] << reset << endl;
             }else {
                 cout << Options[i] << endl;
             }
@@ -108,12 +108,13 @@ int Choose(string Descriptions ,vector<string> Options){
         switch(tolower(input)){
             case 'w':
             {
-                option --;
+                option = (option - 1 + Options.size()) % Options.size();
                 continue;
             }
             case 's':
             {
                 option++;
+                option %= Options.size();
                 continue;
             }
             case '\r':
