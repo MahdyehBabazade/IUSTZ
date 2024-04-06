@@ -1,6 +1,7 @@
 #pragma once
 #include "../Headers/items.h"
 #include "../Headers/creature.h"
+#include "../Headers/MVC.h"
 #include <iostream>
 using namespace std;
 
@@ -86,11 +87,16 @@ private:
     int type; // 0 for normal fight, 1 for miniboss, 2 for boss
     vector<Character*> enemies;
     vector<Item*> items;
-
+    int droppedCoins;
+    
+    Control::FightControl* fightControl;
+    
+    
 public:
     Fight()=default;
-    Fight(Player* player, int type, vector<Character*> enemies, vector<Item*> items);
-
+    Fight(Player* player, int type, vector<Character*> enemies, vector<Item*> items,int droppedCoins);
+    
+    void start();
 };
 
 class MiniBoss : public Encounter{

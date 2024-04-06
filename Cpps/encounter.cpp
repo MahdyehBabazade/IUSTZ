@@ -655,9 +655,15 @@ void RandomEncounter :: Menu(){
     }
 }
 
-Fight :: Fight(Player* player, int type, vector<Character*> enemies, vector<Item*> items){
+Fight :: Fight(Player* player, int type, vector<Character*> enemies, vector<Item*> items, int droppedCoins){
     this -> player = player;
     this -> type = type;
     this -> enemies = enemies;
     this -> items = items;
+    this -> droppedCoins = droppedCoins;
+    fightControl = new Control::FightControl(player,enemies);
+}
+
+void Fight :: start(){
+    fightControl->StartFight();
 }
