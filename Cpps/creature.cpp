@@ -876,34 +876,34 @@ string Shopkeeper :: getName(){return Name;}
 
 string Shopkeeper :: HiDialogue(){ // The shopkeeper says hi
     vector<string> ShopkeeperHi = {"Salute soldier! How can I help?" , "Hi commander! Is there anything I can provide?" , "Welcome to my shop!"};
-    return ShuffleVec(ShopkeeperHi)[0] + "\n";
+    return Name + ": " + ShuffleVec(ShopkeeperHi)[0] + "\n";
 }
 
 string Shopkeeper :: ByeDialogue(){ // The shopkeeper says bye
-    return "Good luck, Soldier.\n";
+    return Name + ": " + "Good luck, Soldier.\n";
 }
 
 string Shopkeeper :: SellDialogue(Item* item){ // The shopkeeper sells sth to the player
     vector<string> ShopkeeperSell = {"So you've bought " + item->getName() , "You chose one of the best items." ,
     "Wish " + item->getName() + " helps you survive."};
-    return ShuffleVec(ShopkeeperSell)[0] + "\n";
+    return Name + ": " + ShuffleVec(ShopkeeperSell)[0] + "\n";
 } // items to be included
 
 string Shopkeeper :: BuyDialogue(Item* item){ // The shopkeeper buys sth from the player
     double NewPrice = 0.8*item->getPrice();
-    return "I'll buy that for " + to_string(NewPrice) + " coins.\n";
+    return Name + ": " + "I'll buy that for " + to_string(NewPrice) + " coins.\n";
 } // items to be included
 
 string Shopkeeper::UpgradeLimitDialogue(Weapon* weapon){
     vector<string> UpgradeLimit = {weapon->getName() + " has been fined too many times already." , 
     weapon->getName() + " has reached it's limits." + weapon->getName() + " is as fine as it gets!"};
-    return ShuffleVec(UpgradeLimit)[0] + "\n";
+    return Name + ": " + ShuffleVec(UpgradeLimit)[0] + "\n";
 }
 
 string Shopkeeper::UpgradeLimitDialogue(){
     vector<string> UpgradeLimit = {"I'm so tired!" , "I can't refine your items anymore!" , 
     "I'm out of refinement resources."};
-    return ShuffleVec(UpgradeLimit)[0] + "\n";
+    return Name + ": " + ShuffleVec(UpgradeLimit)[0] + "\n";
 }
 
 string Shopkeeper :: NoMoneyDialogue(){ // What the shopkeeper says when the player has less money than the item's price
@@ -913,7 +913,7 @@ string Shopkeeper :: NoMoneyDialogue(){ // What the shopkeeper says when the pla
     {
         return "...";
     }
-    return ShuffleVec(PoorSoldier)[0] + "\n";
+    return Name + ": " + ShuffleVec(PoorSoldier)[0] + "\n";
 }
 
 Medic :: Medic(string Name){this->Name = Name;}
@@ -922,12 +922,12 @@ string Medic :: getName(){return Name;}
 
 string Medic :: HiDialogue(){
     vector<string> MedicSayHi = {"Hi, Soldier." , "Salute soldier! How can I help?" , "Hi commander! Are you hurt somewhere?"};
-    return ShuffleVec(MedicSayHi)[0]+"\n";
+    return Name + ": " + ShuffleVec(MedicSayHi)[0]+"\n";
 }
 
-string Medic :: ByeDialogue(){return "Have a safe journey.\n";}
+string Medic :: ByeDialogue(){return Name + ": " + "Have a safe journey.\n";}
 
-string Medic :: HealDialogue(){return "I've patched you up!\n";}
+string Medic :: HealDialogue(){return Name + ": " + "I've patched you up!\n";}
 
 string Medic :: NoMoneyDialogue(){
     vector<string> PoorSoldier = {"You don't have enough coins!" , "Poor soldier!" , "Can't Heal you with that much coin!" , 
@@ -936,5 +936,5 @@ string Medic :: NoMoneyDialogue(){
     {
         return "...";
     }
-    return ShuffleVec(PoorSoldier)[0] + "\n";
+    return Name + ": " + ShuffleVec(PoorSoldier)[0] + "\n";
 }

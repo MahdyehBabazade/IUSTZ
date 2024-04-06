@@ -19,13 +19,13 @@ Shop :: Shop(Player* player, vector<Weapon*> weapons, vector<Consumable*> consum
     this -> UpgradesLeft = 6; // Changes later
 
     string BazaarStory = "As you wander through the crowded boulevard, getting curious about the growing number of people, "
-    "you enter a traditional bazaar hall where everyone is just shouting. This place is all colorful but you are too exhasted to"
-    "open your eyes widely to see all the beauty here. A man with a weird mustache out of nowhere takes you in his store. Where is this "
+    "you enter a traditional bazaar hall \nwhere everyone is just shouting. This place is all colorful but you are too exhasted to"
+    "open your eyes widely to see all the beauty here.\n A man with a weird mustache out of nowhere takes you in his store. Where is this "
     "place?";
 
     string ForestStory = "While exploring the dense forest, you find this dusty open wooden door. Upon entering, you see a collection"
-    " of weapons and other war stuff. It's noticable on the mat below the door < You and your shoes are welcome. Clean them ;) > "
-    "There is no man, low light, weird patterns on the wall and valuable-looking items. The shopkeepr, a man of god -looking so- "
+    " of weapons and other war stuff.\nIt's noticable on the mat below the door < You and your shoes are welcome. Clean them ;) > "
+    "There is no man, low light, weird patterns on the \nwall and valuable-looking items. The shopkeepr, a man of god -looking so- "
     "with long white beard comes down the stairs. ";
 
     vector<string> Stories = {BazaarStory, ForestStory};
@@ -61,17 +61,23 @@ void Shop :: Upgrade(Weapon* weapon , string dialogue){
         while(true){
             if(weapon->getUpgradeAmount() >= weapon->getUpgradeLimit()){
                 cout << shopkeeper->UpgradeLimitDialogue(weapon);
+                cout << "Press anything to continue";
+                getch();
                 break;
             }
             if(UpgradesLeft <=0){
                 cout << shopkeeper->UpgradeLimitDialogue();
+                cout << "Press anything to continue";
+                getch();
                 break;
             }
             if(player->getCoin() < BaseUpgradePrice * weapon->getUpgradeAmount()){
                 cout << shopkeeper->NoMoneyDialogue();
+                cout << "Press anything to continue";
+                getch();
                 break;;
             }
-            int choice = Choose(Story + "\n" + shopkeeper->getName() + ": " + dialogue ,
+            int choice = Choose(Story + "\n" + dialogue ,
                                 {"Damage",
                                 "Min Damage Percent",
                                 "Back"});
@@ -116,17 +122,23 @@ void Shop :: Upgrade(Weapon* weapon , string dialogue){
         while(true){
             if(weapon->getUpgradeAmount() >= weapon->getUpgradeLimit()){
                 cout << shopkeeper->UpgradeLimitDialogue(weapon);
+                cout << "Press anything to continue";
+                getch();
                 break;
             }
             if(UpgradesLeft <= 0){
                 cout << shopkeeper->UpgradeLimitDialogue();
+                cout << "Press anything to continue";
+                getch();
                 break;
             }
             if(player->getCoin() < BaseUpgradePrice * weapon->getUpgradeAmount()){
                 cout << shopkeeper->NoMoneyDialogue();
+                cout << "Press anything to continue";
+                getch();
                 break;;
             }
-            int choice = Choose(Story + "\n" +shopkeeper->getName() + ": " + dialogue ,
+            int choice = Choose(Story + "\n" + dialogue ,
                                 {"Damage",
                                 "Max Attack Amount",
                                 "Back"});
@@ -171,18 +183,24 @@ void Shop :: Upgrade(Weapon* weapon , string dialogue){
         while(true){
             if(weapon->getUpgradeAmount() >= weapon->getUpgradeLimit()){
                 cout << shopkeeper->UpgradeLimitDialogue(weapon);
+                cout << "Press anything to continue";
+                getch();
                 break;
             }
             if(UpgradesLeft <=0){
                 cout << shopkeeper->UpgradeLimitDialogue();
+                cout << "Press anything to continue";
+                getch();
                 break;
             }
             if(player->getCoin() < BaseUpgradePrice * weapon->getUpgradeAmount()){
                 cout << shopkeeper->NoMoneyDialogue();
+                cout << "Press anything to continue";
+                getch();
                 break;;
             }
             
-            int choice = Choose(Story + "\n" +shopkeeper->getName() + ": " + dialogue ,
+            int choice = Choose(Story + "\n" + dialogue ,
                                 {"Damage",
                                 "Back"});
             
@@ -218,6 +236,8 @@ void Shop :: Sell(Item* item){ // Shopkeeper sells, Player buys
         item->setPrice(int(item->getPrice()*0.8));
         player->addItem(item);
         cout << shopkeeper->SellDialogue(item);
+        cout << "Press anything to continue";
+        getch();
         removeItem(item);
     }
     else{
@@ -231,7 +251,8 @@ void Shop :: Buy(Item* item){ // Shopkeeper buys, Player sells
     player->addCoin(item->getPrice());
     player->removeItem(item);
     shopkeeper->BuyDialogue(item);
-    
+    cout << "Press anything to continue";
+    getch();    
     item->setPrice(int(item->getPrice()* 1.25)); // adds 20 precent to item's orignial price 
     addItem(item);
 }
@@ -259,7 +280,7 @@ void Shop::removeItem(Item* item){
 void Shop :: Menu(){
     string dialogue = shopkeeper->HiDialogue();
     while (!WantsToQuit){
-        int choice = Choose(Story + "\n" +shopkeeper->getName() + ": " + dialogue , 
+        int choice = Choose(Story + "\n" + dialogue , 
                             {"Buy",           // Player buys, Shopkeeper sells ( Sell(Item* item) should be called ) 
                             "Sell",
                             "Upgrade",
@@ -267,7 +288,7 @@ void Shop :: Menu(){
         
         switch (choice){
             case 1: // Player buys an item
-                choice = Choose(Story + "\n" +shopkeeper->getName() + ": " + dialogue ,
+                choice = Choose(Story + "\n" + dialogue ,
                                 {"Weapons",           // Player buys, Shopkeeper sells ( Sell(Item* item) should be called ) 
                                 "Consumables",
                                 "Equipments",
@@ -283,7 +304,7 @@ void Shop :: Menu(){
                             }
                             Options.push_back("Back");
                             
-                            int choice = Choose(Story + "\n" +shopkeeper->getName() + ": " + dialogue , Options);
+                            int choice = Choose(Story + "\n" + dialogue , Options);
                             if(choice == Options.size()){
                                 break;
                             }
@@ -300,7 +321,7 @@ void Shop :: Menu(){
                             }
                             Options.push_back("Back");
                             
-                            int choice = Choose(Story + "\n" +shopkeeper->getName() + ": " + dialogue ,
+                            int choice = Choose(Story + "\n" + dialogue ,
                             Options);
                             if(choice == Options.size()){
                                 break;
@@ -318,7 +339,7 @@ void Shop :: Menu(){
                             }
                             Options.push_back("Back");
                             
-                            int choice = Choose(Story + "\n" +shopkeeper->getName() + ": " + dialogue ,
+                            int choice = Choose(Story + "\n" + dialogue ,
                             Options);
                             if(choice == Options.size()){
                                 break;
@@ -341,7 +362,7 @@ void Shop :: Menu(){
                     }
                     Options.push_back("Back");
                     
-                    int choice = Choose(Story + "\n" +shopkeeper->getName() + ": " + dialogue ,
+                    int choice = Choose(Story + "\n" + dialogue ,
                     Options);
                     if(choice == Options.size()){
                         break;
@@ -351,8 +372,10 @@ void Shop :: Menu(){
                 continue;
             case 3: // Player upgrades a gun
                 if(UpgradesLeft<=0){
-                        cout << shopkeeper->UpgradeLimitDialogue();
-                        break;
+                    cout << shopkeeper->UpgradeLimitDialogue();
+                    cout << "Press anything to continue";
+                    getch();
+                    break;
                 }
                 
                 while(true){
@@ -362,7 +385,7 @@ void Shop :: Menu(){
                     }
                     Options.push_back("Back");
                     
-                    int choice = Choose(Story + "\n" +shopkeeper->getName() + ": " + dialogue ,
+                    int choice = Choose(Story + "\n" + dialogue ,
                     Options);
                     if(choice == Options.size()){
                         break;
@@ -372,10 +395,14 @@ void Shop :: Menu(){
                     
                     if(ChosenWeapon->getUpgradeAmount() >= ChosenWeapon->getUpgradeLimit()){
                         cout << shopkeeper->UpgradeLimitDialogue(ChosenWeapon);
+                        cout << "Press anything to continue";
+                        getch();
                         continue;
                     }
                     if(player->getCoin() < BaseUpgradePrice * ChosenWeapon->getUpgradeAmount()){
                         cout << shopkeeper->NoMoneyDialogue();
+                        cout << "Press anything to continue";
+                        getch();
                         continue;
                     }
                     Upgrade(ChosenWeapon , dialogue);   
@@ -390,6 +417,8 @@ void Shop :: Menu(){
         }
     }
     cout << shopkeeper->ByeDialogue();
+    cout << "Press anything to continue";
+    getch();
 }
     
 Hospital :: Hospital(Player* player, Medic* medic){
@@ -417,37 +446,49 @@ Hospital :: Hospital(Player* player, Medic* medic){
 void Hospital :: FullHeal(){
     if(player->getCoin() < FullHealPrice){
         cout << medic->NoMoneyDialogue();
+        cout << "Press anything to continue";
+        getch();
         return;
     }
     player->setHP(player->getMaxHP());
     cout << medic->HealDialogue();
+    cout << "Press anything to continue";
+    getch();
     HasHealed = true;
 }
 
 void Hospital ::HalfHeal(){
     if(player->getCoin() < HalfHealPrice){
         cout << medic->NoMoneyDialogue();
+        cout << "Press anything to continue";
+        getch();
         return;
     }
     player->setHP(player->getHP() + (player->getMaxHP()/2));
     cout << medic->HealDialogue();
+    cout << "Press anything to continue";
+    getch();
     HasHealed = true;
 }
 
 void Hospital :: MaxHpIncrease(){
     if(player->getCoin() < MaxHpIncreasePrice){
         cout << medic->NoMoneyDialogue();
+        cout << "Press anything to continue";
+        getch();
         return;
     }
     player->setMaxHP(int(player->getMaxHP()*1.2));
     player->setHP(int(player->getMaxHP() * 0.2 / 1.2 + player->getHP()));
     cout << medic->HealDialogue();
+    cout << "Press anything to continue";
+    getch();
     HasHealed = true;
 }
 
 void Hospital :: Menu(){
     while(!HasHealed){
-        int choice = Choose(Story + "\n" +medic->getName() + ": " + medic->HiDialogue() , 
+        int choice = Choose(Story + "\n" + medic->HiDialogue() , 
                 {"Restore half HP ( " + to_string(HalfHealPrice) + "$)",
                 "Restore full HP ( " + to_string(FullHealPrice) + "$)", 
                 "Increase max HP by 20% ( " + to_string(MaxHpIncreasePrice) + "$)",
@@ -474,7 +515,7 @@ void Hospital :: Menu(){
         }
     }
     clearScreen();
-    cout <<  medic->getName() << ": " << medic->ByeDialogue();
+    cout << medic->ByeDialogue();
     cout << "Press anything to Continue\n";
     getch();
 }
