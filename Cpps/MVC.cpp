@@ -429,86 +429,72 @@ int View::FightView::PlayerMenu(){
 
 int View::FightView::ColdWeaponMenu(){
     // 1.attack  2.throw  3.back
-    string sizecounter;
-    bool breaker=true;
-    int m=0;
-    while(breaker){
+    int option = 0;
+    vector<string> options = {"Attack","Throw","Back"};
+    
+    int vecSize = options.size();
+    while(true){
         clearScreen();
-        if( m % 3 == 0)
-            sizecounter += green;
-        sizecounter += "1. Attack\n";
-        sizecounter += reset;
-
-        if( m % 3 == 1)
-            sizecounter += green;
-        sizecounter += "2. Throw\n";
-        sizecounter += reset;
-
-        if( m % 3 == 2)
-            sizecounter += green;
-        sizecounter += "3. Back\n";
-        sizecounter += reset;
-
-        cout << sizecounter;
+        for(int i=0 ; i < vecSize; i++){
+            if(i == option%vecSize){
+                cout << green << options[i] << reset << endl;
+            }else{
+                cout << options[i] << endl;
+            }
+        }
         char key = _getch();
-        switch(key)
+        switch(tolower(key))
         {
             case 'w':
-                m--;
-                break;
-                case 's':
-                m++;
-                break;
+                option--;
+                continue;
+            case 's':
+                option++;
+                continue;
             case '\r':
-                breaker=false;
                 break;
             default:
-                break;
+                continue;
         }
+        break;
     }
-    return (m % 3 + 1);
+    
+    return (option % vecSize +1);
 }
 
 int View::FightView::GunMenu(){
     // 1.attack  2.reload  3.back
-    string sizecounter;
-    bool breaker=true;
-    int m=0;
-    while(breaker){
+    int option = 0;
+    vector<string> options = {"Attack","Reload","Back"};
+    
+    int vecSize = options.size();
+    while(true){
         clearScreen();
-        if( m % 3 == 0)
-            sizecounter += green;
-        sizecounter += "1. Attack\n";
-        sizecounter += reset;
-
-        if( m % 3 == 1)
-            sizecounter += green;
-        sizecounter += "2. Reload\n";
-        sizecounter += reset;
-
-        if( m % 3 == 2)
-            sizecounter += green;
-        sizecounter += "3. Back\n";
-        sizecounter += reset;
-
-        cout << sizecounter;
+        for(int i=0 ; i < vecSize; i++){
+            if(i == option%vecSize){
+                cout << green << options[i] << reset << endl;
+            }else{
+                cout << options[i] << endl;
+            }
+        }
         char key = _getch();
-        switch(key)
+        switch(tolower(key))
         {
             case 'w':
-                m--;
-                break;
-                case 's':
-                m++;
-                break;
+                option--;
+                continue;
+            case 's':
+                option++;
+                continue;
             case '\r':
-                breaker=false;
                 break;
             default:
-                break;
+                continue;
         }
+        break;
     }
-    return (m % 3 + 1);
+    
+    return (option % vecSize +1);
 }
 
 void View::FightView::ShowEnemies(vector<Character*> Enemies){
