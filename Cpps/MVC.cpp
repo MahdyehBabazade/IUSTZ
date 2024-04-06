@@ -360,36 +360,11 @@ Weapon* View::FightView::ChooseWeapon(vector<pair<Weapon*,int>> Weapons){
     
     int option=0;
     int vecSize = options.size();
-    while(true){
-        clearScreen();
-        for(int i=0 ; i < vecSize; i++){
-            if(i == option%vecSize){
-                cout << green << options[i] << reset;
-            }else{
-                cout << options[i];
-            }
-        }
-        char key = _getch();
-        switch(tolower(key))
-        {
-            case 'w':
-                option--;
-                continue;
-            case 's':
-                option++;
-                continue;
-            case '\r':
-                break;
-            default:
-                continue;
-        }
-        break;
-    }
-    
-    if(option % vecSize == vecSize-1)
+    option = Choose("" , options);
+    if(option % vecSize == 0)
         return nullptr;
         
-    return Weapons[option % vecSize].first;
+    return Weapons[option % Weapons.size()].first;
 }
 
 int View::FightView::PlayerMenu(){
@@ -468,33 +443,8 @@ int View::FightView::GunMenu(){
     vector<string> options = {"Attack","Reload","Back"};
     
     int vecSize = options.size();
-    while(true){
-        clearScreen();
-        for(int i=0 ; i < vecSize; i++){
-            if(i == option%vecSize){
-                cout << green << options[i] << reset << endl;
-            }else{
-                cout << options[i] << endl;
-            }
-        }
-        char key = _getch();
-        switch(tolower(key))
-        {
-            case 'w':
-                option--;
-                continue;
-            case 's':
-                option++;
-                continue;
-            case '\r':
-                break;
-            default:
-                continue;
-        }
-        break;
-    }
-    
-    return (option % vecSize +1);
+    option = Choose("" , options);
+    return (option);
 }
 
 void View::FightView::ShowEnemies(vector<Character*> Enemies){
@@ -636,10 +586,13 @@ void Control::FightControl::PlayerTurn(){
                     if(weapon == nullptr)
                         break;
     
-                    if(weapon->getEnergyNeeded() > model->getPlayer()->getEnergy())
+                    if(weapon->getEnergyNeeded() > model->getPlayer()->getEnergy()){
                         view->Prompt("Not Enough Energy");
+                        getch();
                         continue;
-                        
+                    }
+                            // cout << "bruhhh";
+                            // getch();
                     if(dynamic_cast<Gun *>(weapon) != nullptr){
                         Gun* gun = dynamic_cast<Gun*>(weapon);
                         
@@ -647,12 +600,14 @@ void Control::FightControl::PlayerTurn(){
                         {
                             // 1.attack   2.reload  3.back
                             int option = view->GunMenu();
+                            
                             switch (option)
                             {
                                 case 1:
-                                    if(gun->getAmmo() ==0)
+                                    if(gun->getAmmo() ==0){
                                             view->Prompt("Not Enough Ammo");
                                             continue;
+                                    }
                                     
                                     if(dynamic_cast<Rifle *>(gun) != nullptr){
                                         Rifle* rifle = dynamic_cast<Rifle*>(gun);
