@@ -12,7 +12,7 @@ void GameLoopFunction(){
     // while(true){
         int Menu_Choice = 1;
         srand(time(0));
-        Player *player = new Player("Amir" , 100 , 200 , 0 , 4 , 200 , {} , {});
+        Player *player = new Player("Amir" , 100 , 200 , 0 , 4 , 200 , {make_pair(new Shotgun("Reaper", 20, 30, 25, 1, 2, 3, 25, 3) , 1)} , {make_pair(new Shotgun("Reaper", 20, 30, 25, 1, 2, 3, 25, 3) , 1)});
         Map *map;
         switch(Menu_Choice){
         case 1:{

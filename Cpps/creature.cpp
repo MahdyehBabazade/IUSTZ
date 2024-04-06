@@ -81,42 +81,6 @@ Weapon* Player::ChooseWeapon(){ // Lists the weapons for you and the lets you ch
     choice --;
     return Weapons[choice].first;
 }
-/*
-void Player :: Attack(vector<Character *> &characters , Weapon* weapon , int choice){ 
-    //attacks the enemies with guns, cold weapons or throwables
-    if(getEnergy()>=weapon->getEnergyNeeded()){
-        //checks which type of weapon, the weapon you chose is, then calls the Attack function of that weapon
-        if (typeid(*weapon) == typeid(Gun)) {
-            Gun *gun = dynamic_cast<Gun *>(weapon);
-            if (gun->getAmmo() >= characters.size()) {
-                gun->Attack(characters);
-                gun->setAmmo(gun->getAmmo()-characters.size()); //reduces the number of ammos after the gun shot.
-            }
-        }
-        else if(typeid(*weapon) == typeid(Throwable)){
-            Throwable *throwable = dynamic_cast<Throwable *>(weapon);
-            throwable->Attack(characters);
-            removeItem(throwable); //removes the throwable from the backpack after it dropped
-        }
-        else if(typeid(*weapon) == typeid(ColdWeapon)){
-            ColdWeapon *coldWeapon = dynamic_cast<ColdWeapon *>(weapon);
-            //checks if we want to throw the cold weapon or attack with it
-            if(choice ==1){
-                coldWeapon->Attack(characters); //if attack, it calls the Attack function of the cold weapon
-            }
-            else{
-                coldWeapon->Throw(characters); //if throw, it calls the Throw function of the cold weapon then removes it from the backpack
-                removeItem(coldWeapon); 
-            }
-        }
-        else{
-            weapon->Attack(characters);
-        }
-        setEnergy(getEnergy()-weapon->getEnergyNeeded()); //reduces the energy needed to use that kind of weapon from the energy the character has
-    }
-
-}*/
-
 Player :: Player(string Name, int MaxHP , int BackPackCapacity , int BackPackWeight
 , int MaxEnergy , int Coin ,vector<pair<Item* , int>> Items
 , vector<pair<Weapon* , int>> Weapons) : Character(Name , MaxHP, Items ,  Weapons){
@@ -156,8 +120,7 @@ int Player :: getCoin(){return Coin;}
 void Player :: addItem(Item* Item){ //adds items depending on its capacity and the backpack capacity
     if(BackPackWeight + Item->getCapacity() <= BackPackCapacity){
         bool IsAdded = false;
-        if(typeid(*Item) != typeid(Shotgun) && typeid(*Item) != typeid(Snipe) && typeid(*Item) != typeid(SMG)
-        && typeid(*Item) != typeid(Rifle))
+        if(dynamic_cast<Gun *>(Item) == nullptr)
             for(int i = 0; i < Items.size(); i++)
                 if(*Items[i].first== *Item){
                     Items[i].second++;
@@ -165,9 +128,9 @@ void Player :: addItem(Item* Item){ //adds items depending on its capacity and t
                     break;
                 }
         if(!IsAdded){
-            if(typeid(*Item) == typeid(Shotgun)){
+            if(dynamic_cast<Shotgun *>(Item) != nullptr){
                 for(int i = 0; i < Items.size(); i++){
-                    if(typeid(*Items[i].first) == typeid(Shotgun)){
+                    if(dynamic_cast<Shotgun *>(Items[i].first) != nullptr){
                         if(Items[i].first->getName()>=Item->getName()){
                             Items.insert(Items.begin()+ i , make_pair(Item , 1));
                             break;
@@ -177,21 +140,21 @@ void Player :: addItem(Item* Item){ //adds items depending on its capacity and t
                             break;
                         }
                     }
-                    else if(typeid(*Items[i].first) != typeid(Shotgun)){
+                    else if(dynamic_cast<Shotgun *>(Items[i].first) == nullptr){
                         Items.insert(Items.begin()+ i , make_pair(Item , 1));
                         break;
                     }
                 }
             }
-            else if(typeid(*Item) == typeid(Snipe)){
+            else if(dynamic_cast<Snipe *>(Item) != nullptr){
                 for(int i = 0; i < Items.size(); i++){
-                    if(typeid(*Items[i].first) == typeid(Snipe)){
+                    if(dynamic_cast<Snipe *>(Items[i].first) != nullptr){
                         if(Items[i].first->getName()>=Item->getName()){
                             Items.insert(Items.begin()+ i , make_pair(Item , 1));
                             break;
                         }
                     }
-                    else if(typeid(*Items[i].first) != typeid(Shotgun)){
+                    else if(dynamic_cast<Snipe *>(Items[i].first) == nullptr){
                         Items.insert(Items.begin()+ i , make_pair(Item , 1));
                         break;
                     }
@@ -201,15 +164,15 @@ void Player :: addItem(Item* Item){ //adds items depending on its capacity and t
                     }
                 }
             }
-            else if(typeid(*Item) == typeid(SMG)){
+            else if(dynamic_cast<SMG *>(Item) != nullptr){
                 for(int i = 0; i < Items.size(); i++){
-                    if(typeid(*Items[i].first) == typeid(SMG)){
+                    if(dynamic_cast<SMG *>(Items[i].first) != nullptr){
                         if(Items[i].first->getName()>=Item->getName()){
                             Items.insert(Items.begin()+ i , make_pair(Item , 1));
                             break;
                         }
                     }
-                    else if(typeid(*Items[i].first) != typeid(Shotgun) && typeid(*Items[i].first) != typeid(Snipe)){
+                    else if(dynamic_cast<Shotgun *>(Items[i].first) == nullptr && dynamic_cast<Snipe *>(Items[i].first) == nullptr){
                         Items.insert(Items.begin()+ i , make_pair(Item , 1));
                         break;
                     }
@@ -219,17 +182,17 @@ void Player :: addItem(Item* Item){ //adds items depending on its capacity and t
                     }
                 }
             }
-            else if(typeid(*Item) == typeid(Rifle)){
+            else if(dynamic_cast<Rifle *>(Item) != nullptr){
                 for(int i = 0; i < Items.size(); i++){
-                    if(typeid(*Items[i].first) == typeid(Rifle)){
+                    if(dynamic_cast<Rifle *>(Items[i].first) != nullptr){
                         if(Items[i].first->getName()>=Item->getName()){
                             Items.insert(Items.begin()+ i , make_pair(Item , 1));
                             IsAdded = true;
                             break;
                         }
                     }
-                    else if(typeid(*Items[i].first) != typeid(Shotgun) && typeid(*Items[i].first) != typeid(Snipe)
-                    && typeid(*Items[i].first) != typeid(SMG)){
+                    else if(dynamic_cast<Shotgun *>(Items[i].first) == nullptr && dynamic_cast<Snipe *>(Items[i].first) == nullptr
+                    && dynamic_cast<SMG *>(Items[i].first) != nullptr){
                         Items.insert(Items.begin()+ i , make_pair(Item , 1));
                         break;
                     }
@@ -239,15 +202,14 @@ void Player :: addItem(Item* Item){ //adds items depending on its capacity and t
                     }
                 }
             }
-            else if(typeid(*Item) == typeid(ColdWeapon)){
+            else if(dynamic_cast<ColdWeapon *>(Item) != nullptr){
                 for(int i = 0; i < Items.size(); i++){
-                    if(typeid(*Items[i].first) == typeid(ColdWeapon)){
+                    if(dynamic_cast<ColdWeapon *>(Items[i].first) != nullptr){
                         if(Items[i].first->getName()>=Item->getName()){
                             Items.insert(Items.begin()+ i , make_pair(Item , 1));
                             break;
                         }
-                    }else if(typeid(*Items[i].first) != typeid(Shotgun) && typeid(*Items[i].first) != typeid(Snipe)
-                    && typeid(*Items[i].first) != typeid(SMG) && typeid(*Items[i].first) != typeid(Rifle)){
+                    }else if(dynamic_cast<Gun *>(Items[i].first) == nullptr){
                         Items.insert(Items.begin()+ i , make_pair(Item , 1));
                         break;
                     }
@@ -257,37 +219,16 @@ void Player :: addItem(Item* Item){ //adds items depending on its capacity and t
                     }
                 }
             }
-            else if(typeid(*Item) == typeid(Grenade)){
+            else if(dynamic_cast<Grenade *>(Item) != nullptr){
                 for(int i = 0; i < Items.size(); i++){
-                    if(typeid(*Items[i].first) == typeid(Grenade)){
-                        if(Items[i].first->getName()>=Item->getName()){
-                            Items.insert(Items.begin()+ i , make_pair(Item , 1));
-                            break;
-                        }
-                    }
-                    else if(typeid(*Items[i].first) != typeid(Shotgun) && typeid(*Items[i].first) != typeid(Snipe)
-                    && typeid(*Items[i].first) != typeid(SMG) && typeid(*Items[i].first) != typeid(Rifle) 
-                    && typeid(*Items[i].first) != typeid(ColdWeapon)){
-                        Items.insert(Items.begin()+ i , make_pair(Item , 1));
-                        break;
-                    }
-                    if(i == Items.size() - 1){
-                        Items.push_back(make_pair(Item , 1));
-                        break;
-                    }
-                }
-            }
-            else if(typeid(*Item) == typeid(BoomRang)){
-                for(int i = 0; i < Items.size(); i++){
-                    if(typeid(*Items[i].first) == typeid(BoomRang)){
+                    if(dynamic_cast<Grenade*>(Items[i].first) != nullptr){
                         if(Items[i].first->getName()>=Item->getName()){
                             Items.insert(Items.begin()+ i , make_pair(Item , 1));
                             break;
                         }
                     }
-                    else if(typeid(*Items[i].first) != typeid(Shotgun) && typeid(*Items[i].first) != typeid(Snipe)
-                    && typeid(*Items[i].first) != typeid(SMG) && typeid(*Items[i].first) != typeid(Rifle) && typeid(*Items[i].first) != typeid(ColdWeapon) &&
-                    typeid(*Items[i].first) != typeid(Grenade)){
+                    else if(dynamic_cast<Gun *>(Items[i].first) == nullptr
+                    && dynamic_cast<ColdWeapon *>(Items[i].first) == nullptr){
                         Items.insert(Items.begin()+ i , make_pair(Item , 1));
                         break;
                     }
@@ -297,14 +238,17 @@ void Player :: addItem(Item* Item){ //adds items depending on its capacity and t
                     }
                 }
             }
-            else if(typeid(*Item) == typeid(Consumable)){
+            else if(dynamic_cast<BoomRang *>(Item) != nullptr){
                 for(int i = 0; i < Items.size(); i++){
-                    if(typeid(*Items[i].first) == typeid(Consumable) && Items[i].first->getName() >= Item->getName()){
-                        Items.insert(Items.begin()+ i , make_pair(Item , 1));
-                        break;
+                    if(dynamic_cast<BoomRang *>(Items[i].first) != nullptr){
+                        if(Items[i].first->getName()>=Item->getName()){
+                            Items.insert(Items.begin()+ i , make_pair(Item , 1));
+                            break;
+                        }
                     }
-                    else if(typeid(*Items[i].first) == typeid(HeadGear) || typeid(*Items[i].first) == typeid(Vest)
-                    || typeid(*Items[i].first) == typeid(FootWear) || typeid(*Items[i].first) == typeid(Boot)){
+                    else if(dynamic_cast<Gun *>(Items[i].first) == nullptr
+                    && dynamic_cast<ColdWeapon *>(Items[i].first) == nullptr
+                    && dynamic_cast<Grenade *>(Items[i].first) == nullptr){
                         Items.insert(Items.begin()+ i , make_pair(Item , 1));
                         break;
                     }
@@ -314,8 +258,23 @@ void Player :: addItem(Item* Item){ //adds items depending on its capacity and t
                     }
                 }
             }
-            else if(typeid(*Item) == typeid(HeadGear) || typeid(*Item) == typeid(Vest) || typeid(*Item) == typeid(FootWear)
-            || typeid(*Item) == typeid(Boot)){
+            else if(dynamic_cast<Consumable *>(Item) != nullptr){
+                for(int i = 0; i < Items.size(); i++){
+                    if(dynamic_cast<Consumable *>(Items[i].first) != nullptr && Items[i].first->getName() >= Item->getName()){
+                        Items.insert(Items.begin()+ i , make_pair(Item , 1));
+                        break;
+                    }
+                    else if(dynamic_cast<Equipment *>(Items[i].first) != nullptr){
+                        Items.insert(Items.begin()+ i , make_pair(Item , 1));
+                        break;
+                    }
+                    if(i == Items.size() - 1){
+                        Items.push_back(make_pair(Item , 1));
+                        break;
+                    }
+                }
+            }
+            else if(dynamic_cast<Equipment *>(Item) != nullptr){
                 Items.push_back(make_pair(Item , 1));
             }
         }
@@ -323,14 +282,11 @@ void Player :: addItem(Item* Item){ //adds items depending on its capacity and t
             Items.push_back(make_pair(Item , 1));
         }
         BackPackWeight += Item->getCapacity();
-        if(typeid(*Item) == typeid(Shotgun) || typeid(*Item) == typeid(Snipe) || typeid(*Item) == typeid(SMG) ||
-        typeid(*Item) == typeid(Rifle) || typeid(*Item) == typeid(ColdWeapon) || typeid(*Item) == typeid(Grenade) ||
-        typeid(*Item) == typeid(BoomRang))
+        if(dynamic_cast<Weapon *>(Item) != nullptr)
             addWeapon(dynamic_cast<Weapon *>(Item));
-        else if(typeid(*Item) == typeid(HeadGear) || typeid(*Item) == typeid(Vest) || typeid(*Item) == typeid(FootWear) ||
-        typeid(*Item) == typeid(Boot))
+        else if(dynamic_cast<Equipment *>(Item) != nullptr)
             addEquipment(dynamic_cast<Equipment *>(Item));
-        else if(typeid(*Item) == typeid(Consumable))
+        else if(dynamic_cast<Consumable *>(Item) != nullptr)
             addConsumable(dynamic_cast<Consumable *>(Item));
     }
     else
@@ -348,15 +304,12 @@ void Player :: removeItem(Item* Item){ //deletes the items considering their num
                 Items[i].second--;
         }
     }
-    if(typeid(*Item) == typeid(Shotgun) || typeid(*Item) == typeid(Snipe) || typeid(*Item) == typeid(SMG) ||
-    typeid(*Item) == typeid(Rifle) || typeid(*Item) == typeid(ColdWeapon) || typeid(*Item) == typeid(Grenade) ||
-    typeid(*Item) == typeid(BoomRang))
-        removeWeapon(dynamic_cast<Weapon *>(Item));
-    else if(typeid(*Item) == typeid(HeadGear) || typeid(*Item) == typeid(Vest) || typeid(*Item) == typeid(FootWear) ||
-    typeid(*Item) == typeid(Boot))
-        removeEquipment(dynamic_cast<Equipment *>(Item));
-    else if(typeid(*Item) == typeid(Consumable))
-        removeConsumable(dynamic_cast<Consumable *>(Item));
+    if(dynamic_cast<Weapon *>(Item) != nullptr)
+            removeWeapon(dynamic_cast<Weapon *>(Item));
+        else if(dynamic_cast<Equipment *>(Item) != nullptr)
+            removeEquipment(dynamic_cast<Equipment *>(Item));
+        else if(dynamic_cast<Consumable *>(Item) != nullptr)
+            removeConsumable(dynamic_cast<Consumable *>(Item));
 }
 
 
@@ -371,8 +324,7 @@ void Player :: addRelic(Relic* Relic){
 void Player :: addWeapon(Weapon* Weapon){ //adds weapons checking if already existed or not,
     bool isAdded = false;
     //if existed, just increases the number by one
-    if(typeid(*Weapon) != typeid(Shotgun) && typeid(*Weapon) != typeid(Snipe) && typeid(*Weapon) != typeid(SMG)
-        && typeid(*Weapon) != typeid(Rifle))
+    if(dynamic_cast<Gun *>(Weapon) == nullptr)
         for(int i = 0; i < Weapons.size(); i++)
             if(*Weapon == *Weapons[i].first){
                 Weapons[i].second++;
@@ -381,15 +333,15 @@ void Player :: addWeapon(Weapon* Weapon){ //adds weapons checking if already exi
             }
     //if not, inserts the weapon in
     if(!isAdded){
-        if(typeid(*Weapon) == typeid(Shotgun)){
+        if(dynamic_cast<Shotgun *>(Weapon) != nullptr){
             for(int i = 0; i < Weapons.size(); i++){
-                if(typeid(*Weapons[i].first) == typeid(Shotgun))
+                if(dynamic_cast<Shotgun *>(Weapons[i].first) != nullptr)
                     if(Weapons[i].first->getName()>=Weapon->getName()){
                         Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
                         break;
                     }
                     
-                else if(typeid(*Weapons[i].first) != typeid(Shotgun)){
+                else if(dynamic_cast<Shotgun *>(Weapons[i].first) == nullptr){
                     Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
                     break;
                 }
@@ -399,14 +351,14 @@ void Player :: addWeapon(Weapon* Weapon){ //adds weapons checking if already exi
                 }
             }
         }
-        else if(typeid(*Weapon) == typeid(Snipe)){
+        else if(dynamic_cast<Snipe*>(Weapon) != nullptr){
             for(int i = 0; i < Weapons.size(); i++){
-                if(typeid(*Weapons[i].first) == typeid(Snipe))
+                if(dynamic_cast<Snipe*>(Weapons[i].first) != nullptr)
                     if(Weapons[i].first->getName()>=Weapon->getName()){
                         Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
                         break;
                 }
-                else if(typeid(*Weapons[i].first) != typeid(Shotgun)){
+                else if(dynamic_cast<Shotgun *>(Weapons[i].first) == nullptr){
                     Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
                     break;
                 }
@@ -416,50 +368,14 @@ void Player :: addWeapon(Weapon* Weapon){ //adds weapons checking if already exi
                 }
             }
         }
-        else if(typeid(*Weapon) == typeid(SMG)){
+        else if(dynamic_cast<SMG *>(Weapon) != nullptr){
             for(int i = 0; i < Weapons.size(); i++){
-                if(typeid(*Weapons[i].first) == typeid(SMG))
-                    if(Weapons[i].first->getName()>=Weapon->getName()){
-                        Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
-                        break;
-                    }
-                else if(typeid(*Weapons[i].first) != typeid(Shotgun) && typeid(*Weapons[i].first) != typeid(Snipe)){
-                    Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
-                    break;
-                }
-                if(i == Weapons.size() - 1){
-                    Weapons.push_back(make_pair(Weapon , 1));
-                    break;
-                }
-            }
-        }
-        else if(typeid(*Weapon) == typeid(Rifle)){
-            for(int i = 0; i < Weapons.size(); i++){
-                if(typeid(*Weapons[i].first) == typeid(Rifle))
-                    if(Weapons[i].first->getName()>=Weapon->getName()){
-                        Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
-                        break;
-                }
-                else if(typeid(*Weapons[i].first) != typeid(Shotgun) && typeid(*Weapons[i].first) != typeid(Snipe)
-                && typeid(*Weapons[i].first) != typeid(SMG)){
-                    Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
-                    break;
-                }
-                if(i == Weapons.size() - 1){
-                    Weapons.push_back(make_pair(Weapon , 1));
-                    break;
-                }
-            }
-        }
-        else if(typeid(*Weapon) == typeid(ColdWeapon)){
-            for(int i = 0; i < Weapons.size(); i++){
-                if(typeid(*Weapons[i].first) == typeid(ColdWeapon))
+                if(dynamic_cast<SMG *>(Weapons[i].first) != nullptr)
                     if(Weapons[i].first->getName()>=Weapon->getName()){
                         Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
                         break;
                     }
-                else if(typeid(*Weapons[i].first) != typeid(Shotgun) && typeid(*Weapons[i].first) != typeid(Snipe)
-                && typeid(*Weapons[i].first) != typeid(SMG) && typeid(*Weapons[i].first) != typeid(Rifle)){
+                else if(dynamic_cast<Shotgun *>(Weapons[i].first) == nullptr && dynamic_cast<Snipe*>(Weapons[i].first) == nullptr){
                     Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
                     break;
                 }
@@ -469,16 +385,15 @@ void Player :: addWeapon(Weapon* Weapon){ //adds weapons checking if already exi
                 }
             }
         }
-        else if(typeid(*Weapon) == typeid(Grenade)){
+        else if(dynamic_cast<Rifle *>(Weapon) != nullptr){
             for(int i = 0; i < Weapons.size(); i++){
-                if(typeid(*Weapons[i].first) == typeid(Grenade))
+                if(dynamic_cast<Rifle *>(Weapons[i].first) != nullptr)
                     if(Weapons[i].first->getName()>=Weapon->getName()){
                         Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
                         break;
                 }
-                else if(typeid(*Weapons[i].first) != typeid(Shotgun) && typeid(*Weapons[i].first) != typeid(Snipe)
-                && typeid(*Weapons[i].first) != typeid(SMG) && typeid(*Weapons[i].first) != typeid(Rifle) && 
-                typeid(*Weapons[i].first) != typeid(ColdWeapon)){
+                else if(dynamic_cast<Shotgun *>(Weapons[i].first) == nullptr && dynamic_cast<Snipe *>(Weapons[i].first) == nullptr
+                && dynamic_cast<SMG *>(Weapons[i].first) == nullptr){
                     Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
                     break;
                 }
@@ -488,16 +403,50 @@ void Player :: addWeapon(Weapon* Weapon){ //adds weapons checking if already exi
                 }
             }
         }
-        else if(typeid(*Weapon) == typeid(BoomRang)){
+        else if(dynamic_cast<ColdWeapon *>(Weapon) != nullptr){
             for(int i = 0; i < Weapons.size(); i++){
-                if(typeid(*Weapons[i].first) == typeid(BoomRang))
+                if(dynamic_cast<ColdWeapon *>(Weapons[i].first) != nullptr)
+                    if(Weapons[i].first->getName()>=Weapon->getName()){
+                        Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
+                        break;
+                    }
+                else if(dynamic_cast<Gun *>(Weapons[i].first) == nullptr){
+                    Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
+                    break;
+                }
+                if(i == Weapons.size() - 1){
+                    Weapons.push_back(make_pair(Weapon , 1));
+                    break;
+                }
+            }
+        }
+        else if(dynamic_cast<Grenade *>(Weapon) != nullptr){
+            for(int i = 0; i < Weapons.size(); i++){
+                if(dynamic_cast<Grenade *>(Weapons[i].first) != nullptr)
                     if(Weapons[i].first->getName()>=Weapon->getName()){
                         Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
                         break;
                 }
-                else if(typeid(*Weapons[i].first) != typeid(Shotgun) && typeid(*Weapons[i].first) != typeid(Snipe)
-                && typeid(*Weapons[i].first) != typeid(SMG) && typeid(*Weapons[i].first) != typeid(Rifle) && 
-                typeid(*Weapons[i].first) != typeid(ColdWeapon) && typeid(*Weapons[i].first) != typeid(Grenade)){
+                else if(dynamic_cast<Gun *>(Weapons[i].first) == nullptr && 
+                dynamic_cast<ColdWeapon*>(Weapons[i].first) == nullptr){
+                    Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
+                    break;
+                }
+                if(i == Weapons.size() - 1){
+                    Weapons.push_back(make_pair(Weapon , 1));
+                    break;
+                }
+            }
+        }
+        else if(dynamic_cast<BoomRang *>(Weapon) != nullptr){
+            for(int i = 0; i < Weapons.size(); i++){
+                if(dynamic_cast<BoomRang *>(Weapons[i].first) != nullptr)
+                    if(Weapons[i].first->getName()>=Weapon->getName()){
+                        Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
+                        break;
+                }
+                else if(dynamic_cast<Gun *>(Weapons[i].first) == nullptr && 
+                dynamic_cast<ColdWeapon *>(Weapons[i].first) == nullptr && dynamic_cast<Grenade *>(Weapons[i].first) == nullptr){
                     Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
                     break;
                 }
@@ -527,22 +476,22 @@ void Player :: removeWeapon(Weapon* Weapon){ //deletes the weapon considering it
 
 void Player :: addEquipment(Equipment* Equipment){ // adds the equipment if you buy it, to the Equipments' vector
     setArmor(getArmor() + Equipment->getAmount());
-    if(typeid(*Equipment) == typeid(HeadGear)){
+    if(dynamic_cast<HeadGear *>(Equipment) != nullptr){
         if(Equipments[0] != nullptr)
             removeItem(Equipments[0]);
         Equipments[0] = Equipment;
     }
-    else if(typeid(*Equipment) == typeid(Vest)){
+    else if(dynamic_cast<Vest *>(Equipment) != nullptr){
         if(Equipments[1] != nullptr)
             removeItem(Equipments[1]);
         Equipments[1] = Equipment;
     }
-    else if(typeid(*Equipment) == typeid(FootWear)){
+    else if(dynamic_cast<FootWear *>(Equipment) != nullptr){
         if(Equipments[2] != nullptr)
             removeItem(Equipments[2]);
         Equipments[2] = Equipment;
     }
-    else if(typeid(*Equipment) == typeid(Boot)){
+    else if(dynamic_cast<Boot *>(Equipment) != nullptr){
         if(Equipments[3] != nullptr)
             removeItem(Equipments[3]);
         Equipments[3] = Equipment;
@@ -551,13 +500,13 @@ void Player :: addEquipment(Equipment* Equipment){ // adds the equipment if you 
 
 void Player :: removeEquipment(Equipment* Equipment){ //removes the equipment if you sell or lose it, from the Equipments' vector
     setArmor(getArmor() - Equipment->getAmount());
-    if(typeid(*Equipment) == typeid(HeadGear))
+    if(dynamic_cast<HeadGear *>(Equipment) != nullptr)
         Equipments[0] = nullptr;
-    else if(typeid(*Equipment) == typeid(Vest))
+    else if(dynamic_cast<Vest *>(Equipment) != nullptr)
         Equipments[1] = nullptr;
-    else if(typeid(*Equipment) == typeid(FootWear))
+    else if(dynamic_cast<FootWear *>(Equipment) != nullptr)
         Equipments[2] = nullptr;
-    else if(typeid(*Equipment) == typeid(Boot))
+    else if(dynamic_cast<Boot *>(Equipment) != nullptr)
         Equipments[3] = nullptr;
 }
 
@@ -634,8 +583,7 @@ HumanEnemy :: HumanEnemy(string Name , int MaxHP , double Armor , vector<pair<It
     state = State::Heal;
     
     for(pair<Weapon*,int> x : Weapons){
-        if(typeid(*x.first) == typeid(Shotgun) || typeid(*x.first) == typeid(Snipe) || typeid(*x.first) == typeid(Rifle)
-        || typeid(*x.first) == typeid(SMG)){
+        if(dynamic_cast<Gun *>(x.first) != nullptr){
             Guns.emplace_back(dynamic_cast<Gun*>(x.first),x.second);
         }else {
             noneGuns.emplace_back(x);
@@ -679,14 +627,14 @@ void HumanEnemy :: StateMachine(Player* player,Control::FightControl* fightContr
         case State::NoneGunAttack:{
             noneGuns = ShuffleVec(noneGuns);
             Weapon* weapon = noneGuns[0].first;
-            if(typeid(*weapon) == typeid(ColdWeapon)){   
+            if(dynamic_cast<ColdWeapon *>(weapon) != nullptr){   
                 if(random_num(1,5) == 5){                 // 20% chance of throwing the cold weapon
                     Attack(player,weapon,1);
                     removeItem(weapon);
                 }else{
                     Attack(player,weapon,0);
                 }
-            }else if (typeid(*weapon) == typeid(Throwable)){
+            }else if (dynamic_cast<Throwable *>(weapon) != nullptr){
                 Attack(player,weapon,0);
                 removeItem(weapon);
             }
@@ -756,29 +704,29 @@ string HumanEnemy::DeathDialogue(){
 }
 
 void HumanEnemy::Attack(Player* player , Weapon* weapon , int choice){
-    if (typeid(*weapon) == typeid(Gun)) {
-        if(typeid(weapon) == typeid(Shotgun)){
+    if (dynamic_cast<Gun *>(weapon) != nullptr) {
+        if(dynamic_cast<Shotgun *>(weapon) != nullptr){
             Shotgun* shotgun = dynamic_cast<Shotgun*>(weapon);
             shotgun->Attack({player},player);
-        }else if(typeid(weapon) == typeid(Snipe)){
+        }else if(dynamic_cast<Snipe *>(weapon) != nullptr){
             Snipe* snipe = dynamic_cast<Snipe*>(weapon);
             snipe->Attack({player},player);
-        }else if(typeid(weapon) == typeid(Rifle)){
+        }else if(dynamic_cast<Rifle *>(weapon) != nullptr){
             Rifle* rifle = dynamic_cast<Rifle*>(weapon);
             rifle->Attack({player});
-        }else if(typeid(weapon) == typeid(Rifle)){
+        }else if(dynamic_cast<Rifle *>(weapon) != nullptr){
             SMG* smg = dynamic_cast<SMG*>(weapon);
             smg->Attack({player});
         }else{
             weapon->Attack(player);
         }
     }
-    else if(typeid(*weapon) == typeid(Throwable)){
+    else if(dynamic_cast<Throwable *>(weapon) != nullptr){
         Throwable *throwable = dynamic_cast<Throwable *>(weapon);
         throwable->Attack({player});
         removeItem(throwable); //removes the throwable from the backpack after it dropped
     }
-    else if(typeid(*weapon) == typeid(ColdWeapon)){
+    else if(dynamic_cast<ColdWeapon *>(weapon) != nullptr){
         ColdWeapon *coldWeapon = dynamic_cast<ColdWeapon *>(weapon);
         if(choice ==1){
             coldWeapon->Attack(player); //if attack, it calls the Attack function of the cold weapon
@@ -843,11 +791,10 @@ void HumanEnemy :: removeItem(Item* Item){ //deletes the items considering their
                 Items[i].second--;
         }
     }
-    if(typeid(*Item) == typeid(Shotgun) || typeid(*Item) == typeid(Snipe) || typeid(*Item) == typeid(SMG) ||
-    typeid(*Item) == typeid(Rifle) || typeid(*Item) == typeid(ColdWeapon) || typeid(*Item) == typeid(Grenade) ||
-    typeid(*Item) == typeid(BoomRang))
+    if(dynamic_cast<Gun *>(Item) != nullptr || dynamic_cast<ColdWeapon *>(Item) != nullptr ||
+    dynamic_cast<Throwable *>(Item) != nullptr)
         removeWeapon(dynamic_cast<Weapon *>(Item));
-    else if(typeid(*Item) == typeid(Consumable))
+    else if(dynamic_cast<Consumable *>(Item) != nullptr)
         removeConsumable(dynamic_cast<Consumable *>(Item));
 }
 

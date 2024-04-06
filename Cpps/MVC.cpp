@@ -638,8 +638,8 @@ void Control::FightControl::PlayerTurn(){
                     if(weapon->getEnergyNeeded() > model->getPlayer()->getEnergy())
                         view->Prompt("Not Enough Energy");
                         continue;
-                    
-                    if(typeid(weapon) == typeid(Gun)){
+                        
+                    if(dynamic_cast<Gun *>(weapon) != nullptr){
                         Gun* gun = dynamic_cast<Gun*>(weapon);
                         
                         while (true)
@@ -653,12 +653,12 @@ void Control::FightControl::PlayerTurn(){
                                             view->Prompt("Not Enough Ammo");
                                             continue;
                                     
-                                    if(typeid(gun) == typeid(Rifle)){
+                                    if(dynamic_cast<Rifle *>(gun) != nullptr){
                                         Rifle* rifle = dynamic_cast<Rifle*>(gun);
                                         vector<Character*> chosenEnemies = view->ChooseEnemies(model->getEnemies(),min(rifle->getMaxAttackAmount(),rifle->getAmmo()));
                                         rifle->Attack(chosenEnemies);
                                         
-                                    }else if(typeid(gun) == typeid(SMG)){
+                                    }else if(dynamic_cast<SMG *>(gun) != nullptr){
                                         SMG* smg = dynamic_cast<SMG*>(gun);
                                         vector<Character*> ShuffledEnemies = ShuffleVec(model->getEnemies());
                                         vector<Character*> ChosenEnemies;
@@ -667,11 +667,11 @@ void Control::FightControl::PlayerTurn(){
                                         }
                                         smg->Attack(ChosenEnemies);
                                         
-                                    }else if(typeid(gun) == typeid(Shotgun)){
+                                    }else if(dynamic_cast<Shotgun *>(gun) != nullptr){
                                         Shotgun* shotGun = dynamic_cast<Shotgun*>(gun);
                                         shotGun->Attack(model->getEnemies(),view->ChooseEnemy(model->getEnemies()));
                                         
-                                    }else if(typeid(gun) == typeid(Snipe)){
+                                    }else if(dynamic_cast<Snipe *>(gun) != nullptr){
                                         Snipe* snipe = dynamic_cast<Snipe*>(gun);
                                         snipe->Attack(model->getEnemies(),view->ChooseEnemy(model->getEnemies()));
                                         
@@ -700,12 +700,12 @@ void Control::FightControl::PlayerTurn(){
                         }
                         
                             
-                    }else if(typeid(weapon) == typeid(Throwable)){
+                    }else if(dynamic_cast<Throwable *>(weapon) != nullptr){
                         Throwable* throwable = dynamic_cast<Throwable*>(weapon);
                         throwable->Attack(model->getEnemies());
                         model->getPlayer()->removeItem(throwable);
                         
-                    }else if(typeid(weapon) == typeid(ColdWeapon)){
+                    }else if(dynamic_cast<ColdWeapon *>(weapon) != nullptr){
                         int option = view->ColdWeaponMenu();
                         ColdWeapon* coldWeapon = dynamic_cast<ColdWeapon*>(weapon);
                         while (true)
@@ -753,7 +753,7 @@ void Control::FightControl::PlayerTurn(){
 
 void Control::FightControl::EnemiesTurn(){
     for(Character* Enemy: model->getEnemies()){
-        if(typeid(Enemy) == typeid(HumanEnemy)){
+        if(dynamic_cast<HumanEnemy*>(Enemy) != nullptr){
             HumanEnemy* humanEnemy = dynamic_cast<HumanEnemy*>(Enemy);
             
             view->print(humanEnemy->getName() + ": " + humanEnemy->RajazKhani());
