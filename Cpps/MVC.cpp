@@ -639,8 +639,6 @@ void Control::FightControl::RemoveEnemies(){
 
 void Control::FightControl::PlayerTurn(){
     //1. weapons  2.consumables 3.endround
-    cout << "player";
-    getch;
     while(true){
         int choice = view->PlayerMenu();
         switch (choice)
@@ -654,7 +652,7 @@ void Control::FightControl::PlayerTurn(){
                     if(weapon->getEnergyNeeded() > model->getPlayer()->getEnergy())
                         view->Prompt("Not Enough Energy");
                         continue;
-                        
+                    
                     if(typeid(weapon) == typeid(Gun)){
                         Gun* gun = dynamic_cast<Gun*>(weapon);
                         
@@ -756,6 +754,7 @@ void Control::FightControl::PlayerTurn(){
                         break;
                     model->getPlayer()->Consume(consumable);
                 }
+                continue;
                 
             case 3:
                 break;
