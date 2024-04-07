@@ -31,6 +31,7 @@ namespace Model{
             vector<Character*> getEnemies();
             
             vector<Item*> getItems();
+            void setItems(vector<Item*> Items);
             int getCoins();
             
             vector<Relic*> getRelics();

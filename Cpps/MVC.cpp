@@ -43,7 +43,7 @@ Item* View::FightView::ChooseItem(vector<Item*> Items){
             }
         }
         
-        showCharacters();
+        //showCharacters();
         char key = _getch();
         switch(tolower(key))
         {
@@ -87,7 +87,7 @@ Relic* View::FightView::ChooseRelic(vector<Relic*> Relics){
                 cout << options[i] << endl;
             }
         }
-        showCharacters();
+        //showCharacters();
         char key = _getch();
         switch(tolower(key))
         {
@@ -830,6 +830,8 @@ int Model::FightModel::getCoins(){ return droppedCoins;}
 
 vector<Item*> Model::FightModel::getItems(){return Items;}
 
+void Model::FightModel::setItems(vector<Item*> Items){this->Items = Items;}
+
 vector<Relic*> Model::FightModel::getRelics(){return Relics;}
 
 void Model::FightModel::setEnemies(vector<Character*> Enemies){this -> Enemies = Enemies;}
@@ -839,7 +841,6 @@ Control::FightControl::FightControl(Player* player,vector<Character*> Enemies,ve
     model = new Model::FightModel(player, Enemies,Items,droppedCoins,Relics);
     view = new View::FightView(model);
 }
-
 
 void Control::FightControl::StartFight(){
     while(true){
@@ -1090,10 +1091,11 @@ void Control::FightControl::EndFight(){
                 {
                    view->Prompt("Not Enough BackPack Space");
                    continue;
-                }else{
-                    break;
                 }
-                
+                vector<Item*> Items = model->getItems();
+                Items.erase(remove(Items.begin(),Items.end(),ChosenItem),Items.end());
+                model->getPlayer()->addItem(ChosenItem);
+                delete ChosenItem;
             }
             
         }
