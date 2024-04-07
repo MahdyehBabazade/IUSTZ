@@ -9,13 +9,18 @@
 
 using namespace std;
 
+View::FightView::FightView(Model::FightModel* fightModel){
+    this->fightmodel = fightModel;
+}
+
 void View::FightView::DamageInfo(Weapon* weapon){
     clearScreen();
     cout << "Dealt " << weapon->getDamage() << " Damage" << endl;
 }
 
 void View::FightView::PlayerInfo(Player* player){
-    cout << "HP[]" << player->getHP() + "/" +player->getMaxHP() <<endl;
+    cout << "HP[" << player->getHP() + "/" +player->getMaxHP() <<endl;
+    
 }
 
 Item* View::FightView::ChooseItem(vector<Item*> Items){
@@ -150,6 +155,7 @@ Consumable* View::FightView::ChooseConsumable(vector<pair<Consumable*,int>> Cons
         
     return Consumables[option].first;
 }
+
 
 Character* View::FightView::ChooseEnemy(vector<Character*> Enemies){
     /*
@@ -792,7 +798,7 @@ void Model::FightModel::setEnemies(vector<Character*> Enemies){this -> Enemies =
 //---------------------------------------------------------------------------------------------
 Control::FightControl::FightControl(Player* player,vector<Character*> Enemies,vector<Item*> Items,int droppedCoins,vector<Relic*> Relics) {
     model = new Model::FightModel(player, Enemies,Items,droppedCoins,Relics);
-    view = new View::FightView();
+    view = new View::FightView(model);
 }
 
 
@@ -842,10 +848,11 @@ void Control::FightControl::PlayerTurn(){
     //1. weapons  2.consumables  3.show enemies  4.end round
     while(!model->getEnemies().empty()){
         int choice = view->PlayerMenu();
+        
         switch (choice)
         {
             case 1:
-                while(true){
+                while(!model->getEnemies().empty()){
                     Weapon* weapon = view->ChooseWeapon(model->getPlayer()->getWeapons());
                     if(weapon == nullptr)
                         break;
@@ -860,7 +867,7 @@ void Control::FightControl::PlayerTurn(){
                     if(dynamic_cast<Gun *>(weapon) != nullptr){
                         Gun* gun = dynamic_cast<Gun*>(weapon);
                         
-                        while (true)
+                        while (!model->getEnemies().empty())
                         {
                             // 1.attack   2.reload  3.back
                             int option = view->GunMenu();
@@ -945,7 +952,7 @@ void Control::FightControl::PlayerTurn(){
                     }else if(dynamic_cast<ColdWeapon *>(weapon) != nullptr){
                         int option = view->ColdWeaponMenu();
                         ColdWeapon* coldWeapon = dynamic_cast<ColdWeapon*>(weapon);
-                        while (true)
+                        while (!model->getEnemies().empty())
                         {
                             switch (option)
                             {
@@ -992,7 +999,7 @@ void Control::FightControl::PlayerTurn(){
                 }
                 continue;
             case 2:
-                while (true)
+                while (!model->getEnemies().empty())
                 {
                     Consumable* consumable = view->ChooseConsumable(model->getPlayer()->getConsumables());
                     if(consumable == nullptr)
@@ -1002,9 +1009,12 @@ void Control::FightControl::PlayerTurn(){
                 continue;
                 
             case 3:
-                
-                view->ShowEnemies(model->getEnemies());
+            {
+                vector<Character*> Characters = model->getEnemies();
+                Characters.insert(Characters.begin(),model->getPlayer());
+                view->ShowEnemies(Characters);
                 continue;
+            }
             case 4:
                 break;
             default:

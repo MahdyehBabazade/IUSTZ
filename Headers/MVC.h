@@ -11,8 +11,10 @@ class ShopKeeper;
 class Medic;
 namespace View{
     class FightView{
+        private:
+            Model::FightModel* fightmodel;
         public:
-            FightView() = default;
+            FightView(Model::FightModel* fightmodel);
             int PlayerMenu(); //player options
             int GunMenu(); //weapon options(reload and attack)
             int ColdWeaponMenu();
