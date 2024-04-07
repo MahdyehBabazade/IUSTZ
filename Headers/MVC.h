@@ -28,7 +28,7 @@ namespace View{
             void Prompt(string entry);
             void print(string entry);
             void DamageInfo(Weapon* weapon);
-            void PlayerInfo(Player* player)
+            void PlayerInfo(Player* player);
     };
 }
 
