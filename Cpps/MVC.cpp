@@ -652,10 +652,11 @@ int View::FightView::ColdWeaponMenu(){
         switch(tolower(key))
         {
             case 'w':
-                option--;
+                option = (vecSize+option-1)%vecSize;
                 continue;
             case 's':
                 option++;
+                option%vecSize;
                 continue;
             case '\r':
                 break;
@@ -665,7 +666,7 @@ int View::FightView::ColdWeaponMenu(){
         break;
     }
     
-    return (option % vecSize +1);
+    return (option +1);
 }
 
 int View::FightView::GunMenu(){
@@ -688,10 +689,11 @@ int View::FightView::GunMenu(){
         switch(tolower(key))
         {
             case 'w':
-                option--;
+                option = (vecSize+option-1)%vecSize;
                 continue;
             case 's':
                 option++;
+                option%=vecSize;
                 continue;
             case '\r':
                 break;
@@ -706,73 +708,40 @@ int View::FightView::GunMenu(){
 void View::FightView::showCharacters(){
     vector<Character*> Characters = model->getEnemies();
     Characters.insert(Characters.begin(),model->getPlayer());
-    /*
-    int vecSize = Enemies.size();
-    vector<vector<string>> options(4, vector<string>(vecSize));
-    for(int i=0 ; i<4 ; i++){
-        for(int j=0 ; j<vecSize ; j++){
-            if(i == 0){
-                options[i][j] = Enemies[j]->getName();
-            }
-            else if(i == 1){
-                options[i][j] = "HP:[" + to_string(Enemies[j]->getHP()) + "/" + to_string(Enemies[j]->getMaxHP()) + "]";
-            }
-            else if(i == 2){
-                options[i][j] = "Armor:" + Enemies[j]->getArmor();
-            }
-            else if(i == 3){
-                options[i][j] = "Shield:" + Enemies[j]->getShield();
-            }
-        }
-    }
-    int rows = options.size();
-    int width = 0;
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < options[i].size(); j++) {
-            int len = options[i][j].length();
-            if (len > width) {
-                width = len;
-            }
-        }
-    }
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < options[i].size(); j++) {
-            if(j > 0){
-                cout << left << setw(width) << options[i][j] << " ";
-            }else{
-                cout << left << setw(4) << options[i][j];
-            }
-
-        }
-        cout << endl;
-    }
-    */
-   cout << endl;
+    
+    cout << endl;
     vector<vector<string>> Details;
     for(int i = 0;i < 4; i ++){
         vector<string> row;
         if(i == 0){
-            for(Character* Enemy: Characters){
-                row.push_back(Enemy->getName());
+            for(Character* character: Characters){
+                row.push_back(character->getName());
             }        
             
         }else if(i == 1){
-            for(Character* Enemy: Characters){
-                row.push_back("HP:[" + to_string(Enemy->getHP()) + "/" + to_string(Enemy->getMaxHP()) + "]");
+            for(Character* character: Characters){
+                row.push_back("HP:[" + to_string(character->getHP()) + "/" + to_string(character->getMaxHP()) + "]");
             }
         }else if(i == 2){
-            for(Character* Enemy: Characters){
-                row.push_back("Armor: " + to_string(Enemy->getArmor()));
+            for(Character* character: Characters){
+                row.push_back("Armor: " + to_string(character->getArmor()));
             }
             
         }else if(i == 3){
-            for(Character* Enemy: Characters){
-                row.push_back("Shield: " + to_string(Enemy->getShield()));
+            for(Character* character :Characters){
+                row.push_back("Shield: " + to_string(character->getShield()));
             }
         }
         Details.push_back(row);
     }
     
+    vector<string> row;
+    row.push_back("Energy: [" + to_string(model->getPlayer()->getEnergy()) + "/" + to_string(model->getPlayer()->getMaxEnergy()) + "]");
+    for(int i = 0; i <model->getEnemies().size();i++){
+        row.push_back(" ");
+    }
+    Details.push_back(row);
+    //Details.push_back({"Energy: " + to_string(model->getPlayer()->getEnergy())});
     int rows = Details.size();
     int width = 0;
     for(int i=0 ; i<rows ; i++){
@@ -785,10 +754,10 @@ void View::FightView::showCharacters(){
     
     int vecSize = Details[0].size();
     
-    for(int i=0 ; i<4 ; i++){
+    for(int i=0 ; i<rows ; i++){
         for(int j=0 ; j<vecSize ; j++){
             if(j == 0){
-                cout << left << setw(width+10) << Details[i][j] << " " ;
+                cout << left << setw(width+40) << Details[i][j] << " " ;
                 continue;
             }
             cout << left << setw(width) << Details[i][j] << " " ;
@@ -804,7 +773,6 @@ void View::FightView::Prompt(string entry){
 void View::FightView::print(string entry){
     cout << entry << endl;
 }
-
 
 
 //---------------------------------------------------------------------------------------------
@@ -916,6 +884,7 @@ void Control::FightControl::PlayerTurn(){
                             {
                                 case 1:
                                     if(gun->getAmmo() ==0){
+                                            clearScreen();
                                             view->Prompt("Not Enough Ammo");
                                             continue;
                                     }
@@ -1044,6 +1013,25 @@ void Control::FightControl::PlayerTurn(){
                     Consumable* consumable = view->ChooseConsumable(model->getPlayer()->getConsumables());
                     if(consumable == nullptr)
                         break;
+                    if(consumable->getType() == "HPPotion"){
+                        if (model->getPlayer()->getHP() >= model->getPlayer()->getMaxHP())
+                        {
+                            view->Prompt("You Already Have Full HP");
+                        }
+                        
+                    }else if(consumable->getType() == "ShieldPotion"){
+                        if (model->getPlayer()->getShield() >= 100)
+                        {
+                            view->Prompt("You Already Have Full Shield");
+                        }
+                        
+                    }else if(consumable->getType() == "EnergyPotion"){
+                        if (model->getPlayer()->getEnergy() >= model->getPlayer()->getMaxEnergy())
+                        {
+                            view->Prompt("You Already Have Full Energy");
+                        }
+                        
+                    }
                     model->getPlayer()->Consume(consumable);
                 }
                 continue;
@@ -1103,5 +1091,16 @@ void Control::FightControl::EndFight(){
         Relic* relic = view->ChooseRelic(model->getRelics());
         if(relic != nullptr)  
             model->getPlayer()->addRelic(relic);
+        
+        model->getPlayer()->setHP(model->getPlayer()->getMaxHP());
+        model->getPlayer()->setEnergy(model->getPlayer()->getMaxEnergy());
+        model->getPlayer()->setShield(0);
+        for(pair<Weapon*,int> p:model->getPlayer()->getWeapons()){
+            Weapon* weapon = p.first;
+            if(dynamic_cast<Gun*>(weapon) != nullptr){
+                Gun* gun = dynamic_cast<Gun*>(weapon);
+                gun->Reload();
+            }
+        }
         
 }

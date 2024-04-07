@@ -596,24 +596,38 @@ void HumanEnemy :: StateMachine(Player* player,Control::FightControl* fightContr
         switch (state)
         {
         case State::Heal:
-            cout << "heal initiated" << endl;
-            -getch();
-            if(getHP() > getMaxHP()/2)
+        {
+           // cout << "heal initiated" << endl;
+            
+            if(getHP() > getMaxHP()/2){
                 state = State::Shield;
                 continue;
+            }
+                
+            bool hasPotion = false;
             for(pair<Consumable* , int> x:Consumables){
                 Consumable* Potion = x.first;
                 if(Potion->getType() == "HPPotion"){
+                    hasPotion = true;
                     Consume(Potion);
-                    fightControl->getView()->print("hp +" + to_string(Potion->getAmount()));
+                    fightControl->getView()->print("HP +" + to_string(Potion->getAmount()));
                     break;
                 }
             }
+            if(!hasPotion){
+                state = State::Shield;
+            }
             continue;
+        }
         case State::Shield:
-            if(getShield() > getMaxHP()/4) // cahracters can have max shield of maxhp/2
+        {
+            //cout << "Shield initiated" << endl;
+            if(getShield() > getMaxHP()/4){ // cahracters can have max shield of maxhp/2
                 state = State::Attack;
-                continue;        
+                continue;
+            }  
+            
+            bool hasPotion = false;      
             for(pair<Consumable* , int> x:Consumables){
                 if(getShield() >= getMaxHP()/2)
                     break;
@@ -621,28 +635,34 @@ void HumanEnemy :: StateMachine(Player* player,Control::FightControl* fightContr
                 Consumable* Potion = x.first;
                 if(Potion->getType() == "ShieldPotion"){
                     Consume(Potion);
+                    hasPotion = true;
                     fightControl->getView()->print("Sheild " + to_string(getShield()) + " Damage");
                 }
             }
             
+            if(!hasPotion){
+                state = State::Attack;
+            }
+            
             continue;
+        }
         case State::NoneGunAttack:{
+        {
             noneGuns = ShuffleVec(noneGuns);
             Weapon* weapon = noneGuns[0].first;
             if(dynamic_cast<ColdWeapon *>(weapon) != nullptr){   
                 if(random_num(1,5) == 5){                 // 20% chance of throwing the cold weapon
                     Attack(player,weapon,1);
-                    removeItem(weapon);
                 }else{
                     Attack(player,weapon,0);
                 }
             }else if (dynamic_cast<Throwable *>(weapon) != nullptr){
                 Attack(player,weapon,0);
-                removeItem(weapon);
             }
             
             fightControl->getView()->print("Dealt " + to_string(weapon->getDamage()) + " Damage");
             break;
+        }
         }
         case State::Reload:
             fightControl->getView()->print("Reloaded!");
@@ -650,6 +670,7 @@ void HumanEnemy :: StateMachine(Player* player,Control::FightControl* fightContr
             break;
             
         case State::GunAttack:
+        {
             Guns = ShuffleVec(Guns);
             
             for(pair<Gun*,int> x:Guns){
@@ -679,7 +700,9 @@ void HumanEnemy :: StateMachine(Player* player,Control::FightControl* fightContr
             }
             
             
+        }
         case State::Attack:
+            //cout << "attack" << endl;
             if(!Guns.empty()){   
                 state = State::GunAttack;
             }else{
