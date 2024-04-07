@@ -114,7 +114,7 @@ Relic* View::FightView::ChooseRelic(vector<Relic*> Relics){
 
 
 Consumable* View::FightView::ChooseConsumable(vector<pair<Consumable*,int>> Consumables){
-    vector<string> options;
+    /*vector<string> options;
     for(pair<Consumable*,int> x:Consumables){
         if(x.second > 1){
             options.push_back(x.first->getShortStat() + " x" + to_string(x.second));
@@ -157,7 +157,74 @@ Consumable* View::FightView::ChooseConsumable(vector<pair<Consumable*,int>> Cons
     if(option  == vecSize-1)
         return nullptr;
         
-    return Consumables[option].first;
+    return Consumables[option].first;*/
+    vector<vector<string>> Options;
+    //                   0       1         2               
+    Options.push_back({"Name","Type","Amount"});
+    for(pair<Consumable*,int> x : Consumables){
+        Consumable* consumable = x.first;
+        int amount = x.second;
+        
+        vector<string> row(Options[0].size());
+        row[0] = (consumable->getName() + "(x" + to_string(amount) + ")");
+        row[1] = consumable->getType();
+        row[2] = to_string(consumable->getAmount());
+        Options.push_back(row);
+    }
+    Options.push_back({"Back"," "," "});
+    
+    int rows = Options.size();
+    int width = 0;
+    for(int i=0 ; i<rows ; i++){
+        for(int j=0; j<Options[i].size() ; j++){
+            int len = Options[i][j].length();
+            if(len > width)
+                width = len;
+        }
+    }
+    
+    int option = 1;
+    int vecSize = Options[0].size();
+    while(true){
+        clearScreen();
+        
+        for(int i=0 ; i<Options.size(); i++){
+            if(i == option){
+                cout << green;
+            }
+            for(int j=0 ; j<vecSize ; j++){
+                cout << left << setw(width) << Options[i][j] << " " ;
+            }
+            cout << reset << endl;
+        }
+        showCharacters();
+        char key = _getch();
+        switch(tolower(key))
+        {
+            case 'w':
+                option = (Options.size() + option - 1) % Options.size();
+                if(option == 0){
+                    option = Options.size() -1;
+                }
+                continue;
+            case 's':
+                option++;
+                option%=Options.size();
+                if(option == 0){
+                    option = 1;
+                }
+                continue;
+            case '\r':
+                break;
+            default:
+                continue;
+        }
+        break;
+    }
+    
+    if(option  == Options.size()-1)
+        return nullptr;
+    return Consumables[option-1].first;
 }
 
 

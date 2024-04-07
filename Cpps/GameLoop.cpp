@@ -6,6 +6,7 @@
 #include "../Headers/map.h"
 #include "../Headers/MVC.h"
 #include "functions.cpp"
+#include <ctime>
 
 using namespace std;
 
