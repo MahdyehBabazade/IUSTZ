@@ -389,14 +389,30 @@ void Shop :: Menu(){
                     for(pair<Weapon*,int> weapon: player->getWeapons()){
                         Options.push_back(weapon.first->getStat());
                     }
+                    Options.push_back("Back Pack");
                     Options.push_back("Back");
                     
-                    int choice = Choose(Story + dialogue + "\n",
+                    int choice = Choose(Story + "\n" + dialogue + "\n",
                     Options);
                     if(choice == Options.size()){
                         break;
                     }
-                    
+                    else if(choice == Options.size() - 1){
+                        if(player->getBackPackCapacity() >= 90){
+                            clearScreen();
+                            cout << Story << "\n" << shopkeeper->getName() << ": you Already have the Best Back Pack!!!\n";
+                            getch();
+                        }
+                        else if(player->getCoin() >= 30){
+                            player->setBackPackCapacity(player->getBackPackCapacity() + 15);
+                            player->removeCoin(30);
+                        }
+                        else{
+                            cout << shopkeeper->NoMoneyDialogue();
+                            getch();
+                        }
+                        break;
+                    }
                     Weapon* ChosenWeapon = player->getWeapons()[choice-1].first;
                     
                     if(ChosenWeapon->getUpgradeAmount() >= ChosenWeapon->getUpgradeLimit()){
