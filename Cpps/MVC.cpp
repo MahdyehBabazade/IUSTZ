@@ -787,7 +787,7 @@ void View::FightView::showCharacters(){
     
     for(int i=0 ; i<4 ; i++){
         for(int j=0 ; j<vecSize ; j++){
-            if(j == 1){
+            if(j == 0){
                 cout << left << setw(width+10) << Details[i][j] << " " ;
                 continue;
             }
