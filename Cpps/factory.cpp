@@ -627,7 +627,7 @@ vector<int> MapFactory :: PathFinding3(vector<int> path1,vector<int> path2){
         else{
             if((path1[i-1]==path[i-1]+1 && path1[i]==path[i-1] && path2[i-1]==path[i-1]-1 && path2[i]==path[i-1])
             || (path2[i-1]==path[i-1]+1 && path2[i]==path[i-1] && path1[i-1]==path[i-1]-1 && path1[i]==path[i-1])){
-                path[i]==path[i-1];
+                path[i] = path[i-1];
             }
             else if((path2[i-1]==path[i-1]+1 && path2[i]==path[i-1])
             ||(path1[i-1]==path[i-1]+1 && path1[i]==path[i-1])){
