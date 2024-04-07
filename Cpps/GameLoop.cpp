@@ -5,6 +5,7 @@
 #include "../Headers/items.h"
 #include "../Headers/map.h"
 #include "../Headers/MVC.h"
+#include "functions.cpp"
 
 using namespace std;
 
@@ -66,7 +67,7 @@ void GameLoopFunction(){
         }
     // }
 }
-void PlayerGenerate(){
+Player* PlayerGenerate(){
 //---------------------------- All items --------------------------
 // Weapons  
     Shotgun* shotgun = new Shotgun("Reaper", 20, 30, 25, 1, 2, 3, 25, 3);
@@ -82,10 +83,26 @@ void PlayerGenerate(){
 //-----------------------------------------------------------------
     string name;
     cin >> name;
+    vector<pair<Weapon*, int>> weapons;
+    vector<pair<Item*, int>> items;
+    Player* player = new Player(name, 100, 60, 0, 4, 0, items, weapons);
     vector<Weapon*> AllWeapons = {shotgun, snipe, smg, rifle, coldweapon};
     int item_index = rand() % 5;
-    vector<pair<Weapon*, int>> weapons = {make_pair(AllWeapons[item_index], 1)};
-    vector<pair<Item*, int>> items = {make_pair(AllWeapons[item_index], 1)};
-    Player* player = new Player(name, 100, 60, 0, 4, 0, items, weapons);
-    vector<string> stories; // Stories to be added
+    player->addItem(AllWeapons[item_index]);
+    return player;
+}
+
+string StoryGenerate(){
+    string ForestStory = "Legends speak of a forest with its mythical creatures and ancient magic. As an adventure, "
+    "you must explore the forest, get into some troubles, fight with eccentric creatures or maybe some super natural human beings "
+    "and save the inhabitants with your bravery. You may get into some troubles you can't ever fight against or you may never be "
+    "able to get out of the forest. The creatures don't like to be touched so, as a warning, whenever you touch them or make a "
+    "noise they'll notice and you must use all your skills to get rid of them. Best of luck with accomplishing your duties. ";
+    string  WarStory = "A brutal war started in a battlefield and you are the only one to fight against these giant unusual "
+    "creatures, defending your home and properties. There are several creatures waiting for you to fight with. None of them looks "
+    "normal. There are human beings with abnormal faces and bodies, terrible-looking zombies and their never-unclosed lips, "
+    "unknown giant creatures with odd faces and at the back, the monster you never thought it could exist. So you must be "
+    "aware and armed. You know you've been through worst shits and you're still alive. Good luck!";
+    vector<string> stories = {ForestStory, WarStory};
+    return ShuffleVec(stories)[0];
 }
