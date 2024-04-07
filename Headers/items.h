@@ -74,6 +74,7 @@ public:
     Gun(string name,int capacity,int price,int damage,int energyNeeded,int ammo,int reloadEnergy,int upgradeLimit);
     string getStat() override;
     string getShortStat() override;
+    int getMaxAmmo();
 };
 
 class Shotgun:public Gun{

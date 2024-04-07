@@ -27,7 +27,8 @@ namespace View{
             void ShowEnemies(vector<Character*> Enemies);
             void Prompt(string entry);
             void print(string entry);
-            
+            void DamageInfo(Weapon* weapon);
+            void PlayerInfo(Player* player)
     };
 }
 
@@ -56,6 +57,7 @@ namespace Model{
             int getCoins();
             
             vector<Relic*> getRelics();
+            void setEnemies(vector<Character*> Enemies);
     };
 }
 
