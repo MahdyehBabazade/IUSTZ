@@ -9,32 +9,7 @@ class HumanEnemy;
 class Zombie;
 class ShopKeeper;
 class Medic;
-namespace View{
-    class FightView{
-        private:
-            Model::FightModel* fightmodel;
-        public:
-            FightView(Model::FightModel* fightmodel);
-            int PlayerMenu(); //player options
-            int GunMenu(); //weapon options(reload and attack)
-            int ColdWeaponMenu();
-            vector<Character*> ChooseEnemies(vector<Character*> Enemies,int amount);
-            Consumable* ChooseConsumable(vector<pair<Consumable*,int>> Consumables);
-            Weapon* ChooseWeapon(vector<pair<Weapon*,int>> Weapons);
-            Character* ChooseEnemy(vector<Character*> Enemies);
-            
-            
-            Item* ChooseItem(vector<Item*> Items);
 
-            void ShowEnemies(vector<Character*> Enemies);
-            void Prompt(string entry);
-            void print(string entry);
-            void DamageInfo(Weapon* weapon);
-            void PlayerInfo(Player* player);
-    };
-}
-
-//--------------------
 namespace Model{
     class FightModel{
         private:
@@ -62,6 +37,32 @@ namespace Model{
             void setEnemies(vector<Character*> Enemies);
     };
 }
+//--------------------
+namespace View{
+    class FightView{
+        private:
+            Model::FightModel* model;
+        public:
+            FightView(Model::FightModel* fightmodel);
+            int PlayerMenu(); //player options
+            int GunMenu(); //weapon options(reload and attack)
+            int ColdWeaponMenu();
+            vector<Character*> ChooseEnemies(vector<Character*> Enemies,int amount);
+            Consumable* ChooseConsumable(vector<pair<Consumable*,int>> Consumables);
+            Weapon* ChooseWeapon(vector<pair<Weapon*,int>> Weapons);
+            Character* ChooseEnemy(vector<Character*> Enemies);
+            Relic* ChooseRelic(vector<Relic*> Relics);
+            
+            Item* ChooseItem(vector<Item*> Items);
+
+            void showCharacters();
+            void Prompt(string entry);
+            void print(string entry);
+            void DamageInfo(Weapon* weapon);
+            void PlayerInfo(Player* player);
+    };
+}
+
 
 //-------------------------
 namespace Control{

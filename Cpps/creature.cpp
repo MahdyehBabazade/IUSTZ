@@ -596,6 +596,8 @@ void HumanEnemy :: StateMachine(Player* player,Control::FightControl* fightContr
         switch (state)
         {
         case State::Heal:
+            cout << "heal initiated" << endl;
+            -getch();
             if(getHP() > getMaxHP()/2)
                 state = State::Shield;
                 continue;

@@ -10,7 +10,7 @@
 using namespace std;
 
 View::FightView::FightView(Model::FightModel* fightModel){
-    this->fightmodel = fightModel;
+    this->model = fightModel;
 }
 
 void View::FightView::DamageInfo(Weapon* weapon){
@@ -42,6 +42,8 @@ Item* View::FightView::ChooseItem(vector<Item*> Items){
                 cout << options[i] << endl;
             }
         }
+        
+        showCharacters();
         char key = _getch();
         switch(tolower(key))
         {
@@ -66,7 +68,7 @@ Item* View::FightView::ChooseItem(vector<Item*> Items){
     return Items[option];
 }
 
-Relic* ChooseRelic(vector<Relic*> Relics){
+Relic* View::FightView::ChooseRelic(vector<Relic*> Relics){
     vector<string> options;
     for(Item* relic: Relics){
         options.push_back(relic->getStat());
@@ -85,6 +87,7 @@ Relic* ChooseRelic(vector<Relic*> Relics){
                 cout << options[i] << endl;
             }
         }
+        showCharacters();
         char key = _getch();
         switch(tolower(key))
         {
@@ -132,6 +135,7 @@ Consumable* View::FightView::ChooseConsumable(vector<pair<Consumable*,int>> Cons
                 cout << options[i] << endl;
             }
         }
+        showCharacters();
         char key = _getch();
         switch(tolower(key))
         {
@@ -306,6 +310,7 @@ Character* View::FightView::ChooseEnemy(vector<Character*> Enemies){
             }
             cout << endl;
         }
+        showCharacters();
         char key = _getch();
         switch(tolower(key))
         {
@@ -428,6 +433,7 @@ vector<Character*> View::FightView::ChooseEnemies(vector<Character*> Enemies , i
             cout << endl;    
         }    
     int m = 0;
+    showCharacters();
     char key = _getch();
     switch(tolower(key))
     {
@@ -559,6 +565,7 @@ Weapon* View::FightView::ChooseWeapon(vector<pair<Weapon*,int>> Weapons){
             }
             cout << reset << endl;
         }
+        showCharacters();
         char key = _getch();
         switch(tolower(key))
         {
@@ -589,9 +596,9 @@ Weapon* View::FightView::ChooseWeapon(vector<pair<Weapon*,int>> Weapons){
 }
 
 int View::FightView::PlayerMenu(){
-    // 1. weapons   2.consumables  3.show enemies  4.endround
+    // 1. weapons   2.consumables  3.endround
     int option = 0;
-    vector<string> options = {"Weapons","Consumables","show enemies","End Round"};
+    vector<string> options = {"Weapons","Consumables","End Round"};
     
     int vecSize = options.size();
     while(true){
@@ -603,6 +610,7 @@ int View::FightView::PlayerMenu(){
                 cout << options[i] << endl;
             }
         }
+        showCharacters();
         char key = _getch();
         switch(tolower(key))
         {
@@ -639,6 +647,7 @@ int View::FightView::ColdWeaponMenu(){
                 cout << options[i] << endl;
             }
         }
+        showCharacters();
         char key = _getch();
         switch(tolower(key))
         {
@@ -665,12 +674,38 @@ int View::FightView::GunMenu(){
     vector<string> options = {"Attack","Reload","Back"};
     
     int vecSize = options.size();
-    option = Choose("" , options);
-    return (option);
+    while(true){
+        clearScreen();
+        for(int i=0 ; i < vecSize; i++){
+            if(i == option%vecSize){
+                cout << green << options[i] << reset << endl;
+            }else{
+                cout << options[i] << endl;
+            }
+        }
+        showCharacters();
+        char key = _getch();
+        switch(tolower(key))
+        {
+            case 'w':
+                option--;
+                continue;
+            case 's':
+                option++;
+                continue;
+            case '\r':
+                break;
+            default:
+                continue;
+        }
+        break;
+    }
+    return (option+1);
 }
 
-void View::FightView::ShowEnemies(vector<Character*> Enemies){
-    clearScreen();
+void View::FightView::showCharacters(){
+    vector<Character*> Characters = model->getEnemies();
+    Characters.insert(Characters.begin(),model->getPlayer());
     /*
     int vecSize = Enemies.size();
     vector<vector<string>> options(4, vector<string>(vecSize));
@@ -712,25 +747,26 @@ void View::FightView::ShowEnemies(vector<Character*> Enemies){
         cout << endl;
     }
     */
+   cout << endl;
     vector<vector<string>> Details;
     for(int i = 0;i < 4; i ++){
         vector<string> row;
         if(i == 0){
-            for(Character* Enemy: Enemies){
+            for(Character* Enemy: Characters){
                 row.push_back(Enemy->getName());
             }        
             
         }else if(i == 1){
-            for(Character* Enemy: Enemies){
+            for(Character* Enemy: Characters){
                 row.push_back("HP:[" + to_string(Enemy->getHP()) + "/" + to_string(Enemy->getMaxHP()) + "]");
             }
         }else if(i == 2){
-            for(Character* Enemy: Enemies){
+            for(Character* Enemy: Characters){
                 row.push_back("Armor: " + to_string(Enemy->getArmor()));
             }
             
         }else if(i == 3){
-            for(Character* Enemy: Enemies){
+            for(Character* Enemy: Characters){
                 row.push_back("Shield: " + to_string(Enemy->getShield()));
             }
         }
@@ -751,11 +787,14 @@ void View::FightView::ShowEnemies(vector<Character*> Enemies){
     
     for(int i=0 ; i<4 ; i++){
         for(int j=0 ; j<vecSize ; j++){
+            if(j == 1){
+                cout << left << setw(width+10) << Details[i][j] << " " ;
+                continue;
+            }
             cout << left << setw(width) << Details[i][j] << " " ;
         }
         cout << endl;
     }
-    Prompt("");
 }
 
 void View::FightView::Prompt(string entry){
@@ -845,7 +884,7 @@ void Control::FightControl::RemoveEnemies(){
 }
 
 void Control::FightControl::PlayerTurn(){
-    //1. weapons  2.consumables  3.show enemies  4.end round
+    //1. weapons  2.consumables  3.end round
     while(!model->getEnemies().empty()){
         int choice = view->PlayerMenu();
         
@@ -1009,13 +1048,6 @@ void Control::FightControl::PlayerTurn(){
                 continue;
                 
             case 3:
-            {
-                vector<Character*> Characters = model->getEnemies();
-                Characters.insert(Characters.begin(),model->getPlayer());
-                view->ShowEnemies(Characters);
-                continue;
-            }
-            case 4:
                 break;
             default:
                 continue;
@@ -1066,7 +1098,7 @@ void Control::FightControl::EndFight(){
             
         }
         
-        Relic* relic = ChooseRelic(model->getRelics());
+        Relic* relic = view->ChooseRelic(model->getRelics());
         if(relic != nullptr)  
             model->getPlayer()->addRelic(relic);
         
