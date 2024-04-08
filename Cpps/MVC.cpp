@@ -69,34 +69,60 @@ Item* View::FightView::ChooseItem(vector<Item*> Items){
 }
 
 Relic* View::FightView::ChooseRelic(vector<Relic*> Relics){
-    vector<string> options;
-    for(Item* relic: Relics){
-        options.push_back(relic->getStat());
+    vector<vector<string>> Options;
+    //                   0       1         2                 
+    Options.push_back({"Name","MaxHP","MaxEnergy"});
+    for(Relic* x : Relics){
+        Relic* relic = x;
+        
+        vector<string> row(Options[0].size());
+        row[0] = relic->getName();
+        row[1] = to_string(relic->getMaxHP());
+        row[2] = to_string(relic->getMaxEnergy());
+        Options.push_back(row);
+    }
+    Options.push_back({"Back"," "," "});
+
+    int rows = Options.size();
+    int width = 0;
+    for(int i=0 ; i<rows ; i++){
+        for(int j=0; j<Options[i].size() ; j++){
+            int len = Options[i][j].length();
+            if(len > width)
+                width = len;
+        }
     }
     
-    options.push_back("None");
-    
-    int option=0;
-    int vecSize = options.size();
+    int option = 1;
+    int vecSize = Options[0].size();
     while(true){
         clearScreen();
-        for(int i=0 ; i < vecSize; i++){
+        
+        for(int i=0 ; i<Options.size(); i++){
             if(i == option){
-                cout << green << options[i] << reset << endl;
-            }else{
-                cout << options[i] << endl;
+                cout << green;
             }
+            for(int j=0 ; j<vecSize ; j++){
+                cout << left << setw(width) << Options[i][j] << " " ;
+            }
+            cout << reset << endl;
         }
-        //showCharacters();
+        showCharacters();
         char key = _getch();
         switch(tolower(key))
         {
             case 'w':
-                option = (vecSize + option - 1)  % vecSize;
+                option = (Options.size() + option - 1) % Options.size();
+                if(option == 0){
+                    option = Options.size() -1;
+                }
                 continue;
             case 's':
                 option++;
-                option%=vecSize;
+                option%=Options.size();
+                if(option == 0){
+                    option = 1;
+                }
                 continue;
             case '\r':
                 break;
@@ -106,10 +132,9 @@ Relic* View::FightView::ChooseRelic(vector<Relic*> Relics){
         break;
     }
     
-    if(option  == vecSize-1)
+    if(option  == Options.size()-1)
         return nullptr;
-        
-    return Relics[option];
+    return Relics[option-1];
 }
 
 
@@ -940,7 +965,7 @@ View::FightView* Control::FightControl::getView(){return view;}
 void Control::FightControl::EndFight(){
     if(model->getPlayer() != nullptr){
         model->getPlayer()->addCoin(model->getCoins());
-        while (!model->getItems().empty())
+        /*while (!model->getItems().empty())
         {
             Item* ChosenItem = view->ChooseItem(model->getItems());
             if(ChosenItem == nullptr){
@@ -957,21 +982,59 @@ void Control::FightControl::EndFight(){
             model->setItems(Items);
             model->getPlayer()->addItem(ChosenItem);
             //delete ChosenItem;
-        }
-        
-        Relic* relic = view->ChooseRelic(model->getRelics());
-        if(relic != nullptr)  
-            model->getPlayer()->addRelic(relic);
-        
-        model->getPlayer()->setHP(model->getPlayer()->getMaxHP());
-        model->getPlayer()->setEnergy(model->getPlayer()->getMaxEnergy());
-        model->getPlayer()->setShield(0);
-        for(pair<Weapon*,int> p:model->getPlayer()->getWeapons()){
-            Weapon* weapon = p.first;
-            if(dynamic_cast<Gun*>(weapon) != nullptr){
-                Gun* gun = dynamic_cast<Gun*>(weapon);
-                gun->Reload();
+        }*/
+        vector<pair<Weapon*,int>> weapons;
+        vector<pair<Consumable*,int>> consumables;
+        for(Item* items : model->getItems()){
+            if(dynamic_cast<Weapon*>(items) != nullptr){
+                Weapon* newWeapon = dynamic_cast<Weapon*>(items);
+                weapons.push_back(make_pair(newWeapon,1));
+            }else if(dynamic_cast<Consumable*>(items) != nullptr){
+                Consumable* newConsumable = dynamic_cast<Consumable*>(items);
+                consumables.push_back(make_pair(newConsumable,1));
             }
+        }
+        while(!weapons.empty()){  // weapon
+            Weapon* ChosenWeapon = view->ChooseWeapon(weapons);
+            if(ChosenWeapon == nullptr)
+                break;
+
+            if(ChosenWeapon->getCapacity() > (model->getPlayer()->getBackPackCapacity() - model->getPlayer()->getBackPackWeight())){
+                view->Prompt("Not Enough BackPack Space");
+                continue;
+            }else{
+                model->getPlayer()->addItem(ChosenWeapon);
+                weapons.erase(remove(weapons.begin(),weapons.end(),make_pair(ChosenWeapon,1)),weapons.end());
+            }
+        }
+        while(!consumables.empty()){  // consumable
+            Consumable* ChosenConsumable = view->ChooseConsumable(consumables);
+            if(ChosenConsumable == nullptr)
+                break;
+
+            if(ChosenConsumable->getCapacity() > (model->getPlayer()->getBackPackCapacity() - model->getPlayer()->getBackPackWeight())){
+                view->Prompt("Not Enough BackPack Space");
+                continue;
+            }else{
+                model->getPlayer()->addItem(ChosenConsumable);
+                consumables.erase(remove(consumables.begin(),consumables.end(),make_pair(ChosenConsumable,1)),consumables.end());                
+            }
+        }
+
+    }
+        
+    Relic* relic = view->ChooseRelic(model->getRelics());
+    if(relic != nullptr)  
+        model->getPlayer()->addRelic(relic);
+        
+    model->getPlayer()->setHP(model->getPlayer()->getMaxHP());
+    model->getPlayer()->setEnergy(model->getPlayer()->getMaxEnergy());
+    model->getPlayer()->setShield(0);
+    for(pair<Weapon*,int> p:model->getPlayer()->getWeapons()){
+        Weapon* weapon = p.first;
+        if(dynamic_cast<Gun*>(weapon) != nullptr){
+            Gun* gun = dynamic_cast<Gun*>(weapon);
+            gun->Reload();
         }
     }
         
