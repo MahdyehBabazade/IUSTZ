@@ -71,7 +71,7 @@ public:
     int getReloadEnergy();
     void setReloadEnergy(int reloadEnergy);
     void Reload();
-    Gun(string name,int capacity,int price,int damage,int energyNeeded,int ammo,int reloadEnergy,int upgradeLimit);
+    Gun(string name,int capacity,int price,int damage,int energyNeeded,int reloadEnergy,int ammo,int upgradeLimit);
     string getStat() override;
     string getShortStat() override;
     int getMaxAmmo();

@@ -65,7 +65,7 @@ string Weapon::getShortStat(){
 Punch :: Punch(string name, int capacity, int damage, int price, int energyNeed)
         : Weapon(name, capacity, price, damage, energyNeed,0){};
 //.............
-Gun ::Gun(string name, int capacity,int price, int damage, int energyNeed, int ammo,int reloadEnergy,int upgradeLimit)
+Gun ::Gun(string name, int capacity,int price, int damage, int energyNeed,int reloadEnergy, int ammo,int upgradeLimit)
         : ReloadEnergy(reloadEnergy), Ammo(ammo),MaxAmmo(ammo),Weapon(name, capacity, price, damage, energyNeed,upgradeLimit){};
 
 string Gun::getStat() {
