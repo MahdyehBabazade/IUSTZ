@@ -8,7 +8,6 @@ Encounter :: Encounter(string Story){this -> Story = Story;}
 string Encounter :: getStory(){return Story;}
 
 Shop :: Shop(Player* player, vector<Weapon*> weapons, vector<Consumable*> consumables, vector<Equipment*> equipments, Shopkeeper* shopkeeper){
-
     this -> player = player;
     this -> weapons = weapons;
     this -> consumables = consumables;
@@ -45,11 +44,16 @@ void Shop :: setConsumables(vector<Consumable*> consumables){this -> consumables
 
 void Shop :: setEquipments(vector<Equipment*> equipments){this -> equipments = equipments;}
 
-string UpgradeNameChange(string name, int upgradeAmount){
-
-    if(upgradeAmount > 1){
-        int spaceIndex = name.find_last_of(' ');
-        name = name.substr(0,spaceIndex);  
+string UpgradeNameChange(string name, int upgradeAmount){ 
+    if(upgradeAmount >= 3){
+        int spaceIndex = name.size() - 3;
+        name = name.substr(0,spaceIndex); 
+        name += " " + to_string(upgradeAmount) +"+"; 
+    }else if (upgradeAmount == 1){
+        name += " +"; 
+    }else{
+        int spaceIndex = name.size() - 2;
+        name = name.substr(0,spaceIndex); 
         name += " " + to_string(upgradeAmount) +"+"; 
     }
     

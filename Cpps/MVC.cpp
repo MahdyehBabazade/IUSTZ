@@ -864,7 +864,7 @@ void Control::FightControl::StartFight(){
 void Control::FightControl::RemoveEnemies(){
     bool hascleared = false;
     vector<Character*> Enemies = model->getEnemies();
-    for(int i = 0 ; i < Enemies.size() ; i++){
+    for(int i = Enemies.size()-1 ; i >= 0  ; i--){
         Character* Enemy = Enemies[i];
         if(Enemy->getHP() <=0){
             if(!hascleared){
@@ -929,10 +929,7 @@ void Control::FightControl::PlayerTurn(){
                                     }else if(dynamic_cast<SMG *>(gun) != nullptr){
                                         SMG* smg = dynamic_cast<SMG*>(gun);
                                         vector<Character*> ShuffledEnemies = ShuffleVec(model->getEnemies());
-                                        vector<Character*> ChosenEnemies;
-                                        for(int i=0; i < min(int(ShuffledEnemies.size()-1),smg->getAmmo());i++){
-                                            ChosenEnemies.push_back(ShuffledEnemies[i]);
-                                        }
+                                        vector<Character*> ChosenEnemies(ShuffledEnemies.begin(),ShuffledEnemies.begin()+min(int(ShuffledEnemies.size()),smg->getAmmo()));
                                         smg->Attack(ChosenEnemies);
                                         
                                     }else if(dynamic_cast<Shotgun *>(gun) != nullptr){
@@ -1105,17 +1102,17 @@ void Control::FightControl::EndFight(){
             if(ChosenItem == nullptr){
                 break;
             }else{
-                if (ChosenItem->getCapacity() < (model->getPlayer()->getBackPackCapacity() - model->getPlayer()->getBackPackWeight()))
+                if (ChosenItem->getCapacity() > (model->getPlayer()->getBackPackCapacity() - model->getPlayer()->getBackPackWeight()))
                 {
                    view->Prompt("Not Enough BackPack Space");
                    continue;
                 }
                 vector<Item*> Items = model->getItems();
                 Items.erase(remove(Items.begin(),Items.end(),ChosenItem),Items.end());
+                model->setItems(Items);
                 model->getPlayer()->addItem(ChosenItem);
                 delete ChosenItem;
             }
-            
         }
         
         Relic* relic = view->ChooseRelic(model->getRelics());
@@ -1132,5 +1129,4 @@ void Control::FightControl::EndFight(){
                 gun->Reload();
             }
         }
-        
 }
