@@ -502,15 +502,17 @@ vector<Character*> View::FightView::ChooseEnemies(vector<Character*> Enemies , i
                 return selected;
             }
             else{
-                if(count(Chosen.begin(), Chosen.end(), true) <= amount - 1){
+                if(count(Chosen.begin(), Chosen.end(), true) < amount - 1){
                     Chosen[Posoptions[m % Posoptions.size()]] = true;
                 }
-                else{
+                else if(count(Chosen.begin(), Chosen.end(), true) == amount - 1){
                     for(int i = 0; i < vecSize; i++){
+                        Chosen[Posoptions[m % Posoptions.size()]] = true;
                         option[i] = false;
                     }
                 }
             }
+            continue;
         default:
             continue;
         }
