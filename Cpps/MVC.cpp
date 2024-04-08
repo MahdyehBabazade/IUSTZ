@@ -937,7 +937,7 @@ void Control::FightControl::EnemiesTurn(){
 View::FightView* Control::FightControl::getView(){return view;}
 
 void Control::FightControl::EndFight(){
-    if(model->getPlayer() != nullptr)
+    if(model->getPlayer() != nullptr){
         model->getPlayer()->addCoin(model->getCoins());
         while (!model->getItems().empty())
         {
@@ -972,4 +972,6 @@ void Control::FightControl::EndFight(){
                 gun->Reload();
             }
         }
+    }
+        
 }
