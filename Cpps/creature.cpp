@@ -597,7 +597,7 @@ void HumanEnemy :: StateMachine(Player* player,Control::FightControl* fightContr
         {
         case State::Heal:
         {
-           // cout << "heal initiated" << endl;
+            // cout << "heal initiated" << endl;
             
             if(getHP() > getMaxHP()/2){
                 state = State::Shield;
@@ -621,7 +621,7 @@ void HumanEnemy :: StateMachine(Player* player,Control::FightControl* fightContr
         }
         case State::Shield:
         {
-            //cout << "Shield initiated" << endl;
+            // cout << "Shield initiated" << endl;
             if(getShield() > getMaxHP()/4){ // cahracters can have max shield of maxhp/2
                 state = State::Attack;
                 continue;
@@ -629,14 +629,12 @@ void HumanEnemy :: StateMachine(Player* player,Control::FightControl* fightContr
             
             bool hasPotion = false;      
             for(pair<Consumable* , int> x:Consumables){
-                if(getShield() >= getMaxHP()/2)
-                    break;
-                    
                 Consumable* Potion = x.first;
                 if(Potion->getType() == "ShieldPotion"){
                     Consume(Potion);
                     hasPotion = true;
-                    fightControl->getView()->print("Sheild " + to_string(getShield()) + " Damage");
+                    fightControl->getView()->print("Sheild " + to_string(getShield()) + " +");
+                    break;
                 }
             }
             
@@ -652,11 +650,14 @@ void HumanEnemy :: StateMachine(Player* player,Control::FightControl* fightContr
             Weapon* weapon = noneGuns[0].first;
             if(dynamic_cast<ColdWeapon *>(weapon) != nullptr){   
                 if(random_num(1,5) == 5){                 // 20% chance of throwing the cold weapon
+                    // cout << "throw" << endl;
                     Attack(player,weapon,1);
                 }else{
+                    // cout << "cold weapon attack" << endl;
                     Attack(player,weapon,0);
                 }
             }else if (dynamic_cast<Throwable *>(weapon) != nullptr){
+                // cout << "throwable attack" << endl;
                 Attack(player,weapon,0);
             }
             
@@ -665,16 +666,18 @@ void HumanEnemy :: StateMachine(Player* player,Control::FightControl* fightContr
         }
         }
         case State::Reload:
+            // cout << "reloaded" << endl;
             fightControl->getView()->print("Reloaded!");
             Guns[0].first->Reload();
             break;
             
         case State::GunAttack:
-        {
+        {   
             Guns = ShuffleVec(Guns);
             
             for(pair<Gun*,int> x:Guns){
                 if(x.first->getAmmo() >= 0){
+                    // cout << "gun attack" << endl;
                     Attack(player,x.first,0);
                     fightControl->getView()->print("Dealt " + to_string(x.first->getDamage()) + " Damage");
                     hasAttacked = true;
@@ -702,12 +705,11 @@ void HumanEnemy :: StateMachine(Player* player,Control::FightControl* fightContr
             
         }
         case State::Attack:
-            //cout << "attack" << endl;
-            if(!Guns.empty()){   
+            // cout << "attack" << endl;
+            if(!Guns.empty()){
                 state = State::GunAttack;
             }else{
                 state = State::NoneGunAttack;
-                
             }
             
             continue;

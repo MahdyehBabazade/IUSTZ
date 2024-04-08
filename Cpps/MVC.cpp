@@ -114,50 +114,6 @@ Relic* View::FightView::ChooseRelic(vector<Relic*> Relics){
 
 
 Consumable* View::FightView::ChooseConsumable(vector<pair<Consumable*,int>> Consumables){
-    /*vector<string> options;
-    for(pair<Consumable*,int> x:Consumables){
-        if(x.second > 1){
-            options.push_back(x.first->getShortStat() + " x" + to_string(x.second));
-        }else{
-            options.push_back(x.first->getShortStat());
-        }
-    }
-    options.push_back("Back");
-    
-    int option=0;
-    int vecSize = options.size();
-    while(true){
-        clearScreen();
-        for(int i=0 ; i < vecSize; i++){
-            if(i == option){
-                cout << green << options[i] << reset << endl;
-            }else{
-                cout << options[i] << endl;
-            }
-        }
-        showCharacters();
-        char key = _getch();
-        switch(tolower(key))
-        {
-            case 'w':
-                option = (vecSize + option - 1)  % vecSize;
-                continue;
-            case 's':
-                option++;
-                option%=vecSize;
-                continue;
-            case '\r':
-                break;
-            default:
-                continue;
-        }
-        break;
-    }
-    
-    if(option  == vecSize-1)
-        return nullptr;
-        
-    return Consumables[option].first;*/
     vector<vector<string>> Options;
     //                   0       1         2               
     Options.push_back({"Name","Type","Amount"});
@@ -229,92 +185,6 @@ Consumable* View::FightView::ChooseConsumable(vector<pair<Consumable*,int>> Cons
 
 
 Character* View::FightView::ChooseEnemy(vector<Character*> Enemies){
-    /*
-    int vecSize = Enemies.size();
-    vector<vector<string>> options(4, vector<string>(vecSize+1));
-    for(int i=0 ; i<4 ; i++){
-        for(int j=0 ; j<vecSize +1 ; j++){
-            if(i == 0){
-                if(j == vecSize)
-                    options[i][j] = "Back";
-                else
-                    options[i][j] = Enemies[j]->getName();
-            }
-            else if(i == 1){
-                if(j == vecSize)
-                    options[i][j] = " ";
-                else
-                    options[i][j] = "HP:[" + to_string(Enemies[j]->getHP()) + "/" + to_string(Enemies[j]->getMaxHP()) + "]";
-            }
-            else if(i == 2){
-                if(j == vecSize)
-                    options[i][j] = " ";
-                else
-                    options[i][j] = "Armor:" + Enemies[j]->getArmor();
-            }
-            else if(i == 3){
-                if(j == vecSize)
-                    options[i][j] = " ";
-                else
-                    options[i][j] = "Shield:" + Enemies[j]->getShield();
-            }
-        }
-    }
-    // this will be function
-    int rows = options.size();
-    int width = 0;
-    for(int i=0 ; i<rows ; i++){
-        for(int j=0; j<options[i].size() ; j++){
-            int len = options[i][j].length();
-            if(len > width)
-                width = len;
-        }
-    }
-    
-    int m = 0;
-    while(true){
-        clearScreen();
-        for(int i=0 ; i<4 ; i++){
-            for(int j=0 ; j<vecSize+1 ; j++){
-                if(j == m ){
-                    cout<< green ;
-                    if( j > 0){
-                        cout << left << setw(width) << options[i][j] << " " ;
-                    }else{
-                        cout<< left << setw(4) << options[i][j];
-                    }
-                    cout<< reset << endl;
-                }else{
-                    if( j > 0){
-                        cout << left << setw(width) << options[i][j] << " " ;
-                    }else{
-                        cout<< left << setw(4) << options[i][j];
-                    }
-                    cout << endl;                    
-                }
-            }
-        }
-        char key = _getch();
-        switch(tolower(key))
-        {
-            case 'a':
-                m = (options.size()  m - 1) % options.size();
-                continue;
-            case 'd':
-                m++;
-                m%=options.size();
-                continue;
-            case '\r':
-                break;
-            default:
-                continue;
-        }
-        break;
-    }
-    if(m  == vecSize)
-        return nullptr;
-    return Enemies[m];
-    */
     vector<vector<string>> Options;
     for(int i = 0;i < 4; i ++){
         vector<string> row;
@@ -361,23 +231,15 @@ Character* View::FightView::ChooseEnemy(vector<Character*> Enemies){
             for(int j=0 ; j<vecSize ; j++){
                 if(j == option ){
                     cout<< green ;
-                    // if( j > 0){
-                        cout << left << setw(width) << Options[i][j] << " " ;
-                    // }else{
-                        // cout<< left << setw(4) << Options[i][j];
-                    // }
+                    cout << left << setw(width) << Options[i][j] << " " ;
                     cout<< reset;
                 }else{
-                    // if( j > 0){
-                        cout << left << setw(width) << Options[i][j] << " " ;
-                    // }else{
-                        // cout<< left << setw(4) << Options[i][j];
-                    // }                    
+                    cout << left << setw(width) << Options[i][j] << " " ;                 
                 }
             }
             cout << endl;
         }
-        showCharacters();
+        //showCharacters();
         char key = _getch();
         switch(tolower(key))
         {
@@ -462,10 +324,11 @@ vector<Character*> View::FightView::ChooseEnemies(vector<Character*> Enemies , i
             for(int j=0 ; j<vecSize + 2 ; j++){
                 if(j == Posoptions[m % Posoptions.size()])
                     cout<< green;
-                if(!option[j])
+                else if (!option[j])
                     cout<< grey;
-                if(Chosen[j])
+                else if(Chosen[j])
                     cout<< yellow;
+                
                 if( j > 0){
                     cout << left << setw(width + 4) << options[i][j] << " " ;
                 }else{
@@ -522,25 +385,6 @@ vector<Character*> View::FightView::ChooseEnemies(vector<Character*> Enemies , i
 }
 
 Weapon* View::FightView::ChooseWeapon(vector<pair<Weapon*,int>> Weapons){
-    /*
-    vector<string> options;
-    for(pair<Weapon*,int> x : Weapons){
-        if(x.second > 1){
-            options.push_back(x.first->getShortStat() + " x" + to_string(x.second) +"\n");
-        }else{
-            options.push_back(x.first->getShortStat() + "\n");
-        }
-    }
-    options.push_back("Back");
-    
-    int option=0;
-    int vecSize = options.size();
-    option = Choose("" , options);
-    if(option % vecSize == 0)
-        return nullptr;
-        
-    return Weapons[option % Weapons.size()].first;
-    */
     vector<vector<string>> Options;
     //                   0       1         2                3               4              5             
     Options.push_back({"Name","Damage","Ammo/Amount","EnergyNeeded","MaxAttackAmount","MinDamagePercent"});
@@ -773,7 +617,7 @@ void View::FightView::showCharacters(){
         row.push_back(" ");
     }
     Details.push_back(row);
-    //Details.push_back({"Energy: " + to_string(model->getPlayer()->getEnergy())});
+    
     int rows = Details.size();
     int width = 0;
     for(int i=0 ; i<rows ; i++){
@@ -860,7 +704,6 @@ void Control::FightControl::StartFight(){
         }
     }
     EndFight();
-    // a while loop that increaes model's round in each iteration and calls playerturn() or enemiesturn() functions accordingly
 }
 
 void Control::FightControl::RemoveEnemies(){
@@ -902,8 +745,6 @@ void Control::FightControl::PlayerTurn(){
                         getch();
                         continue;
                     }
-                            // cout << "bruhhh";
-                            // getch();
                     if(dynamic_cast<Gun *>(weapon) != nullptr){
                         Gun* gun = dynamic_cast<Gun*>(weapon);
                         
