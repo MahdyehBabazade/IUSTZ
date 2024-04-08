@@ -324,9 +324,9 @@ vector<Character*> View::FightView::ChooseEnemies(vector<Character*> Enemies , i
             for(int j=0 ; j<vecSize + 2 ; j++){
                 if(j == Posoptions[m % Posoptions.size()])
                     cout<< green;
-                else if (!option[j])
+                if (!option[j])
                     cout<< grey;
-                else if(Chosen[j])
+                if(Chosen[j])
                     cout<< yellow;
                 
                 if( j > 0){
@@ -940,7 +940,7 @@ void Control::FightControl::EnemiesTurn(){
 View::FightView* Control::FightControl::getView(){return view;}
 
 void Control::FightControl::EndFight(){
-    if(model->getPlayer() != nullptr){
+    if(model->getPlayer()->getHP() > 0){
         model->getPlayer()->addCoin(model->getCoins());
         while (!model->getItems().empty())
         {

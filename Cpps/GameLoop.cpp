@@ -33,10 +33,11 @@ Player* PlayerGenerate(){
     getline(cin, name);
     vector<pair<Weapon*, int>> weapons;
     vector<pair<Item*, int>> items;
-    Player* player = new Player(name, 100, 60, 0, 4, 0, items, weapons);
+    Player* player = new Player(name, 10000, 60, 0, 400, 0, items, weapons);
     vector<Weapon*> AllWeapons = {shotgun, snipe, smg, rifle, coldweapon};
     int item_index = rand() % 5;
     player->addItem(AllWeapons[item_index]);
+    player->addItem(new Rifle("lakc" , 0 , 0 , 10000 , 1 , 2 , 2 , 20 , 0));
     return player;
 }
 
@@ -48,7 +49,7 @@ void GameLoopFunction(){
         Map *map;
         switch(Menu_Choice){
         case 1:{
-            MapFactory Mapfactory(1);
+            MapFactory Mapfactory(2);
             map = Mapfactory.GenerateMap();
         }
         case 2:{
@@ -58,8 +59,6 @@ void GameLoopFunction(){
             break;
         }
         }
-        MapFactory Mapfactory(1);
-        Mapfactory.GenerateMap();
         for(int i = 0; i < 3; i++){
             Shopkeeper* ShopKeeper = new Shopkeeper("Amir");
             Medic* medic = new Medic("Bahram");

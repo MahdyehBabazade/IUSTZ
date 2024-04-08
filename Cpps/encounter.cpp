@@ -393,7 +393,7 @@ void Shop :: Menu(){
                     for(pair<Weapon*,int> weapon: player->getWeapons()){
                         Options.push_back(weapon.first->getStat());
                     }
-                    Options.push_back("Back Pack");
+                    Options.push_back("BackPack");
                     Options.push_back("Back");
                     
                     int choice = Choose(Story + "\n\n" + dialogue + "\n",
@@ -404,18 +404,22 @@ void Shop :: Menu(){
                     else if(choice == Options.size() - 1){
                         if(player->getBackPackCapacity() >= 90){
                             clearScreen();
-                            cout << Story << "\n\n" << shopkeeper->getName() << ": you Already have the Best Back Pack!!!\n";
+                            cout << Story << "\n\n" << shopkeeper->getName() << ": you Already have the Best BackPack!!!\n";
+                            cout << "Press anything to continue\n";
                             getch();
                         }
                         else if(player->getCoin() >= 30){
                             player->setBackPackCapacity(player->getBackPackCapacity() + 15);
                             player->removeCoin(30);
+                            cout << Story << "\n\n" << shopkeeper->getName() << ": BackPack has been Upgraded.\n";
+                            cout << "Press anything to continue\n";
+                            getch();
                         }
                         else{
                             cout << shopkeeper->NoMoneyDialogue();
                             getch();
                         }
-                        break;
+                        continue;
                     }
                     Weapon* ChosenWeapon = player->getWeapons()[choice-1].first;
                     
@@ -552,7 +556,6 @@ void Hospital :: Menu(){
                 break;
             case 4:
                 HasHealed = true;
-                exit(0);
                 break;
             default:
                 continue;
