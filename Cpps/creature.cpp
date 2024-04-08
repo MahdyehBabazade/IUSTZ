@@ -649,11 +649,20 @@ void HumanEnemy :: StateMachine(Player* player,Control::FightControl* fightContr
             noneGuns = ShuffleVec(noneGuns);
             Weapon* weapon = noneGuns[0].first;
             if(dynamic_cast<ColdWeapon *>(weapon) != nullptr){   
-                if(random_num(1,5) == 5){                 // 20% chance of throwing the cold weapon
-                    // cout << "throw" << endl;
-                    Attack(player,weapon,1);
+                int amount = 0;
+                for(pair<Weapon*,int> p:noneGuns){
+                    if(dynamic_cast<ColdWeapon *>(weapon))
+                        amount += p.second;
+                }
+                if(amount >=2){
+                    if(random_num(1,5) == 5){                 // 20% chance of throwing the cold weapon
+                        // cout << "throw" << endl;
+                        Attack(player,weapon,1);
+                    }else{
+                        // cout << "cold weapon attack" << endl;
+                        Attack(player,weapon,0);
+                    }
                 }else{
-                    // cout << "cold weapon attack" << endl;
                     Attack(player,weapon,0);
                 }
             }else if (dynamic_cast<Throwable *>(weapon) != nullptr){
