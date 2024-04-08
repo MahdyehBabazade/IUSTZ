@@ -7,7 +7,6 @@
 #include "../Headers/MVC.h"
 #include "functions.cpp"
 #include <ctime>
-
 using namespace std;
 
 void GameLoopFunction(){
@@ -70,21 +69,8 @@ void GameLoopFunction(){
     // }
 }
 Player* PlayerGenerate(){
-//---------------------------- All items --------------------------
-// Weapons  
-    Shotgun* shotgun = new Shotgun("Reaper", 20, 30, 25, 1, 2, 3, 25, 3);
-
-    Snipe* snipe = new Snipe("Fury", 25, 40, 35, 1, 2, 1, 3);
-
-    SMG* smg = new SMG("Venom", 15, 25, 20, 1, 2, 3, 2);
- 
-    Rifle* rifle = new Rifle("Twilight Rifle", 20, 40, 30, 2, 2, 3, 1, 2);
-
-    ColdWeapon* coldweapon = new ColdWeapon("Blizzard Blade", 10, 30, 15, 1, 1);
-// Remember to delete these variables later (include sth)
-//-----------------------------------------------------------------
     string name;
-    cin >> name;
+    getline(cin, name);
     vector<pair<Weapon*, int>> weapons;
     vector<pair<Item*, int>> items;
     Player* player = new Player(name, 100, 60, 0, 4, 0, items, weapons);
@@ -105,6 +91,9 @@ string StoryGenerate(){
     "normal. There are human beings with abnormal faces and bodies, terrible-looking zombies and their never-unclosed lips, "
     "unknown giant creatures with odd faces and at the back, the monster you never thought it could exist. So you must be "
     "aware and armed. You know you've been through worst shits and you're still alive. Good luck!";
+    string War2Story = "A war started and blood flew everywhere on the streets. You enter a supermarket and bend over to pick a "
+    "bottle of water. The sound of walking on the broken glasses terrifies you. ";
+    string ZombieStory1 = "";
     vector<string> stories = {ForestStory, WarStory};
     return ShuffleVec(stories)[0];
 }

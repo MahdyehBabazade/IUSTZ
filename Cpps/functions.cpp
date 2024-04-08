@@ -17,6 +17,80 @@ const string green("\033[1;32m");
 const string magenta("\033[0;35m");
 const string grey("\033[90m");
 
+//---------------------------- All items --------------------------
+// Guns 
+    Shotgun* shotgun = new Shotgun("Peppergun", 20, 30, 25, 1, 2, 3, 25, 3);
+    Shotgun* shotgun2 = new Shotgun("Scatterer Supreme", 20, 40, 35, 1, 2, 5, 27, 3);
+    Shotgun* shotgun3 = new Shotgun("Scatter Shot", 20, 60, 50, 1, 2, 4, 28, 3); // A better shotgun
+
+    Snipe* snipe = new Snipe("Fury", 25, 40, 35, 1, 2, 1, 3);
+    Snipe* snipe2 = new Snipe("Sharpshooter", 25, 50, 45, 1, 2, 1, 3);
+    Snipe* snipe3 = new Snipe("Ghostfire", 25, 70, 60, 1, 2, 2, 3); // A better sniper
+
+    SMG* smg = new SMG("Venom", 15, 25, 20, 1, 2, 3, 2);
+    SMG* smg2 = new SMG("Hurricane", 15, 35, 30, 1, 2, 4, 2);
+    SMG* smg3 = new SMG("Rapidfire", 15, 50, 45, 1, 2, 5, 3); // A better SMG
+
+    Rifle* rifle = new Rifle("Twilight Rifle", 20, 40, 30, 2, 2, 3, 1, 2);
+    Rifle* rifle2 = new Rifle("Inferno Hunter", 20, 50, 40, 2, 2, 4, 2, 2);
+    Rifle* rifle3 = new Rifle("Dawnbreaker", 20, 65, 55, 2, 2, 4, 3, 3); // A better rifle
+
+    // Cold Weapons
+    ColdWeapon* coldweapon = new ColdWeapon("Blizzard Blade", 10, 30, 15, 1, 1);
+    ColdWeapon* coldweapon2 = new ColdWeapon("Snowfall Sword", 10, 40, 20, 1, 2);
+    ColdWeapon* coldweapon3 = new ColdWeapon("Ice Dagger", 10, 55, 35, 1, 3); // Better
+
+    // Throwables
+    Grenade* grenade = new Grenade("Chill Grenade", 7, 10, 30, 1, 1);
+    Grenade* grenade2 = new Grenade("Firebomb", 7, 15, 40, 1, 2);
+    Grenade* grenade3 = new Grenade("Snowball", 7, 25, 60, 1, 3); // Better
+
+    BoomRang* boomerang = new BoomRang("SpinStorm", 8, 15, 15, 1, 2);
+    BoomRang* boomerang2 = new BoomRang("BoomerBoost", 8, 20, 20, 1, 2);
+    BoomRang* boomerang3 = new BoomRang("FuryFlight", 8, 30, 30, 1, 2); // Better
+
+    // Consumables
+    Consumable* ShieldConsumable = new Consumable("ShieldBoost", "ShieldPotion", 5, 20, 20);
+    Consumable* ShieldConsumable2 = new Consumable("GuardPotion", "ShieldPotion", 5, 25, 30);
+    Consumable* ShieldConsumable3 = new Consumable("SafeguardSip", "ShieldPotion", 5, 35, 45);
+
+    Consumable* HPConsumable = new Consumable("HealthBoost", "HPPotion", 6, 25, 30);
+    Consumable* HPConsumable2 = new Consumable("StaminaSip", "HPPotion", 6, 30, 50);
+    Consumable* HPConsumable3 = new Consumable("Lifespring", "HPPotion", 6, 40, 75);
+
+    Consumable* EnergyConsumable = new Consumable("Energy Elixir", "EnergyPotion", 7, 30, 1);
+    Consumable* EnergyConsumable2 = new Consumable("Energy Boost", "EnergyPotion", 7, 60, 2);
+
+    // Equipments
+    Vest* vest = new Vest("ShieldSkin", 0, 40, 5);
+    Vest* vest2 = new Vest("GuardianShell", 0, 50, 10);
+    Vest* vest3 = new Vest("ArmorGuard", 0, 70, 20);
+
+    HeadGear* headgear = new HeadGear("Armor Crown", 0, 30, 5);
+    HeadGear* headgear2 = new HeadGear("Warding Helmet", 0, 50, 9);
+    HeadGear* headgear3 = new HeadGear("Helm of Valor", 0, 80, 15); 
+
+    FootWear* footwear = new FootWear("Safeguard Shoes", 0, 15, 3);
+    FootWear* footwear2 = new FootWear("Shielded Steps", 0, 30, 7);
+    FootWear* footwear3 = new FootWear("Fortress Footwear", 0, 75, 15);
+
+    Boot* boot = new Boot("Defender's Boots", 0, 15, 3);
+    Boot* boot2 = new Boot("Ironstride Boots", 0, 30, 5);
+    Boot* boot3 = new Boot("Sentinel Boots", 0, 40, 10);
+
+    // Relics
+    Relic* relic = new Relic("Sunstone", 0, 0, 0.1, 0.25);
+    Relic* relic2 = new Relic("Earthstone", 0, 0, 0.5, 0.25);
+    Relic* relic3 = new Relic("Moonlight Amulet", 0, 0, 0.15, 0.5);
+    Relic* relic4 = new Relic("Bloodmoon Relic", 0, 0, 0.2, 0.5);
+    Relic* relic5 = new Relic("Starfall Shard", 0, 0, 0.25, 0.5);
+    Relic* relic6 = new Relic("Crystal Tear", 0, 0, 0.3, 0.5);
+    Relic* relic7 = new Relic("Crown of Destiny", 0, 0, 0.35, 0.25);
+    Relic* relic8 = new Relic("Titan's Heartstone", 0, 0, 0.4, 0.25);
+    Relic* relic9 = new Relic("Celestial Compass", 0, 0, 0.45, 0.25);
+
+//-----------------------------------------------------------------
+
 
 int random_num(int min,int max){
     random_device dev;
