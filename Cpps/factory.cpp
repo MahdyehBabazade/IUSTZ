@@ -997,35 +997,9 @@ Fight* FightFactory :: GenerateNormalFight(){
         Items.push_back(AllItems[item_index]);
     }
 
-    vector<Relic*> relics = {relic, relic2, relic3, relic4, relic5, relic6, relic7, relic8, relic9};
-    relics = ShuffleVec(relics);
-
-    bool isExisted = false;
-    int m = 0;
-    while (m != 3)
-    {
-        item_index = rand() % relics.size();
-        for (int i = 0; i < player->getRelic().size(); i++)
-        {
-            if (relics[item_index] == player->getRelic()[i])
-            {
-                isExisted = true;
-            }   
-        }
-        if (!(isExisted))
-        {
-            relics[m] == relics[item_index];
-            m++;
-        }
-    }
-    while (relics.size() != 3)
-    {
-        relics.pop_back();
-    }
-
     EnemyFactory* enemyfactory = new EnemyFactory(map , player);
     vector<Character*> Enemies = enemyfactory->FightEnemy();
-    Fight* fight = new Fight(player, 0, Enemies, Items, droppedCoins, relics);
+    Fight* fight = new Fight(player, 0, Enemies, Items, droppedCoins, {});
     return fight;
 }
 
