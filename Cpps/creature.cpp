@@ -92,7 +92,9 @@ Player :: Player(string Name, int MaxHP , int BackPackCapacity , int BackPackWei
 }
 
 Player :: ~Player(){
-    cout << "Not good enough" << endl << "Defeated!!!" << endl << "Welcome to HELLMOS";
+    cout << "Not good enough" << endl << "Defeated!!!" << endl << "Welcome to HELLMOS\n";
+    cout << "Press anything to return to the start menu\n";
+    getch();
 }
 
 void Player :: setBackPackCapacity(int BackPackCapacity){this -> BackPackCapacity = BackPackCapacity;}

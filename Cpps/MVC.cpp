@@ -700,7 +700,6 @@ void Control::FightControl::StartFight(){
         else if(round % 2 == 0){
             EnemiesTurn();
             if(model->getPlayer()->getHP() <= 0){
-                model->setPlayer(nullptr);
                 break;
             }
         }
@@ -964,7 +963,6 @@ void Control::FightControl::EndFight(){
         if(relic != nullptr)  
             model->getPlayer()->addRelic(relic);
         
-        model->getPlayer()->setHP(model->getPlayer()->getMaxHP());
         model->getPlayer()->setEnergy(model->getPlayer()->getMaxEnergy());
         model->getPlayer()->setShield(0);
         for(pair<Weapon*,int> p:model->getPlayer()->getWeapons()){
