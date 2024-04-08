@@ -582,7 +582,6 @@ HumanEnemy :: HumanEnemy(string Name , int MaxHP , double Armor , vector<pair<It
     : Character(Name , MaxHP , Items , Weapons){
     this->Consumables = Consumables;
     setArmor(Armor);
-    hasAttacked = false;
     state = State::Heal;
     
     for(pair<Weapon*,int> x : Weapons){
@@ -686,11 +685,17 @@ void HumanEnemy :: StateMachine(Player* player,Control::FightControl* fightContr
         case State::GunAttack:
         {   
             Guns = ShuffleVec(Guns);
-            
             for(pair<Gun*,int> x:Guns){
-                if(x.first->getAmmo() >= 0){
+                cout <<x.first->getShortStat() << endl;
+            }
+            _getch();
+            bool hasAttacked = false;
+            for(pair<Gun*,int> x:Guns){
+                cout << "ammo:" << x.first->getAmmo() << endl;
+                if(x.first->getAmmo() > 0){
                     // cout << "gun attack" << endl;
                     Attack(player,x.first,0);
+                    //cout << "attacked with " << x.first->getShortStat();
                     fightControl->getView()->print("Dealt " + to_string(x.first->getDamage()) + " Damage");
                     hasAttacked = true;
                     break;
@@ -717,7 +722,9 @@ void HumanEnemy :: StateMachine(Player* player,Control::FightControl* fightContr
             
         }
         case State::Attack:
-            // cout << "attack" << endl;
+            cout << Guns.size() << endl;
+            cout << noneGuns.size() << endl;
+            _getch();
             if(!Guns.empty()){
                 state = State::GunAttack;
             }else{
@@ -731,6 +738,7 @@ void HumanEnemy :: StateMachine(Player* player,Control::FightControl* fightContr
 
         break;
     }
+    state = State::Heal;
 }
 
 

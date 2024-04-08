@@ -128,7 +128,6 @@ private:
     
     
     State state;
-    bool hasAttacked;
 
 public:
     

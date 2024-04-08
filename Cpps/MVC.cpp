@@ -767,6 +767,7 @@ void Control::FightControl::PlayerTurn(){
                         break;
     
                     if(weapon->getEnergyNeeded() > model->getPlayer()->getEnergy()){
+                        clearScreen();
                         view->Prompt("Not Enough Energy");
                         getch();
                         continue;
@@ -830,6 +831,7 @@ void Control::FightControl::PlayerTurn(){
                                     continue;
                                 case 2:
                                     if(model->getPlayer()->getEnergy() < gun->getReloadEnergy()){
+                                        clearScreen();
                                         view->Prompt("Not Enough Energy");
                                     }else{
                                         gun->Reload();
@@ -973,8 +975,9 @@ void Control::FightControl::EndFight(){
             }
             
             if (ChosenItem->getCapacity() > (model->getPlayer()->getBackPackCapacity() - model->getPlayer()->getBackPackWeight())){
-               view->Prompt("Not Enough BackPack Space");
-               continue;
+                clearScreen();
+                view->Prompt("Not Enough BackPack Space");
+                continue;
             }
             
             vector<Item*> Items = model->getItems();
