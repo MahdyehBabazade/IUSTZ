@@ -1030,15 +1030,13 @@ void Control::FightControl::EndFight(){
     if(relic != nullptr)  
         model->getPlayer()->addRelic(relic);
         
-        model->getPlayer()->setEnergy(model->getPlayer()->getMaxEnergy());
-        model->getPlayer()->setShield(0);
-        for(pair<Weapon*,int> p:model->getPlayer()->getWeapons()){
-            Weapon* weapon = p.first;
-            if(dynamic_cast<Gun*>(weapon) != nullptr){
-                Gun* gun = dynamic_cast<Gun*>(weapon);
-                gun->Reload();
-            }
+    model->getPlayer()->setEnergy(model->getPlayer()->getMaxEnergy());
+    model->getPlayer()->setShield(0);
+    for(pair<Weapon*,int> p:model->getPlayer()->getWeapons()){
+        Weapon* weapon = p.first;
+        if(dynamic_cast<Gun*>(weapon) != nullptr){
+            Gun* gun = dynamic_cast<Gun*>(weapon);
+            gun->Reload();
         }
     }
-        
 }
