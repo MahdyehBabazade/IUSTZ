@@ -939,23 +939,23 @@ View::FightView* Control::FightControl::getView(){return view;}
 void Control::FightControl::EndFight(){
     if(model->getPlayer() != nullptr)
         model->getPlayer()->addCoin(model->getCoins());
-        while ((true))
+        while (!model->getItems().empty())
         {
             Item* ChosenItem = view->ChooseItem(model->getItems());
             if(ChosenItem == nullptr){
                 break;
-            }else{
-                if (ChosenItem->getCapacity() > (model->getPlayer()->getBackPackCapacity() - model->getPlayer()->getBackPackWeight()))
-                {
-                   view->Prompt("Not Enough BackPack Space");
-                   continue;
-                }
-                vector<Item*> Items = model->getItems();
-                Items.erase(remove(Items.begin(),Items.end(),ChosenItem),Items.end());
-                model->setItems(Items);
-                model->getPlayer()->addItem(ChosenItem);
-                delete ChosenItem;
             }
+            
+            if (ChosenItem->getCapacity() > (model->getPlayer()->getBackPackCapacity() - model->getPlayer()->getBackPackWeight())){
+               view->Prompt("Not Enough BackPack Space");
+               continue;
+            }
+            
+            vector<Item*> Items = model->getItems();
+            Items.erase(remove(Items.begin(),Items.end(),ChosenItem),Items.end());
+            model->setItems(Items);
+            model->getPlayer()->addItem(ChosenItem);
+            //delete ChosenItem;
         }
         
         Relic* relic = view->ChooseRelic(model->getRelics());
