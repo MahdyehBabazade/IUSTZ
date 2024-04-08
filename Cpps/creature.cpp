@@ -92,6 +92,7 @@ Player :: Player(string Name, int MaxHP , int BackPackCapacity , int BackPackWei
 }
 
 Player :: ~Player(){
+    clearScreen();
     cout << "Not good enough" << endl << "Defeated!!!" << endl << "Welcome to HELLMOS\n";
     cout << "Press anything to return to the start menu\n";
     getch();
