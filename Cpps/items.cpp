@@ -191,10 +191,8 @@ ColdWeapon ::ColdWeapon(string name, int capacity,int price, int damage, int ene
         : Weapon( name, capacity, price, damage, energyNeeded,upgradeLimit){}
 
 void ColdWeapon :: Throw(Character* Target){
-    Target->takeDamage(int(this->getDamage()*((100+ThrowDamagePercent)/100)));
+    Target->takeDamage(int(this->getDamage()*1.2));
 }
-int ColdWeapon::getThrowDamagePercent(){return ThrowDamagePercent;}
-void ColdWeapon:: setThrowDamagePercent(int throwDamagePercent){ThrowDamagePercent=throwDamagePercent;}
 
 //-----------------------------
 Throwable :: Throwable(string name, int capacity,int price, int damage, int energyNeeded,int upgradeLimit)

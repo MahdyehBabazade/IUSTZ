@@ -115,11 +115,7 @@ public:
 };
 
 class ColdWeapon: public Weapon{
-private:
-    int ThrowDamagePercent; // damage increase when it's thrown
 public:
-    int getThrowDamagePercent();
-    void setThrowDamagePercent(int throwDamagePercent);
     void Throw(Character* Target); //throws the coldWeapon and removes it from the items
     ColdWeapon(string name,int capacity,int price ,int damage,int energyNeeded,int upgradeLimit);
 };
