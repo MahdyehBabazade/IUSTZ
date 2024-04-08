@@ -349,9 +349,9 @@ vector<Character*> View::FightView::ChooseEnemies(vector<Character*> Enemies , i
             for(int j=0 ; j<vecSize + 2 ; j++){
                 if(j == Posoptions[m % Posoptions.size()])
                     cout<< green;
-                else if (!option[j])
+                if (!option[j])
                     cout<< grey;
-                else if(Chosen[j])
+                if(Chosen[j])
                     cout<< yellow;
                 
                 if( j > 0){
@@ -705,6 +705,7 @@ vector<Relic*> Model::FightModel::getRelics(){return Relics;}
 
 void Model::FightModel::setEnemies(vector<Character*> Enemies){this -> Enemies = Enemies;}
 
+void Model::FightModel::setPlayer(Player* player){this->player=player;};
 //---------------------------------------------------------------------------------------------
 Control::FightControl::FightControl(Player* player,vector<Character*> Enemies,vector<Item*> Items,int droppedCoins,vector<Relic*> Relics) {
     model = new Model::FightModel(player, Enemies,Items,droppedCoins,Relics);
@@ -724,7 +725,6 @@ void Control::FightControl::StartFight(){
         else if(round % 2 == 0){
             EnemiesTurn();
             if(model->getPlayer()->getHP() <= 0){
-                delete model->getPlayer();
                 break;
             }
         }
@@ -963,7 +963,7 @@ void Control::FightControl::EnemiesTurn(){
 View::FightView* Control::FightControl::getView(){return view;}
 
 void Control::FightControl::EndFight(){
-    if(model->getPlayer() != nullptr){
+    if(model->getPlayer()->getHP() > 0){
         model->getPlayer()->addCoin(model->getCoins());
         /*while (!model->getItems().empty())
         {
@@ -1027,14 +1027,14 @@ void Control::FightControl::EndFight(){
     if(relic != nullptr)  
         model->getPlayer()->addRelic(relic);
         
-    model->getPlayer()->setHP(model->getPlayer()->getMaxHP());
-    model->getPlayer()->setEnergy(model->getPlayer()->getMaxEnergy());
-    model->getPlayer()->setShield(0);
-    for(pair<Weapon*,int> p:model->getPlayer()->getWeapons()){
-        Weapon* weapon = p.first;
-        if(dynamic_cast<Gun*>(weapon) != nullptr){
-            Gun* gun = dynamic_cast<Gun*>(weapon);
-            gun->Reload();
+        model->getPlayer()->setEnergy(model->getPlayer()->getMaxEnergy());
+        model->getPlayer()->setShield(0);
+        for(pair<Weapon*,int> p:model->getPlayer()->getWeapons()){
+            Weapon* weapon = p.first;
+            if(dynamic_cast<Gun*>(weapon) != nullptr){
+                Gun* gun = dynamic_cast<Gun*>(weapon);
+                gun->Reload();
+            }
         }
     }
         

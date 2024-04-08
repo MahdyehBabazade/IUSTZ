@@ -9,77 +9,6 @@
 #include <ctime>
 using namespace std;
 
-void GameLoopFunction(){
-    // while(true){
-        int Menu_Choice = 1;
-        srand(time(0));
-        Player *player = new Player("Amir" , 10000 , 200 , 0 , 100 , 200 , {make_pair(new Shotgun("Reaper", 20, 30, 100, 1, 2, 3, 25, 3) , 1)} , {make_pair(new Shotgun("Reaper", 20, 30, 100, 1, 2, 3, 25, 3) , 1)});
-        Map *map;
-        switch(Menu_Choice){
-        case 1:{
-            MapFactory Mapfactory(2);
-            map = Mapfactory.GenerateMap();
-        }
-        case 2:{
-            break;
-        }
-        default:{
-            break;
-        }
-        }
-        MapFactory Mapfactory(1);
-        Mapfactory.GenerateMap();
-        for(int i = 0; i < 3; i++){
-            Shopkeeper* ShopKeeper = new Shopkeeper("Amir");
-            Medic* medic = new Medic("Bahram");
-            FightFactory fight(player , map);
-            ShopFactory shop(map , player);
-            EnemyFactory enemies(map , player);
-            while(map->getCurrentNode().first != 14){
-                // if(player == nullptr)
-                //    break;
-                map->move();
-                if(map->getEncounters()[map->getCurrentNode().first][map->getCurrentNode().second] == "Fight"){
-                    fight.GenerateBoss()->start(); // to compelete later
-                    // Fight* fight = new Fight(player , 1 , enemies.FightEnemy() , {} , 10 , {});
-                    // fight->start();
-                }
-                else if(map->getEncounters()[map->getCurrentNode().first][map->getCurrentNode().second] == "Shop"){
-                    shop.Generate()->Menu();
-                }
-                else if(map->getEncounters()[map->getCurrentNode().first][map->getCurrentNode().second] == "Hospital"){
-                    Hospital hospital(player , medic);
-                    hospital.Menu();
-                }
-                else if(map->getEncounters()[map->getCurrentNode().first][map->getCurrentNode().second] == "Random"){
-                    RandomEncounter* Random = new RandomEncounter(player);
-                    Random->Menu();
-                }
-                else if(map->getEncounters()[map->getCurrentNode().first][map->getCurrentNode().second] == "MiniBoss"){
-                    // fight.GenerateMiniBoss()->start();
-                }
-            }
-            map->move();
-            fight.GenerateBoss()->start(); // to compelete later
-            MapFactory Mapfactory(map->getFloor() + 1);
-            map = Mapfactory.GenerateMap();
-            // if(player == nullptr)
-            //     break;
-        }
-    // }
-}
-Player* PlayerGenerate(){
-    string name;
-    getline(cin, name);
-    vector<pair<Weapon*, int>> weapons;
-    vector<pair<Item*, int>> items;
-    Player* player = new Player(name, 100, 60, 0, 4, 0, items, weapons);
-    vector<Weapon*> AllWeapons = {shotgun, snipe, smg, rifle, coldweapon};
-    int item_index = rand() % 5;
-    player->addItem(AllWeapons[item_index]);
-    return player;
-}
-
 string StoryGenerate(){
     string ForestStory = "Legends speak of a forest with its mythical creatures and ancient magic. As an adventure, "
     "you must explore the forest, get into some troubles, fight with eccentric creatures or maybe some super natural human beings "
@@ -96,4 +25,77 @@ string StoryGenerate(){
     string ZombieStory1 = "";
     vector<string> stories = {ForestStory, WarStory};
     return ShuffleVec(stories)[0];
+}
+
+Player* PlayerGenerate(){
+    cout << StoryGenerate();
+    string name;
+    getline(cin, name);
+    vector<pair<Weapon*, int>> weapons;
+    vector<pair<Item*, int>> items;
+    Player* player = new Player(name, 10000, 60, 0, 400, 0, items, weapons);
+    vector<Weapon*> AllWeapons = {shotgun, snipe, smg, rifle, coldweapon};
+    int item_index = rand() % 5;
+    player->addItem(AllWeapons[item_index]);
+    player->addItem(new Rifle("lakc" , 0 , 0 , 10000 , 1 , 2 , 2 , 20 , 0));
+    return player;
+}
+
+void GameLoopFunction(){
+    while(true){
+        int Menu_Choice = 1;
+        srand(time(0));
+        Player *player = PlayerGenerate();
+        Map *map;
+        switch(Menu_Choice){
+        case 1:{
+            MapFactory Mapfactory(2);
+            map = Mapfactory.GenerateMap();
+        }
+        case 2:{
+            break;
+        }
+        default:{
+            break;
+        }
+        }
+        for(int i = 0; i < 3; i++){
+            Shopkeeper* ShopKeeper = new Shopkeeper("Amir");
+            Medic* medic = new Medic("Bahram");
+            FightFactory fight(player , map);
+            ShopFactory shop(map , player);
+            EnemyFactory enemies(map , player);
+            while(map->getCurrentNode().first != 14){
+                if(player->getHP() <= 0){
+                   break;
+                }
+                map->move();
+                if(map->getEncounters()[map->getCurrentNode().first][map->getCurrentNode().second] == "Fight"){
+                    fight.GenerateNormalFight()->start();
+                }
+                else if(map->getEncounters()[map->getCurrentNode().first][map->getCurrentNode().second] == "Shop"){
+                    shop.Generate()->Menu();
+                }
+                else if(map->getEncounters()[map->getCurrentNode().first][map->getCurrentNode().second] == "Hospital"){
+                    Hospital hospital(player , medic);
+                    hospital.Menu();
+                }
+                else if(map->getEncounters()[map->getCurrentNode().first][map->getCurrentNode().second] == "Random"){
+                    RandomEncounter* Random = new RandomEncounter(player);
+                    Random->Menu();
+                }
+                else if(map->getEncounters()[map->getCurrentNode().first][map->getCurrentNode().second] == "MiniBoss"){
+                    // fight.GenerateMiniBoss()->start();
+                }
+            }
+            if(player->getHP() <= 0){
+                delete player;
+                break;
+            }
+            map->move();
+            fight.GenerateBoss()->start(); // to compelete later
+            MapFactory Mapfactory(map->getFloor() + 1);
+            map = Mapfactory.GenerateMap();
+        }
+    }
 }

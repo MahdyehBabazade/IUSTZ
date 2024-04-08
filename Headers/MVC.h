@@ -24,7 +24,6 @@ namespace Model{
         public:
             void setRound(int round);
             int getRound();
-            FightModel() = default;
             FightModel(Player* player,vector<Character*> Enemies,vector<Item*> Items,int droppedCoins,vector<Relic*> Relics); //sets the player and the enemies and also the round to zero
             
             Player* getPlayer();
@@ -36,6 +35,8 @@ namespace Model{
             
             vector<Relic*> getRelics();
             void setEnemies(vector<Character*> Enemies);
+            
+            void setPlayer(Player* player);
     };
 }
 //--------------------
