@@ -680,6 +680,7 @@ vector<Relic*> Model::FightModel::getRelics(){return Relics;}
 
 void Model::FightModel::setEnemies(vector<Character*> Enemies){this -> Enemies = Enemies;}
 
+void Model::FightModel::setPlayer(Player* player){this->player=player;};
 //---------------------------------------------------------------------------------------------
 Control::FightControl::FightControl(Player* player,vector<Character*> Enemies,vector<Item*> Items,int droppedCoins,vector<Relic*> Relics) {
     model = new Model::FightModel(player, Enemies,Items,droppedCoins,Relics);
@@ -699,7 +700,7 @@ void Control::FightControl::StartFight(){
         else if(round % 2 == 0){
             EnemiesTurn();
             if(model->getPlayer()->getHP() <= 0){
-                delete model->getPlayer();
+                model->setPlayer(nullptr);
                 break;
             }
         }

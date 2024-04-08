@@ -36,6 +36,8 @@ namespace Model{
             
             vector<Relic*> getRelics();
             void setEnemies(vector<Character*> Enemies);
+            
+            void setPlayer(Player* player);
     };
 }
 //--------------------
