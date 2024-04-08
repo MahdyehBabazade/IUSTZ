@@ -694,6 +694,7 @@ void Control::FightControl::StartFight(){
             PlayerTurn();
             if(model->getEnemies().empty())
                 break;
+            model->getPlayer()->setEnergy(model->getPlayer()->getMaxEnergy());
         }
         else if(round % 2 == 0){
             EnemiesTurn();
