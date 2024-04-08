@@ -756,7 +756,8 @@ void HumanEnemy::Attack(Player* player , Weapon* weapon , int choice){
             SMG* smg = dynamic_cast<SMG*>(weapon);
             smg->Attack({player});
         }else{
-            weapon->Attack(player);
+            Gun* gun = dynamic_cast<Shotgun*>(weapon);
+            gun->Attack(player);
         }
     }
     else if(dynamic_cast<Throwable *>(weapon) != nullptr){
@@ -767,10 +768,10 @@ void HumanEnemy::Attack(Player* player , Weapon* weapon , int choice){
     else if(dynamic_cast<ColdWeapon *>(weapon) != nullptr){
         ColdWeapon *coldWeapon = dynamic_cast<ColdWeapon *>(weapon);
         if(choice ==1){
-            coldWeapon->Attack(player); //if attack, it calls the Attack function of the cold weapon
+            coldWeapon->Throw(player); //if attack, it calls the Attack function of the cold weapon
         }
         else{
-            coldWeapon->Throw(player); //if throw, it calls the Throw function of the cold weapon then removes it from the backpack
+            coldWeapon->Attack(player); //if throw, it calls the Throw function of the cold weapon then removes it from the backpack
             removeItem(coldWeapon); 
         }
     }
