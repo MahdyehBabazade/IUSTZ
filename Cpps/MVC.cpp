@@ -413,7 +413,7 @@ vector<Character*> View::FightView::ChooseEnemies(vector<Character*> Enemies , i
                 row.push_back(Enemy->getName());
             }
             row.push_back("Reset");
-            row.push_back("Done");
+            row.push_back("Done/Back");
         }else{
             if(i == 1){
                 for(Character* Enemy:Enemies){
@@ -433,39 +433,6 @@ vector<Character*> View::FightView::ChooseEnemies(vector<Character*> Enemies , i
         }
         options.push_back(row);
     }
-    /*
-    vector<vector<string>> options(4, vector<string>(vecSize+2));
-    for(int i=0 ; i<4 ; i++){
-        for(int j=0 ; j<vecSize +2 ; j++){
-            if(i == 0){
-                if(j == vecSize)
-                    options[i][j] = "Reset";
-                else if(j == vecSize + 1)
-                    options[i][j] = "Done";
-                else
-                    options[i][j] = Enemies[j]->getName();
-            }
-            else if(i == 1){
-                if(j == vecSize || j == vecSize + 1)
-                    options[i][j] = " ";
-                else
-                    options[i][j] = "HP:[" + to_string(Enemies[j]->getHP()) + "/" + to_string(Enemies[j]->getMaxHP()) + "]";
-            }
-            else if(i == 2){
-                if(j == vecSize || j == vecSize + 1)
-                    options[i][j] = " ";
-                else
-                    options[i][j] = "Armor:" + Enemies[j]->getArmor();
-            }
-            else if(i == 3){
-                if(j == vecSize || j == vecSize + 1)
-                    options[i][j] = " ";
-                else
-                    options[i][j] = "Shield:" + Enemies[j]->getShield();
-            }
-        }
-    }
-    */
     int rows = options.size();
     int width = 0;
     for(int i=0 ; i<rows ; i++){
@@ -475,77 +442,73 @@ vector<Character*> View::FightView::ChooseEnemies(vector<Character*> Enemies , i
                 width = len;
         }
     }
-    vector<int> option;
-    option.push_back(1);
-    for(int i = 0; i < Enemies.size() + 1 ; i++)
-        option.push_back(0);
-    
+    vector<bool> option;
+    for(int i = 0; i < vecSize + 2; i++){
+        option.push_back(true);
+    }
+    vector<bool> Chosen;
+    for(int i = 0; i < vecSize + 2; i++){
+        Chosen.push_back(false);
+    }
+    int m = 0;
     while(true){
         clearScreen();
+        vector<int> Posoptions;
+        for(int i = 0;i < vecSize + 2; i++){
+            if(option[i] && !Chosen[i])
+                Posoptions.push_back(i);
+        }
         for(int i=0 ; i<4 ; i++){
             for(int j=0 ; j<vecSize + 2 ; j++){
-                if(option[j] == 1)
+                if(j == Posoptions[m % Posoptions.size()])
                     cout<< green;
-                else if(option[j] == 2)
-                    cout<< yellow;
-                else if(option[j] == 4)
+                if(!option[j])
                     cout<< grey;
+                if(Chosen[j])
+                    cout<< yellow;
                 if( j > 0){
-                    cout << left << setw(width) << options[i][j] << " " ;
+                    cout << left << setw(width + 4) << options[i][j] << " " ;
                 }else{
-                    cout<< left << setw(4) << options[i][j] << " ";
+                    cout<< left << setw(width + 4) << options[i][j] << " ";
                 }
                 cout<< reset;          
             }
             cout << endl;    
-        }    
-    int m = 0;
-    showCharacters();
+        }
+    // showCharacters();
     char key = _getch();
     switch(tolower(key))
     {
         case 'a':
-                option[m % (vecSize + 2)] = 0;
-                m = find(option.rbegin() + option.size() - (m % (vecSize + 2)), option.rend(), 0) - option.rbegin();
-                if(m == option.size()) {
-                    m = vecSize + 1;
-                    option[m] = 1;
-                }else{
-                    m = option.size() - (m + 1);
-                    option[m] = 1;
-                }
+                m = (m - 1 + Posoptions.size()) % Posoptions.size();
             continue;
         case 'd':
-                option[m % (vecSize + 2)] = 0;
-                m = find(option.begin() + (m % (vecSize + 2)) + 1 , option.end(), 0) - option.begin();
-                option[m] = 1;
+                m = (m + 1) % Posoptions.size();
             continue;
         case '\r':
-            if(m % (vecSize + 2) == vecSize ){  // if it was reset
-                for(int i=0 ; i< vecSize + 2; i++)
-                    option[i] = 0;
-                option[m % (vecSize + 2)] = 1;
-            }else if(m % (vecSize + 2) == vecSize + 1){ // if it was done
+            if(Posoptions[m % Posoptions.size()] == vecSize ){  // if it was reset
+                for(int i=0 ; i< vecSize + 2; i++){
+                    option[i] = true;
+                    Chosen[i] = false;
+                }
+                m = 0;
+            }
+            else if(Posoptions[m % Posoptions.size()] == vecSize + 1){ // if it was done
                 vector<Character*> selected;
                 for(int i=0; i < option.size() ; i++){
-                    if(option[i] == 2)
+                    if(Chosen[i])
                         selected.push_back(Enemies[i]);
                 }
                 return selected;
-            }else{
-                if(count(option.begin(), option.end(), 2) < amount - 1){
-                    option[m % (vecSize + 2)] = 2;
-                    m = find(option.begin() + (m % (vecSize + 2)) + 1 , option.end(), 0) - option.begin();
-                    option[m] = 1;
+            }
+            else{
+                if(count(Chosen.begin(), Chosen.end(), true) <= amount - 1){
+                    Chosen[Posoptions[m % Posoptions.size()]] = true;
                 }
                 else{
-                    option[m % (vecSize + 2)] = 2;
-                    for(int i = 0 ; i < vecSize ; i++){
-                        if(option[i] != 2)
-                            option[i] = 4;
+                    for(int i = 0; i < vecSize; i++){
+                        option[i] = false;
                     }
-                m = find(option.begin(), option.end(), 0) - option.begin();
-                option[m] = 1;
                 }
             }
         default:
