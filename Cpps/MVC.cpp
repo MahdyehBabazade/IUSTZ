@@ -181,9 +181,9 @@ Consumable* View::FightView::ChooseConsumable(vector<pair<Consumable*,int>> Cons
         }
         Options.push_back({"Back"," "," "," "});
         
-        option = MenuManager("Choose A Consumable To Drop: ",Options,Header);
+        option = MenuManager("Choose A Consumable To Drop (Capacity: "+ to_string(model->getPlayer()->getBackPackCapacity() - model->getPlayer()->getBackPackWeight()) + "):"
+                            ,Options,Header);
     }
-    
     
     if(option  == Options.size()-1)
         return nullptr;
@@ -471,9 +471,10 @@ Weapon* View::FightView::ChooseWeapon(vector<pair<Weapon*,int>> Weapons){
         }
         Options.push_back({"Back"," "," "," "," "," "," "," "});
         
-        option = MenuManager("Choose A Weapon To Drop: ",Options,Header);
+        option = MenuManager("Choose A Weapon To Drop (Capacity:"+ to_string(model->getPlayer()->getBackPackCapacity() - model->getPlayer()->getBackPackWeight()) +"):"
+                            ,Options,Header);
     }
-    
+
     if(option  == Options.size()-1)
         return nullptr;
     return Weapons[option].first;
@@ -898,7 +899,22 @@ void Control::FightControl::EndFight(){
                     break;
                 } 
             case 2:
-                //inventory
+                while(true){
+                    choice = view->MenuManager("Choose An Option (Capacity: "+ to_string(model->getPlayer()->getBackPackCapacity() - model->getPlayer()->getBackPackWeight()) +"):"
+                                            , {"Weapon" , "Consumable" , "Back"});
+                    if(choice == 1){
+                        Weapon* weapon = view->ChooseWeapon(model->getPlayer()->getWeapons());
+                        view->Prompt("you removed " + to_string(weapon->getCapacity()));
+                        model->getPlayer()->removeItem(weapon);
+                    }else if(choice == 2){
+                        Consumable* consumable = view->ChooseConsumable(model->getPlayer()->getConsumables());
+                        view->Prompt("You removed " + to_string(consumable->getCapacity()));
+                        model->getPlayer()->removeItem(consumable);
+                    }else{
+                        break;
+                    }
+                }
+                continue;
                 // chooses between weapons and consumables , then drops the item, erasing it from the player inventory
             case 3:
                 break;
