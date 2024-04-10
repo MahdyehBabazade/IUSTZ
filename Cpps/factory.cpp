@@ -1137,23 +1137,13 @@ Fight* FightFactory :: GenerateBoss(){
     vector<Relic> AllRelics = {relic, relic2, relic3, relic4, relic5, relic6, relic7, relic8, relic9};
     AllRelics = ShuffleVec(AllRelics);
 
-    bool isExisted = false;
     vector<Relic*> relics;
-
+    weights = {1,1,1, 1,1,1, 1,1,1};
     for (int i = 0; i < 3; i++)
     {
-        item_index = rand() % AllRelics.size();
-        for (int i = 0; i < player->getRelic().size(); i++)
-        {
-            if (AllRelics[item_index] == *player->getRelic()[i])
-            {
-                isExisted = true;
-            }   
-        }
-        if (!(isExisted))
-        {
-            relics.push_back(&AllRelics[item_index]);
-        }                                                       
+        item_index = Index_Weighted_Random(weights);
+        relics.push_back(&AllRelics[item_index]);
+        weights[item_index] = 0;
     }
     
     EnemyFactory* enemyfactory = new EnemyFactory(map , player);
