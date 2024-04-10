@@ -14,13 +14,13 @@ ShopFactory :: ShopFactory(Map* map, Player* player){
 
 Shop* ShopFactory :: Generate(){
 
-    vector<Weapon> AllWeapons = {shotgun, shotgun2, shotgun3, snipe, snipe2, snipe3, smg, smg2, smg3, rifle, rifle2, rifle3, 
+    vector<Weapon*> AllWeapons = {shotgun, shotgun2, shotgun3, snipe, snipe2, snipe3, smg, smg2, smg3, rifle, rifle2, rifle3, 
     coldweapon, coldweapon2, coldweapon3, grenade, grenade2, grenade3, boomerang, boomerang2, boomerang3};
 
-    vector<Consumable> AllConsumables ={ShieldConsumable, ShieldConsumable2, ShieldConsumable3, HPConsumable, HPConsumable2, 
+    vector<Consumable*> AllConsumables ={ShieldConsumable, ShieldConsumable2, ShieldConsumable3, HPConsumable, HPConsumable2, 
     HPConsumable3, EnergyConsumable, EnergyConsumable2};
 
-    vector<Equipment> AllEquipments = {vest, vest2, vest3, headgear, headgear2, headgear3, footwear, footwear2, footwear3, boot, 
+    vector<Equipment*> AllEquipments = {vest, vest2, vest3, headgear, headgear2, headgear3, footwear, footwear2, footwear3, boot, 
     boot2, boot3};
 
     vector<Weapon*> Weapons;
@@ -28,84 +28,65 @@ Shop* ShopFactory :: Generate(){
     vector<Equipment*> Equipments;
 
     int item_index;
-    vector<int> weights;
     switch (map->getFloor())
     {
     case 1:
         for (int i = 0; i < 5; i++)
         {
-            weights = {5,2,1,5,2,1,5,2,1,5,2,1,6,3,2,5,2,1,5,2,1};
-            item_index = Index_Weighted_Random(weights);
-            Weapons.push_back(&AllWeapons[item_index]);
-            weights[item_index] = 0; 
+            item_index = Index_Weighted_Random({5,2,1,5,2,1,5,2,1,5,2,1,6,3,2,5,2,1,5,2,1});
+            Weapons.push_back(AllWeapons[item_index]);
         }
         
         for (int i = 0; i < 4; i++)
         {
-            weights = {5,2,1,5,2,1,5,2};
-            item_index = Index_Weighted_Random(weights);
-            Consumables.push_back(&AllConsumables[i]);
-            weights[item_index] = 0; 
+            item_index = Index_Weighted_Random({5,2,1,5,2,1,5,2});
+            Consumables.push_back(AllConsumables[i]);
         }
         
         for (int i = 0; i < 2; i++)
         {
-            weights = {5,2,1,5,2,1,5,2,1,5,2,1};
-            item_index = Index_Weighted_Random(weights);
-            Equipments.push_back(&AllEquipments[item_index]);
-            weights[item_index] = 0; 
+            item_index = Index_Weighted_Random({5,2,1,5,2,1,5,2,1,5,2,1});
+            Equipments.push_back(AllEquipments[item_index]);
         }
         break;
 
     case 2:
         for (int i = 0; i < 5; i++)
         {
-            weights = {2,5,1,2,5,1,2,5,1,2,5,1, 3,6,2 ,2,5,1,2,5,1};
-            item_index = Index_Weighted_Random(weights);
-            Weapons.push_back(&AllWeapons[item_index]);
-            weights[item_index] = 0;
+            item_index = Index_Weighted_Random({2,5,1,2,5,1,2,5,1,2,5,1, 3,6,2 ,2,5,1,2,5,1});
+            Weapons.push_back(AllWeapons[item_index]);
         }
         
         for (int i = 0; i < 4; i++)
         {
-            weights = {2,5,1,2,5,1,2,5};
-            item_index = Index_Weighted_Random(weights);
-            Consumables.push_back(&AllConsumables[i]);
-            weights[item_index] = 0;
+            item_index = Index_Weighted_Random({2,5,1,2,5,1,2,5});
+            Consumables.push_back(AllConsumables[i]);
         }
         
         for (int i = 0; i < 2; i++)
         {
-            weights = {2,5,1,2,5,1,2,5,1,2,5,1};
-            item_index = Index_Weighted_Random(weights);
-            Equipments.push_back(&AllEquipments[item_index]);
-            weights[item_index] = 0;
+            item_index = Index_Weighted_Random({2,5,1,2,5,1,2,5,1,2,5,1});
+            Equipments.push_back(AllEquipments[item_index]);
         }
         break;
 
     case 3:
         for (int i = 0; i < 5; i++)
         {
-            weights = {1,2,5,1,2,5,1,2,5,1,2,5, 2,3,6, 1,2,5,1,2,5};
-            item_index = Index_Weighted_Random(weights);
-            Weapons.push_back(&AllWeapons[item_index]);
-            weights[item_index] = 0;
+            item_index = Index_Weighted_Random({1,2,5,1,2,5,1,2,5,1,2,5, 2,3,6, 1,2,5,1,2,5});
+            Weapons.push_back(AllWeapons[item_index]);
         }
         
         for (int i = 0; i < 4; i++)
         {
-            weights = {1,2,5,1,2,5,2,5};
-            item_index = Index_Weighted_Random(weights);
-            Consumables.push_back(&AllConsumables[i]);
-            weights[item_index] = 0;
+            item_index = Index_Weighted_Random({1,2,5,1,2,5,2,5});
+            Consumables.push_back(AllConsumables[i]);
         }
         
         for (int i = 0; i < 2; i++)
         {
-            weights = {1,2,5,1,2,5,1,2,5};
-            item_index = Index_Weighted_Random(weights);
-            Equipments.push_back(&AllEquipments[item_index]);
-            weights[item_index] = 0;
+            item_index = Index_Weighted_Random({1,2,5,1,2,5,1,2,5});
+            Equipments.push_back(AllEquipments[item_index]);
         }
         break;
     
@@ -977,7 +958,7 @@ FightFactory :: FightFactory(Player* player, Map* map){
 
 Fight* FightFactory :: GenerateNormalFight(){
 
-    vector<Item> AllItems = {shotgun, shotgun2, shotgun3, snipe, snipe2, snipe3, smg, smg2, smg3, rifle, rifle2, rifle3, 
+    vector<Item*> AllItems = {shotgun, shotgun2, shotgun3, snipe, snipe2, snipe3, smg, smg2, smg3, rifle, rifle2, rifle3, 
     coldweapon, coldweapon2, coldweapon3, grenade, grenade2, grenade3, boomerang, boomerang2, boomerang3, ShieldConsumable, 
     ShieldConsumable2, ShieldConsumable3, HPConsumable, HPConsumable2, HPConsumable3, EnergyConsumable, EnergyConsumable2, vest, vest2, 
     vest3, headgear, headgear2, headgear3, footwear, footwear2, footwear3, boot, boot2, boot3};
@@ -1013,7 +994,7 @@ Fight* FightFactory :: GenerateNormalFight(){
     for (int i = 0; i < 5; i++)
     {
         item_index = Index_Weighted_Random(weights);
-        Items.push_back(&AllItems[item_index]);
+        Items.push_back(AllItems[item_index]);
     }
 
     EnemyFactory* enemyfactory = new EnemyFactory(map , player);
@@ -1024,7 +1005,7 @@ Fight* FightFactory :: GenerateNormalFight(){
 
 Fight* FightFactory :: GenerateMiniBoss(){
 
-    vector<Item> AllItems = {shotgun, shotgun2, shotgun3, snipe, snipe2, snipe3, smg, smg2, smg3, rifle, rifle2, rifle3, 
+    vector<Item*> AllItems = {shotgun, shotgun2, shotgun3, snipe, snipe2, snipe3, smg, smg2, smg3, rifle, rifle2, rifle3, 
     coldweapon, coldweapon2, coldweapon3, grenade, grenade2, grenade3, boomerang, boomerang2, boomerang3, ShieldConsumable, 
     ShieldConsumable2, ShieldConsumable3, HPConsumable, HPConsumable2, HPConsumable3, EnergyConsumable, EnergyConsumable2, vest, vest2, 
     vest3, headgear, headgear2, headgear3, footwear, footwear2, footwear3, boot, boot2, boot3};
@@ -1060,31 +1041,35 @@ Fight* FightFactory :: GenerateMiniBoss(){
     for (int i = 0; i < 7; i++)
     {
         item_index = Index_Weighted_Random(weights);
-        Items.push_back(&AllItems[item_index]);
+        Items.push_back(AllItems[item_index]);
     }
 
-    vector<Relic> AllRelics = {relic, relic2, relic3, relic4, relic5, relic6, relic7, relic8, relic9};
-    AllRelics = ShuffleVec(AllRelics);
+    vector<Relic*> relics = {relic, relic2, relic3, relic4, relic5, relic6, relic7, relic8, relic9};
+    relics = ShuffleVec(relics);
 
     bool isExisted = false;
-    vector<Relic*> relics;
-
-    for (int i = 0; i < 3; i++)
+    int m = 0;
+    while (m != 3)
     {
-        item_index = rand() % AllRelics.size();
+        item_index = rand() % relics.size();
         for (int i = 0; i < player->getRelic().size(); i++)
         {
-            if (AllRelics[item_index] == *player->getRelic()[i])
+            if (relics[item_index] == player->getRelic()[i])
             {
                 isExisted = true;
             }   
         }
         if (!(isExisted))
         {
-            relics.push_back(&AllRelics[item_index]);
+            relics[m] == relics[item_index];
+            m++;
         }                                                       
     }
-    
+    while (relics.size() != 3)
+    {
+        relics.pop_back();
+    }
+
     EnemyFactory* enemyfactory = new EnemyFactory(map , player);
     vector<Character*> Enemies = enemyfactory->MiniBossEnemy();
     Fight* fight = new Fight(player, 1, Enemies, Items, droppedCoins, relics);
@@ -1093,7 +1078,7 @@ Fight* FightFactory :: GenerateMiniBoss(){
 
 Fight* FightFactory :: GenerateBoss(){
 
-    vector<Item> AllItems = {shotgun, shotgun2, shotgun3, snipe, snipe2, snipe3, smg, smg2, smg3, rifle, rifle2, rifle3, 
+    vector<Item*> AllItems = {shotgun, shotgun2, shotgun3, snipe, snipe2, snipe3, smg, smg2, smg3, rifle, rifle2, rifle3, 
     coldweapon, coldweapon2, coldweapon3, grenade, grenade2, grenade3, boomerang, boomerang2, boomerang3, ShieldConsumable, 
     ShieldConsumable2, ShieldConsumable3, HPConsumable, HPConsumable2, HPConsumable3, EnergyConsumable, EnergyConsumable2, vest, vest2, 
     vest3, headgear, headgear2, headgear3, footwear, footwear2, footwear3, boot, boot2, boot3};
@@ -1130,19 +1115,17 @@ Fight* FightFactory :: GenerateBoss(){
     for (int i = 0; i < 8; i++)
     {
         item_index = Index_Weighted_Random(weights);
-        Items.push_back(&AllItems[item_index]);
-        weights[item_index] = 0;
+        Items.push_back(AllItems[item_index]);
     }
     
-    vector<Relic> AllRelics = {relic, relic2, relic3, relic4, relic5, relic6, relic7, relic8, relic9};
-    AllRelics = ShuffleVec(AllRelics);
+    vector<Relic*> relics = {relic, relic2, relic3, relic4, relic5, relic6, relic7, relic8, relic9};
+    relics = ShuffleVec(relics);
 
-    vector<Relic*> relics;
     weights = {1,1,1, 1,1,1, 1,1,1};
     for (int i = 0; i < 3; i++)
     {
         item_index = Index_Weighted_Random(weights);
-        relics.push_back(&AllRelics[item_index]);
+        relics.push_back(relics[item_index]);
         weights[item_index] = 0;
     }
     

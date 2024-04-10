@@ -471,7 +471,7 @@ Weapon* View::FightView::ChooseWeapon(vector<pair<Weapon*,int>> Weapons){
         }
         Options.push_back({"Back"," "," "," "," "," "," "," "});
         
-        option = MenuManager("Choose A Weapon To Drop: ",Options,Header);
+        option = MenuManager("Choose A Weapon To pick: ",Options,Header);
     }
     
     if(option  == Options.size()-1)
