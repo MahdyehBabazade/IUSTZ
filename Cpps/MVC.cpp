@@ -444,7 +444,7 @@ Weapon* View::FightView::ChooseWeapon(vector<pair<Weapon*,int>> Weapons){
             
             vector<string> row(Header.size());
             row[0] = weapon->getName();
-            row[1] = weapon->getCapacity();
+            row[1] = to_string(weapon->getCapacity());
             row[2] = to_string(weapon->getDamage());
             row[3] = " ";
             row[4] = to_string(weapon->getEnergyNeeded());
@@ -543,6 +543,7 @@ void View::FightView::Prompt(){
     _getch();
 }
 void View::FightView::Prompt(vector<string> entries){
+    clearScreen();
     for(string& entry:entries){
         cout << entry << endl;
     }
