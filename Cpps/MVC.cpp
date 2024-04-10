@@ -146,22 +146,44 @@ Consumable* View::FightView::ChooseConsumable(vector<pair<Consumable*,int>> Cons
         Prompt("No Consumables Left");
         return nullptr;
     }
-    vector<string> Header = {"Name","Type","Amount"};
-    vector<vector<string>> Options;
-
-    for(pair<Consumable*,int> x : Consumables){
-        Consumable* consumable = x.first;
-        int amount = x.second;
-        
-        vector<string> row(Header.size());
-        row[0] = (consumable->getName() + "(x" + to_string(amount) + ")");
-        row[1] = consumable->getType();
-        row[2] = to_string(consumable->getAmount());
-        Options.push_back(row);
-    }
-    Options.push_back({"Back"," "," "});
     
-    int option = MenuManager("Choose A Consumable: ",Options,Header);
+    vector<string> Header;
+    vector<vector<string>> Options;
+    int option;
+    
+    if(!model->getEnemies().empty()){
+        Header = {"Name","Type","Amount"};
+        for(pair<Consumable*,int> x : Consumables){
+            Consumable* consumable = x.first;
+            int amount = x.second;
+            
+            vector<string> row(Header.size());
+            row[0] = (consumable->getName() + "(x" + to_string(amount) + ")");
+            row[1] = consumable->getType();
+            row[2] = to_string(consumable->getAmount());
+            Options.push_back(row);
+        }
+        Options.push_back({"Back"," "," "});
+        
+        option = MenuManager("Choose A Consumable: ",Options,Header);
+    }else{
+        Header = {"Name","Capacity","Type","Amount"};
+        for(pair<Consumable*,int> x : Consumables){
+            Consumable* consumable = x.first;
+            int amount = x.second;
+            
+            vector<string> row(Header.size());
+            row[0] = (consumable->getName() + "(x" + to_string(amount) + ")");
+            row[1] = to_string(consumable->getCapacity());
+            row[2] = consumable->getType();
+            row[3] = to_string(consumable->getAmount());
+            Options.push_back(row);
+        }
+        Options.push_back({"Back"," "," "," "});
+        
+        option = MenuManager("Choose A Consumable To Drop: ",Options,Header);
+    }
+    
     
     if(option  == Options.size()-1)
         return nullptr;
@@ -371,45 +393,86 @@ vector<Character*> View::FightView::ChooseEnemies(vector<Character*> Enemies , i
 
 Weapon* View::FightView::ChooseWeapon(vector<pair<Weapon*,int>> Weapons){
     if(Weapons.empty()){
-        clearScreen();
         Prompt("No Weapons Left");
         return nullptr;
     }
-    vector<string> Header = {"Name","Damage","Ammo/Amount","AttackEnergy","ReloadEnergy","MaxAttackAmount","MinDamagePercent"};
+    vector<string> Header;
     vector<vector<string>> Options;
-    for(pair<Weapon*,int> p:Weapons){
-        Weapon* weapon = p.first;
-        int Amount = p.second;
-        
-        vector<string> row(Header.size());
-        row[0] = weapon->getName();
-        row[1] = to_string(weapon->getDamage());
-        row[2] = " ";
-        row[3] = to_string(weapon->getEnergyNeeded());
-        row[4] = " ";
-        row[5] = " ";
-        row[6] = " ";
-        if(dynamic_cast<Gun*>(weapon) != nullptr){
-            Gun* gun = dynamic_cast<Gun*>(weapon);
-            row[4] = to_string(gun->getReloadEnergy());
-            row[2] = "[" + to_string(gun->getAmmo()) + "/" + to_string(gun->getMaxAmmo()) + "]";
-            
-            if(dynamic_cast<Rifle*>(gun) != nullptr){
-                Rifle* rifle = dynamic_cast<Rifle*>(weapon);
-                row[5] = to_string(rifle->getMaxAttackAmount());
-            }else if(dynamic_cast<Shotgun*>(gun) != nullptr){
-                Shotgun* shotgun = dynamic_cast<Shotgun*>(weapon);
-                row[6] = to_string(shotgun->getMinDamagePercent())+ "%";
-            }
-            
-        }else{
-            row[2] = to_string(Amount);
-        }
-        Options.push_back(row);
-    }
-    Options.push_back({"Back"," "," "," "," "," "," "});
     
-    int option = MenuManager("Choose A Weapon: ",Options,Header);
+    int option;
+    if(!model->getEnemies().empty()){
+        
+        Header = {"Name","Damage","Ammo/Amount","AttackEnergy","ReloadEnergy","MaxAttackAmount","MinDamagePercent"};
+        for(pair<Weapon*,int> p:Weapons){
+            Weapon* weapon = p.first;
+            int Amount = p.second;
+            
+            vector<string> row(Header.size());
+            row[0] = weapon->getName();
+            row[1] = to_string(weapon->getDamage());
+            row[2] = " ";
+            row[3] = to_string(weapon->getEnergyNeeded());
+            row[4] = " ";
+            row[5] = " ";
+            row[6] = " ";
+            if(dynamic_cast<Gun*>(weapon) != nullptr){
+                Gun* gun = dynamic_cast<Gun*>(weapon);
+                row[4] = to_string(gun->getReloadEnergy());
+                row[2] = "[" + to_string(gun->getAmmo()) + "/" + to_string(gun->getMaxAmmo()) + "]";
+                
+                if(dynamic_cast<Rifle*>(gun) != nullptr){
+                    Rifle* rifle = dynamic_cast<Rifle*>(weapon);
+                    row[5] = to_string(rifle->getMaxAttackAmount());
+                }else if(dynamic_cast<Shotgun*>(gun) != nullptr){
+                    Shotgun* shotgun = dynamic_cast<Shotgun*>(weapon);
+                    row[6] = to_string(shotgun->getMinDamagePercent())+ "%";
+                }
+                
+            }else{
+                row[2] = to_string(Amount);
+            }
+            Options.push_back(row);
+        }
+        Options.push_back({"Back"," "," "," "," "," "," "});
+        
+        option = MenuManager("Choose A Weapon: ",Options,Header);
+    }else{
+        Header = {"Name","Capacity","Damage","Ammo/Amount","AttackEnergy","ReloadEnergy","MaxAttackAmount","MinDamagePercent"};
+        for(pair<Weapon*,int> p:Weapons){
+            Weapon* weapon = p.first;
+            int Amount = p.second;
+            
+            vector<string> row(Header.size());
+            row[0] = weapon->getName();
+            row[1] = weapon->getCapacity();
+            row[2] = to_string(weapon->getDamage());
+            row[3] = " ";
+            row[4] = to_string(weapon->getEnergyNeeded());
+            row[5] = " ";
+            row[6] = " ";
+            row[7] = " ";
+            if(dynamic_cast<Gun*>(weapon) != nullptr){
+                Gun* gun = dynamic_cast<Gun*>(weapon);
+                row[5] = to_string(gun->getReloadEnergy());
+                row[3] = "[" + to_string(gun->getAmmo()) + "/" + to_string(gun->getMaxAmmo()) + "]";
+                
+                if(dynamic_cast<Rifle*>(gun) != nullptr){
+                    Rifle* rifle = dynamic_cast<Rifle*>(weapon);
+                    row[6] = to_string(rifle->getMaxAttackAmount());
+                }else if(dynamic_cast<Shotgun*>(gun) != nullptr){
+                    Shotgun* shotgun = dynamic_cast<Shotgun*>(weapon);
+                    row[7] = to_string(shotgun->getMinDamagePercent())+ "%";
+                }
+                
+            }else{
+                row[3] = to_string(Amount);
+            }
+            Options.push_back(row);
+        }
+        Options.push_back({"Back"," "," "," "," "," "," "," "});
+        
+        option = MenuManager("Choose A Weapon To Drop: ",Options,Header);
+    }
     
     if(option  == Options.size()-1)
         return nullptr;
@@ -476,6 +539,13 @@ void View::FightView::Prompt(string entry){
     _getch();
 }
 void View::FightView::Prompt(){
+    cout << endl << endl <<"Press any key to continue...\n";
+    _getch();
+}
+void View::FightView::Prompt(vector<string> entries){
+    for(string& entry:entries){
+        cout << entry << endl;
+    }
     cout << endl << endl <<"Press any key to continue...\n";
     _getch();
 }
@@ -771,7 +841,7 @@ View::FightView* Control::FightControl::getView(){return view;}
 
 void Control::FightControl::EndFight(){
     if(model->getPlayer()->getHP() > 0){
-        view->Prompt("You Survived The Fight! (Coins +"+ to_string(model->getCoins()) + ")\n Loot What You need");
+        view->Prompt({"You Survived The Fight! (Coins +"+ to_string(model->getCoins()) + ")"," Loot What You need"});
         
         
         model->getPlayer()->addCoin(model->getCoins());
@@ -786,13 +856,15 @@ void Control::FightControl::EndFight(){
         }
         
         while(!weapons.empty() || !consumables.empty()){
-            int choice = view->MenuManager("Choose An Option:",{"Dropped Items","Inventory","Continue"});
+            int choice = view->MenuManager("Choose An Option (Capacity: "+ to_string(model->getPlayer()->getBackPackCapacity() - model->getPlayer()->getBackPackWeight()) +"):",
+                                        {"Dropped Items","Inventory","Continue"});
             switch (choice)
             {
             case 1:
-                choice = view->MenuManager("Choose An Option:",{"Dropped Weapons","Dropped Consumables","Back"});
+                choice = view->MenuManager("Choose An Option (Capacity: "+ to_string(model->getPlayer()->getBackPackCapacity() - model->getPlayer()->getBackPackWeight()) +"):"
+                                        ,{"Dropped Weapons","Dropped Consumables","Back"});
                 if(choice == 1){
-                    while(true){
+                    while(!weapons.empty()){
                         Weapon* ChosenWeapon = view->ChooseWeapon(weapons);
                         if(ChosenWeapon == nullptr)
                             break;
@@ -807,7 +879,7 @@ void Control::FightControl::EndFight(){
                     }
                     continue;
                 }else if(choice == 2){
-                    while(true){  // consumable
+                    while(!consumables.empty()){  // consumable
                         Consumable* ChosenConsumable = view->ChooseConsumable(consumables);
                         if(ChosenConsumable == nullptr)
                             break;
@@ -826,6 +898,7 @@ void Control::FightControl::EndFight(){
                 } 
             case 2:
                 //inventory
+                // chooses between weapons and consumables , then drops the item, erasing it from the player inventory
             case 3:
                 break;
             default:

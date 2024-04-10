@@ -58,6 +58,7 @@ namespace View{
             
             void Prompt();
             void Prompt(string entry);
+            void Prompt(vector<string> entry);
             void print(string entry);
             void DamageInfo(Weapon* weapon);
             
