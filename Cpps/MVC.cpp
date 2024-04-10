@@ -1,3 +1,4 @@
+#pragma once
 #include "../Headers/MVC.h"
 #include "../Headers/creature.h"
 #include "functions.cpp"

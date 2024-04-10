@@ -1,9 +1,9 @@
+#pragma once
 #include "../Headers/encounter.h"
+#include "../Headers/factory.h"
 #include "functions.cpp"
 #include <iostream>
 #include <random>
-
-Encounter :: Encounter(string Story){this -> Story = Story;}
 
 string Encounter :: getStory(){return Story;}
 
@@ -14,8 +14,8 @@ Shop :: Shop(Player* player, vector<Weapon*> weapons, vector<Consumable*> consum
     this -> equipments = equipments;
     this -> shopkeeper = shopkeeper;
     this -> WantsToQuit = false;
-    this -> BaseUpgradePrice = 5; // Changes later
-    this -> UpgradesLeft = 6; // Changes later
+    this -> BaseUpgradePrice = 30; // Changes later
+    this -> UpgradesLeft = 2; // Changes later
 
     string BazaarStory = "As you wander through the crowded boulevard, getting curious about the growing number of people, "
     "you enter a traditional bazaar hall \nwhere everyone is just shouting. This place is all colorful but you are too exhasted to"
@@ -62,23 +62,8 @@ string UpgradeNameChange(string name, int upgradeAmount){
 
 void Shop :: Upgrade(Weapon* weapon , string dialogue){
     if(dynamic_cast<Shotgun*>(weapon) != nullptr){
-        if(weapon->getUpgradeAmount() >= weapon->getUpgradeLimit()){
-            cout << shopkeeper->UpgradeLimitDialogue(weapon);
-            cout << "Press anything to continue";
-            getch();
-        }
-        if(UpgradesLeft <=0){
-            cout << shopkeeper->UpgradeLimitDialogue();
-            cout << "Press anything to continue";
-            getch();
-        }
-        if(player->getCoin() < BaseUpgradePrice * weapon->getUpgradeAmount()){
-            cout << Story << "\n\n";
-            cout << shopkeeper->NoMoneyDialogue();
-            cout << "Press anything to continue";
-            getch();
-        }
-        int choice = Choose(Story + "\n\n" + dialogue + "\n",
+        int choice = Choose(Story + "\n\n"  + getStat() + dialogue + "\n\n" + "Coins needed to Upgrade: " + 
+        to_string(BaseUpgradePrice * pow(1.5 , weapon->getUpgradeAmount())) + "\n",
                             {"Damage",
                             "Min Damage Percent",
                             "Back"});
@@ -94,7 +79,7 @@ void Shop :: Upgrade(Weapon* weapon , string dialogue){
                 UpgradesLeft --;
                 
                 player->addItem(weapon);
-                
+                player->removeCoin(BaseUpgradePrice * pow(1.5 , weapon->getUpgradeAmount()));
             case 2:
             {
                 player->removeItem(weapon);
@@ -108,6 +93,8 @@ void Shop :: Upgrade(Weapon* weapon , string dialogue){
                 UpgradesLeft --;
                 
                 player->addItem(shotgun);
+                player->removeCoin(BaseUpgradePrice * pow(1.5 , weapon->getUpgradeAmount()));
+            
             }
             case 3:
                 break;
@@ -138,7 +125,8 @@ void Shop :: Upgrade(Weapon* weapon , string dialogue){
             cout << "Press anything to continue";
             getch();
         }
-        int choice = Choose(Story + "\n\n" + dialogue + "\n",
+        int choice = Choose(Story + "\n\n" + getStat() + dialogue + "\n\n" + "Coins needed to Upgrade: " + 
+        to_string(BaseUpgradePrice * pow(1.5 , weapon->getUpgradeAmount())) + "\n",
                             {"Damage",
                             "Max Attack Amount",
                             "Back"});
@@ -200,7 +188,8 @@ void Shop :: Upgrade(Weapon* weapon , string dialogue){
             getch();
         }
         
-        int choice = Choose(Story + "\n\n" + dialogue + "\n",
+        int choice = Choose(Story + "\n\n" + getStat() + dialogue + "\n\n" + "Coins needed to Upgrade: " + 
+        to_string(BaseUpgradePrice * pow(1.5 , weapon->getUpgradeAmount())) + "\n",
                             {"Damage",
                             "Back"});
         
@@ -288,7 +277,7 @@ void Shop::removeItem(Item* item){
 void Shop :: Menu(){
     string dialogue = shopkeeper->HiDialogue();
     while (!WantsToQuit){
-        int choice = Choose(Story + "\n\n"  + dialogue+ "\n" , 
+        int choice = Choose(Story + "\n\n"  + getStat() + dialogue+ "\n" , 
                             {"Buy",           // Player buys, Shopkeeper sells ( Sell(Item* item) should be called ) 
                             "Sell",
                             "Upgrade",
@@ -296,7 +285,7 @@ void Shop :: Menu(){
         
         switch (choice){
             case 1: // Player buys an item
-                choice = Choose(Story + "\n\n" + dialogue + "\n" ,
+                choice = Choose(Story + "\n\n" + getStat() + dialogue + "\n" ,
                                 {"Weapons",           // Player buys, Shopkeeper sells ( Sell(Item* item) should be called ) 
                                 "Consumables",
                                 "Equipments",
@@ -312,7 +301,7 @@ void Shop :: Menu(){
                             }
                             Options.push_back("Back");
                             
-                            int choice = Choose(Story + "\n\n" + dialogue , Options);
+                            int choice = Choose(Story + "\n\n" + getStat() + dialogue , Options);
                             if(choice == Options.size()){
                                 break;
                             }
@@ -329,7 +318,7 @@ void Shop :: Menu(){
                             }
                             Options.push_back("Back");
                             
-                            int choice = Choose(Story + "\n\n" + dialogue + "\n" ,
+                            int choice = Choose(Story + "\n\n" + getStat() + dialogue + "\n" ,
                             Options);
                             if(choice == Options.size()){
                                 break;
@@ -347,7 +336,7 @@ void Shop :: Menu(){
                             }
                             Options.push_back("Back");
                             
-                            int choice = Choose(Story + "\n\n" + dialogue + "\n" ,
+                            int choice = Choose(Story + "\n\n" + getStat() + dialogue + "\n" ,
                             Options);
                             if(choice == Options.size()){
                                 break;
@@ -370,7 +359,7 @@ void Shop :: Menu(){
                     }
                     Options.push_back("Back");
                     
-                    int choice = Choose(Story + "\n\n" + dialogue + "\n" ,
+                    int choice = Choose(Story + "\n\n" + getStat() + dialogue + "\n" ,
                     Options);
                     if(choice == Options.size()){
                         break;
@@ -393,10 +382,10 @@ void Shop :: Menu(){
                     for(pair<Weapon*,int> weapon: player->getWeapons()){
                         Options.push_back(weapon.first->getStat());
                     }
-                    Options.push_back("BackPack");
+                    Options.push_back("BackPack [" + to_string(player->getBackPackWeight()) + "/" + to_string(player->getBackPackCapacity()) + "]");
                     Options.push_back("Back");
                     
-                    int choice = Choose(Story + "\n\n" + dialogue + "\n",
+                    int choice = Choose(Story + "\n\n" + getStat() + dialogue + "\n",
                     Options);
                     if(choice == Options.size()){
                         break;
@@ -409,15 +398,21 @@ void Shop :: Menu(){
                             getch();
                         }
                         else if(player->getCoin() >= 30){
-                            player->setBackPackCapacity(player->getBackPackCapacity() + 15);
-                            player->removeCoin(30);
-                            clearScreen();
-                            cout << Story << "\n\n" << shopkeeper->getName() << ": BackPack has been Upgraded.\n";
-                            cout << "Press anything to continue\n";
-                            getch();
+                            choice = Choose(Story + "\n\n" + getStat() + dialogue + "\nUpgrade price is 30 coins\n" ,
+                            {"Upgrade" , "Back"});
+                            if(choice = 1){
+                                player->setBackPackCapacity(player->getBackPackCapacity() + 15);
+                                player->removeCoin(30);
+                                clearScreen();
+                                cout << Story << "\n\n" << shopkeeper->getName() << ": BackPack has been Upgraded.\n";
+                                cout << "Press anything to continue\n";
+                                getch();
+                            }
                         }
                         else{
+                            clearScreen();
                             cout << shopkeeper->NoMoneyDialogue();
+                            cout << "Press anything to continue\n";
                             getch();
                         }
                         continue;
@@ -432,7 +427,7 @@ void Shop :: Menu(){
                         getch();
                         continue;
                     }
-                    if(player->getCoin() < BaseUpgradePrice * ChosenWeapon->getUpgradeAmount()){
+                    else if(player->getCoin() < BaseUpgradePrice * pow(1.5 , ChosenWeapon->getUpgradeAmount())){
                         clearScreen();
                         cout << Story << "\n\n";
                         cout << shopkeeper->NoMoneyDialogue();
@@ -440,7 +435,9 @@ void Shop :: Menu(){
                         getch();
                         continue;
                     }
-                    Upgrade(ChosenWeapon , dialogue);   
+                    else{
+                        Upgrade(ChosenWeapon , dialogue);
+                    }   
                 }
                 continue;
             case 4: // Player quits
@@ -458,49 +455,48 @@ void Shop :: Menu(){
 }
 
 string Shop :: getStat(){
-    string Weapons="", Equipments="", Consumables="";
-    if (player->getWeapons().size() == 0)
-    {
-        Weapons += "-";
-    }
-    else
-    {
-        for (int i = 0; i < player->getWeapons().size(); i++)
-        {
-            Weapons += ( "\n\t" + to_string(i+1) + ". " + player->getWeapons()[i].first->getName() +
-                        + "\t" + to_string(player->getWeapons()[i].second)) + "\n";
-        }
-    }
+    // string Weapons="", Equipments="", Consumables="";
+    // if (player->getWeapons().empty())
+    // {
+    //     Weapons += "-";
+    // }
+    // else
+    // {
+    //     for (int i = 0; i < player->getWeapons().size(); i++)
+    //     {
+    //         Weapons += ( "\n\t" + to_string(i+1) + ". " + player->getWeapons()[i].first->getName() +
+    //                     + "\t" + to_string(player->getWeapons()[i].second)) + "\n";
+    //     }
+    // }
 
-    if (player->getEquipments().size() == 0)
-    {
-        Equipments += "-";
-    }
-    else
-    {
-        for (int i = 0; i < player->getEquipments().size(); i++)
-        {
-            Equipments += ( "\n\t" + to_string(i+1) + ". " + player->getEquipments()[i]->getName()) + "\n";
-        }
-    }
+    // if (player->getEquipments().empty())
+    // {
+    //     Equipments += "-";
+    // }
+    // else
+    // {
+    //     for (int i = 0; i < player->getEquipments().size(); i++)
+    //     {
+    //         Equipments += ( "\n\t" + to_string(i+1) + ". " + player->getEquipments()[i]->getName()) + "\n";
+    //     }
+    // }
 
-    if (player->getConsumables().size() == 0)
-    {
-        Consumables += "-";
-    }
-    else
-    {
-        for (int i = 0; i < player->getConsumables().size(); i++)
-        {
-            Consumables += ( "\n\t" + to_string(i+1) + ". " + player->getConsumables()[i].first->getName() +
-                        + "\t" + to_string(player->getConsumables()[i].second));
-        }
-    }
+    // if (player->getConsumables().empty())
+    // {
+    //     Consumables += "-";
+    // }
+    // else
+    // {
+    //     for (int i = 0; i < player->getConsumables().size(); i++)
+    //     {
+    //         Consumables += ( "\n\t" + to_string(i+1) + ". " + player->getConsumables()[i].first->getName() +
+    //                     + "\t" + to_string(player->getConsumables()[i].second));
+    //     }
+    // }
     
     
     string output = "Coin: " + to_string(player->getCoin()) + "\n"
-                    "BackPack Weight: " + to_string(player->getBackPackWeight()) + "/" + to_string(player->getBackPackCapacity()) + "\n" +
-                    "Weapons: " + Weapons + "\n" + "Equipments: " + Equipments + "\n" + "Consumables: " + Consumables + "\n" + 
+                    "BackPack Weight: [" + to_string(player->getBackPackWeight()) + "/" + to_string(player->getBackPackCapacity()) + "]\n" +
                     "Upgrades Left: " + to_string(UpgradesLeft) + "\n";
     
     return output;
@@ -625,49 +621,43 @@ string Hospital :: getStat(){
 
 RandomEncounter :: RandomEncounter(Player* player){
     this -> player = player;
-    Menu();
 }
 
-void RandomEncounter :: Menu(){
+void RandomEncounter :: Menu(Player* player, Map* map){
 
     int RandomChoice = Index_Weighted_Random({1,1,4,5});
-    
+    clearScreen();
     switch (RandomChoice)
     {
-    case 0: // Fight
-        Fight* fight;
+    case 0:{ // Fight
+        FightFactory fight(player , map);
+        fight.GenerateNormalFight()->start();
         break;
-    case 1: // Shop
-        Shop* shop;
+    }
+    case 1:{ // Shop
+        ShopFactory shop(map , player);
+        shop.Generate()->Menu();
         break;
+    }
     case 2: // Disaster
         RandomChoice = rand() % 2;
         switch (RandomChoice)
         {
         case 0: // HP decrease
-            cout << "You're looking around for a sign on this mountain when suddenly the ground under your feet shakes. The smoke rises "
-            "from the peak then you see the lava coming out so you start to run but the smoke stops you and makes it hard to breath." << endl;
+            cout << "You're looking around for a sign on this mountain when suddenly the ground under your feet shakes. The\n"
+            "smoke rises from the peak then you see the lava coming out so you start to run but the smoke stops you\n"
+            "and makes it hard to breath.\n\n";
             player->setHP(player->getHP()-5);
             cout << "< You lost 5 health points =( >" << endl;
             break;
         case 1: // Coin decrease
-            cout << "You enter a mysterious cave where its walls are all covered with strange patterns. You're actually fascinated by what "
-            "you're looking at. Suddenly you hear a weird sound 'KHSH KHSH'. What was that? You put your hand in your pocket with "
-            "hesistation to take your gun out. 5 coins fall down. You bend over to collect them but out of nowhere a monkey "
-            "appears and takes away all those coins." << endl;
-            player->removeCoin(5);
-            cout << "< You lost 5 coins :( >" << endl;
+            cout << "You enter a mysterious cave where its walls are all covered with strange patterns. You're actually fascinated\n"
+            "by what you're looking at. Suddenly you hear a weird sound 'KHSH KHSH'. What was that? You put your hand\nin your pocket with "
+            "hesistation to take your gun out. 10 coins fall down. You bend over to collect them but \nout of nowhere a monkey "
+            "appears and takes away all those coins.\n\n";
+            player->removeCoin(10);
+            cout << "< You lost 10 coins :( >" << endl;
             break;
-        //case 3: // BackpackCapacity decrease
-        //    cout << "You're walking through this endless-looking road tiredly. You're thinking about your last fight, remembering your "
-        //    "weaknesses and analyzing them. The sound of someone walking on the grass takes you out of your thoughts and makes you look "
-        //    "around yourself carefully. A zombie looking exactly like the zombie you lately fought with, appears and runs after you. You "
-        //    "get shocked but run faster and faster but your backpack gets stuck on a tree branch. Trying to remove it, the zombie gets closer "
-        //    "but you finally succeed and find a cave to take shelter in." << endl;
-        //    // Decreases the size ignoring if the pack is for or not
-        //    player->setBackPackCapacity(player->getBackPackCapacity()-3); // Can be changed later 
-        //    cout << "< Yout backpack's capacity is now decreased by 3 points =( >";
-        //    break;
         default:
             break;
         }
@@ -675,18 +665,18 @@ void RandomEncounter :: Menu(){
         break;
 
     case 3: // Prize (Mystery Box)
-        RandomChoice = rand() % 3;
+        RandomChoice = rand() % 1;
         switch (RandomChoice)
         {
         case 0:
-            cout << "Wandering through this dense forest, a shining object which seems to have a large part of it still underground " 
-            "makes you stare at it for seconds. You go closer untill you approach enough to take it out from the soil. It seems to be "
-            "a gift box. You open it and... " << endl;
+            cout << "Wandering through this dense forest, a shining object which seems to have a large part of it still underground \n" 
+            "makes you stare at it for seconds. You go closer untill you approach enough to take it out from the soil. \nIt seems to be "
+            "a gift box. You open it and... \n\n";
             break;
         default:
             break;
         }
-        RandomChoice = rand() % 5;
+        RandomChoice = rand() % 4;
         switch (RandomChoice)
         {
         case 0: // Coin increase
@@ -694,20 +684,17 @@ void RandomEncounter :: Menu(){
             player->addCoin(10);
             break;
         case 1: // HP increase
-            cout << "Congratulations! You've gained 5 more health points!" << endl;
-            player->setHP(min(player->getHP()+5, player->getMaxHP()));
+            cout << "Congratulations! Your injuries has healed! (10 HP gained)" << endl;
+            player->setHP(player->getHP() + 10);
             break;
         case 2: // Max Energy increase
-            cout << "Max Energy increase! (5 points)" << endl;
-            player->setMaxEnergy(player->getMaxEnergy()+5);
+            cout << "Max Energy increase! (1 point)" << endl;
+            player->setMaxEnergy(player->getMaxEnergy() + 1);
             break;
-        case 3: // Shield increase
-            cout << "Feeling more secure? That's because your shield amount has been increased by 10 points!" << endl;
-            player->setShield(min(player->getShield()+10, 100));
-            break;
-        case 4: // MaxHP increase
-            cout << "Congratulations! You've gained 5 more max health points!" << endl;
+        case 3: // MaxHP increase
+            cout << "Congratulations! Your MaxHP increased by 5 points" << endl;
             player->setMaxHP(player->getMaxHP()+5);
+            player->setHP(player->getHP() + 5);
             break;
         default:
             break;
@@ -715,7 +702,6 @@ void RandomEncounter :: Menu(){
     default:
         break;
     }
-
     cout << "Press anything to Continue\n";
     getch();
 }

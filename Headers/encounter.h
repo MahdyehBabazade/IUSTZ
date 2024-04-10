@@ -2,6 +2,7 @@
 #include "../Headers/items.h"
 #include "../Headers/creature.h"
 #include "../Headers/MVC.h"
+#include "../Headers/map.h"
 #include <iostream>
 using namespace std;
 
@@ -9,8 +10,6 @@ class Encounter{
 protected:
     string Story;
 public: 
-    Encounter(string Story);
-    Encounter()=default;
     string getStory();
 };
 
@@ -29,7 +28,6 @@ private:
 public:
     // Constructor
     Shop(Player* player, vector<Weapon*> weapons, vector<Consumable*> consumables, vector<Equipment*> equipments, Shopkeeper* shopkeeper);
-    Shop() = default;
     
     // Getters
     vector<Weapon*> getWeapons();
@@ -63,7 +61,6 @@ private:
     bool HasHealed;
 public:
     Hospital(Player* player,Medic* medic);
-    Hospital()=default;
     
     void MaxHpIncrease();
     void FullHeal();
@@ -76,9 +73,8 @@ class RandomEncounter : public Encounter{
 private:
     Player* player;
 public:
-    RandomEncounter() = default;
     RandomEncounter(Player* player);
-    void Menu();
+    void Menu(Player* player, Map* map);
 };
 
 class Fight : public Encounter{
@@ -95,7 +91,6 @@ private:
     
     
 public:
-    Fight()=default;
     Fight(Player* player, int type, vector<Character*> enemies, vector<Item*> items, int droppedCoins, vector<Relic*> relics);
     
     void start();

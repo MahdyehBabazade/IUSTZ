@@ -82,7 +82,7 @@ void GameLoopFunction(){
                 }
                 else if(map->getEncounters()[map->getCurrentNode().first][map->getCurrentNode().second] == "Random"){
                     RandomEncounter* Random = new RandomEncounter(player);
-                    Random->Menu();
+                    Random->Menu(player , map);
                 }
                 else if(map->getEncounters()[map->getCurrentNode().first][map->getCurrentNode().second] == "MiniBoss"){
                     // fight.GenerateMiniBoss()->start();
