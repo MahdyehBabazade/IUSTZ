@@ -456,7 +456,56 @@ void Shop :: Menu(){
     cout << "Press anything to continue";
     getch();
 }
+
+string Shop :: getStat(){
+    string Weapons="", Equipments="", Consumables="";
+    if (player->getWeapons().size() == 0)
+    {
+        Weapons += "-";
+    }
+    else
+    {
+        for (int i = 0; i < player->getWeapons().size(); i++)
+        {
+            Weapons += ( "\n\t" + to_string(i+1) + ". " + player->getWeapons()[i].first->getName() +
+                        + "\t" + to_string(player->getWeapons()[i].second)) + "\n";
+        }
+    }
+
+    if (player->getEquipments().size() == 0)
+    {
+        Equipments += "-";
+    }
+    else
+    {
+        for (int i = 0; i < player->getEquipments().size(); i++)
+        {
+            Equipments += ( "\n\t" + to_string(i+1) + ". " + player->getEquipments()[i]->getName()) + "\n";
+        }
+    }
+
+    if (player->getConsumables().size() == 0)
+    {
+        Consumables += "-";
+    }
+    else
+    {
+        for (int i = 0; i < player->getConsumables().size(); i++)
+        {
+            Consumables += ( "\n\t" + to_string(i+1) + ". " + player->getConsumables()[i].first->getName() +
+                        + "\t" + to_string(player->getConsumables()[i].second));
+        }
+    }
     
+    
+    string output = "Coin: " + to_string(player->getCoin()) + "\n"
+                    "BackPack Weight: " + to_string(player->getBackPackWeight()) + "/" + to_string(player->getBackPackCapacity()) + "\n" +
+                    "Weapons: " + Weapons + "\n" + "Equipments: " + Equipments + "\n" + "Consumables: " + Consumables + "\n" + 
+                    "Upgrades Left: " + to_string(UpgradesLeft) + "\n";
+    
+    return output;
+}
+
 Hospital :: Hospital(Player* player, Medic* medic){
     this->player = player;
     this->medic = medic;
@@ -568,6 +617,12 @@ void Hospital :: Menu(){
     getch();
 }
 
+string Hospital :: getStat(){
+    string output = "HP: " + to_string(player->getHP()) + "/" + to_string(player->getMaxHP()) + "\n" +
+                    "Coin: " + to_string(player->getCoin()) + "\n";
+    return output;
+}
+
 RandomEncounter :: RandomEncounter(Player* player){
     this -> player = player;
     Menu();
@@ -586,7 +641,7 @@ void RandomEncounter :: Menu(){
         Shop* shop;
         break;
     case 2: // Disaster
-        RandomChoice = rand() % 3;
+        RandomChoice = rand() % 2;
         switch (RandomChoice)
         {
         case 0: // HP decrease
@@ -603,23 +658,23 @@ void RandomEncounter :: Menu(){
             player->removeCoin(5);
             cout << "< You lost 5 coins :( >" << endl;
             break;
-        case 3: // BackpackCapacity decrease
-            cout << "You're walking through this endless-looking road tiredly. You're thinking about your last fight, remembering your "
-            "weaknesses and analyzing them. The sound of someone walking on the grass takes you out of your thoughts and makes you look "
-            "around yourself carefully. A zombie looking exactly like the zombie you lately fought with, appears and runs after you. You "
-            "get shocked but run faster and faster but your backpack gets stuck on a tree branch. Trying to remove it, the zombie gets closer "
-            "but you finally succeed and find a cave to take shelter in." << endl;
-            // Decreases the size ignoring if the pack is for or not
-            player->setBackPackCapacity(player->getBackPackCapacity()-3); // Can be changed later 
-            cout << "< Yout backpack's capacity is now decreased by 3 points =( >";
-            break;
+        //case 3: // BackpackCapacity decrease
+        //    cout << "You're walking through this endless-looking road tiredly. You're thinking about your last fight, remembering your "
+        //    "weaknesses and analyzing them. The sound of someone walking on the grass takes you out of your thoughts and makes you look "
+        //    "around yourself carefully. A zombie looking exactly like the zombie you lately fought with, appears and runs after you. You "
+        //    "get shocked but run faster and faster but your backpack gets stuck on a tree branch. Trying to remove it, the zombie gets closer "
+        //    "but you finally succeed and find a cave to take shelter in." << endl;
+        //    // Decreases the size ignoring if the pack is for or not
+        //    player->setBackPackCapacity(player->getBackPackCapacity()-3); // Can be changed later 
+        //    cout << "< Yout backpack's capacity is now decreased by 3 points =( >";
+        //    break;
         default:
             break;
         }
         
         break;
 
-    case 4: // Prize (Mystery Box)
+    case 3: // Prize (Mystery Box)
         RandomChoice = rand() % 3;
         switch (RandomChoice)
         {
@@ -660,6 +715,9 @@ void RandomEncounter :: Menu(){
     default:
         break;
     }
+
+    cout << "Press anything to Continue\n";
+    getch();
 }
 
 Fight :: Fight(Player* player, int type, vector<Character*> enemies, vector<Item*> items, int droppedCoins, vector<Relic*> relics){

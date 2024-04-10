@@ -23,7 +23,7 @@ const string grey("\033[90m");
     Shotgun* shotgun2 = new Shotgun("Scatterer Supreme", 20, 40, 35, 1, 2, 5, 27, 3);
     Shotgun* shotgun3 = new Shotgun("Scatter Shot", 20, 60, 50, 1, 2, 4, 28, 3); // A better shotgun
 
-    Snipe* snipe = new Snipe("Fury", 25, 40, 35, 1, 2, 1, 3);
+    Snipe* snipe = new Snipe("Scope Sniper", 25, 40, 35, 1, 2, 1, 3);
     Snipe* snipe2 = new Snipe("Sharpshooter", 25, 50, 45, 1, 2, 1, 3);
     Snipe* snipe3 = new Snipe("Ghostfire", 25, 70, 60, 1, 2, 2, 3); // A better sniper
 
@@ -36,9 +36,16 @@ const string grey("\033[90m");
     Rifle* rifle3 = new Rifle("Dawnbreaker", 20, 65, 55, 2, 2, 4, 3, 3); // A better rifle
 
     // Cold Weapons
-    ColdWeapon* coldweapon = new ColdWeapon("Blizzard Blade", 10, 30, 15, 1, 1);
-    ColdWeapon* coldweapon2 = new ColdWeapon("Snowfall Sword", 10, 40, 20, 1, 2);
-    ColdWeapon* coldweapon3 = new ColdWeapon("Ice Dagger", 10, 55, 35, 1, 3); // Better
+    ColdWeapon* coldweapon = new ColdWeapon("Blizzard Blade", 10, 25, 10, 1, 1);
+    ColdWeapon* coldweapon2 = new ColdWeapon("Snowfall Sword", 10, 30, 15, 1, 1);
+    ColdWeapon* coldweapon3 = new ColdWeapon("Ice Dagger", 10, 35, 20, 1, 1);
+    ColdWeapon* coldweapon4 = new ColdWeapon("Ice Dagger", 10, 40, 25, 1, 2);
+    ColdWeapon* coldweapon5 = new ColdWeapon("Ice Dagger", 10, 45, 30, 1, 2);
+    ColdWeapon* coldweapon6 = new ColdWeapon("Ice Dagger", 10, 50, 35, 1, 2);
+    ColdWeapon* coldweapon7 = new ColdWeapon("Ice Dagger", 10, 55, 40, 1, 2);
+    ColdWeapon* coldweapon8 = new ColdWeapon("Ice Dagger", 10, 60, 45, 1, 3);
+    ColdWeapon* coldweapon9 = new ColdWeapon("Ice Dagger", 10, 70, 50, 1, 3);
+    ColdWeapon* coldweapon10 = new ColdWeapon("Ice Dagger", 10, 80, 55, 1, 3); // Better
 
     // Throwables
     Grenade* grenade = new Grenade("Chill Grenade", 7, 10, 30, 1, 1);
@@ -47,14 +54,14 @@ const string grey("\033[90m");
 
     BoomRang* boomerang = new BoomRang("SpinStorm", 8, 15, 15, 1, 2);
     BoomRang* boomerang2 = new BoomRang("BoomerBoost", 8, 20, 20, 1, 2);
-    BoomRang* boomerang3 = new BoomRang("FuryFlight", 8, 30, 30, 1, 2); // Better
+    BoomRang* boomerang3 = new BoomRang("Whirlwind", 8, 30, 30, 1, 2); // Better
 
     // Consumables
     Consumable* ShieldConsumable = new Consumable("ShieldBoost", "ShieldPotion", 5, 20, 20);
     Consumable* ShieldConsumable2 = new Consumable("GuardPotion", "ShieldPotion", 5, 25, 30);
     Consumable* ShieldConsumable3 = new Consumable("SafeguardSip", "ShieldPotion", 5, 35, 45);
 
-    Consumable* HPConsumable = new Consumable("HealthBoost", "HPPotion", 6, 25, 30);
+    Consumable* HPConsumable = new Consumable("HealthBoost", "HPPotion", 6, 25, 20);
     Consumable* HPConsumable2 = new Consumable("StaminaSip", "HPPotion", 6, 30, 50);
     Consumable* HPConsumable3 = new Consumable("Lifespring", "HPPotion", 6, 40, 75);
 

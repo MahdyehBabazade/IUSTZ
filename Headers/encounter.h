@@ -46,6 +46,7 @@ public:
     void Sell(Item* item); // The shopkeeper sells sth to the player
     void Buy(Item* item); // The shopkeeper buys sth from the player
     void Menu(); 
+    string getStat();
     
     void addItem(Item* item);
     void removeItem(Item* item);
@@ -67,8 +68,8 @@ public:
     void MaxHpIncrease();
     void FullHeal();
     void HalfHeal();
-    
     void Menu();
+    string getStat();
 };
 
 class RandomEncounter : public Encounter{
