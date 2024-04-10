@@ -44,24 +44,24 @@ namespace View{
     class FightView{
         private:
             Model::FightModel* model;
+            int MenuManager(string Description,vector<vector<string>> Options,vector<string> Header);
+            void showCharacters();
+            int getMaxWidth(vector<vector<string>> &entry);
         public:
             FightView(Model::FightModel* fightmodel);
-            int PlayerMenu(); //player options
-            int GunMenu(); //weapon options(reload and attack)
-            int ColdWeaponMenu();
+            
             vector<Character*> ChooseEnemies(vector<Character*> Enemies,int amount);
             Consumable* ChooseConsumable(vector<pair<Consumable*,int>> Consumables);
             Weapon* ChooseWeapon(vector<pair<Weapon*,int>> Weapons);
             Character* ChooseEnemy(vector<Character*> Enemies);
             Relic* ChooseRelic(vector<Relic*> Relics);
             
-            Item* ChooseItem(vector<Item*> Items);
-
-            void showCharacters();
+            void Prompt();
             void Prompt(string entry);
             void print(string entry);
             void DamageInfo(Weapon* weapon);
-            void PlayerInfo(Player* player);
+            
+            int MenuManager(string Description,vector<string> Options);
     };
 }
 

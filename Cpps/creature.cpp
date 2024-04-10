@@ -686,13 +686,8 @@ void HumanEnemy :: StateMachine(Player* player,Control::FightControl* fightContr
         case State::GunAttack:
         {   
             Guns = ShuffleVec(Guns);
-            for(pair<Gun*,int> x:Guns){
-                cout <<x.first->getShortStat() << endl;
-            }
-            _getch();
             bool hasAttacked = false;
             for(pair<Gun*,int> x:Guns){
-                cout << "ammo:" << x.first->getAmmo() << endl;
                 if(x.first->getAmmo() > 0){
                     // cout << "gun attack" << endl;
                     Attack(player,x.first,0);
@@ -723,9 +718,6 @@ void HumanEnemy :: StateMachine(Player* player,Control::FightControl* fightContr
             
         }
         case State::Attack:
-            cout << Guns.size() << endl;
-            cout << noneGuns.size() << endl;
-            _getch();
             if(!Guns.empty()){
                 state = State::GunAttack;
             }else{

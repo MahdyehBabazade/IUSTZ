@@ -10,50 +10,54 @@
 
 using namespace std;
 
-View::FightView::FightView(Model::FightModel* fightModel){
-    this->model = fightModel;
+int View::FightView::getMaxWidth(vector<vector<string>> &entry){
+    int width = 0;
+    int rows = entry.size();
+    for(int i=0 ; i<rows ; i++){
+        for(int j=0; j<entry[i].size() ; j++){
+            int len = entry[i][j].length();
+            if(len > width)
+                width = len;
+        }
+    }
+    return width;
 }
+
+View::FightView::FightView(Model::FightModel* fightModel){this->model = fightModel;}
 
 void View::FightView::DamageInfo(Weapon* weapon){
     clearScreen();
     cout << "Dealt " << weapon->getDamage() << " Damage" << endl;
 }
 
-void View::FightView::PlayerInfo(Player* player){
-    cout << "HP[" << player->getHP() + "/" +player->getMaxHP() <<endl;
-    
-}
 
-Item* View::FightView::ChooseItem(vector<Item*> Items){
-    vector<string> options;
-    for(Item* item: Items){
-        options.push_back(item->getStat());
-    }
-    
-    options.push_back("None");
-    
-    int option=0;
-    int vecSize = options.size();
+int View::FightView::MenuManager(string Description,vector<string> Options){
+    int option = 0;
+    int vecSize = Options.size();
     while(true){
         clearScreen();
-        for(int i=0 ; i < vecSize; i++){
+        cout << Description << endl;
+        
+        for(int i=0 ; i<Options.size(); i++){
             if(i == option){
-                cout << green << options[i] << reset << endl;
-            }else{
-                cout << options[i] << endl;
+                cout << green;
             }
+            cout << Options[i];
+            cout << reset << endl;
         }
         
-        //showCharacters();
+        if(!model->getEnemies().empty())
+            showCharacters();
+            
         char key = _getch();
         switch(tolower(key))
         {
             case 'w':
-                option = (vecSize + option - 1)  % vecSize;
+                option = (Options.size() + option - 1) % Options.size();
                 continue;
             case 's':
                 option++;
-                option%=vecSize;
+                option%=Options.size();
                 continue;
             case '\r':
                 break;
@@ -62,17 +66,64 @@ Item* View::FightView::ChooseItem(vector<Item*> Items){
         }
         break;
     }
-    
-    if(option  == vecSize-1)
-        return nullptr;
-        
-    return Items[option];
+    return option+1;
 }
 
+int View::FightView::MenuManager(string Description,vector<vector<string>> Options, vector<string> Header){
+    Options.insert(Options.begin(),Header);
+    
+    int width = getMaxWidth(Options);
+    
+    int option = 1;
+    int vecSize = Options[0].size();
+    while(true){
+        clearScreen();
+        cout << Description << endl;
+        
+        for(int i=0 ; i<Options.size(); i++){
+            if(i == option){
+                cout << green;
+            }
+            for(int j=0 ; j<vecSize ; j++){
+                cout << left << setw(width) << Options[i][j] << " " ;
+            }
+            cout << reset << endl;
+        }
+        
+        if(!model->getEnemies().empty())
+            showCharacters();
+            
+            
+        char key = _getch();
+        switch(tolower(key))
+        {
+            case 'w':
+                option = (Options.size() + option - 1) % Options.size();
+                if(option == 0){
+                    option = Options.size() -1;
+                }
+                continue;
+            case 's':
+                option++;
+                option%=Options.size();
+                if(option == 0){
+                    option = 1;
+                }
+                continue;
+            case '\r':
+                break;
+            default:
+                continue;
+        }
+        break;
+    }
+    return option-1;
+}
+
+
 Relic* View::FightView::ChooseRelic(vector<Relic*> Relics){
+    vector<string> Header = {"Name","MaxHP","MaxEnergy"};
     vector<vector<string>> Options;
-    //                   0       1         2                 
-    Options.push_back({"Name","MaxHP","MaxEnergy"});
     for(Relic* x : Relics){
         Relic* relic = x;
         
@@ -82,72 +133,27 @@ Relic* View::FightView::ChooseRelic(vector<Relic*> Relics){
         row[2] = to_string(relic->getMaxEnergy());
         Options.push_back(row);
     }
-    Options.push_back({"Back"," "," "});
 
-    int rows = Options.size();
-    int width = 0;
-    for(int i=0 ; i<rows ; i++){
-        for(int j=0; j<Options[i].size() ; j++){
-            int len = Options[i][j].length();
-            if(len > width)
-                width = len;
-        }
-    }
+    int option = MenuManager("Choose A Relic: ",Options,Header);
     
-    int option = 1;
-    int vecSize = Options[0].size();
-    while(true){
-        clearScreen();
-        
-        for(int i=0 ; i<Options.size(); i++){
-            if(i == option){
-                cout << green;
-            }
-            for(int j=0 ; j<vecSize ; j++){
-                cout << left << setw(width) << Options[i][j] << " " ;
-            }
-            cout << reset << endl;
-        }
-        showCharacters();
-        char key = _getch();
-        switch(tolower(key))
-        {
-            case 'w':
-                option = (Options.size() + option - 1) % Options.size();
-                if(option == 0){
-                    option = Options.size() -1;
-                }
-                continue;
-            case 's':
-                option++;
-                option%=Options.size();
-                if(option == 0){
-                    option = 1;
-                }
-                continue;
-            case '\r':
-                break;
-            default:
-                continue;
-        }
-        break;
-    }
-    
-    if(option  == Options.size()-1)
-        return nullptr;
-    return Relics[option-1];
+    return Relics[option];
 }
 
 
 Consumable* View::FightView::ChooseConsumable(vector<pair<Consumable*,int>> Consumables){
+    if(Consumables.empty()){
+        clearScreen();
+        Prompt("No Consumables Left");
+        return nullptr;
+    }
+    vector<string> Header = {"Name","Type","Amount"};
     vector<vector<string>> Options;
-    //                   0       1         2               
-    Options.push_back({"Name","Type","Amount"});
+
     for(pair<Consumable*,int> x : Consumables){
         Consumable* consumable = x.first;
         int amount = x.second;
         
-        vector<string> row(Options[0].size());
+        vector<string> row(Header.size());
         row[0] = (consumable->getName() + "(x" + to_string(amount) + ")");
         row[1] = consumable->getType();
         row[2] = to_string(consumable->getAmount());
@@ -155,58 +161,11 @@ Consumable* View::FightView::ChooseConsumable(vector<pair<Consumable*,int>> Cons
     }
     Options.push_back({"Back"," "," "});
     
-    int rows = Options.size();
-    int width = 0;
-    for(int i=0 ; i<rows ; i++){
-        for(int j=0; j<Options[i].size() ; j++){
-            int len = Options[i][j].length();
-            if(len > width)
-                width = len;
-        }
-    }
-    
-    int option = 1;
-    int vecSize = Options[0].size();
-    while(true){
-        clearScreen();
-        
-        for(int i=0 ; i<Options.size(); i++){
-            if(i == option){
-                cout << green;
-            }
-            for(int j=0 ; j<vecSize ; j++){
-                cout << left << setw(width) << Options[i][j] << " " ;
-            }
-            cout << reset << endl;
-        }
-        showCharacters();
-        char key = _getch();
-        switch(tolower(key))
-        {
-            case 'w':
-                option = (Options.size() + option - 1) % Options.size();
-                if(option == 0){
-                    option = Options.size() -1;
-                }
-                continue;
-            case 's':
-                option++;
-                option%=Options.size();
-                if(option == 0){
-                    option = 1;
-                }
-                continue;
-            case '\r':
-                break;
-            default:
-                continue;
-        }
-        break;
-    }
+    int option = MenuManager("Choose A Consumable: ",Options,Header);
     
     if(option  == Options.size()-1)
         return nullptr;
-    return Consumables[option-1].first;
+    return Consumables[option].first;
 }
 
 
@@ -265,7 +224,7 @@ Character* View::FightView::ChooseEnemy(vector<Character*> Enemies){
             }
             cout << endl;
         }
-        //showCharacters();
+        
         char key = _getch();
         switch(tolower(key))
         {
@@ -411,29 +370,36 @@ vector<Character*> View::FightView::ChooseEnemies(vector<Character*> Enemies , i
 }
 
 Weapon* View::FightView::ChooseWeapon(vector<pair<Weapon*,int>> Weapons){
+    if(Weapons.empty()){
+        clearScreen();
+        Prompt("No Weapons Left");
+        return nullptr;
+    }
+    vector<string> Header = {"Name","Damage","Ammo/Amount","AttackEnergy","ReloadEnergy","MaxAttackAmount","MinDamagePercent"};
     vector<vector<string>> Options;
-    //                   0       1         2                3               4              5             
-    Options.push_back({"Name","Damage","Ammo/Amount","EnergyNeeded","MaxAttackAmount","MinDamagePercent"});
     for(pair<Weapon*,int> p:Weapons){
         Weapon* weapon = p.first;
         int Amount = p.second;
         
-        vector<string> row(Options[0].size());
+        vector<string> row(Header.size());
         row[0] = weapon->getName();
         row[1] = to_string(weapon->getDamage());
+        row[2] = " ";
         row[3] = to_string(weapon->getEnergyNeeded());
         row[4] = " ";
         row[5] = " ";
+        row[6] = " ";
         if(dynamic_cast<Gun*>(weapon) != nullptr){
             Gun* gun = dynamic_cast<Gun*>(weapon);
+            row[4] = to_string(gun->getReloadEnergy());
             row[2] = "[" + to_string(gun->getAmmo()) + "/" + to_string(gun->getMaxAmmo()) + "]";
             
             if(dynamic_cast<Rifle*>(gun) != nullptr){
                 Rifle* rifle = dynamic_cast<Rifle*>(weapon);
-                row[4] = to_string(rifle->getMaxAttackAmount());
+                row[5] = to_string(rifle->getMaxAttackAmount());
             }else if(dynamic_cast<Shotgun*>(gun) != nullptr){
                 Shotgun* shotgun = dynamic_cast<Shotgun*>(weapon);
-                row[5] = to_string(shotgun->getMinDamagePercent())+ "%";
+                row[6] = to_string(shotgun->getMinDamagePercent())+ "%";
             }
             
         }else{
@@ -441,171 +407,15 @@ Weapon* View::FightView::ChooseWeapon(vector<pair<Weapon*,int>> Weapons){
         }
         Options.push_back(row);
     }
-    Options.push_back({"Back"," "," "," "," "," "});
+    Options.push_back({"Back"," "," "," "," "," "," "});
     
-    int rows = Options.size();
-    int width = 0;
-    for(int i=0 ; i<rows ; i++){
-        for(int j=0; j<Options[i].size() ; j++){
-            int len = Options[i][j].length();
-            if(len > width)
-                width = len;
-        }
-    }
-    
-    int option = 1;
-    int vecSize = Options[0].size();
-    while(true){
-        clearScreen();
-        
-        for(int i=0 ; i<Options.size(); i++){
-            if(i == option){
-                cout << green;
-            }
-            for(int j=0 ; j<vecSize ; j++){
-                cout << left << setw(width) << Options[i][j] << " " ;
-            }
-            cout << reset << endl;
-        }
-        showCharacters();
-        char key = _getch();
-        switch(tolower(key))
-        {
-            case 'w':
-                option = (Options.size() + option - 1) % Options.size();
-                if(option == 0){
-                    option = Options.size() -1;
-                }
-                continue;
-            case 's':
-                option++;
-                option%=Options.size();
-                if(option == 0){
-                    option = 1;
-                }
-                continue;
-            case '\r':
-                break;
-            default:
-                continue;
-        }
-        break;
-    }
+    int option = MenuManager("Choose A Weapon: ",Options,Header);
     
     if(option  == Options.size()-1)
         return nullptr;
-    return Weapons[option-1].first;
+    return Weapons[option].first;
 }
 
-int View::FightView::PlayerMenu(){
-    // 1. weapons   2.consumables  3.endround
-    int option = 0;
-    vector<string> options = {"Weapons","Consumables","End Round"};
-    
-    int vecSize = options.size();
-    while(true){
-        clearScreen();
-        for(int i=0 ; i < vecSize; i++){
-            if(i == option){
-                cout << green << options[i] << reset << endl;
-            }else{
-                cout << options[i] << endl;
-            }
-        }
-        showCharacters();
-        char key = _getch();
-        switch(tolower(key))
-        {
-            case 'w':
-                option = (vecSize + option - 1) % vecSize;
-                continue;
-            case 's':
-                option++;
-                option%=vecSize;
-                continue;
-            case '\r':
-                break;
-            default:
-                continue;
-        }
-        break;
-    }
-    
-    return (option +1);
-}
-
-int View::FightView::ColdWeaponMenu(){
-    // 1.attack  2.throw  3.back
-    int option = 0;
-    vector<string> options = {"Attack","Throw","Back"};
-    
-    int vecSize = options.size();
-    while(true){
-        clearScreen();
-        for(int i=0 ; i < vecSize; i++){
-            if(i == option%vecSize){
-                cout << green << options[i] << reset << endl;
-            }else{
-                cout << options[i] << endl;
-            }
-        }
-        showCharacters();
-        char key = _getch();
-        switch(tolower(key))
-        {
-            case 'w':
-                option = (vecSize+option-1)%vecSize;
-                continue;
-            case 's':
-                option++;
-                option%vecSize;
-                continue;
-            case '\r':
-                break;
-            default:
-                continue;
-        }
-        break;
-    }
-    
-    return (option +1);
-}
-
-int View::FightView::GunMenu(){
-    // 1.attack  2.reload  3.back
-    int option = 0;
-    vector<string> options = {"Attack","Reload","Back"};
-    
-    int vecSize = options.size();
-    while(true){
-        clearScreen();
-        for(int i=0 ; i < vecSize; i++){
-            if(i == option%vecSize){
-                cout << green << options[i] << reset << endl;
-            }else{
-                cout << options[i] << endl;
-            }
-        }
-        showCharacters();
-        char key = _getch();
-        switch(tolower(key))
-        {
-            case 'w':
-                option = (vecSize+option-1)%vecSize;
-                continue;
-            case 's':
-                option++;
-                option%=vecSize;
-                continue;
-            case '\r':
-                break;
-            default:
-                continue;
-        }
-        break;
-    }
-    return (option+1);
-}
 
 void View::FightView::showCharacters(){
     vector<Character*> Characters = model->getEnemies();
@@ -644,19 +454,11 @@ void View::FightView::showCharacters(){
     }
     Details.push_back(row);
     
-    int rows = Details.size();
-    int width = 0;
-    for(int i=0 ; i<rows ; i++){
-        for(int j=0; j<Details[i].size() ; j++){
-            int len = Details[i][j].length();
-            if(len > width)
-                width = len;
-        }
-    }
+    int width = getMaxWidth(Details);
     
     int vecSize = Details[0].size();
     
-    for(int i=0 ; i<rows ; i++){
+    for(int i=0 ; i<Details.size() ; i++){
         for(int j=0 ; j<vecSize ; j++){
             if(j == 0){
                 cout << left << setw(width+40) << Details[i][j] << " " ;
@@ -669,7 +471,12 @@ void View::FightView::showCharacters(){
 }
 
 void View::FightView::Prompt(string entry){
-    cout << entry << endl << "Press any key to continue\n";
+    clearScreen();
+    cout << entry << endl << endl <<"Press any key to continue...\n";
+    _getch();
+}
+void View::FightView::Prompt(){
+    cout << endl << endl <<"Press any key to continue...\n";
     _getch();
 }
 void View::FightView::print(string entry){
@@ -750,14 +557,14 @@ void Control::FightControl::RemoveEnemies(){
         }
     }
     if(hascleared){
-        view->Prompt("");
+        view->Prompt();
     }
 }
 
 void Control::FightControl::PlayerTurn(){
     //1. weapons  2.consumables  3.end round
     while(!model->getEnemies().empty()){
-        int choice = view->PlayerMenu();
+        int choice = view->MenuManager("Choose An Option: ",{"Weapons","Consumables","End Round"});
         
         switch (choice)
         {
@@ -768,7 +575,6 @@ void Control::FightControl::PlayerTurn(){
                         break;
     
                     if(weapon->getEnergyNeeded() > model->getPlayer()->getEnergy()){
-                        clearScreen();
                         view->Prompt("Not Enough Energy");
                         getch();
                         continue;
@@ -779,13 +585,12 @@ void Control::FightControl::PlayerTurn(){
                         while (!model->getEnemies().empty())
                         {
                             // 1.attack   2.reload  3.back
-                            int option = view->GunMenu();
+                            int option = view->MenuManager("Choose An Option: ",{"Attack", "Reload", "Back"});
                             
                             switch (option)
                             {
                                 case 1:
                                     if(gun->getAmmo() ==0){
-                                            clearScreen();
                                             view->Prompt("Not Enough Ammo");
                                             continue;
                                     }
@@ -832,7 +637,6 @@ void Control::FightControl::PlayerTurn(){
                                     continue;
                                 case 2:
                                     if(model->getPlayer()->getEnergy() < gun->getReloadEnergy()){
-                                        clearScreen();
                                         view->Prompt("Not Enough Energy");
                                     }else{
                                         gun->Reload();
@@ -858,7 +662,7 @@ void Control::FightControl::PlayerTurn(){
                         view->DamageInfo(weapon);
                         
                     }else if(dynamic_cast<ColdWeapon *>(weapon) != nullptr){
-                        int option = view->ColdWeaponMenu();
+                        int option = view->MenuManager("Choose An Option: ",{"Attack","Throw(+20\% Damage)","Back"});
                         ColdWeapon* coldWeapon = dynamic_cast<ColdWeapon*>(weapon);
                         while (!model->getEnemies().empty())
                         {
@@ -960,25 +764,77 @@ void Control::FightControl::EnemiesTurn(){
             view->print("");
         }
     }
-    view->Prompt("");
+    view->Prompt();
 }
 
 View::FightView* Control::FightControl::getView(){return view;}
 
 void Control::FightControl::EndFight(){
     if(model->getPlayer()->getHP() > 0){
+        view->Prompt("You Survived The Fight! (Coins +"+ to_string(model->getCoins()) + ")\n Loot What You need");
+        
+        
         model->getPlayer()->addCoin(model->getCoins());
         vector<pair<Weapon*,int>> weapons;
         vector<pair<Consumable*,int>> consumables;
         for(Item* items : model->getItems()){
             if(dynamic_cast<Weapon*>(items) != nullptr){
-                Weapon* newWeapon = dynamic_cast<Weapon*>(items);
-                weapons.push_back(make_pair(newWeapon,1));
+                weapons.push_back(make_pair(dynamic_cast<Weapon*>(items),1));
             }else if(dynamic_cast<Consumable*>(items) != nullptr){
-                Consumable* newConsumable = dynamic_cast<Consumable*>(items);
-                consumables.push_back(make_pair(newConsumable,1));
+                consumables.push_back(make_pair(dynamic_cast<Consumable*>(items),1));
             }
         }
+        
+        while(!weapons.empty() || !consumables.empty()){
+            int choice = view->MenuManager("Choose An Option:",{"Dropped Items","Inventory","Continue"});
+            switch (choice)
+            {
+            case 1:
+                choice = view->MenuManager("Choose An Option:",{"Dropped Weapons","Dropped Consumables","Back"});
+                if(choice == 1){
+                    while(true){
+                        Weapon* ChosenWeapon = view->ChooseWeapon(weapons);
+                        if(ChosenWeapon == nullptr)
+                            break;
+            
+                        if(ChosenWeapon->getCapacity() > (model->getPlayer()->getBackPackCapacity() - model->getPlayer()->getBackPackWeight())){
+                            view->Prompt("Not Enough BackPack Space");
+                            continue;
+                        }else{
+                            model->getPlayer()->addItem(ChosenWeapon);
+                            weapons.erase(remove(weapons.begin(),weapons.end(),make_pair(ChosenWeapon,1)),weapons.end());
+                        }
+                    }
+                    continue;
+                }else if(choice == 2){
+                    while(true){  // consumable
+                        Consumable* ChosenConsumable = view->ChooseConsumable(consumables);
+                        if(ChosenConsumable == nullptr)
+                            break;
+            
+                        if(ChosenConsumable->getCapacity() > (model->getPlayer()->getBackPackCapacity() - model->getPlayer()->getBackPackWeight())){
+                            view->Prompt("Not Enough BackPack Space");
+                            continue;
+                        }else{
+                            model->getPlayer()->addItem(ChosenConsumable);
+                            consumables.erase(remove(consumables.begin(),consumables.end(),make_pair(ChosenConsumable,1)),consumables.end());                
+                        }
+                    }
+                    continue;
+                }else{
+                    break;
+                } 
+            case 2:
+                //inventory
+            case 3:
+                break;
+            default:
+                continue;
+            }
+            break;
+        }
+        
+        /*
         while(!weapons.empty()){  // weapon
             Weapon* ChosenWeapon = view->ChooseWeapon(weapons);
             if(ChosenWeapon == nullptr)
@@ -992,6 +848,8 @@ void Control::FightControl::EndFight(){
                 weapons.erase(remove(weapons.begin(),weapons.end(),make_pair(ChosenWeapon,1)),weapons.end());
             }
         }
+        */
+       /*
         while(!consumables.empty()){  // consumable
             Consumable* ChosenConsumable = view->ChooseConsumable(consumables);
             if(ChosenConsumable == nullptr)
@@ -1005,14 +863,15 @@ void Control::FightControl::EndFight(){
                 consumables.erase(remove(consumables.begin(),consumables.end(),make_pair(ChosenConsumable,1)),consumables.end());                
             }
         }
+        */
 
     }
-    if(!model->getRelics().empty()){    
+    
+    if(!model->getRelics().empty()){
         Relic* relic = view->ChooseRelic(model->getRelics());
-        if(relic != nullptr)  
-            model->getPlayer()->addRelic(relic);
-    }
-        
+        model->getPlayer()->addRelic(relic);
+    }    
+    
     model->getPlayer()->setEnergy(model->getPlayer()->getMaxEnergy());
     model->getPlayer()->setShield(0);
     for(pair<Weapon*,int> p:model->getPlayer()->getWeapons()){
