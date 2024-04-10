@@ -258,7 +258,7 @@ void Shop :: Buy(Item* item){ // Shopkeeper buys, Player sells
     player->removeItem(item);
     clearScreen();
     cout << Story << "\n\n";
-    shopkeeper->BuyDialogue(item);
+    cout << shopkeeper->BuyDialogue(item);
     cout << "Press anything to continue";
     getch();
     item->setPrice(int(item->getPrice()* 1.25)); // adds 20 precent to item's orignial price 
@@ -411,6 +411,7 @@ void Shop :: Menu(){
                         else if(player->getCoin() >= 30){
                             player->setBackPackCapacity(player->getBackPackCapacity() + 15);
                             player->removeCoin(30);
+                            clearScreen();
                             cout << Story << "\n\n" << shopkeeper->getName() << ": BackPack has been Upgraded.\n";
                             cout << "Press anything to continue\n";
                             getch();
@@ -444,7 +445,6 @@ void Shop :: Menu(){
                 continue;
             case 4: // Player quits
                 WantsToQuit = true;
-                // exit(0);
                 break;
             default:
                 continue;    

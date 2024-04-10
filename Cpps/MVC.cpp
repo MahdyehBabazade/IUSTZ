@@ -967,25 +967,6 @@ View::FightView* Control::FightControl::getView(){return view;}
 void Control::FightControl::EndFight(){
     if(model->getPlayer()->getHP() > 0){
         model->getPlayer()->addCoin(model->getCoins());
-        /*while (!model->getItems().empty())
-        {
-            Item* ChosenItem = view->ChooseItem(model->getItems());
-            if(ChosenItem == nullptr){
-                break;
-            }
-            
-            if (ChosenItem->getCapacity() > (model->getPlayer()->getBackPackCapacity() - model->getPlayer()->getBackPackWeight())){
-                clearScreen();
-                view->Prompt("Not Enough BackPack Space");
-                continue;
-            }
-            
-            vector<Item*> Items = model->getItems();
-            Items.erase(remove(Items.begin(),Items.end(),ChosenItem),Items.end());
-            model->setItems(Items);
-            model->getPlayer()->addItem(ChosenItem);
-            //delete ChosenItem;
-        }*/
         vector<pair<Weapon*,int>> weapons;
         vector<pair<Consumable*,int>> consumables;
         for(Item* items : model->getItems()){
@@ -1025,10 +1006,11 @@ void Control::FightControl::EndFight(){
         }
 
     }
-        
-    Relic* relic = view->ChooseRelic(model->getRelics());
-    if(relic != nullptr)  
-        model->getPlayer()->addRelic(relic);
+    if(!model->getRelics().empty()){    
+        Relic* relic = view->ChooseRelic(model->getRelics());
+        if(relic != nullptr)  
+            model->getPlayer()->addRelic(relic);
+    }
         
     model->getPlayer()->setEnergy(model->getPlayer()->getMaxEnergy());
     model->getPlayer()->setShield(0);
@@ -1039,4 +1021,4 @@ void Control::FightControl::EndFight(){
             gun->Reload();
         }
     }
-}
+}  
