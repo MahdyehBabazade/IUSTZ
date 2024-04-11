@@ -856,8 +856,7 @@ void Control::FightControl::EndFight(){
                 consumables.push_back(make_pair(dynamic_cast<Consumable*>(items),1));
             }
         }
-        bool shouldBreak = true;
-        while(shouldBreak){
+        while(true){
             int choice = view->MenuManager("Choose An Option (Capacity: "+ to_string(model->getPlayer()->getBackPackCapacity() - model->getPlayer()->getBackPackWeight()) +"):",
                                         {"Dropped Items","Inventory","Continue"});
             switch(choice)
@@ -879,7 +878,7 @@ void Control::FightControl::EndFight(){
                                     weapons.erase(remove(weapons.begin(),weapons.end(),make_pair(ChosenWeapon,1)),weapons.end());
                                 }
                             }
-                        }if(choice == 2){
+                        }else if(choice == 2){
                             Consumable* ChosenConsumable = view->ChooseConsumable(consumables , "pick");
                             if(ChosenConsumable == nullptr)
                                 continue;
@@ -907,7 +906,7 @@ void Control::FightControl::EndFight(){
                                 if(weapon == nullptr)
                                     break;
                                 else{
-                                    view->Prompt("you removed " + to_string(weapon->getCapacity()));
+                                    view->Prompt("you removed " + weapon->getName() + " from your inventory(" + to_string(weapon->getCapacity()));
                                     model->getPlayer()->removeItem(weapon);
                                 }
                             }
@@ -927,11 +926,11 @@ void Control::FightControl::EndFight(){
                     } 
                     continue;    
                 case 3:
-                    shouldBreak = false;
-                    continue;
+                    break;
                 default:
                     continue;                   
             }
+            break;
         }
         /*while(!weapons.empty() || !consumables.empty()){
             int choice = view->MenuManager("Choose An Option (Capacity: "+ to_string(model->getPlayer()->getBackPackCapacity() - model->getPlayer()->getBackPackWeight()) +"):",
