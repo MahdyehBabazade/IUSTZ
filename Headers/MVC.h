@@ -53,6 +53,7 @@ namespace View{
             vector<Character*> ChooseEnemies(vector<Character*> Enemies,int amount);
             Consumable* ChooseConsumable(vector<pair<Consumable*,int>> Consumables , string Description);
             Weapon* ChooseWeapon(vector<pair<Weapon*,int>> Weapons , string Description);
+            Equipment* ChooseEquipment(vector<pair<Equipment*,int>> Equipments , string Description);
             Character* ChooseEnemy(vector<Character*> Enemies);
             Relic* ChooseRelic(vector<Relic*> Relics);
             

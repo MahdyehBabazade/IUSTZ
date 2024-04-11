@@ -481,6 +481,54 @@ Weapon* View::FightView::ChooseWeapon(vector<pair<Weapon*,int>> Weapons , string
 }
 
 
+Equipment* View::FightView::ChooseEquipment(vector<pair<Equipment*,int>> Equipments, string Description){
+    if(Equipments.empty()){
+        clearScreen();
+        Prompt("No Equipments Left");
+        return nullptr;
+    }
+    
+    vector<string> Header;
+    vector<vector<string>> Options;
+    int option;
+    
+    if(!model->getEnemies().empty()){
+        Header = {"Name","Amount"};
+        for(pair<Equipment*,int> x : Equipments){
+            Equipment* equipment = x.first;
+            int amount = x.second;
+            
+            vector<string> row(Header.size());
+            row[0] = (equipment->getName() + "(x" + to_string(amount) + ")");
+            row[1] = to_string(equipment->getAmount());
+            Options.push_back(row);
+        }
+        Options.push_back({"Back"," "});
+        
+        option = MenuManager("Choose A Equipment: ",Options,Header);
+    }else{
+        Header = {"Name","Capacity","Amount"};
+        for(pair<Equipment*,int> x : Equipments){
+            Equipment* equipment = x.first;
+            int amount = x.second;
+            
+            vector<string> row(Header.size());
+            row[0] = (equipment->getName() + "(x" + to_string(amount) + ")");
+            row[1] = to_string(equipment->getCapacity());
+            row[2] = to_string(equipment->getAmount());
+            Options.push_back(row);
+        }
+        Options.push_back({"Back"," "," "});
+        
+        option = MenuManager("Choose A Equipment To " + Description + " (Capacity: "+ to_string(model->getPlayer()->getBackPackCapacity() - model->getPlayer()->getBackPackWeight()) + "):"
+                            ,Options,Header);
+    }
+
+    if(option  == Options.size()-1)
+        return nullptr;
+    return Equipments[option].first;
+}
+
 void View::FightView::showCharacters(){
     vector<Character*> Characters = model->getEnemies();
     Characters.insert(Characters.begin(),model->getPlayer());
@@ -849,11 +897,14 @@ void Control::FightControl::EndFight(){
         model->getPlayer()->addCoin(model->getCoins());
         vector<pair<Weapon*,int>> weapons;
         vector<pair<Consumable*,int>> consumables;
+        vector<pair<Equipment*,int>> equipments;
         for(Item* items : model->getItems()){
             if(dynamic_cast<Weapon*>(items) != nullptr){
                 weapons.push_back(make_pair(dynamic_cast<Weapon*>(items),1));
             }else if(dynamic_cast<Consumable*>(items) != nullptr){
                 consumables.push_back(make_pair(dynamic_cast<Consumable*>(items),1));
+            }else if(dynamic_cast<Equipment*>(items) != nullptr){
+                equipments.push_back(make_pair(dynamic_cast<Equipment*>(items),1));
             }
         }
         while(true){
@@ -864,7 +915,7 @@ void Control::FightControl::EndFight(){
                 case 1:
                     while(true){
                         choice = view->MenuManager("Choose An Option (Capacity: "+ to_string(model->getPlayer()->getBackPackCapacity() - model->getPlayer()->getBackPackWeight()) +"):"
-                                            ,{"Dropped Weapons","Dropped Consumables","Back"}); 
+                                            ,{"Dropped Weapons","Dropped Consumables", "Dropped Equipments", "Back"}); 
                         if(choice == 1){
                             Weapon* ChosenWeapon = view->ChooseWeapon(weapons , "pick");
                             if(ChosenWeapon == nullptr)
@@ -889,6 +940,19 @@ void Control::FightControl::EndFight(){
                                 }else{
                                     model->getPlayer()->addItem(ChosenConsumable);
                                     consumables.erase(remove(consumables.begin(),consumables.end(),make_pair(ChosenConsumable,1)),consumables.end());
+                                }
+                            }
+                        }else if(choice == 3){
+                            Equipment* ChosenEquipment = view->ChooseEquipment(equipments , "pick" );
+                            if(ChosenEquipment == nullptr)
+                                continue;
+                            else{
+                                if(ChosenEquipment->getCapacity() > (model->getPlayer()->getBackPackCapacity() - model->getPlayer()->getBackPackWeight())){
+                                    view->Prompt("Not Enough BackPack Space");
+                                    continue;
+                                }else{
+                                    model->getPlayer()->addItem(ChosenEquipment);
+                                    equipments.erase(remove(equipments.begin(),equipments.end(),make_pair(ChosenEquipment,1)),equipments.end());
                                 }
                             }
                         }else{
