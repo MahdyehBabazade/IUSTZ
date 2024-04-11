@@ -28,7 +28,15 @@ string StoryGenerate(){
 }
 
 Player* PlayerGenerate(){
-    cout << StoryGenerate();
+    //cout << StoryGenerate();
+    vector<string> stories = {"Waking up confused, a soldier can't remember their name.\nAnother soldier asks, Hey, what's your name?",
+    "You find yourself in a city square, surrounded by unfamiliar faces.\nA stranger approaches and says, 'Hey, sorry to bother you, but what's your name?' "
+    "Waking up confused, with a headache, you put your hand on your head and try to stand up.\nYou see a few people are around you.\nTrying to understand what they're trying to tell you, you hear one of them who looks to be an officer, ask your name."
+    "Openning your eyes feeling some pressure on your chest then feeling some water coming out of your mouth,\nan old man asks 'Are you OK? What's your name soldier?'"
+    "In a situation where survival is uncertain, a soldier says, 'I want to know who fought by my side. What's your name?'"
+    "After a helicopter crash, two soldiers survive. One asks the other, 'We made it out alive. What's your name, soldier'?"
+    "A soldier wakes up disoriented in a field hospital and the nurse ask him, 'Can you remember anything? What's your name?'"};
+    cout << ShuffleVec(stories)[0] << endl << "I'm ";
     string name;
     getline(cin, name);
     vector<pair<Weapon*, int>> weapons;
