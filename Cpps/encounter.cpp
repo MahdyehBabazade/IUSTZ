@@ -19,7 +19,7 @@ Shop :: Shop(Player* player, vector<Weapon*> weapons, vector<Consumable*> consum
 
     string BazaarStory = "As you wander through the crowded boulevard, getting curious about the growing number of people, "
     "you enter a traditional bazaar hall \nwhere everyone is just shouting. This place is all colorful but you are too exhasted to"
-    "open your eyes widely to see all the beauty here.\n A man with a weird mustache out of nowhere takes you in his store. Where is this "
+    "open your eyes widely to see all the beauty here.\nA man with a weird mustache out of nowhere takes you in his store. Where is this "
     "place?\n";
 
     string ForestStory = "While exploring the dense forest, you find this dusty open wooden door. Upon entering, you see a collection"
@@ -64,9 +64,9 @@ void Shop :: Upgrade(Weapon* weapon , string dialogue){
     if(dynamic_cast<Shotgun*>(weapon) != nullptr){
         int choice = Choose(Story + "\n\n"  + getStat() + dialogue + "\n\n" + "Coins needed to Upgrade: " + 
         to_string(BaseUpgradePrice * pow(1.5 , weapon->getUpgradeAmount())) + "\n",
-                            {"\t1. Damage",
-                            "\t2. Min Damage Percent",
-                            "\t3. Back"});
+                            {"1. Damage",
+                            "2. Min Damage Percent",
+                            "3. Back"});
         switch (choice){
             case 1:
                 player->removeItem(weapon);
@@ -283,18 +283,18 @@ void Shop :: Menu(){
     string dialogue = shopkeeper->HiDialogue();
     while (!WantsToQuit){
         int choice = Choose(Story + "\n\n"  + getStat() + dialogue+ "\n" , 
-                            {"\t1. Buy",           // Player buys, Shopkeeper sells ( Sell(Item* item) should be called ) 
-                            "\t2. Sell",
-                            "\t3. Upgrade",
-                            "\t4. Leave the shop"});
+                            {"1. Buy",           // Player buys, Shopkeeper sells ( Sell(Item* item) should be called ) 
+                            "2. Sell",
+                            "3. Upgrade",
+                            "4. Leave the shop"});
         
         switch (choice){
             case 1: // Player buys an item
                 choice = Choose(Story + "\n\n" + getStat() + dialogue + "\n" ,
-                                {"\t1. Weapons",           // Player buys, Shopkeeper sells ( Sell(Item* item) should be called ) 
-                                "\t2. Consumables",
-                                "\t3. Equipments",
-                                "\t4. Back"});
+                                {"1. Weapons",           // Player buys, Shopkeeper sells ( Sell(Item* item) should be called ) 
+                                "2. Consumables",
+                                "3. Equipments",
+                                "4. Back"});
                 
                 switch (choice){
                     case 1:
@@ -404,7 +404,7 @@ void Shop :: Menu(){
                         }
                         else if(player->getCoin() >= 30){
                             choice = Choose(Story + "\n\n" + getStat() + dialogue + "\nUpgrade price is 30 coins\n" ,
-                            {"\t1. Upgrade" , "\t2. Back"});
+                            {"1. Upgrade" , "2. Back"});
                             if(choice = 1){
                                 player->setBackPackCapacity(player->getBackPackCapacity() + 15);
                                 player->removeCoin(30);
@@ -466,7 +466,7 @@ string Shop :: getStat(){
                     "BackPack Weight: [" + to_string(player->getBackPackWeight()) + "/" + to_string(player->getBackPackCapacity()) + "]\n" +
                     "HP: [" + to_string(player->getHP()) + "/" + to_string(player->getMaxHP()) + "]\n\n" +
                     "Shop:\n" +
-                    "Upgrades Left: " + to_string(UpgradesLeft) + "\n";
+                    "Upgrades Left: " + to_string(UpgradesLeft) + "\n\n";
     
     return output;
 }
@@ -551,10 +551,10 @@ void Hospital :: MaxHpIncrease(){
 void Hospital :: Menu(){
     while(!HasHealed){
         int choice = Choose(Story + "\n\n" + medic->HiDialogue() , 
-                {"\t1. Restore half HP ( " + to_string(HalfHealPrice) + "$)",
-                "\t2. Restore full HP ( " + to_string(FullHealPrice) + "$)", 
-                "\t3. Increase max HP by 20% ( " + to_string(MaxHpIncreasePrice) + "$)",
-                "\t4. Leave the Hospital"}
+                {"1. Restore half HP ( " + to_string(HalfHealPrice) + "$)",
+                "2. Restore full HP ( " + to_string(FullHealPrice) + "$)", 
+                "3. Increase max HP by 20% ( " + to_string(MaxHpIncreasePrice) + "$)",
+                "4. Leave the Hospital"}
                 );
                 
         
