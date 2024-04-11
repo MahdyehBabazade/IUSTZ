@@ -19,7 +19,7 @@ Shop :: Shop(Player* player, vector<Weapon*> weapons, vector<Consumable*> consum
 
     string BazaarStory = "As you wander through the crowded boulevard, getting curious about the growing number of people, "
     "you enter a traditional bazaar hall \nwhere everyone is just shouting. This place is all colorful but you are too exhasted to"
-    "open your eyes widely to see all the beauty here.\n A man with a weird mustache out of nowhere takes you in his store. Where is this "
+    "open your eyes widely to see all the beauty here.\nA man with a weird mustache out of nowhere takes you in his store. Where is this "
     "place?\n";
 
     string ForestStory = "While exploring the dense forest, you find this dusty open wooden door. Upon entering, you see a collection"
@@ -64,9 +64,9 @@ void Shop :: Upgrade(Weapon* weapon , string dialogue){
     if(dynamic_cast<Shotgun*>(weapon) != nullptr){
         int choice = Choose(Story + "\n\n"  + getStat() + dialogue + "\n\n" + "Coins needed to Upgrade: " + 
         to_string(BaseUpgradePrice * pow(1.5 , weapon->getUpgradeAmount())) + "\n",
-                            {"Damage",
-                            "Min Damage Percent",
-                            "Back"});
+                            {"1. Damage",
+                            "2. Min Damage Percent",
+                            "3. Back"});
         switch (choice){
             case 1:
                 player->removeItem(weapon);
@@ -237,7 +237,7 @@ void Shop :: Sell(Item* item){ // Shopkeeper sells, Player buys
         clearScreen();
         cout << Story << "\n\n";
         cout << shopkeeper->NoMoneyDialogue();
-        cout << "Press anything to Continue\n";
+        cout << "Press anything to continue\n";
         getch();
     }
 }
@@ -283,18 +283,18 @@ void Shop :: Menu(){
     string dialogue = shopkeeper->HiDialogue();
     while (!WantsToQuit){
         int choice = Choose(Story + "\n\n"  + getStat() + dialogue+ "\n" , 
-                            {"Buy",           // Player buys, Shopkeeper sells ( Sell(Item* item) should be called ) 
-                            "Sell",
-                            "Upgrade",
-                            "Leave the shop"});
+                            {"1. Buy",           // Player buys, Shopkeeper sells ( Sell(Item* item) should be called ) 
+                            "2. Sell",
+                            "3. Upgrade",
+                            "4. Leave the shop"});
         
         switch (choice){
             case 1: // Player buys an item
                 choice = Choose(Story + "\n\n" + getStat() + dialogue + "\n" ,
-                                {"Weapons",           // Player buys, Shopkeeper sells ( Sell(Item* item) should be called ) 
-                                "Consumables",
-                                "Equipments",
-                                "Back"});
+                                {"1. Weapons",           // Player buys, Shopkeeper sells ( Sell(Item* item) should be called ) 
+                                "2. Consumables",
+                                "3. Equipments",
+                                "4. Back"});
                 
                 switch (choice){
                     case 1:
@@ -398,18 +398,18 @@ void Shop :: Menu(){
                     else if(choice == Options.size() - 1){
                         if(player->getBackPackCapacity() >= 90){
                             clearScreen();
-                            cout << Story << "\n\n" << shopkeeper->getName() << ": you Already have the Best BackPack!!!\n";
+                            cout << Story << "\n\n" << shopkeeper->getName() << ": You already have the Best BackPack!!!\n";
                             cout << "Press anything to continue\n";
                             getch();
                         }
                         else if(player->getCoin() >= 30){
                             choice = Choose(Story + "\n\n" + getStat() + dialogue + "\nUpgrade price is 30 coins\n" ,
-                            {"Upgrade" , "Back"});
+                            {"1. Upgrade" , "2. Back"});
                             if(choice = 1){
                                 player->setBackPackCapacity(player->getBackPackCapacity() + 15);
                                 player->removeCoin(30);
                                 clearScreen();
-                                cout << Story << "\n\n" << shopkeeper->getName() << ": BackPack has been Upgraded.\n";
+                                cout << Story << "\n\n" << shopkeeper->getName() << ": Your backpack has been Upgraded.\n";
                                 cout << "Press anything to continue\n";
                                 getch();
                             }
@@ -460,49 +460,13 @@ void Shop :: Menu(){
 }
 
 string Shop :: getStat(){
-    // string Weapons="", Equipments="", Consumables="";
-    // if (player->getWeapons().empty())
-    // {
-    //     Weapons += "-";
-    // }
-    // else
-    // {
-    //     for (int i = 0; i < player->getWeapons().size(); i++)
-    //     {
-    //         Weapons += ( "\n\t" + to_string(i+1) + ". " + player->getWeapons()[i].first->getName() +
-    //                     + "\t" + to_string(player->getWeapons()[i].second)) + "\n";
-    //     }
-    // }
-
-    // if (player->getEquipments().empty())
-    // {
-    //     Equipments += "-";
-    // }
-    // else
-    // {
-    //     for (int i = 0; i < player->getEquipments().size(); i++)
-    //     {
-    //         Equipments += ( "\n\t" + to_string(i+1) + ". " + player->getEquipments()[i]->getName()) + "\n";
-    //     }
-    // }
-
-    // if (player->getConsumables().empty())
-    // {
-    //     Consumables += "-";
-    // }
-    // else
-    // {
-    //     for (int i = 0; i < player->getConsumables().size(); i++)
-    //     {
-    //         Consumables += ( "\n\t" + to_string(i+1) + ". " + player->getConsumables()[i].first->getName() +
-    //                     + "\t" + to_string(player->getConsumables()[i].second));
-    //     }
-    // }
     
-    
-    string output = "Coin: " + to_string(player->getCoin()) + "\n"
+    string output = player->getName() + ":\n" + 
+                    "Coin: " + to_string(player->getCoin()) + "\n" +
                     "BackPack Weight: [" + to_string(player->getBackPackWeight()) + "/" + to_string(player->getBackPackCapacity()) + "]\n" +
-                    "Upgrades Left: " + to_string(UpgradesLeft) + "\n";
+                    "HP: [" + to_string(player->getHP()) + "/" + to_string(player->getMaxHP()) + "]\n\n" +
+                    "Shop:\n" +
+                    "Upgrades Left: " + to_string(UpgradesLeft) + "\n\n";
     
     return output;
 }
@@ -587,10 +551,10 @@ void Hospital :: MaxHpIncrease(){
 void Hospital :: Menu(){
     while(!HasHealed){
         int choice = Choose(Story + "\n\n" + medic->HiDialogue() , 
-                {"Restore half HP ( " + to_string(HalfHealPrice) + "$)",
-                "Restore full HP ( " + to_string(FullHealPrice) + "$)", 
-                "Increase max HP by 20% ( " + to_string(MaxHpIncreasePrice) + "$)",
-                "Leave the Hospital"}
+                {"1. Restore half HP ( " + to_string(HalfHealPrice) + "$)",
+                "2. Restore full HP ( " + to_string(FullHealPrice) + "$)", 
+                "3. Increase max HP by 20% ( " + to_string(MaxHpIncreasePrice) + "$)",
+                "4. Leave the Hospital"}
                 );
                 
         
@@ -685,19 +649,19 @@ void RandomEncounter :: Menu(Player* player, Map* map){
         switch (RandomChoice)
         {
         case 0: // Coin increase
-            cout << "LUCKY YOU! You earned 10 coins." << endl;
+            cout << endl << "LUCKY YOU! You earned 10 coins." << endl;
             player->addCoin(10);
             break;
         case 1: // HP increase
-            cout << "Congratulations! Your injuries has healed! (10 HP gained)" << endl;
+            cout << endl  << "Congratulations! Your injuries has healed! (10 HP gained)" << endl;
             player->setHP(player->getHP() + 10);
             break;
         case 2: // Max Energy increase
-            cout << "Max Energy increase! (1 point)" << endl;
+            cout << endl  << "Max Energy increase! (1 point)" << endl;
             player->setMaxEnergy(player->getMaxEnergy() + 1);
             break;
         case 3: // MaxHP increase
-            cout << "Congratulations! Your MaxHP increased by 5 points" << endl;
+            cout << endl  << "Congratulations! Your MaxHP increased by 5 points" << endl;
             player->setMaxHP(player->getMaxHP()+5);
             player->setHP(player->getHP() + 5);
             break;
