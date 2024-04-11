@@ -51,8 +51,8 @@ namespace View{
             FightView(Model::FightModel* fightmodel);
             
             vector<Character*> ChooseEnemies(vector<Character*> Enemies,int amount);
-            Consumable* ChooseConsumable(vector<pair<Consumable*,int>> Consumables);
-            Weapon* ChooseWeapon(vector<pair<Weapon*,int>> Weapons);
+            Consumable* ChooseConsumable(vector<pair<Consumable*,int>> Consumables , string Description);
+            Weapon* ChooseWeapon(vector<pair<Weapon*,int>> Weapons , string Description);
             Character* ChooseEnemy(vector<Character*> Enemies);
             Relic* ChooseRelic(vector<Relic*> Relics);
             

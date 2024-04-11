@@ -43,7 +43,16 @@ Player* PlayerGenerate(){
 
 void GameLoopFunction(){
     while(true){
-        int Menu_Choice = 1;
+        string symbol = " ___  ___ ___  _______  _______ " + red + " _______ \n" + reset+
+                        "|   ||   Y   ||   _   ||       |" + red + "|   _   |\n" + reset+
+                        "|.  ||.  |   ||   1___||.|   | |" + red + "|___|   |\n" + reset+
+                        "|.  ||.  |   ||____   |`-|.  |-'" + red + " /  ___/ \n" + reset+
+                        "|:  ||:  1   ||:  1   |  |:  |  " + red + "|:  1  \\ \n" + reset+
+                        "|::.||::.. . ||::.. . |  |::.|  " + red + "|::.. . |\n" + reset+
+                        "`---'`-------'`-------'  `---'  " + red + "`-------'\n" + reset+"\n\n\n";
+
+        int Menu_Choice = Choose(symbol , {"       Start" , "       Exit"});
+        clearScreen();
         srand(time(0));
         Player *player = PlayerGenerate();
         Map *map;
