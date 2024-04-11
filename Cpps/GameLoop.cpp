@@ -49,7 +49,7 @@ void GameLoopFunction(){
         Map *map;
         switch(Menu_Choice){
         case 1:{
-            MapFactory Mapfactory(2);
+            MapFactory Mapfactory(1);
             map = Mapfactory.GenerateMap();
         }
         case 2:{
@@ -59,8 +59,7 @@ void GameLoopFunction(){
             break;
         }
         }
-        for(int i = 0; i < 3; i++){
-            Shopkeeper* ShopKeeper = new Shopkeeper("Amir");
+        while(map->getFloor() != 4){
             Medic* medic = new Medic("Bahram");
             FightFactory fight(player , map);
             ShopFactory shop(map , player);
@@ -85,7 +84,7 @@ void GameLoopFunction(){
                     Random->Menu(player , map);
                 }
                 else if(map->getEncounters()[map->getCurrentNode().first][map->getCurrentNode().second] == "MiniBoss"){
-                    // fight.GenerateMiniBoss()->start();
+                    fight.GenerateMiniBoss()->start();
                 }
             }
             if(player->getHP() <= 0){

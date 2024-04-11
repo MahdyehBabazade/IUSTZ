@@ -86,15 +86,15 @@ const string grey("\033[90m");
     Boot* boot3 = new Boot("Sentinel Boots", 0, 40, 10);
 
     // Relics
-    Relic* relic = new Relic("Sunstone", 0, 0, 0.1, 0.25);
-    Relic* relic2 = new Relic("Earthstone", 0, 0, 0.5, 0.25);
-    Relic* relic3 = new Relic("Moonlight Amulet", 0, 0, 0.15, 0.5);
-    Relic* relic4 = new Relic("Bloodmoon Relic", 0, 0, 0.2, 0.5);
-    Relic* relic5 = new Relic("Starfall Shard", 0, 0, 0.25, 0.5);
-    Relic* relic6 = new Relic("Crystal Tear", 0, 0, 0.3, 0.5);
-    Relic* relic7 = new Relic("Crown of Destiny", 0, 0, 0.35, 0.25);
-    Relic* relic8 = new Relic("Titan's Heartstone", 0, 0, 0.4, 0.25);
-    Relic* relic9 = new Relic("Celestial Compass", 0, 0, 0.45, 0.25);
+    Relic* relic = new Relic("Sunstone", 0, 0, 10, 25);
+    Relic* relic2 = new Relic("Earthstone", 0, 0, 50, 25);
+    Relic* relic3 = new Relic("Moonlight Amulet", 0, 0, 15, 50);
+    Relic* relic4 = new Relic("Bloodmoon Relic", 0, 0, 20, 50);
+    Relic* relic5 = new Relic("Starfall Shard", 0, 0, 25, 50);
+    Relic* relic6 = new Relic("Crystal Tear", 0, 0, 30, 50);
+    Relic* relic7 = new Relic("Crown of Destiny", 0, 0, 35, 25);
+    Relic* relic8 = new Relic("Titan's Heartstone", 0, 0, 40, 25);
+    Relic* relic9 = new Relic("Celestial Compass", 0, 0, 45, 25);
 
 //-----------------------------------------------------------------
 

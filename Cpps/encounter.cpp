@@ -265,13 +265,18 @@ void Shop::addItem(Item* item){
 }
 
 void Shop::removeItem(Item* item){
-    if(dynamic_cast<Weapon*>(item) != nullptr){
-        weapons.erase(remove(weapons.begin(),weapons.end(),dynamic_cast<Weapon*>(item)),weapons.end());
-    }else if(dynamic_cast<Consumable*>(item) != nullptr){
-        consumables.erase(remove(consumables.begin(),consumables.end(),dynamic_cast<Consumable*>(item)),consumables.end());
-    }else if(dynamic_cast<Equipment*>(item) != nullptr){
-        equipments.erase(remove(equipments.begin(),equipments.end(),dynamic_cast<Equipment*>(item)),equipments.end());
-    }
+    if(dynamic_cast<Weapon *>(item) != nullptr)
+        for(int i = 0; i < weapons.size(); i++)
+            if(dynamic_cast<Weapon *>(item) == weapons[i])
+                weapons.erase(weapons.begin() + i);    
+    else if(dynamic_cast<Consumable *>(item) != nullptr)
+        for(int i = 0; i < consumables.size(); i++)
+            if(dynamic_cast<Consumable *>(item) == consumables[i])
+                consumables.erase(consumables.begin() + i);
+    else if(dynamic_cast<Equipment *>(item) != nullptr)
+        for(int i = 0; i < equipments.size(); i++)
+            if(dynamic_cast<Equipment *>(item) == equipments[i])
+                equipments.erase(equipments.begin() + i);
 }
 
 void Shop :: Menu(){

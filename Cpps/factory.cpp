@@ -40,7 +40,7 @@ Shop* ShopFactory :: Generate(){
         for (int i = 0; i < 4; i++)
         {
             item_index = Index_Weighted_Random({5,2,1,5,2,1,5,2});
-            Consumables.push_back(AllConsumables[i]);
+            Consumables.push_back(AllConsumables[item_index]);
         }
         
         for (int i = 0; i < 2; i++)
@@ -60,7 +60,7 @@ Shop* ShopFactory :: Generate(){
         for (int i = 0; i < 4; i++)
         {
             item_index = Index_Weighted_Random({2,5,1,2,5,1,2,5});
-            Consumables.push_back(AllConsumables[i]);
+            Consumables.push_back(AllConsumables[item_index]);
         }
         
         for (int i = 0; i < 2; i++)
@@ -80,7 +80,7 @@ Shop* ShopFactory :: Generate(){
         for (int i = 0; i < 4; i++)
         {
             item_index = Index_Weighted_Random({1,2,5,1,2,5,2,5});
-            Consumables.push_back(AllConsumables[i]);
+            Consumables.push_back(AllConsumables[item_index]);
         }
         
         for (int i = 0; i < 2; i++)
@@ -974,19 +974,19 @@ Fight* FightFactory :: GenerateNormalFight(){
     {
     case 1:
         weights = {7,2,0, 7,2,0, 7,2,0, 7,2,0, 7,2,0, 7,2,0, 8,3,0, 8,3,0, 10,4,0, 7,2, 5,2,0, 6,2,0, 6,2,0, 6,2,0};
-        coins = {11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25 , 26};
-        droppedCoins = coins[Index_Weighted_Random({1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3 , 2})];
+        coins = {11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
+        droppedCoins = coins[Index_Weighted_Random({1, 2, 3, 4, 5, 6, 5, 4, 3, 2})];
         break;
 
     case 2:
         weights = {2,7,1, 2,7,1, 2,7,1, 1,7,1, 2,7,1, 2,7,1, 3,8,1, 5,8,3, 7,10,2, 5,4, 2,7,1, 2,7,1, 2,7,1, 2,7,1};
-        coins = {16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30};
-        droppedCoins = coins[Index_Weighted_Random({1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5, 4, 3, 2, 1})];
+        coins = {16, 17, 18, 19, 20, 21, 22, 23, 24, 25};
+        droppedCoins = coins[Index_Weighted_Random({1, 2, 3, 4, 5, 6, 5, 4, 3, 2})];
         break;
     case 3:
         weights = {1,2,7, 1,2,7, 1,2,7, 1,1,7, 1,2,7, 1,2,7, 1,3,8, 0,5,8, 3,7,12, 3,7, 1,2,5, 1,2,6, 1,2,6, 1,2,5};
-        coins = {21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35};
-        droppedCoins = coins[Index_Weighted_Random({1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5, 4, 3, 2, 1})];
+        coins = {21, 22, 23, 24, 25, 26, 27, 28, 29, 30};
+        droppedCoins = coins[Index_Weighted_Random({1, 2, 3, 4, 5, 6, 5, 4, 3, 2})];
     default:
         break;
     }
@@ -1021,19 +1021,19 @@ Fight* FightFactory :: GenerateMiniBoss(){
     {
     case 1:
         weights = {6,2,1, 6,2,1, 5,2,1, 5,1,1, 5,2,1, 5,2,1, 8,3,1, 10,5,3, 12,7,3, 7,3, 5,2,1, 6,2,1, 6,2,1, 5,2,1};
-        coins = {16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30};
-        droppedCoins = coins[Index_Weighted_Random({1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5, 4, 3, 2, 1})];
+        coins = {21, 22, 23, 24, 25, 26, 27, 28, 29, 30};
+        droppedCoins = coins[Index_Weighted_Random({1, 2, 3, 4, 5, 6, 5, 4, 3, 2})];
         break;
 
     case 2:
         weights = {2,6,1, 2,6,1, 2,5,1, 1,5,1, 2,5,1, 2,5,1, 3,8,1, 5,10,3, 7,12,3, 5,5, 2,5,1, 2,6,1, 2,6,1, 2,5,1};
-        coins = {21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35};
-        droppedCoins = coins[Index_Weighted_Random({1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5, 4, 3, 2, 1})];
+        coins = {26, 27, 28, 29, 30, 31, 32, 33, 34, 35};
+        droppedCoins = coins[Index_Weighted_Random({1, 2, 3, 4, 5, 6, 5, 4, 3, 2})];
         break;
     case 3:
         weights = {1,2,6, 1,2,6, 1,2,5, 1,1,5, 1,2,5, 1,2,5, 1,3,8, 3,5,10, 3,7,12, 3,7, 1,2,5, 1,2,6, 1,2,6, 1,2,5};
-        coins = {26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40};
-        droppedCoins = coins[Index_Weighted_Random({1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5, 4, 3, 2, 1})];
+        coins = {31, 32, 33, 34, 35, 36, 37, 38, 39, 40};
+        droppedCoins = coins[Index_Weighted_Random({1, 2, 3, 4, 5, 6, 5, 4, 3, 2})];
     default:
         break;
     }
@@ -1094,19 +1094,19 @@ Fight* FightFactory :: GenerateBoss(){
     {
     case 1:
         weights = {6,2,1, 6,2,1, 5,2,1, 5,1,1, 5,2,1, 5,2,1, 8,3,1, 10,5,3, 12,7,3, 7,3, 5,2,1, 6,2,1, 6,2,1, 5,2,1};
-        coins = {21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35};
-        droppedCoins = coins[Index_Weighted_Random({1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5, 4, 3, 2, 1})];
+        coins = {31, 32, 33, 34, 35, 36, 37, 38, 39, 40};
+        droppedCoins = coins[Index_Weighted_Random({1, 2, 3, 4, 5, 6, 5, 4, 3, 2})];
         break;
 
     case 2:
         weights = {2,6,1, 2,6,1, 2,5,1, 1,5,1, 2,5,1, 2,5,1, 3,8,1, 5,10,3, 7,12,3, 5,5, 2,5,1, 2,6,1, 2,6,1, 2,5,1};
-        coins = {26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40};
-        droppedCoins = coins[Index_Weighted_Random({1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5, 4, 3, 2, 1})];
+        coins = {36, 37, 38, 39, 40, 41, 42, 43, 444, 45};
+        droppedCoins = coins[Index_Weighted_Random({1, 2, 3, 4, 5, 6, 5, 4, 3, 2, })];
         break;
     case 3:
         weights = {1,2,6, 1,2,6, 1,2,5, 1,1,5, 1,2,5, 1,2,5, 1,3,8, 3,5,10, 3,7,12, 3,7, 1,2,5, 1,2,6, 1,2,6, 1,2,5};
-        coins = {31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45};
-        droppedCoins = coins[Index_Weighted_Random({1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 5, 4, 3, 2, 1})];
+        coins = {41, 42, 43, 44, 45, 46, 47, 48, 49, 50};
+        droppedCoins = coins[Index_Weighted_Random({1, 2, 3, 4, 5, 6, 5, 4, 3, 2})];
     default:
         break;
     }
@@ -1121,27 +1121,12 @@ Fight* FightFactory :: GenerateBoss(){
     vector<Relic*> relics = {relic, relic2, relic3, relic4, relic5, relic6, relic7, relic8, relic9};
     relics = ShuffleVec(relics);
 
-    bool isExisted = false;
-    int m = 0;
-    while (m != 3)
+    weights = {1,1,1, 1,1,1, 1,1,1};
+    for (int i = 0; i < 3; i++)
     {
-        item_index = rand() % relics.size();
-        for (int i = 0; i < player->getRelic().size(); i++)
-        {
-            if (relics[item_index] == player->getRelic()[i])
-            {
-                isExisted = true;
-            }   
-        }
-        if (!(isExisted))
-        {
-            relics[m] == relics[item_index];
-            m++;
-        }
-    }
-    while (relics.size() != 3)
-    {
-        relics.pop_back();
+        item_index = Index_Weighted_Random(weights);
+        relics.push_back(relics[item_index]);
+        weights[item_index] = 0;
     }
     
     EnemyFactory* enemyfactory = new EnemyFactory(map , player);

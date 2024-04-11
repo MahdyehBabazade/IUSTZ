@@ -184,7 +184,7 @@ Consumable* View::FightView::ChooseConsumable(vector<pair<Consumable*,int>> Cons
         option = MenuManager("Choose A Consumable To Drop (Capacity: "+ to_string(model->getPlayer()->getBackPackCapacity() - model->getPlayer()->getBackPackWeight()) + "):"
                             ,Options,Header);
     }
-    
+
     if(option  == Options.size()-1)
         return nullptr;
     return Consumables[option].first;
