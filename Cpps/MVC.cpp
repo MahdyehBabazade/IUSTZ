@@ -105,6 +105,8 @@ int View::FightView::MenuManager(string Description,vector<vector<string>> Optio
         
         if(!model->getEnemies().empty())
             showCharacters();
+        if(model->getEquipmentsMenu())
+            showArmor();
             
             
         char key = _getch();
@@ -515,6 +517,21 @@ Weapon* View::FightView::ChooseWeapon(vector<pair<Weapon*,int>> Weapons , string
     return Weapons[option].first;
 }
 
+void View::FightView::showArmor(){
+    vector<Equipment*> Equipments = model->getPlayer()->getEquipments();
+    vector<int> amounts;
+    for(Equipment* equipment: Equipments){
+        if(equipment != nullptr){
+            amounts.push_back(equipment->getAmount());
+        }else{
+            amounts.push_back(0);
+        }
+    }
+    cout << "[Head Gear]: " << amounts[0]<< endl;
+    cout << "[Vest]: " << amounts[1] << endl;
+    cout << "[Foot Wear]: " << amounts[2] << endl;
+    cout << "[Boots]: " << amounts[3];
+}
 
 Equipment* View::FightView::ChooseEquipment(vector<pair<Equipment*,int>> Equipments, string Description){
     if(Equipments.empty()){
@@ -527,37 +544,30 @@ Equipment* View::FightView::ChooseEquipment(vector<pair<Equipment*,int>> Equipme
     vector<vector<string>> Options;
     int option;
     
-    if(!model->getEnemies().empty()){
-        Header = {"Name","Amount"};
-        for(pair<Equipment*,int> x : Equipments){
-            Equipment* equipment = x.first;
-            int amount = x.second;
-            
-            vector<string> row(Header.size());
-            row[0] = (equipment->getName() + "(x" + to_string(amount) + ")");
-            row[1] = to_string(equipment->getAmount());
-            Options.push_back(row);
-        }
-        Options.push_back({"Back"," "});
+    Header = {"Name","Type","ProtectionAmount"};
+    for(pair<Equipment*,int> x : Equipments){
+        Equipment* equipment = x.first;
+        int amount = x.second;
         
-        option = MenuManager("Choose A Equipment: ",Options,Header);
-    }else{
-        Header = {"Name","Capacity","Amount"};
-        for(pair<Equipment*,int> x : Equipments){
-            Equipment* equipment = x.first;
-            int amount = x.second;
-            
-            vector<string> row(Header.size());
-            row[0] = (equipment->getName() + "(x" + to_string(amount) + ")");
-            row[1] = to_string(equipment->getCapacity());
-            row[2] = to_string(equipment->getAmount());
-            Options.push_back(row);
-        }
-        Options.push_back({"Back"," "," "});
+        vector<string> row(Header.size());
+        row[0] = (equipment->getName() + "(x" + to_string(amount) + ")");
         
-        option = MenuManager("Choose A Equipment To " + Description + " (Capacity: "+ to_string(model->getPlayer()->getBackPackCapacity() - model->getPlayer()->getBackPackWeight()) + "):"
-                            ,Options,Header);
+        if(dynamic_cast<HeadGear*>(equipment) !=nullptr){
+            row[1] = "Head Gear";
+        }else if(dynamic_cast<Vest*>(equipment) !=nullptr){
+            row[1] = "Vest";
+        }else if(dynamic_cast<FootWear*>(equipment) !=nullptr){
+            row[1] = "FootWear";
+        }else if(dynamic_cast<Boot*>(equipment) !=nullptr){
+            row[1] = "Boots";
+        }
+        row[2] = to_string(equipment->getAmount());
+        Options.push_back(row);
     }
+    Options.push_back({"Back"," "," "});
+    
+    option = MenuManager("Choose An Equipment: ",Options,Header);
+    
 
     if(option  == Options.size()-1)
         return nullptr;
@@ -647,6 +657,7 @@ Model::FightModel::FightModel(Player* player,vector<Character*> Enemies,vector<I
     this -> droppedCoins = droppedCoins;
     this -> Relics = Relics;
     Round=0;
+    EquipmentsMenu = false;
 }
 
 void Model::FightModel::setRound(int round){ Round = round ;}
@@ -669,6 +680,9 @@ vector<Relic*> Model::FightModel::getRelics(){return Relics;}
 void Model::FightModel::setEnemies(vector<Character*> Enemies){this -> Enemies = Enemies;}
 
 void Model::FightModel::setPlayer(Player* player){this->player=player;};
+
+void Model::FightModel::setEqipmentsMenu(bool entry){EquipmentsMenu = entry;}
+bool Model::FightModel::getEquipmentsMenu(){return EquipmentsMenu;}
 //---------------------------------------------------------------------------------------------
 Control::FightControl::FightControl(Player* player,vector<Character*> Enemies,vector<Item*> Items,int droppedCoins,vector<Relic*> Relics) {
     model = new Model::FightModel(player, Enemies,Items,droppedCoins,Relics);
@@ -988,10 +1002,12 @@ void Control::FightControl::EndFight(){
                     }else if(choice == 3){
                         while (true)
                         {
+                            model->setEqipmentsMenu(true);
                             Equipment* ChosenEquipment = view->ChooseEquipment(equipments , "pick" );
-                            if(ChosenEquipment == nullptr)
+                            if(ChosenEquipment == nullptr){
+                                model->setEqipmentsMenu(false);
                                 break;
-                            else{
+                            }else{
                                 if(ChosenEquipment->getCapacity() > (model->getPlayer()->getBackPackCapacity() - model->getPlayer()->getBackPackWeight())){
                                     view->Prompt("Not Enough BackPack Space");
                                     continue;
@@ -1054,6 +1070,7 @@ void Control::FightControl::EndFight(){
     }    
     model->getPlayer()->setEnergy(model->getPlayer()->getMaxEnergy());
     model->getPlayer()->setShield(0);
+    model->getPlayer()->setHP(model->getPlayer()->getMaxHP());
     for(pair<Weapon*,int> p:model->getPlayer()->getWeapons()){
         Weapon* weapon = p.first;
         if(dynamic_cast<Gun*>(weapon) != nullptr){

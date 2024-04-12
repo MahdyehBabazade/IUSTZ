@@ -21,6 +21,8 @@ namespace Model{
             int droppedCoins;
             
             vector<Relic*> Relics;
+            
+            bool EquipmentsMenu;
         public:
             void setRound(int round);
             int getRound();
@@ -37,6 +39,9 @@ namespace Model{
             void setEnemies(vector<Character*> Enemies);
             
             void setPlayer(Player* player);
+            
+            bool getEquipmentsMenu();
+            void setEqipmentsMenu(bool entry);
     };
 }
 //--------------------
@@ -46,6 +51,7 @@ namespace View{
             Model::FightModel* model;
             int MenuManager(string Description,vector<vector<string>> Options,vector<string> Header);
             void showCharacters();
+            void showArmor();
             int getMaxWidth(vector<vector<string>> &entry);
         public:
             FightView(Model::FightModel* fightmodel);
