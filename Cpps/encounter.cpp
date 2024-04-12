@@ -462,7 +462,7 @@ Hospital :: Hospital(Player* player, Medic* medic){
     this->HasHealed = false;
 
     string CrowdedCityStory = "As you walk through the crowded street with a limp, a little girl screams seeing your body and face "
-    "injuries but you're too \nexhasted to actually care. Suddenly you notice a red sign, acutually a plus (+) sign on a building. "
+    "injuries but you're too \nexhausted to actually care. Suddenly you notice a red sign, acutually a plus (+) sign on a building. "
     "That's a hospital full of \ninjured people. You're gonna have a long time waiting for your turn. But a good-hearted woman gives you "
     "her turn so you're now the \nnext in line.\n";
     string CaveStory = "As you're walking in darkness, injured and full of wounds, you see a pair of eyes shining out of a cave, "
@@ -533,9 +533,9 @@ void Hospital :: MaxHpIncrease(){
 void Hospital :: Menu(){
     while(!HasHealed){
         int choice = Choose(Story + "\n\n" + medic->HiDialogue() , 
-                {"Restore half HP ( " + to_string(HalfHealPrice) + "$)",
-                "Restore full HP ( " + to_string(FullHealPrice) + "$)", 
-                "Increase max HP by 20% ( " + to_string(MaxHpIncreasePrice) + "$)",
+                {"Restore half HP (" + to_string(HalfHealPrice) + "$)",
+                "Restore full HP (" + to_string(FullHealPrice) + "$)", 
+                "Increase max HP by 20% (" + to_string(MaxHpIncreasePrice) + "$)",
                 "Leave the Hospital"}
                 );
                 
