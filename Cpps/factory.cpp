@@ -38,25 +38,23 @@ Shop* ShopFactory :: Generate(){
     switch (map->getFloor())
     {
     case 1:
+        weights = {5,2,1,5,2,1,5,2,1,5,2,1,6,3,2,5,2,1,5,2,1};
         for (int i = 0; i < 5; i++)
         {
-            weights = {5,2,1,5,2,1,5,2,1,5,2,1,6,3,2,5,2,1,5,2,1};
             item_index = Index_Weighted_Random(weights);
             Weapons.push_back(AllWeapons[item_index]);
             weights[item_index] = 0; 
         }
-        
+        weights = {5,2,1,5,2,1,5,2};
         for (int i = 0; i < 4; i++)
         {
-            weights = {5,2,1,5,2,1,5,2};
             item_index = Index_Weighted_Random(weights);
             Consumables.push_back(AllConsumables[i]);
             weights[item_index] = 0;
         }
-        
+        weights = {5,2,1,5,2,1,5,2,1,5,2,1};
         for (int i = 0; i < 2; i++)
         {
-            weights = {5,2,1,5,2,1,5,2,1,5,2,1};
             item_index = Index_Weighted_Random(weights);
             Equipments.push_back(AllEquipments[item_index]);
             weights[item_index] = 0;
@@ -64,25 +62,25 @@ Shop* ShopFactory :: Generate(){
         break;
 
     case 2:
+        weights = {2,5,1,2,5,1,2,5,1,2,5,1, 3,6,2 ,2,5,1,2,5,1};
         for (int i = 0; i < 5; i++)
         {
-            weights = {2,5,1,2,5,1,2,5,1,2,5,1, 3,6,2 ,2,5,1,2,5,1};
             item_index = Index_Weighted_Random(weights);
             Weapons.push_back(AllWeapons[item_index]);
             weights[item_index] = 0;
         }
         
+        weights = {2,5,1,2,5,1,2,5};
         for (int i = 0; i < 4; i++)
         {
-            weights = {2,5,1,2,5,1,2,5};
             item_index = Index_Weighted_Random(weights);
             Consumables.push_back(AllConsumables[i]);
             weights[item_index] = 0;
         }
         
+        weights = {2,5,1,2,5,1,2,5,1,2,5,1};
         for (int i = 0; i < 2; i++)
         {
-            weights = {2,5,1,2,5,1,2,5,1,2,5,1};
             item_index = Index_Weighted_Random(weights);
             Equipments.push_back(AllEquipments[item_index]);
             weights[item_index] = 0;
@@ -90,25 +88,25 @@ Shop* ShopFactory :: Generate(){
         break;
 
     case 3:
+        weights = {1,2,5,1,2,5,1,2,5,1,2,5, 2,3,6, 1,2,5,1,2,5};
         for (int i = 0; i < 5; i++)
         {
-            weights = {1,2,5,1,2,5,1,2,5,1,2,5, 2,3,6, 1,2,5,1,2,5};
             item_index = Index_Weighted_Random(weights);
             Weapons.push_back(AllWeapons[item_index]);
             weights[item_index] = 0;
         }
         
+        weights = {1,2,5,1,2,5,2,5};
         for (int i = 0; i < 4; i++)
         {
-            weights = {1,2,5,1,2,5,2,5};
             item_index = Index_Weighted_Random(weights);
             Consumables.push_back(AllConsumables[i]);
             weights[item_index] = 0;
         }
         
+        weights = {1,2,5,1,2,5,1,2,5};
         for (int i = 0; i < 2; i++)
         {
-            weights = {1,2,5,1,2,5,1,2,5};
             item_index = Index_Weighted_Random(weights);
             Equipments.push_back(AllEquipments[item_index]);
             weights[item_index] = 0;
@@ -1157,7 +1155,7 @@ Fight* FightFactory :: GenerateBoss(){
         droppedCoins = coins[Index_Weighted_Random({1, 2, 3, 4, 5, 6, 5, 4, 3, 2})];
     default:
         break;
-
+    }
     int item_index;
     for (int i = 0; i < 8; i++)
     {
