@@ -25,9 +25,9 @@ Shop* ShopFactory :: Generate(){
     new Consumable(ShieldConsumable3), new Consumable(HPConsumable), new Consumable(HPConsumable2), new Consumable(HPConsumable3), 
     new Consumable(EnergyConsumable), new Consumable(EnergyConsumable2)};
 
-    vector<Equipment*> AllEquipments = {new Equipment(vest), new Equipment(vest2), new Equipment(vest3), new Equipment(headgear), 
-    new Equipment(headgear2), new Equipment(headgear3), new Equipment(footwear), new Equipment(footwear2), new Equipment(footwear3), 
-    new Equipment(boot), new Equipment(boot2), new Equipment(boot3)};
+    vector<Equipment*> AllEquipments = {new Vest(vest), new Vest(vest2), new Vest(vest3), new HeadGear(headgear), 
+    new HeadGear(headgear2), new HeadGear(headgear3), new FootWear(footwear), new FootWear(footwear2), new FootWear(footwear3), 
+    new Boot(boot), new Boot(boot2), new Boot(boot3)};
 
     vector<Weapon*> Weapons;
     vector<Consumable*> Consumables;
@@ -1049,9 +1049,9 @@ Fight* FightFactory :: GenerateNormalFight(){
     new Grenade(grenade2), new Grenade(grenade3), new BoomRang(boomerang), new BoomRang(boomerang2), new BoomRang(boomerang3),
     new Consumable(ShieldConsumable), new Consumable(ShieldConsumable2), new Consumable(ShieldConsumable3), 
     new Consumable(HPConsumable), new Consumable(HPConsumable2), new Consumable(HPConsumable3), new Consumable(EnergyConsumable), 
-    new Consumable(EnergyConsumable2), new Equipment(vest), new Equipment(vest2), new Equipment(vest3), new Equipment(headgear), 
-    new Equipment(headgear2), new Equipment(headgear3), new Equipment(footwear), new Equipment(footwear2), new Equipment(footwear3), 
-    new Equipment(boot), new Equipment(boot2), new Equipment(boot3)};
+    new Consumable(EnergyConsumable2), new Vest(vest), new Vest(vest2), new Vest(vest3), new HeadGear(headgear), 
+    new HeadGear(headgear2), new HeadGear(headgear3), new FootWear(footwear), new FootWear(footwear2), new FootWear(footwear3), 
+    new Boot(boot), new Boot(boot2), new Boot(boot3)};
 
     vector<Item*> Items;
 
@@ -1109,9 +1109,9 @@ Fight* FightFactory :: GenerateMiniBoss(){
     new Grenade(grenade2), new Grenade(grenade3), new BoomRang(boomerang), new BoomRang(boomerang2), new BoomRang(boomerang3),
     new Consumable(ShieldConsumable), new Consumable(ShieldConsumable2), new Consumable(ShieldConsumable3), 
     new Consumable(HPConsumable), new Consumable(HPConsumable2), new Consumable(HPConsumable3), new Consumable(EnergyConsumable), 
-    new Consumable(EnergyConsumable2), new Equipment(vest), new Equipment(vest2), new Equipment(vest3), new Equipment(headgear), 
-    new Equipment(headgear2), new Equipment(headgear3), new Equipment(footwear), new Equipment(footwear2), new Equipment(footwear3), 
-    new Equipment(boot), new Equipment(boot2), new Equipment(boot3)};
+    new Consumable(EnergyConsumable2), new Vest(vest), new Vest(vest2), new Vest(vest3), new HeadGear(headgear), 
+    new HeadGear(headgear2), new HeadGear(headgear3), new FootWear(footwear), new FootWear(footwear2), new FootWear(footwear3), 
+    new Boot(boot), new Boot(boot2), new Boot(boot3)};
 
     vector<Item*> Items;
 
@@ -1195,9 +1195,9 @@ Fight* FightFactory :: GenerateBoss(){
     new Grenade(grenade2), new Grenade(grenade3), new BoomRang(boomerang), new BoomRang(boomerang2), new BoomRang(boomerang3),
     new Consumable(ShieldConsumable), new Consumable(ShieldConsumable2), new Consumable(ShieldConsumable3), 
     new Consumable(HPConsumable), new Consumable(HPConsumable2), new Consumable(HPConsumable3), new Consumable(EnergyConsumable), 
-    new Consumable(EnergyConsumable2), new Equipment(vest), new Equipment(vest2), new Equipment(vest3), new Equipment(headgear), 
-    new Equipment(headgear2), new Equipment(headgear3), new Equipment(footwear), new Equipment(footwear2), new Equipment(footwear3), 
-    new Equipment(boot), new Equipment(boot2), new Equipment(boot3)};
+    new Consumable(EnergyConsumable2), new Vest(vest), new Vest(vest2), new Vest(vest3), new HeadGear(headgear), 
+    new HeadGear(headgear2), new HeadGear(headgear3), new FootWear(footwear), new FootWear(footwear2), new FootWear(footwear3), 
+    new Boot(boot), new Boot(boot2), new Boot(boot3)};
 
     vector<Item*> Items;
 
