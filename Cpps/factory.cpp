@@ -145,7 +145,7 @@ string EnemyFactory :: HumanEnemyNameset(){
 
 double EnemyFactory :: Armorset(){
     vector<int> weights = {4 , 3 , 2 , 1};
-    vector<double> armorsets = {7.5 , 10 , 12.5 , 15 , 17.25 , 20 , 22.5 , 25 , 27.5 , 30 , 32.5 , 35 , 37.5 , 40 ,
+    vector<double> armorsets = {7.5 , 10 , 12.5 , 15 , 17.5 , 20 , 22.5 , 25 , 27.5 , 30 , 32.5 , 35 , 37.5 , 40 ,
     42.5 , 45 , 47.5 , 50};
     return armorsets[min(17 , Index_Weighted_Random(weights) + Difficulty/4)];
 }
@@ -1149,29 +1149,23 @@ Fight* FightFactory :: GenerateMiniBoss(){
     }
 
     vector<Relic*> relics = {relic, relic2, relic3, relic4, relic5, relic6, relic7, relic8, relic9};
-    relics = ShuffleVec(relics);
-
-    bool isExisted = false;
-    int m = 0;
-    while (m != 3)
-    {
-        item_index = rand() % relics.size();
-        for (int i = 0; i < player->getRelic().size(); i++)
-        {
-            if (relics[item_index] == player->getRelic()[i])
-            {
+    vector<Relic*> Relics;
+    for(int i = 0; i < relics.size(); i++){
+        bool isExisted = false;
+        for(int j = 0; j < player->getRelic().size(); j++){
+            if(relics[i] == player->getRelic()[j]){
                 isExisted = true;
-            }   
+                break;
+            }
         }
-        if (!(isExisted))
-        {
-            relics[m] == relics[item_index];
-            m++;
-        }                                                       
+        if(!isExisted)
+            Relics.push_back(relics[i]);
     }
-    while (relics.size() != 3)
-    {
-        relics.pop_back();
+    Relics = ShuffleVec(Relics);
+    vector<Relic*> Relics1;
+    int vecsize = Relics.size();
+    for(int i = 0; i < min(3 , vecsize); i++){
+        Relics1.push_back(Relics[i]);
     }
 
     EnemyFactory* enemyfactory = new EnemyFactory(map , player);
@@ -1181,7 +1175,7 @@ Fight* FightFactory :: GenerateMiniBoss(){
         story = getHumanEnemyStory();
     else
         story = getZombieStory();
-    Fight* fight = new Fight(story, player, 1, Enemies, Items, droppedCoins, relics);
+    Fight* fight = new Fight(story, player, 1, Enemies, Items, droppedCoins, Relics1);
     return fight;
 }
 
@@ -1235,34 +1229,27 @@ Fight* FightFactory :: GenerateBoss(){
     }
     
     vector<Relic*> relics = {relic, relic2, relic3, relic4, relic5, relic6, relic7, relic8, relic9};
-    relics = ShuffleVec(relics);
-
-    bool isExisted = false;
-    int m = 0;
-    while (m != 3)
-    {
-        item_index = rand() % relics.size();
-        for (int i = 0; i < player->getRelic().size(); i++)
-        {
-            if (relics[item_index] == player->getRelic()[i])
-            {
+    vector<Relic*> Relics;
+    for(int i = 0; i < relics.size(); i++){
+        bool isExisted = false;
+        for(int j = 0; j < player->getRelic().size(); j++){
+            if(relics[i] == player->getRelic()[j]){
                 isExisted = true;
-            }   
+                break;
+            }
         }
-        if (!(isExisted))
-        {
-            relics[m] == relics[item_index];
-            m++;
-        }                                                       
+        if(!isExisted)
+            Relics.push_back(relics[i]);
     }
-    while (relics.size() != 3)
-    {
-        relics.pop_back();
+    Relics = ShuffleVec(Relics);
+    vector<Relic*> Relics1;
+    int vecsize = Relics.size();
+    for(int i = 0; i < min(3 , vecsize); i++){
+        Relics1.push_back(Relics[i]);
     }
-
     EnemyFactory* enemyfactory = new EnemyFactory(map , player);
     vector<Character*> Enemies = enemyfactory->BossEnemy();
     //string bossName = map->getBoss();
-    Fight* fight = new Fight(map->getBoss(), player, 2, Enemies, Items, droppedCoins, relics);
+    Fight* fight = new Fight(map->getBoss(), player, 2, Enemies, Items, droppedCoins, Relics1);
     return fight;
 }

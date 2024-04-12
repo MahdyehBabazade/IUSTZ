@@ -27,7 +27,7 @@ Player* PlayerGenerate(){
     vector<Weapon*> AllWeapons = {new Shotgun(shotgun), new Snipe(snipe), new SMG(smg), new Rifle(rifle), new ColdWeapon(coldweapon)};
     int item_index = rand() % 5;
     player->addItem(AllWeapons[item_index]);
-    player->addItem(new Rifle("lakc" , 0 , 0 , 10000 , 1 , 2 , 2 , 20 , 0));
+    player->addItem(new Rifle("lakc" , 0 , 0 , 10000 , 1 , 2 , 20 , 20 , 0));
     return player;
 }
 
@@ -41,7 +41,40 @@ void GameLoopFunction(){
                         "|::.||::.. . ||::.. . |  |::.|  " + red + "|::.. . |\n" + reset+
                         "`---'`-------'`-------'  `---'  " + red + "`-------'\n" + reset+"\n\n\n";
 
-        int Menu_Choice = Choose(symbol , {"       Start" , "       Exit"});
+        vector<string> Names = {"Steve" , "Donald" , "Megan" , "Myria" , "James" , "Jhon" , "Sarah" , "Jennifer" ,
+        "Selena" , "Jake" , "Jimmy" , "James" , "Emma" , "Olivia" , "William" , "Ava" , "Benjamin" , "Sophia" , "Noah" ,
+        "Oliver" , "Mia" , "Jackson" , "Alexander" , "Micheal" , "Ethan" , "Abigail" , "Danial" , "Lucas" , "Grace" ,
+        "Henry" , "Lily" ,"Tom"};
+        int Menu_Choice = 0;
+        bool breaker = true;
+        while(breaker){
+            clearScreen();
+            cout << symbol;
+            if(Menu_Choice == 0){
+                cout << green;
+            }
+            cout << "    1. Start\n" << reset;
+            if(Menu_Choice == 1){
+                cout << green;
+            }
+            cout << "    2.Exit\n" << reset;
+            char key = _getch();
+            switch (tolower(key))
+            {
+            case 'w':
+                Menu_Choice = (Menu_Choice + 1) % 2 ;
+                break;
+            case 's':
+                Menu_Choice = (Menu_Choice + 1) % 2 ;
+                break;
+            case '\r':
+                breaker = false;
+                break;
+            default:
+                break;
+            }
+        }
+        Menu_Choice++;
         clearScreen();
         srand(time(0));
         Map *map;
@@ -54,14 +87,13 @@ void GameLoopFunction(){
         }
         break;
         case 2:{
-            break;
+            exit(0);
         }
         default:{
             break;
         }
         }
         while(map->getFloor() != 4){
-            Medic* medic = new Medic("Bahram");
             FightFactory fight(player , map);
             ShopFactory shop(map , player);
             EnemyFactory enemies(map , player);
@@ -77,6 +109,7 @@ void GameLoopFunction(){
                     shop.Generate()->Menu();
                 }
                 else if(map->getEncounters()[map->getCurrentNode().first][map->getCurrentNode().second] == "Hospital"){
+                    Medic* medic = new Medic(ShuffleVec(Names)[0]);
                     Hospital hospital(player , medic);
                     hospital.Menu();
                 }
