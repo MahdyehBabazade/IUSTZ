@@ -130,5 +130,9 @@ void GameLoopFunction(){
             MapFactory Mapfactory(map->getFloor() + 1);
             map = Mapfactory.GenerateMap();
         }
+        clearScreen();
+        cout << green << "YOU'VE WON" << yellow << "!!!\n\n\n" << reset;
+        cout << "A work fined by Saleh , Mahdieh , Bahar and Amir\n";
+        getch();
     }
 }

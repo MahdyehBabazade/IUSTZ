@@ -1027,28 +1027,29 @@ string FightFactory :: getBossStory(string name){
     else if (name == "Samurai")
     {
         Story = "A sharp sound is heard, of course you can recognize the sound of a sword being pulled out of its case\nYou take a "
-        "shelter under the show of a tree. Slowly watching through a hole, a samurai appears and looks at you through\nthe hole with "
-        "his determined eyes. OMG no way you can run away. Guess this is the time to start the fight.\nComing out from the back of the "
-        "tree, you pull your weapon out and aim at him/her.";
+        "shelter under the shadow of a tree. Slowly watching through a hole, a samurai appears and looks at you through\nthe hole with "
+        "his determined eyes. OMG no way you can run away! Guess this is the time to start the fight.\nComing out from the back of the "
+        "tree, you pull your weapon out and aim at the samurai.\n";
     }
     else if (name == "Frank")
     {
-        Story = "";
+        Story = "So tired, you find a shelter to rest. You find a plain and sit to take some rest but you fall asleep\nWith the sound of zombies"
+        "you suddenly wake up. Getting ready for the usual fight you feel the earth shaking. When you look up, \nyou see a zombie as big as a tree\n";
     }
     else if (name == "Dokkaebi")
     {
         Story = "You enter the battlefield then you see a powerful creature with its weird-looking ears entering the bettlefield"
         "thinking\nit could'nt be worse. Then at the time when you were about to pull your weapon out, many other creatures enter"
         "the field.\nTrying to unzip your backpack, you recognize their faces. Wait WHAT?! They all look exactly like you!!"
-        "You're actuall\ngonna fight against yourself. Many of yourself.";
+        "You're actuall\ngonna fight against yourself. Many of yourself.\n";
     }
     else if (name == "Khonshu")
     {
         Story = "Looking through the window of the building, you see a man with strange clothes and a head scarf. He is wearing "
         "sth\negyptian and around his waist there are lots of grenades and boomerangs. Getting out of the building to see if you\n"
         "can get who he is and what does he want here, two actual zombies appear by the man's gesture. They look completely\n"
-        "controlled in a way that they do everything the man wants them to. He commands the to run toward you.\nYou took your weapon "
-        "out then aim at them. ";
+        "controlled in a way that they do everything the man wants them to. He commands them to run towards you.\nYou take your weapon "
+        "out and aim at them.\n";
     }
     return Story;
 }
@@ -1226,10 +1227,6 @@ Fight* FightFactory :: GenerateBoss(){
         coins = {36, 37, 38, 39, 40, 41, 42, 43, 444, 45};
         droppedCoins = coins[Index_Weighted_Random({1, 2, 3, 4, 5, 6, 5, 4, 3, 2, })];
         break;
-    case 3:
-        weights = {1,2,6, 1,2,6, 1,2,5, 1,1,5, 1,1,2,2,3,3,4,4,5,5, 1,2,5, 1,3,8, 3,5,10, 3,7,12, 3,7, 1,2,5, 1,2,6, 1,2,6, 1,2,5};
-        coins = {41, 42, 43, 44, 45, 46, 47, 48, 49, 50};
-        droppedCoins = coins[Index_Weighted_Random({1, 2, 3, 4, 5, 6, 5, 4, 3, 2})];
     default:
         break;
     }
@@ -1263,6 +1260,11 @@ Fight* FightFactory :: GenerateBoss(){
     EnemyFactory* enemyfactory = new EnemyFactory(map , player);
     vector<Character*> Enemies = enemyfactory->BossEnemy();
     //string bossName = map->getBoss();
+    if(map->getFloor() == 3){
+        Items = {};
+        Relics1 = {};
+        droppedCoins = 0;
+    }
     Fight* fight = new Fight(map->getBoss(), player, 2, Enemies, Items, droppedCoins, Relics1);
     return fight;
 }
