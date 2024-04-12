@@ -1012,10 +1012,10 @@ string FightFactory :: getBossStory(string name){
     string Story;
     if (name == "Cowboy")
     {
-        Story = "You see the enemy everyone told you about his toughness, shooting skills and his unstopple cow.\nHe is wearing a "
+        Story = "You see the enemy everyone told you about his toughness, shooting skills and his unstoppable cow.\nHe is wearing a "
         "leather hat which is covering his intense eyes. Everyone's scared by looking at them but not you.\nHe pulls his gun out of "
-        "his pocket, places the bullets in and aims at you.\nYou look into your backpack trying not to freak out, check you weapons, "
-        "choose one and aims back at him.\n";
+        "his pocket, places the bullets in and aims at you.\nYou look into your backpack trying not to freak out, check your weapons, "
+        "choose one and aim back at him.\n";
     }
     else if (name == "Zombie")
     {
@@ -1090,7 +1090,12 @@ Fight* FightFactory :: GenerateNormalFight(){
 
     EnemyFactory* enemyfactory = new EnemyFactory(map , player);
     vector<Character*> Enemies = enemyfactory->FightEnemy();
-    Fight* fight = new Fight(getStory(), player, 0, Enemies, Items, droppedCoins, {});
+    string story;
+    if(dynamic_cast<HumanEnemy *>(Enemies[0]) != nullptr)
+        story = getHumanEnemyStory();
+    else
+        story = getZombieStory();
+    Fight* fight = new Fight(story, player, 0, Enemies, Items, droppedCoins, {});
     return fight;
 }
 
@@ -1171,7 +1176,12 @@ Fight* FightFactory :: GenerateMiniBoss(){
 
     EnemyFactory* enemyfactory = new EnemyFactory(map , player);
     vector<Character*> Enemies = enemyfactory->MiniBossEnemy();
-    Fight* fight = new Fight(getStory(), player, 1, Enemies, Items, droppedCoins, relics);
+    string story;
+    if(dynamic_cast<HumanEnemy *>(Enemies[0]) != nullptr)
+        story = getHumanEnemyStory();
+    else
+        story = getZombieStory();
+    Fight* fight = new Fight(story, player, 1, Enemies, Items, droppedCoins, relics);
     return fight;
 }
 
