@@ -378,6 +378,13 @@ void Map::move(){
             case '\r':
                 breaker = false;
                 break;
+            case 27:{
+                int choice = PauseMenu();
+                if(choice == 0)
+                    continue;
+                else
+                    exit(0);
+            }
             default:
                 break;
             }
@@ -398,6 +405,13 @@ void Map::move(){
             case '\r':
                 breaker = false;
                 break;
+            case 27:{
+                int choice = PauseMenu();
+                if(choice == 0)
+                    continue;
+                else
+                    exit(0);
+            }
             default:
                 break;
             }
@@ -437,14 +451,21 @@ void Map::move(){
             switch (key)
             {
             case 'w':
-                m--;
+                m = (m - 1 + Options.size()) % Options.size();
                 break;
             case 's':
-                m++;
+                m = (m + 1) % Options.size();
                 break;
             case '\r':
                 breaker = false;
                 break;
+            case 27:{
+                int choice = PauseMenu();
+                if(choice == 0)
+                    continue;
+                else
+                    exit(0);
+            }
             default:
                 break;
             }

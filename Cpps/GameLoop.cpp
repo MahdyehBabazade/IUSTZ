@@ -9,24 +9,6 @@
 #include <ctime>
 using namespace std;
 
-//string StoryGenerate(){
-//    string ForestStory = "Legends speak of a forest with its mythical creatures and ancient magic. As an adventure, "
-//    "you must explore the forest, get into some troubles, fight with eccentric creatures or maybe some super natural human beings "
-//    "and save the inhabitants with your bravery. You may get into some troubles you can't ever fight against or you may never be "
-//    "able to get out of the forest. The creatures don't like to be touched so, as a warning, whenever you touch them or make a "
-//    "noise they'll notice and you must use all your skills to get rid of them. Best of luck with accomplishing your duties. ";
-//    string  WarStory = "A brutal war started in a battlefield and you are the only one to fight against these giant unusual "
-//    "creatures, defending your home and properties. There are several creatures waiting for you to fight with. None of them looks "
-//    "normal. There are human beings with abnormal faces and bodies, terrible-looking zombies and their never-unclosed lips, "
-//    "unknown giant creatures with odd faces and at the back, the monster you never thought it could exist. So you must be "
-//    "aware and armed. You know you've been through worst shits and you're still alive. Good luck!";
-//    string War2Story = "A war started and blood flew everywhere on the streets. You enter a supermarket and bend over to pick a "
-//    "bottle of water. The sound of walking on the broken glasses terrifies you. ";
-//    string ZombieStory1 = "";
-//    vector<string> stories = {ForestStory, WarStory};
-//    return ShuffleVec(stories)[0];
-//}
-
 
 Player* PlayerGenerate(){
     vector<string> stories = {"Waking up confused, a soldier can't remember their name.\nAnother soldier asks, Hey, what's your name?",
@@ -41,7 +23,7 @@ Player* PlayerGenerate(){
     getline(cin, name);
     vector<pair<Weapon*, int>> weapons;
     vector<pair<Item*, int>> items;
-    Player* player = new Player(name, 10000, 60, 0, 400, 0, items, weapons);
+    Player* player = new Player(name, 10000, 60, 0, 400, 1000, items, weapons);
     vector<Weapon*> AllWeapons = {shotgun, snipe, smg, rifle, coldweapon};
     int item_index = rand() % 5;
     player->addItem(AllWeapons[item_index]);

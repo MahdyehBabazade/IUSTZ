@@ -45,6 +45,7 @@ int View::FightView::MenuManager(string Description,vector<string> Options){
             cout << Options[i];
             cout << reset << endl;
         }
+        cout << "Move between options with W & S and choose the option with Enter.(Press Esc to Pause)\n";
         
         if(!model->getEnemies().empty())
             showCharacters();
@@ -61,6 +62,13 @@ int View::FightView::MenuManager(string Description,vector<string> Options){
                 continue;
             case '\r':
                 break;
+            case 27:{
+                int choice = PauseMenu();
+                if(choice == 0)
+                    continue;
+                else
+                    exit(0);
+            }
             default:
                 continue;
         }
@@ -89,6 +97,7 @@ int View::FightView::MenuManager(string Description,vector<vector<string>> Optio
             }
             cout << reset << endl;
         }
+        cout << "Move between options with W & S and choose the option with Enter.(Press Esc to Pause)\n";
         
         if(!model->getEnemies().empty())
             showCharacters();
@@ -112,6 +121,13 @@ int View::FightView::MenuManager(string Description,vector<vector<string>> Optio
                 continue;
             case '\r':
                 break;
+            case 27:{
+                int choice = PauseMenu();
+                if(choice == 0)
+                    continue;
+                else
+                    exit(0);
+            }
             default:
                 continue;
         }
@@ -245,6 +261,7 @@ Character* View::FightView::ChooseEnemy(vector<Character*> Enemies){
             }
             cout << endl;
         }
+        cout << "Move between options with A & D and choose the option with Enter.(Press Esc to Pause)\n";
         
         char key = _getch();
         switch(tolower(key))
@@ -258,6 +275,13 @@ Character* View::FightView::ChooseEnemy(vector<Character*> Enemies){
                 continue;
             case '\r':
                 break;
+            case 27:{
+                int choice = PauseMenu();
+                if(choice == 0)
+                    continue;
+                else
+                    exit(0);
+            }
             default:
                 continue;
         }
@@ -344,10 +368,11 @@ vector<Character*> View::FightView::ChooseEnemies(vector<Character*> Enemies , i
             }
             cout << endl;    
         }
-    // showCharacters();
-    char key = _getch();
-    switch(tolower(key))
-    {
+        cout << "Move between options with A & D and choose the option with Enter.(Press Esc to Pause)\n";
+    
+        char key = _getch();
+        switch(tolower(key))
+        {
         case 'a':
                 m = (m - 1 + Posoptions.size()) % Posoptions.size();
             continue;
@@ -382,6 +407,13 @@ vector<Character*> View::FightView::ChooseEnemies(vector<Character*> Enemies , i
                 }
             }
             continue;
+        case 27:{
+            int choice = PauseMenu();
+            if(choice == 0)
+                continue;
+            else
+                exit(0);
+        }
         default:
             continue;
         }

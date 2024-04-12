@@ -133,6 +133,32 @@ void clearScreen(){
     system("cls");
 }
 
+int PauseMenu(){
+    int m = 0;
+    vector<string> options = {"Resume\n" , "Exit\n"};
+    while(true){
+        clearScreen();
+        cout << "Pause Menu: \n";
+        for(int i = 0; i < options.size(); i++){
+            if(m == i)
+                cout << green;
+            cout << options[i] << reset;
+        }
+        char key = _getch();
+        switch(tolower(key)){
+        case 'w':
+            m = (m - 1 + options.size()) % options.size();
+            continue;
+        case 's':
+            m = (m + 1) % options.size();
+            continue;
+        case '\r':
+            return m;
+        default:
+            continue;
+        }
+    }
+}
 
 int Choose(vector<string> Options){
     int option =0;
@@ -146,6 +172,7 @@ int Choose(vector<string> Options){
                 cout << Options[i] << endl;
             }
         }
+        cout << "Move between options with W & S and choose the option with Enter.(Press Esc to Pause)\n";
         char input = _getch();
         switch(tolower(input)){
             case 'w':
@@ -162,7 +189,13 @@ int Choose(vector<string> Options){
             }
             case '\r':
                 break;
-            
+            case 27:{
+                int choice = PauseMenu();
+                if(choice == 0)
+                    continue;
+                else
+                    exit(0);
+            }
             default:
                 continue;
                 
@@ -185,6 +218,7 @@ int Choose(string Descriptions ,vector<string> Options){
                 cout << Options[i] << endl;
             }
         }
+        cout << "Move between options with W & S and choose the option with Enter.(Press Esc to Pause)\n";
         char input = _getch();
         switch(tolower(input)){
             case 'w':
@@ -200,7 +234,13 @@ int Choose(string Descriptions ,vector<string> Options){
             }
             case '\r':
                 break;
-            
+            case 27:{
+                int choice = PauseMenu();
+                if(choice == 0)
+                    continue;
+                else
+                    exit(0);
+            }
             default:
                 continue;
                 
@@ -225,6 +265,7 @@ int Choose(vector<string> Options,vector<bool> Chooseable){
                 cout << red << Options[i] << reset << endl;
             }
         }
+        cout << "Move between options with W & S and choose the option with Enter.(Press Esc to Pause)\n";
         char input = _getch();
         switch(tolower(input)){
             case 'w':
@@ -250,7 +291,13 @@ int Choose(vector<string> Options,vector<bool> Chooseable){
             }
             case '\r':
                 break;
-            
+            case 27:{
+                int choice = PauseMenu();
+                if(choice == 0)
+                    continue;
+                else
+                    exit(0);
+            }
             default:
                 continue;
                 
