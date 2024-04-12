@@ -60,6 +60,9 @@ private:
     Player* player;
     Map* map;
     
+    string getZombieStory();
+    string getHumanEnemyStory();
+    string getBossStory(string name);
 public:
     FightFactory(Player* player, Map* map);
     Fight* GenerateNormalFight();
