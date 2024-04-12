@@ -57,7 +57,7 @@ void GameLoopFunction(){
             if(Menu_Choice == 1){
                 cout << green;
             }
-            cout << "    2.Exit\n" << reset;
+            cout << "    2. Exit\n" << reset;
             char key = _getch();
             switch (tolower(key))
             {

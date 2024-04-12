@@ -119,7 +119,7 @@ int Shop::MenuManager(string Description,vector<vector<string>> Options, vector<
     return option-1;
 }
 
-Weapon* Shop::ShopWeapons(string Case){
+Weapon* Shop::ShopWeapons(string Description , string Case){
     vector<Weapon*> Weapons;
     vector<string> Header;
     vector<vector<string>> Options;
@@ -149,9 +149,9 @@ Weapon* Shop::ShopWeapons(string Case){
         if(Case == "Buy"){
             row[1] = to_string(int(weapon->getPrice()*1.25)) + "$";
         }else if(Case == "Sell"){
-            row[1] = to_string(int(weapon->getPrice()*0.8)) + "$";
+            row[1] = to_string(weapon->getPrice()) + "$";
         }else if(Case == "Upgrade"){
-            row[1] = to_string(int(pow(1.5 , weapon->getUpgradeAmount()))) + "$";
+            row[1] = to_string(int(weapon->getPrice())) + "$";
         }
         
         row[2] = " ";
@@ -196,7 +196,7 @@ Weapon* Shop::ShopWeapons(string Case){
     }
     Options.push_back({"Back"," "," "," "," "," "," "," "," "," "});
     
-    option = MenuManager("Choose A Weapon To "+Case+": ",Options,Header);
+    option = MenuManager(Description + "Choose A Weapon To "+Case+": ",Options,Header);
 
     if(option  == Options.size()-1)
         return nullptr;
@@ -205,7 +205,7 @@ Weapon* Shop::ShopWeapons(string Case){
 }
 
 
-Consumable* Shop::ShopConsumables(string Case){
+Consumable* Shop::ShopConsumables(string Description , string Case){
     vector<Consumable*> Consumables;
     vector<string> Header;
     vector<vector<string>> Options;
@@ -236,7 +236,7 @@ Consumable* Shop::ShopConsumables(string Case){
         if(Case == "Buy"){
             row[1] = to_string(int(consumable->getPrice()*1.25)) + "$";
         }else if(Case == "Sell"){
-            row[1] = to_string(int(consumable->getPrice()*0.8)) + "$";
+            row[1] = to_string(consumable->getPrice()) + "$";
         }
         
         row[2] = to_string(consumable->getCapacity());
@@ -246,14 +246,14 @@ Consumable* Shop::ShopConsumables(string Case){
     }
     Options.push_back({"Back"," "," "," "," "});
     
-    option = MenuManager("Choose A Consumable To "+Case+": ",Options,Header);
+    option = MenuManager(Description + "Choose A Consumable To "+Case+": ",Options,Header);
 
     if(option  == Options.size()-1)
         return nullptr;
     return Consumables[option];
 }
 
-Equipment* Shop::ShopEquipments(string Case){
+Equipment* Shop::ShopEquipments(string Description , string Case){
     vector<Equipment*> Equipments;
     vector<string> Header;
     vector<vector<string>> Options;
@@ -291,7 +291,7 @@ Equipment* Shop::ShopEquipments(string Case){
         if(Case=="Buy"){
             row[1] = to_string(int(equipment->getPrice()*1.25));
         }else if(Case == "Sell"){
-            row[1] = to_string(int(equipment->getPrice()*0.8));
+            row[1] = to_string(equipment->getPrice());
         }
         
         if(dynamic_cast<HeadGear*>(equipment) !=nullptr){
@@ -308,7 +308,7 @@ Equipment* Shop::ShopEquipments(string Case){
     }
     Options.push_back({"Back"," "," "," "});
     
-    option = MenuManager("Choose An Equipment: ",Options,Header);
+    option = MenuManager(Description + "Choose An Equipment: ",Options,Header);
     
 
     if(option  == Options.size()-1)
@@ -325,12 +325,12 @@ string Shop::UpgradeNameChange(string name, int upgradeAmount){
         int spaceIndex = name.size() - 3;
         name = name.substr(0,spaceIndex); 
         name += " " + to_string(upgradeAmount) +"+"; 
-    }else if (upgradeAmount == 1){
+    }else if (upgradeAmount == 0){
         name += " +"; 
     }else{
         int spaceIndex = name.size() - 2;
         name = name.substr(0,spaceIndex); 
-        name += " " + to_string(upgradeAmount) +"+"; 
+        name += " " + to_string(upgradeAmount + 1) +"+"; 
     }
     
     return name;
@@ -346,25 +346,26 @@ void Shop :: Upgrade(Weapon* weapon , string dialogue){
         switch (choice){
             case 1:{
                 player->removeItem(weapon);
-                weapon->setPrice(weapon->getPrice() + int(BaseUpgradePrice * pow(1.5 , weapon->getUpgradeAmount()) * 0.8));
                 player->removeCoin(BaseUpgradePrice * pow(1.5 , weapon->getUpgradeAmount()));
-                weapon->setUpgradeAmount(weapon->getUpgradeAmount()+1);
-                weapon->setName(UpgradeNameChange(weapon->getName(),weapon->getUpgradeAmount()));
-                weapon->setDamage(int(weapon->getDamage()*1.4));
+                Weapon* copy_weapon = new Shotgun(*dynamic_cast<Shotgun *>(weapon));
+                copy_weapon->setPrice(weapon->getPrice() + int(BaseUpgradePrice * pow(1.5 , weapon->getUpgradeAmount()) * 0.8));
+                copy_weapon->setName(UpgradeNameChange(weapon->getName(),weapon->getUpgradeAmount()));
+                copy_weapon->setUpgradeAmount(weapon->getUpgradeAmount()+1);
+                copy_weapon->setDamage(int(weapon->getDamage()*1.4));
                 
                 UpgradesLeft --;
                 
-                player->addItem(weapon);
+                player->addItem(copy_weapon);
                 break;
             }
             case 2:
             {
                 player->removeItem(weapon);
-                
-                weapon->setPrice(weapon->getPrice() + int(BaseUpgradePrice * pow(1.5 , weapon->getUpgradeAmount()) * 0.8));
                 player->removeCoin(BaseUpgradePrice * pow(1.5 , weapon->getUpgradeAmount()));
-                weapon->setName(UpgradeNameChange(weapon->getName(),weapon->getUpgradeAmount()));
-                Shotgun* shotgun = dynamic_cast<Shotgun*>(weapon);
+                Weapon* copy_weapon = new Shotgun(*dynamic_cast<Shotgun *>(weapon));
+                copy_weapon->setPrice(weapon->getPrice() + int(BaseUpgradePrice * pow(1.5 , weapon->getUpgradeAmount()) * 0.8));
+                copy_weapon->setName(UpgradeNameChange(weapon->getName(),weapon->getUpgradeAmount()));
+                Shotgun* shotgun = dynamic_cast<Shotgun*>(copy_weapon);
                 shotgun->setUpgradeAmount(shotgun->getUpgradeAmount()+1);
                 shotgun->setMinDamagePercent(shotgun->getMinDamagePercent() + 10);
                 
@@ -389,27 +390,29 @@ void Shop :: Upgrade(Weapon* weapon , string dialogue){
                             "Back"});
         
         switch (choice){
-            case 1:
+            case 1:{
                 player->removeItem(weapon);
-                
-                weapon->setPrice(weapon->getPrice() + int(BaseUpgradePrice * pow(1.5 , weapon->getUpgradeAmount()) * 0.8));
                 player->removeCoin(BaseUpgradePrice * pow(1.5 , weapon->getUpgradeAmount()));
-                weapon->setUpgradeAmount(weapon->getUpgradeAmount()+1);
-                weapon->setName(UpgradeNameChange(weapon->getName(),weapon->getUpgradeAmount()));
-                weapon->setDamage(int(weapon->getDamage()*1.4));
+                Weapon* copy_weapon = new Rifle(*dynamic_cast<Rifle *>(weapon));
+                copy_weapon->setPrice(weapon->getPrice() + int(BaseUpgradePrice * pow(1.5 , weapon->getUpgradeAmount()) * 0.8));
+                copy_weapon->setName(UpgradeNameChange(weapon->getName(),weapon->getUpgradeAmount()));
+                copy_weapon->setUpgradeAmount(weapon->getUpgradeAmount()+1);
+                copy_weapon->setDamage(int(weapon->getDamage()*1.4));
                 
                 UpgradesLeft --;
                 
-                player->addItem(weapon);
+                player->addItem(copy_weapon);
                 break;
+            }
             case 2:
             {
                 player->removeItem(weapon);
-                
-                weapon->setPrice(weapon->getPrice() + int(BaseUpgradePrice * pow(1.5 , weapon->getUpgradeAmount()) * 0.8));
                 player->removeCoin(BaseUpgradePrice * pow(1.5 , weapon->getUpgradeAmount()));
-                weapon->setName(UpgradeNameChange(weapon->getName(),weapon->getUpgradeAmount()));
-                Rifle* rifle = dynamic_cast<Rifle*>(weapon);
+                
+                Weapon* copy_weapon = new Rifle(*dynamic_cast<Rifle *>(weapon));
+                copy_weapon->setPrice(weapon->getPrice() + int(BaseUpgradePrice * pow(1.5 , weapon->getUpgradeAmount()) * 0.8));
+                copy_weapon->setName(UpgradeNameChange(weapon->getName(),weapon->getUpgradeAmount()));
+                Rifle* rifle = dynamic_cast<Rifle*>(copy_weapon);
                 rifle->setUpgradeAmount(weapon->getUpgradeAmount()+1);
                 rifle->setMaxAttackAmount(rifle->getMaxAttackAmount() + 10);
                 
@@ -433,16 +436,26 @@ void Shop :: Upgrade(Weapon* weapon , string dialogue){
         switch (choice){
             case 1:
                 player->removeItem(weapon);
-                
-                weapon->setPrice(weapon->getPrice() + int(BaseUpgradePrice * pow(1.5 , weapon->getUpgradeAmount()) * 0.8));
                 player->removeCoin(BaseUpgradePrice * pow(1.5 , weapon->getUpgradeAmount()));
-                weapon->setUpgradeAmount(weapon->getUpgradeAmount()+1);
-                weapon->setName(UpgradeNameChange(weapon->getName(),weapon->getUpgradeAmount()));
-                weapon->setDamage(int(weapon->getDamage()*1.4));
+                Weapon* copy_weapon;
+                if(dynamic_cast<Snipe *>(weapon) != nullptr)
+                    copy_weapon = new Snipe(*dynamic_cast<Snipe *>(weapon));
+                else if(dynamic_cast<SMG *>(weapon) != nullptr)
+                    copy_weapon = new SMG(*dynamic_cast<SMG *>(weapon));
+                else if(dynamic_cast<ColdWeapon *>(weapon) != nullptr)
+                    copy_weapon = new ColdWeapon(*dynamic_cast<ColdWeapon *>(weapon));
+                else if(dynamic_cast<Grenade *>(weapon) != nullptr)
+                    copy_weapon = new Grenade(*dynamic_cast<Grenade *>(weapon));
+                else if(dynamic_cast<BoomRang *>(weapon) != nullptr)
+                    copy_weapon = new BoomRang(*dynamic_cast<BoomRang *>(weapon));
+                copy_weapon->setPrice(weapon->getPrice() + int(BaseUpgradePrice * pow(1.5 , weapon->getUpgradeAmount()) * 0.8));
+                copy_weapon->setName(UpgradeNameChange(weapon->getName(),weapon->getUpgradeAmount()));
+                copy_weapon->setUpgradeAmount(weapon->getUpgradeAmount()+1);
+                copy_weapon->setDamage(int(weapon->getDamage()*1.4));
                 
                 UpgradesLeft --;
                 
-                player->addItem(weapon);
+                player->addItem(copy_weapon);
                 break;
             case 2:
                 break;
@@ -485,7 +498,7 @@ void Shop :: Sell(Item* item){ // Shopkeeper sells, Player buys
 }
 
 void Shop :: Buy(Item* item){ // Shopkeeper buys, Player sells
-    player->addCoin(item->getPrice()*0.8);
+    player->addCoin(item->getPrice());
     player->removeItem(item);
     clearScreen();
     cout << Story << "\n\n";
@@ -539,7 +552,7 @@ void Shop :: Menu(){
                         case 1:
                         {
                             while(true){
-                                Weapon* chosenWeapon =ShopWeapons("Buy");
+                                Weapon* chosenWeapon =ShopWeapons(Story + "\n\n" + getStat() + dialogue + "\n" , "Buy");
                                 if(chosenWeapon == nullptr){
                                     break;
                                 }
@@ -550,7 +563,7 @@ void Shop :: Menu(){
                         case 2:
                         {
                             while (true){
-                                Consumable* chosenConsumable = ShopConsumables("Buy");
+                                Consumable* chosenConsumable = ShopConsumables(Story + "\n\n" + getStat() + dialogue + "\n" , "Buy");
                                 if(chosenConsumable == nullptr){
                                     break;
                                 }
@@ -561,7 +574,7 @@ void Shop :: Menu(){
                         case 3:
                         {
                             while(true){
-                                Equipment* chosenEquipment = ShopEquipments("Buy");
+                                Equipment* chosenEquipment = ShopEquipments(Story + "\n\n" + getStat() + dialogue + "\n" , "Buy");
                                 if(chosenEquipment ==nullptr){
                                     break;
                                 }
@@ -591,7 +604,7 @@ void Shop :: Menu(){
                         case 1:
                         {
                             while(true){
-                                Weapon* chosenWeapon =ShopWeapons("Sell");
+                                Weapon* chosenWeapon =ShopWeapons(Story + "\n\n" + getStat() + dialogue + "\n" , "Sell");
                                 if(chosenWeapon == nullptr){
                                     break;
                                 }
@@ -602,7 +615,7 @@ void Shop :: Menu(){
                         case 2:
                         {
                             while (true){
-                                Consumable* chosenConsumable = ShopConsumables("Sell");
+                                Consumable* chosenConsumable = ShopConsumables(Story + "\n\n" + getStat() + dialogue + "\n" , "Sell");
                                 if(chosenConsumable == nullptr){
                                     break;
                                 }
@@ -613,7 +626,7 @@ void Shop :: Menu(){
                         case 3:
                         {
                             while(true){
-                                Equipment* chosenEquipment = ShopEquipments("Sell");
+                                Equipment* chosenEquipment = ShopEquipments(Story + "\n\n" + getStat() + dialogue + "\n" , "Sell");
                                 if(chosenEquipment ==nullptr){
                                     break;
                                 }
@@ -648,7 +661,7 @@ void Shop :: Menu(){
                         case 1:
                             while (UpgradesLeft > 0)
                             {
-                                Weapon* ChosenWeapon = ShopWeapons("Upgrade");
+                                Weapon* ChosenWeapon = ShopWeapons(Story + "\n\n" + getStat() + dialogue + "\n" , "Upgrade");
                                 if(ChosenWeapon == nullptr)
                                     break;
                                 
@@ -683,6 +696,7 @@ void Shop :: Menu(){
                                 cout << Story << "\n\n" << shopkeeper->getName() << ": Your backpack has been Upgraded.(+15 capacity)\n";
                                 cout << "Press anything to continue\n";
                                 getch();
+                                UpgradesLeft--;
                             }
                             else{
                                 clearScreen();
@@ -694,8 +708,9 @@ void Shop :: Menu(){
                         case 3:
                             break;
                         default:
-                            continue;
+                            break;
                     }
+                    break;
                 }
                 continue;
             case 4: // Player quits

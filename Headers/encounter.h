@@ -27,9 +27,9 @@ private:
     
     string UpgradeNameChange(string name, int upgradeAmount);
     int MenuManager(string Description,vector<vector<string>> Options, vector<string> Header);
-    Weapon* ShopWeapons(string Case);
-    Consumable* ShopConsumables(string Case);
-    Equipment* ShopEquipments(string Case);
+    Weapon* ShopWeapons(string Description , string Case);
+    Consumable* ShopConsumables(string Description , string Case);
+    Equipment* ShopEquipments(string Description , string Case);
 public:
     // Constructor
     Shop(Player* player, vector<Weapon*> weapons, vector<Consumable*> consumables, vector<Equipment*> equipments, Shopkeeper* shopkeeper);

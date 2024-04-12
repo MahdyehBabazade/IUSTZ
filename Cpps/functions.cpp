@@ -252,7 +252,7 @@ int Choose(string Descriptions ,vector<string> Options){
         }
         break;
     }
-    return option % Options.size() + 1;
+    return option + 1;
 }
 
 int Choose(vector<string> Options,vector<bool> Chooseable){
