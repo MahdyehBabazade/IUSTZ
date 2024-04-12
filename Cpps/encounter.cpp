@@ -64,9 +64,9 @@ void Shop :: Upgrade(Weapon* weapon , string dialogue){
     if(dynamic_cast<Shotgun*>(weapon) != nullptr){
         int choice = Choose(Story + "\n\n"  + getStat() + dialogue + "\n\n" + "Coins needed to Upgrade: " + 
         to_string(BaseUpgradePrice * pow(1.5 , weapon->getUpgradeAmount())) + "\n",
-                            {"1. Damage",
-                            "2. Min Damage Percent",
-                            "3. Back"});
+                            {"Damage",
+                            "Min Damage Percent",
+                            "Back"});
         switch (choice){
             case 1:
                 player->removeItem(weapon);
@@ -228,9 +228,15 @@ void Shop :: Sell(Item* item){ // Shopkeeper sells, Player buys
             clearScreen();
             cout << Story << "\n\n";
             cout << shopkeeper->SellDialogue(item);
-            cout << "Press anything to continue";
+            cout << "\nPress anything to continue";
             getch();
             removeItem(item);
+        }
+        else{
+            cout << Story << "\n\n";
+            cout << "Not enough BackPack space\n\n";
+            cout << "Press anything to continue";
+            getch();
         }
     }
     else{
@@ -283,18 +289,18 @@ void Shop :: Menu(){
     string dialogue = shopkeeper->HiDialogue();
     while (!WantsToQuit){
         int choice = Choose(Story + "\n\n"  + getStat() + dialogue+ "\n" , 
-                            {"1. Buy",           // Player buys, Shopkeeper sells ( Sell(Item* item) should be called ) 
-                            "2. Sell",
-                            "3. Upgrade",
-                            "4. Leave the shop"});
+                            {"Buy",           // Player buys, Shopkeeper sells ( Sell(Item* item) should be called ) 
+                            "Sell",
+                            "Upgrade",
+                            "Leave the shop"});
         
         switch (choice){
             case 1: // Player buys an item
                 choice = Choose(Story + "\n\n" + getStat() + dialogue + "\n" ,
-                                {"1. Weapons",           // Player buys, Shopkeeper sells ( Sell(Item* item) should be called ) 
-                                "2. Consumables",
-                                "3. Equipments",
-                                "4. Back"});
+                                {"Weapons",           // Player buys, Shopkeeper sells ( Sell(Item* item) should be called ) 
+                                "Consumables",
+                                "Equipments",
+                                "Back"});
                 
                 switch (choice){
                     case 1:
@@ -404,7 +410,7 @@ void Shop :: Menu(){
                         }
                         else if(player->getCoin() >= 30){
                             choice = Choose(Story + "\n\n" + getStat() + dialogue + "\nUpgrade price is 30 coins\n" ,
-                            {"1. Upgrade" , "2. Back"});
+                            {"Upgrade" , "Back"});
                             if(choice = 1){
                                 player->setBackPackCapacity(player->getBackPackCapacity() + 15);
                                 player->removeCoin(30);
@@ -551,10 +557,10 @@ void Hospital :: MaxHpIncrease(){
 void Hospital :: Menu(){
     while(!HasHealed){
         int choice = Choose(Story + "\n\n" + medic->HiDialogue() , 
-                {"1. Restore half HP ( " + to_string(HalfHealPrice) + "$)",
-                "2. Restore full HP ( " + to_string(FullHealPrice) + "$)", 
-                "3. Increase max HP by 20% ( " + to_string(MaxHpIncreasePrice) + "$)",
-                "4. Leave the Hospital"}
+                {"Restore half HP ( " + to_string(HalfHealPrice) + "$)",
+                "Restore full HP ( " + to_string(FullHealPrice) + "$)", 
+                "Increase max HP by 20% ( " + to_string(MaxHpIncreasePrice) + "$)",
+                "Leave the Hospital"}
                 );
                 
         

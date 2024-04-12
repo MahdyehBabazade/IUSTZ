@@ -42,10 +42,10 @@ int View::FightView::MenuManager(string Description,vector<string> Options){
             if(i == option){
                 cout << green;
             }
-            cout << Options[i];
+            cout << i + 1 << ". " << Options[i];
             cout << reset << endl;
         }
-        cout << "Move between options with W & S and choose the option with Enter.(Press Esc to Pause)\n";
+        cout << "\nMove between options with W & S and choose the option with Enter.(Press Esc to Pause)\n";
         
         if(!model->getEnemies().empty())
             showCharacters();
@@ -92,12 +92,16 @@ int View::FightView::MenuManager(string Description,vector<vector<string>> Optio
             if(i == option){
                 cout << green;
             }
+            if(i == 0)
+                cout << left << setw(log(Options.size()) + 2) << "";
+            else
+                cout << left << setw(log(Options.size()) + 2) << to_string(i) + ". ";
             for(int j=0 ; j<vecSize ; j++){
                 cout << left << setw(width) << Options[i][j] << " " ;
             }
             cout << reset << endl;
         }
-        cout << "Move between options with W & S and choose the option with Enter.(Press Esc to Pause)\n";
+        cout << "\nMove between options with W & S and choose the option with Enter.(Press Esc to Pause)\n";
         
         if(!model->getEnemies().empty())
             showCharacters();
@@ -261,7 +265,7 @@ Character* View::FightView::ChooseEnemy(vector<Character*> Enemies){
             }
             cout << endl;
         }
-        cout << "Move between options with A & D and choose the option with Enter.(Press Esc to Pause)\n";
+        cout << "\nMove between options with A & D and choose the option with Enter.(Press Esc to Pause)\n";
         
         char key = _getch();
         switch(tolower(key))
@@ -368,7 +372,7 @@ vector<Character*> View::FightView::ChooseEnemies(vector<Character*> Enemies , i
             }
             cout << endl;    
         }
-        cout << "Move between options with A & D and choose the option with Enter.(Press Esc to Pause)\n";
+        cout << "\nMove between options with A & D and choose the option with Enter.(Press Esc to Pause)\n";
     
         char key = _getch();
         switch(tolower(key))

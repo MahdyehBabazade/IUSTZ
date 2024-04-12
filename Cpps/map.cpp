@@ -364,7 +364,7 @@ void Map::move(){
                 sizecounter += to_string(i + 1) + ". " + GenerateEncounter[0][i] + "\n";
                 sizecounter += reset;
             }
-            sizecounter += "Move between options with W & S and choose the option with Enter.\n";
+            sizecounter += "\nMove between options with W & S and choose the option with Enter.(Press Esc to Pause)\n";
             cout << sizecounter;
             char key = _getch();
             switch (tolower(key))
@@ -398,7 +398,7 @@ void Map::move(){
             clearScreen();
             cout << map << "\n\n\n";
             cout << green << "1. " << BOSS << "\n" << reset;
-            cout << "Move between options with W & S and choose the option with Enter.\n";
+            cout << "\nMove between options with W & S and choose the option with Enter.(Press Esc to Pause)\n";
             char key = _getch();
             switch (key)
             {
@@ -445,7 +445,7 @@ void Map::move(){
                     sizecounter += to_string(i + 1) + ". Bottom Right\n";
                 sizecounter += reset;
             }
-            sizecounter += "Move between options with W & S and choose the option with Enter.\n";
+            sizecounter += "\nMove between options with W & S and choose the option with Enter.(Press Esc to Pause)\n";
             cout << sizecounter;
             char key = _getch();
             switch (key)

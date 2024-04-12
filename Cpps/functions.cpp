@@ -167,12 +167,12 @@ int Choose(vector<string> Options){
         clearScreen();
         for(int i = 0; i < Options.size() ; i++){
             if(i == option % vecSize){
-                cout << green <<Options[i] << reset << endl;
+                cout << green << i + 1 << ". " << Options[i] << reset << endl;
             }else {
-                cout << Options[i] << endl;
+                cout << i + 1 << ". " << Options[i] << endl;
             }
         }
-        cout << "Move between options with W & S and choose the option with Enter.(Press Esc to Pause)\n";
+        cout << "\nMove between options with W & S and choose the option with Enter.(Press Esc to Pause)\n";
         char input = _getch();
         switch(tolower(input)){
             case 'w':
@@ -213,12 +213,12 @@ int Choose(string Descriptions ,vector<string> Options){
         cout << Descriptions;
         for(int i = 0; i < Options.size() ; i++){
             if(i == option){
-                cout << green << Options[i] << reset << endl;
+                cout << green << i + 1 << ". " << Options[i] << reset << endl;
             }else {
-                cout << Options[i] << endl;
+                cout << i + 1 << ". " << Options[i] << endl;
             }
         }
-        cout << "Move between options with W & S and choose the option with Enter.(Press Esc to Pause)\n";
+        cout << "\nMove between options with W & S and choose the option with Enter.(Press Esc to Pause)\n";
         char input = _getch();
         switch(tolower(input)){
             case 'w':
@@ -258,14 +258,14 @@ int Choose(vector<string> Options,vector<bool> Chooseable){
         cout << "option : " << option << endl;
         for(int i = 0; i < Options.size() ; i++){
             if(i == option){
-                cout << green <<Options[i] << reset << endl;
+                cout << green << i + 1 << ". " <<Options[i] << reset << endl;
             }else if(Chooseable[i]){
                 cout << Options[i] << endl;
             }else {
-                cout << red << Options[i] << reset << endl;
+                cout << red << i + 1 << ". " << Options[i] << reset << endl;
             }
         }
-        cout << "Move between options with W & S and choose the option with Enter.(Press Esc to Pause)\n";
+        cout << "\nMove between options with W & S and choose the option with Enter.(Press Esc to Pause)\n";
         char input = _getch();
         switch(tolower(input)){
             case 'w':
