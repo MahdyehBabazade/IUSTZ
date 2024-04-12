@@ -18,7 +18,7 @@ Shop :: Shop(Player* player, vector<Weapon*> weapons, vector<Consumable*> consum
     this -> UpgradesLeft = 2; // Changes later
 
     string BazaarStory = "As you wander through the crowded boulevard, getting curious about the growing number of people, "
-    "you enter a traditional bazaar hall \nwhere everyone is just shouting. This place is all colorful but you are too exhasted to"
+    "you enter a traditional bazaar hall where\neveryone is just shouting. This place is all colorful but you are too exhausted to "
     "open your eyes widely to see all the beauty here.\nA man with a weird mustache out of nowhere takes you in his store. Where is this "
     "place?\n";
 
@@ -181,7 +181,7 @@ void Shop :: Upgrade(Weapon* weapon , string dialogue){
 void Shop :: Sell(Item* item , int choice){ // Shopkeeper sells, Player buys
 
     if (player->getCoin() >= item->getPrice()){
-        if (player->getBackPackCapacity() > item->getCapacity()+player->getBackPackWeight())
+        if (player->getBackPackCapacity() >= item->getCapacity()+player->getBackPackWeight())
         {
             player->removeCoin(item->getPrice());
 
