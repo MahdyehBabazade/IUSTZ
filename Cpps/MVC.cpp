@@ -27,6 +27,7 @@ View::FightView::FightView(Model::FightModel* fightModel){this->model = fightMod
 
 void View::FightView::DamageInfo(Weapon* weapon){
     clearScreen();
+    cout << model->getStory() << "\n";
     cout << "Dealt " << weapon->getDamage() << " Damage" << endl;
 }
 
@@ -36,6 +37,7 @@ int View::FightView::MenuManager(string Description,vector<string> Options){
     int vecSize = Options.size();
     while(true){
         clearScreen();
+        cout << model->getStory() << "\n";
         cout << Description << endl;
         
         for(int i=0 ; i<Options.size(); i++){
@@ -86,6 +88,7 @@ int View::FightView::MenuManager(string Description,vector<vector<string>> Optio
     int vecSize = Options[0].size();
     while(true){
         clearScreen();
+        cout << model->getStory() << "\n";
         cout << Description << endl;
         
         for(int i=0 ; i<Options.size(); i++){
@@ -255,6 +258,7 @@ Character* View::FightView::ChooseEnemy(vector<Character*> Enemies){
     int vecSize = Options[0].size();
     while(true){
         clearScreen();
+        cout << model->getStory() << "\n";
         for(int i=0 ; i<4 ; i++){
             for(int j=0 ; j<vecSize ; j++){
                 if(j == option ){
@@ -351,6 +355,7 @@ vector<Character*> View::FightView::ChooseEnemies(vector<Character*> Enemies , i
     int m = 0;
     while(true){
         clearScreen();
+        cout << model->getStory() << "\n";
         vector<int> Posoptions;
         for(int i = 0;i < vecSize + 2; i++){
             if(option[i] && !Chosen[i])
@@ -560,6 +565,8 @@ void View::FightView::showArmor(){
             amounts.push_back(0);
         }
     }
+    clearScreen();
+    cout << model->getStory() << "\n";
     cout << "[Head Gear]: " << amounts[0]<< endl;
     cout << "[Vest]: " << amounts[1] << endl;
     cout << "[Foot Wear]: " << amounts[2] << endl;
@@ -662,6 +669,7 @@ void View::FightView::showCharacters(){
 
 void View::FightView::Prompt(string entry){
     clearScreen();
+    cout << model->getStory() << "\n";
     cout << entry << endl << endl <<"Press any key to continue...\n";
     _getch();
 }
@@ -671,6 +679,7 @@ void View::FightView::Prompt(){
 }
 void View::FightView::Prompt(vector<string> entries){
     clearScreen();
+    cout << model->getStory() << "\n";
     for(string& entry:entries){
         cout << entry << endl;
     }
@@ -683,11 +692,12 @@ void View::FightView::print(string entry){
 
 
 //---------------------------------------------------------------------------------------------
-Model::FightModel::FightModel(Player* player,vector<Character*> Enemies,vector<Item*> Items,int droppedCoins,vector<Relic*> Relics){
+Model::FightModel::FightModel(Player* player,vector<Character*> Enemies,vector<Item*> Items,int droppedCoins,string Story ,vector<Relic*> Relics){
     this -> player = player;
     this -> Enemies = Enemies;
     this -> Items = Items;
     this -> droppedCoins = droppedCoins;
+    this -> Story = Story;
     this -> Relics = Relics;
     Round=0;
     EquipmentsMenu = false;
@@ -704,6 +714,8 @@ vector<Character*> Model::FightModel::getEnemies(){ return Enemies;}
 
 int Model::FightModel::getCoins(){ return droppedCoins;}
 
+string Model::FightModel::getStory(){return Story;}
+
 vector<Item*> Model::FightModel::getItems(){return Items;}
 
 void Model::FightModel::setItems(vector<Item*> Items){this->Items = Items;}
@@ -717,8 +729,8 @@ void Model::FightModel::setPlayer(Player* player){this->player=player;};
 void Model::FightModel::setEqipmentsMenu(bool entry){EquipmentsMenu = entry;}
 bool Model::FightModel::getEquipmentsMenu(){return EquipmentsMenu;}
 //---------------------------------------------------------------------------------------------
-Control::FightControl::FightControl(Player* player,vector<Character*> Enemies,vector<Item*> Items,int droppedCoins,vector<Relic*> Relics) {
-    model = new Model::FightModel(player, Enemies,Items,droppedCoins,Relics);
+Control::FightControl::FightControl(Player* player,vector<Character*> Enemies,vector<Item*> Items,int droppedCoins,string Story,vector<Relic*> Relics) {
+    model = new Model::FightModel(player, Enemies,Items,droppedCoins,Story,Relics);
     view = new View::FightView(model);
 }
 

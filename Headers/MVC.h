@@ -19,14 +19,14 @@ namespace Model{
             
             vector<Item*> Items;
             int droppedCoins;
-            
+            string Story;    
             vector<Relic*> Relics;
             
             bool EquipmentsMenu;
         public:
             void setRound(int round);
             int getRound();
-            FightModel(Player* player,vector<Character*> Enemies,vector<Item*> Items,int droppedCoins,vector<Relic*> Relics); //sets the player and the enemies and also the round to zero
+            FightModel(Player* player,vector<Character*> Enemies,vector<Item*> Items,int droppedCoins,string Story,vector<Relic*> Relics); //sets the player and the enemies and also the round to zero
             
             Player* getPlayer();
             vector<Character*> getEnemies();
@@ -34,7 +34,7 @@ namespace Model{
             vector<Item*> getItems();
             void setItems(vector<Item*> Items);
             int getCoins();
-            
+            string getStory();
             vector<Relic*> getRelics();
             void setEnemies(vector<Character*> Enemies);
             
@@ -85,7 +85,7 @@ namespace Control{
             void RemoveEnemies();
             void EndFight();
         public:
-            FightControl(Player* player,vector<Character*> Enemies,vector<Item*> Items,int droppedCoins,vector<Relic*> Relics); //constructs the Model and the View and also calls startFight func
+            FightControl(Player* player,vector<Character*> Enemies,vector<Item*> Items,int droppedCoins,string Story, vector<Relic*> Relics); //constructs the Model and the View and also calls startFight func
             View::FightView* getView();
             void StartFight();
     };

@@ -983,7 +983,7 @@ string FightFactory :: getZombieStory(){
     vector<string> stories;
     string story = "There is a zombie looking at you with its empty eyes. Its skin is falling off, showing its bones. "
     "It is wandering\naround looking for food. People who were still alive whispered about how it never stopped chasing them and also\n"
-    "the scary sounds it made. Now, you're getting ready to fight back against the zombie that's been haunting them.";
+    "the scary sounds it made. Now, you're getting ready to fight back against the zombie that's been haunting them.\n";
     stories.push_back(story);
 
     story = "In a dark place, you met him again - him, a zombie now, and you, just trying to survive. You used to be friends\n, but now"

@@ -951,7 +951,7 @@ Fight :: Fight(string Story, Player* player, int type, vector<Character*> enemie
     this -> enemies = enemies;
     this -> items = items;
     this -> droppedCoins = droppedCoins;
-    fightControl = new Control::FightControl(player,enemies,items,droppedCoins,relics);
+    fightControl = new Control::FightControl(player,enemies,items,droppedCoins,Story,relics);
 }
 
 void Fight :: start(){
