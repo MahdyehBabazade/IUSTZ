@@ -145,7 +145,7 @@ string EnemyFactory :: HumanEnemyNameset(){
 
 double EnemyFactory :: Armorset(){
     vector<int> weights = {4 , 3 , 2 , 1};
-    vector<double> armorsets = {7.5 , 10 , 12.5 , 15 , 17.25 , 20 , 22.5 , 25 , 27.5 , 30 , 32.5 , 35 , 37.5 , 40 ,
+    vector<double> armorsets = {7.5 , 10 , 12.5 , 15 , 17.5 , 20 , 22.5 , 25 , 27.5 , 30 , 32.5 , 35 , 37.5 , 40 ,
     42.5 , 45 , 47.5 , 50};
     return armorsets[min(17 , Index_Weighted_Random(weights) + Difficulty/4)];
 }
@@ -1019,11 +1019,17 @@ string FightFactory :: getBossStory(string name){
     }
     else if (name == "Zombie")
     {
-        Story = "";
+        Story = "Staring at what you see, the number of zombies grows one by one. They look thin, pale and gross. Their movements"
+        "are slow.\nYour heart races as they approaches. Can you defeat them all? Their blank stares hungrily fixes on you. You know"
+        "you're quite\narmed but they're too many. Taking your weapon out, they get faster and approach. This is where you should "
+        "risk and think wisely.\n";
     }
     else if (name == "Samurai")
     {
-        Story = "";
+        Story = "A sharp sound is heard, of course you can recognize the sound of a sword being pulled out of its case\nYou take a "
+        "shelter under the show of a tree. Slowly watching through a hole, a samurai appears and looks at you through\nthe hole with "
+        "his determined eyes. OMG no way you can run away. Guess this is the time to start the fight.\nComing out from the back of the "
+        "tree, you pull your weapon out and aim at him/her.";
     }
     else if (name == "Frank")
     {
@@ -1031,11 +1037,18 @@ string FightFactory :: getBossStory(string name){
     }
     else if (name == "Dokkaebi")
     {
-        Story = "";
+        Story = "You enter the battlefield then you see a powerful creature with its weird-looking ears entering the bettlefield"
+        "thinking\nit could'nt be worse. Then at the time when you were about to pull your weapon out, many other creatures enter"
+        "the field.\nTrying to unzip your backpack, you recognize their faces. Wait WHAT?! They all look exactly like you!!"
+        "You're actuall\ngonna fight against yourself. Many of yourself.";
     }
     else if (name == "Khonshu")
     {
-        Story = "";
+        Story = "Looking through the window of the building, you see a man with strange clothes and a head scarf. He is wearing "
+        "sth\negyptian and around his waist there are lots of grenades and boomerangs. Getting out of the building to see if you\n"
+        "can get who he is and what does he want here, two actual zombies appear by the man's gesture. They look completely\n"
+        "controlled in a way that they do everything the man wants them to. He commands the to run toward you.\nYou took your weapon "
+        "out then aim at them. ";
     }
     return Story;
 }
@@ -1149,29 +1162,23 @@ Fight* FightFactory :: GenerateMiniBoss(){
     }
 
     vector<Relic*> relics = {relic, relic2, relic3, relic4, relic5, relic6, relic7, relic8, relic9};
-    relics = ShuffleVec(relics);
-
-    bool isExisted = false;
-    int m = 0;
-    while (m != 3)
-    {
-        item_index = rand() % relics.size();
-        for (int i = 0; i < player->getRelic().size(); i++)
-        {
-            if (relics[item_index] == player->getRelic()[i])
-            {
+    vector<Relic*> Relics;
+    for(int i = 0; i < relics.size(); i++){
+        bool isExisted = false;
+        for(int j = 0; j < player->getRelic().size(); j++){
+            if(relics[i] == player->getRelic()[j]){
                 isExisted = true;
-            }   
+                break;
+            }
         }
-        if (!(isExisted))
-        {
-            relics[m] == relics[item_index];
-            m++;
-        }                                                       
+        if(!isExisted)
+            Relics.push_back(relics[i]);
     }
-    while (relics.size() != 3)
-    {
-        relics.pop_back();
+    Relics = ShuffleVec(Relics);
+    vector<Relic*> Relics1;
+    int vecsize = Relics.size();
+    for(int i = 0; i < min(3 , vecsize); i++){
+        Relics1.push_back(Relics[i]);
     }
 
     EnemyFactory* enemyfactory = new EnemyFactory(map , player);
@@ -1181,7 +1188,7 @@ Fight* FightFactory :: GenerateMiniBoss(){
         story = getHumanEnemyStory();
     else
         story = getZombieStory();
-    Fight* fight = new Fight(story, player, 1, Enemies, Items, droppedCoins, relics);
+    Fight* fight = new Fight(story, player, 1, Enemies, Items, droppedCoins, Relics1);
     return fight;
 }
 
@@ -1235,34 +1242,27 @@ Fight* FightFactory :: GenerateBoss(){
     }
     
     vector<Relic*> relics = {relic, relic2, relic3, relic4, relic5, relic6, relic7, relic8, relic9};
-    relics = ShuffleVec(relics);
-
-    bool isExisted = false;
-    int m = 0;
-    while (m != 3)
-    {
-        item_index = rand() % relics.size();
-        for (int i = 0; i < player->getRelic().size(); i++)
-        {
-            if (relics[item_index] == player->getRelic()[i])
-            {
+    vector<Relic*> Relics;
+    for(int i = 0; i < relics.size(); i++){
+        bool isExisted = false;
+        for(int j = 0; j < player->getRelic().size(); j++){
+            if(relics[i] == player->getRelic()[j]){
                 isExisted = true;
-            }   
+                break;
+            }
         }
-        if (!(isExisted))
-        {
-            relics[m] == relics[item_index];
-            m++;
-        }                                                       
+        if(!isExisted)
+            Relics.push_back(relics[i]);
     }
-    while (relics.size() != 3)
-    {
-        relics.pop_back();
+    Relics = ShuffleVec(Relics);
+    vector<Relic*> Relics1;
+    int vecsize = Relics.size();
+    for(int i = 0; i < min(3 , vecsize); i++){
+        Relics1.push_back(Relics[i]);
     }
-
     EnemyFactory* enemyfactory = new EnemyFactory(map , player);
     vector<Character*> Enemies = enemyfactory->BossEnemy();
     //string bossName = map->getBoss();
-    Fight* fight = new Fight(map->getBoss(), player, 2, Enemies, Items, droppedCoins, relics);
+    Fight* fight = new Fight(map->getBoss(), player, 2, Enemies, Items, droppedCoins, Relics1);
     return fight;
 }
