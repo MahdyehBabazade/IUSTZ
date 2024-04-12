@@ -979,6 +979,66 @@ FightFactory :: FightFactory(Player* player, Map* map){
     this -> map = map;
 }
 
+string FightFactory :: getZombieStory(){
+    vector<string> stories;
+    string story = "There is a zombie looking at you with its empty eyes. Its skin is falling off, showing its bones. "
+    "It is wandering\naround looking for food. People who were still alive whispered about how it never stopped chasing them and also\n"
+    "the scary sounds it made. Now, you're getting ready to fight back against the zombie that's been haunting them.";
+    stories.push_back(story);
+
+    story = "In a dark place, you met him again - him, a zombie now, and you, just trying to survive. You used to be friends\n, but now"
+    "things are scary. He is looking for food, unrecognizable and deadly walking 'till he approaches and smells\nYOU. And in this moment,"
+    "facing each other in a fight you should do your best only to survive.\n";
+    stories.push_back(story);
+
+    return ShuffleVec(stories)[0];
+}
+string FightFactory :: getHumanEnemyStory(){
+    vector<string> stories;
+    string story = "In a busy city, there is a sneaky guy. He moves quietly and wears dark clothes. With a charimg voice, he looks for"
+    "people to\ntrick or hurt. The folks in town talked quietly about how clever and mean he is. Now, he is looking straight in"
+    "your eyes\nand walking toward you. You don't set back, take your gun out and get ready to finally kill the folks' nightmare.\n";
+    stories.push_back(story);
+
+    story = "Entering the dense forest, sounds of walking on the grass and trees moving, scares you. There absolutely is someone"
+    "behind\nthese leafy tall trees. You gently step forward and this is when a rough-looking man appears just in front of you."
+    "He\nlooks to be threatening you with his eyes. Punching you in the face you pull your gun out anf the fight starts...\n";
+    stories.push_back(story);
+
+    return ShuffleVec(stories)[0];
+}
+
+string FightFactory :: getBossStory(string name){
+    string Story;
+    if (name == "Cowboy")
+    {
+        Story = "You see the enemy everyone told you about his toughness, shooting skills and his unstopple cow.\nHe is wearing a "
+        "leather hat which is covering his intense eyes. Everyone's scared by looking at them but not you.\nHe pulls his gun out of "
+        "his pocket, places the bullets in and aims at you.\nYou look into your backpack trying not to freak out, check you weapons, "
+        "choose one and aims back at him.\n";
+    }
+    else if (name == "Zombie")
+    {
+        Story = "";
+    }
+    else if (name == "Samurai")
+    {
+        Story = "";
+    }
+    else if (name == "Frank")
+    {
+        Story = "";
+    }
+    else if (name == "Dokkaebi")
+    {
+        Story = "";
+    }
+    else if (name == "Khonshu")
+    {
+        Story = "";
+    }
+    return Story;
+}
 Fight* FightFactory :: GenerateNormalFight(){
 
     vector<Item*> AllItems = {new Shotgun(shotgun), new Shotgun(shotgun2), new Shotgun(shotgun3), new Snipe(snipe), 
@@ -1030,7 +1090,7 @@ Fight* FightFactory :: GenerateNormalFight(){
 
     EnemyFactory* enemyfactory = new EnemyFactory(map , player);
     vector<Character*> Enemies = enemyfactory->FightEnemy();
-    Fight* fight = new Fight(player, 0, Enemies, Items, droppedCoins, {});
+    Fight* fight = new Fight(getStory(), player, 0, Enemies, Items, droppedCoins, {});
     return fight;
 }
 
@@ -1111,7 +1171,7 @@ Fight* FightFactory :: GenerateMiniBoss(){
 
     EnemyFactory* enemyfactory = new EnemyFactory(map , player);
     vector<Character*> Enemies = enemyfactory->MiniBossEnemy();
-    Fight* fight = new Fight(player, 1, Enemies, Items, droppedCoins, relics);
+    Fight* fight = new Fight(getStory(), player, 1, Enemies, Items, droppedCoins, relics);
     return fight;
 }
 
@@ -1167,16 +1227,32 @@ Fight* FightFactory :: GenerateBoss(){
     vector<Relic*> relics = {relic, relic2, relic3, relic4, relic5, relic6, relic7, relic8, relic9};
     relics = ShuffleVec(relics);
 
-    weights = {1,1,1, 1,1,1, 1,1,1};
-    for (int i = 0; i < 3; i++)
+    bool isExisted = false;
+    int m = 0;
+    while (m != 3)
     {
-        item_index = Index_Weighted_Random(weights);
-        relics.push_back(relics[item_index]);
-        weights[item_index] = 0;
+        item_index = rand() % relics.size();
+        for (int i = 0; i < player->getRelic().size(); i++)
+        {
+            if (relics[item_index] == player->getRelic()[i])
+            {
+                isExisted = true;
+            }   
+        }
+        if (!(isExisted))
+        {
+            relics[m] == relics[item_index];
+            m++;
+        }                                                       
     }
-    
+    while (relics.size() != 3)
+    {
+        relics.pop_back();
+    }
+
     EnemyFactory* enemyfactory = new EnemyFactory(map , player);
     vector<Character*> Enemies = enemyfactory->BossEnemy();
-    Fight* fight = new Fight(player, 2, Enemies, Items, droppedCoins, relics);
+    //string bossName = map->getBoss();
+    Fight* fight = new Fight(map->getBoss(), player, 2, Enemies, Items, droppedCoins, relics);
     return fight;
 }
