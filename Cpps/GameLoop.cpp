@@ -24,7 +24,7 @@ Player* PlayerGenerate(){
     vector<pair<Weapon*, int>> weapons;
     vector<pair<Item*, int>> items;
     Player* player = new Player(name, 10000, 60, 0, 400, 1000, items, weapons);
-    vector<Weapon*> AllWeapons = {shotgun, snipe, smg, rifle, coldweapon};
+    vector<Weapon*> AllWeapons = {new Shotgun(shotgun), new Snipe(snipe), new SMG(smg), new Rifle(rifle), new ColdWeapon(coldweapon)};
     int item_index = rand() % 5;
     player->addItem(AllWeapons[item_index]);
     player->addItem(new Rifle("lakc" , 0 , 0 , 10000 , 1 , 2 , 2 , 20 , 0));
