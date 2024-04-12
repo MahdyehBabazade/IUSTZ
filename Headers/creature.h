@@ -30,7 +30,7 @@ public:
     string getName();
     int getHP();
     int getMaxHP();
-    int getArmor();
+    double getArmor();
     int getShield();
     vector<pair<Item* , int>> getItems(); 
     vector<pair<Weapon* , int>> getWeapons();

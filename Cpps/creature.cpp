@@ -33,7 +33,7 @@ int Character :: getMaxHP(){return MaxHP;}
 
 void Character :: setMaxHP(int MaxHP){this -> MaxHP = MaxHP;}
 
-int Character :: getArmor(){return Armor;}
+double Character :: getArmor(){return Armor;}
 
 void Character :: setArmor(double Armor){this -> Armor = Armor;}
 

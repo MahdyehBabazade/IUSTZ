@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string>
 #include <conio.h>
-
+#include <iomanip>
 using namespace std;
 
 const string yellow("\033[1;33m");
@@ -98,6 +98,11 @@ const string grey("\033[90m");
 
 //-----------------------------------------------------------------
 
+string presicion_string(double load){
+    ostringstream out;
+    out << fixed << setprecision(2) << load;
+    return out.str();
+}
 
 int random_num(int min,int max){
     random_device dev;

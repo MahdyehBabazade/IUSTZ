@@ -227,7 +227,7 @@ Character* View::FightView::ChooseEnemy(vector<Character*> Enemies){
             row.push_back(" ");
         }else if(i == 2){
             for(Character* Enemy: Enemies){
-                row.push_back("Armor: " + to_string(Enemy->getArmor()));
+                row.push_back("Armor: " + presicion_string(Enemy->getArmor()));
             }
             row.push_back(" ");
         }else if(i == 3){
@@ -317,7 +317,7 @@ vector<Character*> View::FightView::ChooseEnemies(vector<Character*> Enemies , i
                 }
             }else if(i == 2){
                 for(Character* Enemy:Enemies){
-                    row.push_back("Armor:" + to_string(Enemy->getArmor()));
+                    row.push_back("Armor:" + presicion_string(Enemy->getArmor()));
                 }
             }else{
                 for(Character* Enemy:Enemies){
@@ -583,7 +583,7 @@ void View::FightView::showCharacters(){
             }
         }else if(i == 2){
             for(Character* character: Characters){
-                row.push_back("Armor: " + to_string(character->getArmor()));
+                row.push_back("Armor: " + presicion_string(character->getArmor()));
             }
             
         }else if(i == 3){

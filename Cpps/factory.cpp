@@ -396,9 +396,9 @@ vector<Character*> EnemyFactory :: BossEnemy(){
         vector<pair<Weapon* , int>> weapons = {make_pair(new Punch("Punch" , 0 , 20 , 0 , 0) , 1)};
         Enemies.push_back(new HumanEnemy("Dokkaebi" , 60 , 25 , Itemset(weapons , {}) , weapons , {}));
         Enemies.push_back(new HumanEnemy(player->getName() , max(player->getMaxHP() + 15 , 200) , 
-        max(player->getArmor() + 5 , 25) , player->getItems() , player->getWeapons() , player->getConsumables()));
+        max(player->getArmor() + 5 , 25.0) , player->getItems() , player->getWeapons() , player->getConsumables()));
         Enemies.push_back(new HumanEnemy(player->getName() , max(player->getMaxHP() + 30 , 230) , 
-        max(player->getArmor() , 20 ) , player->getItems() , player->getWeapons() , player->getConsumables()));
+        max(player->getArmor() , 20.0 ) , player->getItems() , player->getWeapons() , player->getConsumables()));
         return Enemies;
     }
     else if(map->getBoss() == "Khonshu"){

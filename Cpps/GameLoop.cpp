@@ -44,13 +44,15 @@ void GameLoopFunction(){
         int Menu_Choice = Choose(symbol , {"       Start" , "       Exit"});
         clearScreen();
         srand(time(0));
-        Player *player = PlayerGenerate();
         Map *map;
+        Player *player;
         switch(Menu_Choice){
         case 1:{
             MapFactory Mapfactory(1);
             map = Mapfactory.GenerateMap();
+            player = PlayerGenerate();
         }
+        break;
         case 2:{
             break;
         }
