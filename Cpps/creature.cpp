@@ -157,8 +157,12 @@ void Player :: addItem(Item* Item){ //adds items depending on its capacity and t
                             Items.insert(Items.begin()+ i , make_pair(Item , 1));
                             break;
                         }
+                        if(i == Items.size() - 1){
+                            Items.push_back(make_pair(Item , 1));
+                            break;
+                        }
                     }
-                    else if(dynamic_cast<Snipe *>(Items[i].first) == nullptr){
+                    else if(dynamic_cast<Shotgun *>(Items[i].first) == nullptr){
                         Items.insert(Items.begin()+ i , make_pair(Item , 1));
                         break;
                     }
@@ -173,6 +177,10 @@ void Player :: addItem(Item* Item){ //adds items depending on its capacity and t
                     if(dynamic_cast<SMG *>(Items[i].first) != nullptr){
                         if(Items[i].first->getName()>=Item->getName()){
                             Items.insert(Items.begin()+ i , make_pair(Item , 1));
+                            break;
+                        }
+                        if(i == Items.size() - 1){
+                            Items.push_back(make_pair(Item , 1));
                             break;
                         }
                     }
@@ -194,13 +202,17 @@ void Player :: addItem(Item* Item){ //adds items depending on its capacity and t
                             IsAdded = true;
                             break;
                         }
+                        if(i == Items.size() - 1){
+                            Items.push_back(make_pair(Item , 1));
+                            break;
+                        }
                     }
                     else if(dynamic_cast<Shotgun *>(Items[i].first) == nullptr && dynamic_cast<Snipe *>(Items[i].first) == nullptr
                     && dynamic_cast<SMG *>(Items[i].first) != nullptr){
                         Items.insert(Items.begin()+ i , make_pair(Item , 1));
                         break;
                     }
-                    if(i == Items.size() - 1 && !IsAdded){
+                    if(i == Items.size() - 1){
                         Items.push_back(make_pair(Item , 1));
                         break;
                     }
@@ -211,6 +223,10 @@ void Player :: addItem(Item* Item){ //adds items depending on its capacity and t
                     if(dynamic_cast<ColdWeapon *>(Items[i].first) != nullptr){
                         if(Items[i].first->getName()>=Item->getName()){
                             Items.insert(Items.begin()+ i , make_pair(Item , 1));
+                            break;
+                        }
+                        if(i == Items.size() - 1){
+                            Items.push_back(make_pair(Item , 1));
                             break;
                         }
                     }else if(dynamic_cast<Gun *>(Items[i].first) == nullptr){
@@ -230,6 +246,10 @@ void Player :: addItem(Item* Item){ //adds items depending on its capacity and t
                             Items.insert(Items.begin()+ i , make_pair(Item , 1));
                             break;
                         }
+                        if(i == Items.size() - 1){
+                            Items.push_back(make_pair(Item , 1));
+                            break;
+                        }
                     }
                     else if(dynamic_cast<Gun *>(Items[i].first) == nullptr
                     && dynamic_cast<ColdWeapon *>(Items[i].first) == nullptr){
@@ -247,6 +267,10 @@ void Player :: addItem(Item* Item){ //adds items depending on its capacity and t
                     if(dynamic_cast<BoomRang *>(Items[i].first) != nullptr){
                         if(Items[i].first->getName()>=Item->getName()){
                             Items.insert(Items.begin()+ i , make_pair(Item , 1));
+                            break;
+                        }
+                        if(i == Items.size() - 1){
+                            Items.push_back(make_pair(Item , 1));
                             break;
                         }
                     }
@@ -272,7 +296,7 @@ void Player :: addItem(Item* Item){ //adds items depending on its capacity and t
                         Items.insert(Items.begin()+ i , make_pair(Item , 1));
                         break;
                     }
-                    if(i == Items.size() - 1){
+                    else if(i == Items.size() - 1){
                         Items.push_back(make_pair(Item , 1));
                         break;
                     }
@@ -282,7 +306,7 @@ void Player :: addItem(Item* Item){ //adds items depending on its capacity and t
                 Items.push_back(make_pair(Item , 1));
             }
         }
-        if(Items.size() == 0){
+        if(Items.empty()){
             Items.push_back(make_pair(Item , 1));
         }
         BackPackWeight += Item->getCapacity();
@@ -293,8 +317,6 @@ void Player :: addItem(Item* Item){ //adds items depending on its capacity and t
         else if(dynamic_cast<Consumable *>(Item) != nullptr)
             addConsumable(dynamic_cast<Consumable *>(Item));
     }
-    else
-        cout << "You can't handle this";
 }
 
 void Player :: removeItem(Item* Item){ //deletes the items considering their numbers 
@@ -328,39 +350,46 @@ void Player :: addRelic(Relic* Relic){
 void Player :: addWeapon(Weapon* Weapon){ //adds weapons checking if already existed or not,
     bool isAdded = false;
     //if existed, just increases the number by one
-    if(dynamic_cast<Gun *>(Weapon) == nullptr)
-        for(int i = 0; i < Weapons.size(); i++)
+    if(dynamic_cast<Gun *>(Weapon) == nullptr){
+        for(int i = 0; i < Weapons.size(); i++){
             if(*Weapon == *Weapons[i].first){
                 Weapons[i].second++;
                 isAdded = true;
                 break;
             }
+        }
+    }
     //if not, inserts the weapon in
     if(!isAdded){
         if(dynamic_cast<Shotgun *>(Weapon) != nullptr){
             for(int i = 0; i < Weapons.size(); i++){
-                if(dynamic_cast<Shotgun *>(Weapons[i].first) != nullptr)
+                if(dynamic_cast<Shotgun *>(Weapons[i].first) != nullptr){
                     if(Weapons[i].first->getName()>=Weapon->getName()){
                         Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
                         break;
                     }
-                    
+                    if(i == Weapons.size() - 1){
+                        Weapons.push_back(make_pair(Weapon , 1));
+                        break;
+                    }
+                }
                 else if(dynamic_cast<Shotgun *>(Weapons[i].first) == nullptr){
                     Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
-                    break;
-                }
-                if(i == Weapons.size() - 1){
-                    Weapons.push_back(make_pair(Weapon , 1));
                     break;
                 }
             }
         }
         else if(dynamic_cast<Snipe*>(Weapon) != nullptr){
             for(int i = 0; i < Weapons.size(); i++){
-                if(dynamic_cast<Snipe*>(Weapons[i].first) != nullptr)
+                if(dynamic_cast<Snipe*>(Weapons[i].first) != nullptr){
                     if(Weapons[i].first->getName()>=Weapon->getName()){
                         Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
                         break;
+                    }
+                    if(i == Weapons.size() - 1){
+                        Weapons.push_back(make_pair(Weapon , 1));
+                        break;
+                    }
                 }
                 else if(dynamic_cast<Shotgun *>(Weapons[i].first) == nullptr){
                     Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
@@ -374,11 +403,12 @@ void Player :: addWeapon(Weapon* Weapon){ //adds weapons checking if already exi
         }
         else if(dynamic_cast<SMG *>(Weapon) != nullptr){
             for(int i = 0; i < Weapons.size(); i++){
-                if(dynamic_cast<SMG *>(Weapons[i].first) != nullptr)
+                if(dynamic_cast<SMG *>(Weapons[i].first) != nullptr){
                     if(Weapons[i].first->getName()>=Weapon->getName()){
                         Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
                         break;
                     }
+                }
                 else if(dynamic_cast<Shotgun *>(Weapons[i].first) == nullptr && dynamic_cast<Snipe*>(Weapons[i].first) == nullptr){
                     Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
                     break;
@@ -409,11 +439,12 @@ void Player :: addWeapon(Weapon* Weapon){ //adds weapons checking if already exi
         }
         else if(dynamic_cast<ColdWeapon *>(Weapon) != nullptr){
             for(int i = 0; i < Weapons.size(); i++){
-                if(dynamic_cast<ColdWeapon *>(Weapons[i].first) != nullptr)
+                if(dynamic_cast<ColdWeapon *>(Weapons[i].first) != nullptr){
                     if(Weapons[i].first->getName()>=Weapon->getName()){
                         Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
                         break;
                     }
+                }
                 else if(dynamic_cast<Gun *>(Weapons[i].first) == nullptr){
                     Weapons.insert(Weapons.begin()+ i , make_pair(Weapon , 1));
                     break;

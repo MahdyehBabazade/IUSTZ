@@ -68,7 +68,7 @@ void Shop :: Upgrade(Weapon* weapon , string dialogue){
                             "Min Damage Percent",
                             "Back"});
         switch (choice){
-            case 1:
+            case 1:{
                 player->removeItem(weapon);
                 
                 weapon->setPrice(weapon->getPrice() + int(BaseUpgradePrice * pow(1.5 , weapon->getUpgradeAmount()) * 0.8));
@@ -80,7 +80,8 @@ void Shop :: Upgrade(Weapon* weapon , string dialogue){
                 UpgradesLeft --;
                 
                 player->addItem(weapon);
-                continue;
+                break;
+            }
             case 2:
             {
                 player->removeItem(weapon);
