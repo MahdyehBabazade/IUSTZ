@@ -173,7 +173,7 @@ Consumable* View::FightView::ChooseConsumable(vector<pair<Consumable*,int>> Cons
     int option;
     
     if(!model->getEnemies().empty()){
-        Header = {"Name","Type","Amount"};
+        Header = {"Name","Type","Increase Amount"};
         for(pair<Consumable*,int> x : Consumables){
             Consumable* consumable = x.first;
             int amount = x.second;
@@ -188,7 +188,7 @@ Consumable* View::FightView::ChooseConsumable(vector<pair<Consumable*,int>> Cons
         
         option = MenuManager("Choose A Consumable: ",Options,Header);
     }else{
-        Header = {"Name","Capacity","Type","Amount"};
+        Header = {"Name","Capacity","Type","Increase Amount"};
         for(pair<Consumable*,int> x : Consumables){
             Consumable* consumable = x.first;
             int amount = x.second;
@@ -438,50 +438,15 @@ Weapon* View::FightView::ChooseWeapon(vector<pair<Weapon*,int>> Weapons , string
     
     int option;
     if(!model->getEnemies().empty()){
-        
-        Header = {"Name","Damage","Ammo/Amount","AttackEnergy","ReloadEnergy","MaxAttackAmount","MinDamagePercent"};
+        //        0        1     2              3          4                  5                6               7                 
+        Header = {"Name","Type","Damage","Ammo/Amount","AttackEnergy","ReloadEnergy","MaxAttackAmount","MinDamagePercent"};
         for(pair<Weapon*,int> p:Weapons){
             Weapon* weapon = p.first;
             int Amount = p.second;
             
             vector<string> row(Header.size());
             row[0] = weapon->getName();
-            row[1] = to_string(weapon->getDamage());
-            row[2] = " ";
-            row[3] = to_string(weapon->getEnergyNeeded());
-            row[4] = " ";
-            row[5] = " ";
-            row[6] = " ";
-            if(dynamic_cast<Gun*>(weapon) != nullptr){
-                Gun* gun = dynamic_cast<Gun*>(weapon);
-                row[4] = to_string(gun->getReloadEnergy());
-                row[2] = "[" + to_string(gun->getAmmo()) + "/" + to_string(gun->getMaxAmmo()) + "]";
-                
-                if(dynamic_cast<Rifle*>(gun) != nullptr){
-                    Rifle* rifle = dynamic_cast<Rifle*>(weapon);
-                    row[5] = to_string(rifle->getMaxAttackAmount());
-                }else if(dynamic_cast<Shotgun*>(gun) != nullptr){
-                    Shotgun* shotgun = dynamic_cast<Shotgun*>(weapon);
-                    row[6] = to_string(shotgun->getMinDamagePercent())+ "%";
-                }
-                
-            }else{
-                row[2] = to_string(Amount);
-            }
-            Options.push_back(row);
-        }
-        Options.push_back({"Back"," "," "," "," "," "," "});
-        
-        option = MenuManager("Choose A Weapon: ",Options,Header);
-    }else{
-        Header = {"Name","Capacity","Damage","Ammo/Amount","AttackEnergy","ReloadEnergy","MaxAttackAmount","MinDamagePercent"};
-        for(pair<Weapon*,int> p:Weapons){
-            Weapon* weapon = p.first;
-            int Amount = p.second;
-            
-            vector<string> row(Header.size());
-            row[0] = weapon->getName();
-            row[1] = to_string(weapon->getCapacity());
+            row[1] = " ";
             row[2] = to_string(weapon->getDamage());
             row[3] = " ";
             row[4] = to_string(weapon->getEnergyNeeded());
@@ -496,17 +461,85 @@ Weapon* View::FightView::ChooseWeapon(vector<pair<Weapon*,int>> Weapons , string
                 if(dynamic_cast<Rifle*>(gun) != nullptr){
                     Rifle* rifle = dynamic_cast<Rifle*>(weapon);
                     row[6] = to_string(rifle->getMaxAttackAmount());
+                    row[1] = "Rifle";
                 }else if(dynamic_cast<Shotgun*>(gun) != nullptr){
                     Shotgun* shotgun = dynamic_cast<Shotgun*>(weapon);
                     row[7] = to_string(shotgun->getMinDamagePercent())+ "%";
+                    row[1] ="Shotgun";
+                }else if(dynamic_cast<SMG*>(gun) != nullptr){
+                    row[1] = "SMG";
+                }else if(dynamic_cast<Snipe*>(gun) != nullptr){
+                    row[1] = "Snipe";
+                }else{
+                    row[1] = "Gun";
                 }
                 
             }else{
+                if(dynamic_cast<ColdWeapon*>(weapon) != nullptr){
+                    row[1] = "ColdWeapon";
+                }else if(dynamic_cast<Throwable*>(weapon) != nullptr){
+                    row[1] ="Throwable";
+                }else if(dynamic_cast<Throwable*>(weapon) != nullptr){
+                    row[1] ="Throwable";
+                }
                 row[3] = to_string(Amount);
             }
             Options.push_back(row);
         }
         Options.push_back({"Back"," "," "," "," "," "," "," "});
+        
+        option = MenuManager("Choose A Weapon: ",Options,Header);
+    }else{
+        //         0     1           2       3          4            5            6                      7            8                 
+        Header = {"Name","Type","Capacity","Damage","Ammo/Amount","AttackEnergy","ReloadEnergy","MaxAttackAmount","MinDamagePercent"};
+        for(pair<Weapon*,int> p:Weapons){
+            Weapon* weapon = p.first;
+            int Amount = p.second;
+            
+            vector<string> row(Header.size());
+            row[0] = weapon->getName();
+            row[1] = " ";
+            row[2] = to_string(weapon->getCapacity());
+            row[3] = to_string(weapon->getDamage());
+            row[4] = " ";
+            row[5] = to_string(weapon->getEnergyNeeded());
+            row[6] = " ";
+            row[7] = " ";
+            row[8] = " ";
+            if(dynamic_cast<Gun*>(weapon) != nullptr){
+                Gun* gun = dynamic_cast<Gun*>(weapon);
+                row[6] = to_string(gun->getReloadEnergy());
+                row[4] = "[" + to_string(gun->getAmmo()) + "/" + to_string(gun->getMaxAmmo()) + "]";
+                
+                if(dynamic_cast<Rifle*>(gun) != nullptr){
+                    Rifle* rifle = dynamic_cast<Rifle*>(weapon);
+                    row[7] = to_string(rifle->getMaxAttackAmount());
+                    row[1] = "Rifle";
+                }else if(dynamic_cast<Shotgun*>(gun) != nullptr){
+                    Shotgun* shotgun = dynamic_cast<Shotgun*>(weapon);
+                    row[8] = to_string(shotgun->getMinDamagePercent())+ "%";
+                    row[1] ="Shotgun";
+                }else if(dynamic_cast<SMG*>(gun) != nullptr){
+                    row[1] = "SMG";
+                }else if(dynamic_cast<Snipe*>(gun) != nullptr){
+                    row[1] = "Snipe";
+                }else{
+                    row[1] = "Gun";
+                }
+                
+            }else{
+                row[4] = to_string(Amount);
+                if(dynamic_cast<ColdWeapon*>(weapon) != nullptr){
+                    row[1] = "ColdWeapon";
+                }else if(dynamic_cast<Throwable*>(weapon) != nullptr){
+                    row[1] ="Throwable";
+                }else if(dynamic_cast<Throwable*>(weapon) != nullptr){
+                    row[1] ="Throwable";
+                }
+            }
+            Options.push_back(row);
+        }
+        Options.push_back({"Back"," "," "," "," "," "," "," "," "});
         
         option = MenuManager("Choose A Weapon To " + Description + ": (Capacity:"+ to_string(model->getPlayer()->getBackPackCapacity() - model->getPlayer()->getBackPackWeight()) +"):"
                             ,Options,Header);
@@ -890,20 +923,22 @@ void Control::FightControl::PlayerTurn(){
                         if (model->getPlayer()->getHP() >= model->getPlayer()->getMaxHP())
                         {
                             view->Prompt("You Already Have Full HP");
+                            continue;
                         }
                         
                     }else if(consumable->getType() == "ShieldPotion"){
                         if (model->getPlayer()->getShield() >= 100)
                         {
                             view->Prompt("You Already Have Full Shield");
+                            continue;
                         }
                         
                     }else if(consumable->getType() == "EnergyPotion"){
                         if (model->getPlayer()->getEnergy() >= model->getPlayer()->getMaxEnergy())
                         {
                             view->Prompt("You Already Have Full Energy");
+                            continue;
                         }
-                        
                     }
                     model->getPlayer()->Consume(consumable);
                 }

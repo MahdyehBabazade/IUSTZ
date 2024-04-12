@@ -44,7 +44,283 @@ void Shop :: setConsumables(vector<Consumable*> consumables){this -> consumables
 
 void Shop :: setEquipments(vector<Equipment*> equipments){this -> equipments = equipments;}
 
-string UpgradeNameChange(string name, int upgradeAmount){ 
+
+
+int getMaxWidth(vector<vector<string>> &entry){
+    int width = 0;
+    int rows = entry.size();
+    for(int i=0 ; i<rows ; i++){
+        for(int j=0; j<entry[i].size() ; j++){
+            int len = entry[i][j].length();
+            if(len > width)
+                width = len;
+        }
+    }
+    return width;
+}
+
+int Shop::MenuManager(string Description,vector<vector<string>> Options, vector<string> Header){
+    Options.insert(Options.begin(),Header);
+    
+    int width = getMaxWidth(Options);
+    
+    int option = 1;
+    int vecSize = Options[0].size();
+    while(true){
+        clearScreen();
+        cout << Description << endl;
+        
+        for(int i=0 ; i<Options.size(); i++){
+            if(i == option){
+                cout << green;
+            }
+            if(i == 0)
+                cout << left << setw(log(Options.size()) + 2) << "";
+            else
+                cout << left << setw(log(Options.size()) + 2) << to_string(i) + ". ";
+            for(int j=0 ; j<vecSize ; j++){
+                cout << left << setw(width) << Options[i][j] << " " ;
+            }
+            cout << reset << endl;
+        }
+        cout << "\nMove between options with W & S and choose the option with Enter.(Press Esc to Pause)\n";
+            
+            
+        char key = _getch();
+        switch(tolower(key))
+        {
+            case 'w':
+                option = (Options.size() + option - 1) % Options.size();
+                if(option == 0){
+                    option = Options.size() -1;
+                }
+                continue;
+            case 's':
+                option++;
+                option%=Options.size();
+                if(option == 0){
+                    option = 1;
+                }
+                continue;
+            case '\r':
+                break;
+            case 27:{
+                int choice = PauseMenu();
+                if(choice == 0)
+                    continue;
+                else
+                    exit(0);
+            }
+            default:
+                continue;
+        }
+        break;
+    }
+    return option-1;
+}
+
+Weapon* Shop::ShopWeapons(string Case){
+    vector<Weapon*> Weapons;
+    vector<string> Header;
+    vector<vector<string>> Options;
+    
+    if(Case == "Buy"){
+        Weapons = weapons;
+    }else if(Case == "Sell" || Case == "Upgrade"){
+        for(pair<Weapon*,int> p:player->getWeapons()){
+            Weapons.push_back(p.first);
+        }
+    }
+    
+    if(Weapons.empty()){
+        clearScreen();
+        cout << "No Weapons Available" << endl << endl << "Press Any Key To Continue";
+        getch();
+        return nullptr;
+    }
+    
+    int option;
+     //         0     1         2       3        4       5            6                  7            8             9    
+    Header = {"Name","Price","Type","Capacity","Damage","Ammo","AttackEnergy","ReloadEnergy","MaxAttackAmount","MinDamagePercent"};
+    for(Weapon* weapon:Weapons){        
+        vector<string> row(Header.size());
+        row[0] = weapon->getName();
+        
+        if(Case == "Buy"){
+            row[1] = to_string(int(weapon->getPrice()*1.25)) + "$";
+        }else if(Case == "Sell"){
+            row[1] = to_string(int(weapon->getPrice()*0.8)) + "$";
+        }else if(Case == "Upgrade"){
+            row[1] = to_string(int(pow(1.5 , weapon->getUpgradeAmount()))) + "$";
+        }
+        
+        row[2] = " ";
+        row[3] = to_string(weapon->getCapacity());
+        row[4] = to_string(weapon->getDamage());
+        row[5] = " ";
+        row[6] = to_string(weapon->getEnergyNeeded());
+        row[7] = " ";
+        row[8] = " ";
+        row[9] = " ";
+        if(dynamic_cast<Gun*>(weapon) != nullptr){
+            Gun* gun = dynamic_cast<Gun*>(weapon);
+            row[7] = to_string(gun->getReloadEnergy());
+            row[5] = "[" + to_string(gun->getAmmo()) + "/" + to_string(gun->getMaxAmmo()) + "]";
+            
+            if(dynamic_cast<Rifle*>(gun) != nullptr){
+                Rifle* rifle = dynamic_cast<Rifle*>(weapon);
+                row[8] = to_string(rifle->getMaxAttackAmount());
+                row[2] = "Rifle";
+            }else if(dynamic_cast<Shotgun*>(gun) != nullptr){
+                Shotgun* shotgun = dynamic_cast<Shotgun*>(weapon);
+                row[9] = to_string(shotgun->getMinDamagePercent())+ "%";
+                row[2] ="Shotgun";
+            }else if(dynamic_cast<SMG*>(gun) != nullptr){
+                row[2] = "SMG";
+            }else if(dynamic_cast<Snipe*>(gun) != nullptr){
+                row[2] = "Snipe";
+            }else{
+                row[2] = "Gun";
+            }
+            
+        }else{
+            if(dynamic_cast<ColdWeapon*>(weapon) != nullptr){
+                row[2] = "ColdWeapon";
+            }else if(dynamic_cast<Throwable*>(weapon) != nullptr){
+                row[2] ="Throwable";
+            }else if(dynamic_cast<Throwable*>(weapon) != nullptr){
+                row[2] ="Throwable";
+            }
+        }
+        Options.push_back(row);
+    }
+    Options.push_back({"Back"," "," "," "," "," "," "," "," "," "});
+    
+    option = MenuManager("Choose A Weapon To "+Case+": ",Options,Header);
+
+    if(option  == Options.size()-1)
+        return nullptr;
+
+    return Weapons[option];
+}
+
+
+Consumable* Shop::ShopConsumables(string Case){
+    vector<Consumable*> Consumables;
+    vector<string> Header;
+    vector<vector<string>> Options;
+    
+    if(Case == "Buy"){
+        Consumables = consumables;
+    }else if(Case == "Sell"){
+        for(pair<Consumable*,int> p: player->getConsumables()){
+            for(int i = 1; i <= p.second;i++){
+                Consumables.push_back(p.first);
+            }
+        }
+    }
+    
+    if(Consumables.empty()){
+        clearScreen();
+        cout << "No Consumables Available" << endl << endl << "Press Any Key To Continue";
+        getch();
+        return nullptr;
+    }
+    
+    int option;
+    Header = {"Name","Price","Capacity","Type","Increase Amount"};
+    for(Consumable* consumable : Consumables){
+        vector<string> row(Header.size());
+        row[0] = consumable->getName();
+        
+        if(Case == "Buy"){
+            row[1] = to_string(int(consumable->getPrice()*1.25)) + "$";
+        }else if(Case == "Sell"){
+            row[1] = to_string(int(consumable->getPrice()*0.8)) + "$";
+        }
+        
+        row[2] = to_string(consumable->getCapacity());
+        row[3] = consumable->getType();
+        row[4] = to_string(consumable->getAmount());
+        Options.push_back(row);
+    }
+    Options.push_back({"Back"," "," "," "," "});
+    
+    option = MenuManager("Choose A Consumable To "+Case+": ",Options,Header);
+
+    if(option  == Options.size()-1)
+        return nullptr;
+    return Consumables[option];
+}
+
+Equipment* Shop::ShopEquipments(string Case){
+    vector<Equipment*> Equipments;
+    vector<string> Header;
+    vector<vector<string>> Options;
+    
+    if(Case=="Buy"){
+        Equipments =equipments;
+        
+        if(Equipments.empty()){
+        clearScreen();
+        cout << "No Equipments Available" << endl << endl << "Press Any Key To Continue";
+        getch();
+        return nullptr;
+    }
+    }else if(Case == "Sell"){
+        Equipments =  player->getEquipments();
+        
+        if(player->getArmor() == 0 ){
+            clearScreen();
+            cout << "No Equipments Available" << endl << endl << "Press Any Key To Continue";
+            getch();
+            return nullptr;
+        }
+    }
+    
+    
+    
+    int option;
+    
+    Header = {"Name","Price","Type","ProtectionAmount"};
+    for(Equipment* equipment : Equipments){
+        
+        vector<string> row(Header.size());
+        row[0] = equipment->getName();
+        
+        if(Case=="Buy"){
+            row[1] = to_string(int(equipment->getPrice()*1.25));
+        }else if(Case == "Sell"){
+            row[1] = to_string(int(equipment->getPrice()*0.8));
+        }
+        
+        if(dynamic_cast<HeadGear*>(equipment) !=nullptr){
+            row[2] = "Head Gear";
+        }else if(dynamic_cast<Vest*>(equipment) !=nullptr){
+            row[2] = "Vest";
+        }else if(dynamic_cast<FootWear*>(equipment) !=nullptr){
+            row[2] = "FootWear";
+        }else if(dynamic_cast<Boot*>(equipment) !=nullptr){
+            row[2] = "Boots";
+        }
+        row[3] = to_string(equipment->getAmount());
+        Options.push_back(row);
+    }
+    Options.push_back({"Back"," "," "," "});
+    
+    option = MenuManager("Choose An Equipment: ",Options,Header);
+    
+
+    if(option  == Options.size()-1)
+        return nullptr;
+    return Equipments[option];
+}
+
+
+
+
+
+string Shop::UpgradeNameChange(string name, int upgradeAmount){ 
     if(upgradeAmount >= 3){
         int spaceIndex = name.size() - 3;
         name = name.substr(0,spaceIndex); 
@@ -63,14 +339,13 @@ string UpgradeNameChange(string name, int upgradeAmount){
 void Shop :: Upgrade(Weapon* weapon , string dialogue){
     if(dynamic_cast<Shotgun*>(weapon) != nullptr){
         int choice = Choose(Story + "\n\n"  + getStat() + dialogue + "\n\n" + "Coins needed to Upgrade: " + 
-        presicion_string(BaseUpgradePrice * pow(1.5 , weapon->getUpgradeAmount())) + "\n",
+        presicion_string(BaseUpgradePrice * int(pow(1.5 , weapon->getUpgradeAmount()))) + "\n",
                             {"Damage",
                             "Min Damage Percent",
                             "Back"});
         switch (choice){
             case 1:{
                 player->removeItem(weapon);
-                
                 weapon->setPrice(weapon->getPrice() + int(BaseUpgradePrice * pow(1.5 , weapon->getUpgradeAmount()) * 0.8));
                 player->removeCoin(BaseUpgradePrice * pow(1.5 , weapon->getUpgradeAmount()));
                 weapon->setUpgradeAmount(weapon->getUpgradeAmount()+1);
@@ -178,21 +453,19 @@ void Shop :: Upgrade(Weapon* weapon , string dialogue){
     }
 }
 
-void Shop :: Sell(Item* item , int choice){ // Shopkeeper sells, Player buys
+void Shop :: Sell(Item* item){ // Shopkeeper sells, Player buys
 
     if (player->getCoin() >= item->getPrice()){
-        if (player->getBackPackCapacity() > item->getCapacity()+player->getBackPackWeight())
+        if (player->getBackPackCapacity() >= item->getCapacity()+player->getBackPackWeight())
         {
-            player->removeCoin(item->getPrice());
-
-            item->setPrice(int(item->getPrice()*0.8));
+            player->removeCoin(item->getPrice()*1.25);
             player->addItem(item);
             clearScreen();
             cout << Story << "\n\n";
             cout << shopkeeper->SellDialogue(item);
             cout << "\nPress anything to continue";
             getch();
-            removeItem(item , choice);
+            removeItem(item);
         }
         else{
             clearScreen();
@@ -212,14 +485,13 @@ void Shop :: Sell(Item* item , int choice){ // Shopkeeper sells, Player buys
 }
 
 void Shop :: Buy(Item* item){ // Shopkeeper buys, Player sells
-    player->addCoin(item->getPrice());
+    player->addCoin(item->getPrice()*0.8);
     player->removeItem(item);
     clearScreen();
     cout << Story << "\n\n";
     cout << shopkeeper->BuyDialogue(item);
     cout << "Press anything to continue";
     getch();
-    item->setPrice(int(item->getPrice()* 1.25)); // adds 20 precent to item's orignial price 
     addItem(item);
 }
 
@@ -233,15 +505,15 @@ void Shop::addItem(Item* item){
     }
 }
 
-void Shop::removeItem(Item* item , int choice){
+void Shop::removeItem(Item* item){
     if(dynamic_cast<Weapon *>(item) != nullptr){
-        weapons.erase(weapons.begin() + choice);  
+        weapons.erase(remove(weapons.begin(),weapons.end(),dynamic_cast<Weapon *>(item)),weapons.end());
     }
     else if(dynamic_cast<Consumable *>(item) != nullptr){
-        consumables.erase(consumables.begin() + choice);
+        consumables.erase(remove(consumables.begin(),consumables.end(),dynamic_cast<Consumable *>(item)),consumables.end());
     }
     else if(dynamic_cast<Equipment *>(item) != nullptr){
-        equipments.erase(equipments.begin() + choice);
+        equipments.erase(remove(equipments.begin(),equipments.end(),dynamic_cast<Equipment *>(item)),equipments.end());
     }
 }
 
@@ -256,88 +528,108 @@ void Shop :: Menu(){
         
         switch (choice){
             case 1: // Player buys an item
-                choice = Choose(Story + "\n\n" + getStat() + dialogue + "\n" ,
-                                {"Weapons",           // Player buys, Shopkeeper sells ( Sell(Item* item) should be called ) 
-                                "Consumables",
-                                "Equipments",
-                                "Back"});
-                
-                switch (choice){
-                    case 1:
-                    {
-                        while(true){
-                            vector<string> Options;
-                            for(Weapon* weapon: weapons){
-                                Options.push_back(weapon->getStat());
-                            }
-                            Options.push_back("Back");
-                            
-                            int choice = Choose(Story + "\n\n" + getStat() + dialogue , Options);
-                            if(choice == Options.size()){
-                                break;
-                            }
-                            Sell(weapons[choice-1], choice - 1);
-                        }
-                        continue;
-                    }
-                    case 2:
-                    {
-                        while (true){
-                            vector<string> Options;
-                            for(Consumable* consumable: consumables){
-                                Options.push_back(consumable->getStat());
-                            }
-                            Options.push_back("Back");
-                            
-                            int choice = Choose(Story + "\n\n" + getStat() + dialogue + "\n" ,
-                            Options);
-                            if(choice == Options.size()){
-                                break;
-                            }
-                            Sell(consumables[choice-1] , choice - 1);
-                        }
-                        continue;
-                    }
-                    case 3:
-                    {
-                        while(true){
-                            vector<string> Options;
-                            for(Equipment* equipment: equipments){
-                                Options.push_back(equipment->getStat());
-                            }
-                            Options.push_back("Back");
-                            
-                            int choice = Choose(Story + "\n\n" + getStat() + dialogue + "\n" ,
-                            Options);
-                            if(choice == Options.size()){
-                                break;
-                            }
-                            Sell(equipments[choice-1] , choice - 1);
-                        }
-                        continue;
-                    }
-                    case 4:
-                        break;
-                    default:
-                        continue;
-                }   
-                continue;
-            case 2: // Player sells an item
                 while(true){
-                    vector<string> Options;
-                    for(pair<Item*,int> item: player->getItems()){
-                        Options.push_back(item.first->getStat());
-                    }
-                    Options.push_back("Back");
+                        choice = Choose(Story + "\n\n" + getStat() + dialogue + "\n" ,
+                                    {"Weapons",           // Player buys, Shopkeeper sells ( Sell(Item* item) should be called ) 
+                                    "Consumables",
+                                    "Equipments",
+                                    "Back"});
                     
-                    int choice = Choose(Story + "\n\n" + getStat() + dialogue + "\n" ,
-                    Options);
-                    if(choice == Options.size()){
-                        break;
-                    }
-                    Buy(player->getItems()[choice-1].first);
+                    switch (choice){
+                        case 1:
+                        {
+                            while(true){
+                                Weapon* chosenWeapon =ShopWeapons("Buy");
+                                if(chosenWeapon == nullptr){
+                                    break;
+                                }
+                                Sell(chosenWeapon);
+                            }
+                            continue;
+                        }
+                        case 2:
+                        {
+                            while (true){
+                                Consumable* chosenConsumable = ShopConsumables("Buy");
+                                if(chosenConsumable == nullptr){
+                                    break;
+                                }
+                                Sell(chosenConsumable);
+                            }
+                            continue;
+                        }
+                        case 3:
+                        {
+                            while(true){
+                                Equipment* chosenEquipment = ShopEquipments("Buy");
+                                if(chosenEquipment ==nullptr){
+                                    break;
+                                }
+                                Sell(chosenEquipment);
+                            }
+                            continue;
+                        }
+                        case 4:
+                            break;
+                        default:
+                            continue;
+                    }   
+                    break;
                 }
                 continue;
+                
+            case 2: // Player sells an item
+            while (true)
+            {
+                choice = Choose(Story + "\n\n" + getStat() + dialogue + "\n" ,
+                                    {"Weapons",           
+                                    "Consumables",
+                                    "Equipments",
+                                    "Back"});
+                    
+                    switch (choice){
+                        case 1:
+                        {
+                            while(true){
+                                Weapon* chosenWeapon =ShopWeapons("Sell");
+                                if(chosenWeapon == nullptr){
+                                    break;
+                                }
+                                Buy(chosenWeapon);
+                            }
+                            continue;
+                        }
+                        case 2:
+                        {
+                            while (true){
+                                Consumable* chosenConsumable = ShopConsumables("Sell");
+                                if(chosenConsumable == nullptr){
+                                    break;
+                                }
+                                Buy(chosenConsumable);
+                            }
+                            continue;
+                        }
+                        case 3:
+                        {
+                            while(true){
+                                Equipment* chosenEquipment = ShopEquipments("Sell");
+                                if(chosenEquipment ==nullptr){
+                                    break;
+                                }
+                                Buy(chosenEquipment);
+                            }
+                            continue;
+                        }
+                        case 4:
+                            break;
+                        default:
+                            continue;
+                    }   
+                    break;
+            }
+            continue;
+            
             case 3: // Player upgrades a gun
                 if(UpgradesLeft<=0){
                     clearScreen();
@@ -347,84 +639,63 @@ void Shop :: Menu(){
                     getch();
                     break;
                 }
-                
-                while(true){
-                    vector<string> Options;
-                    for(pair<Weapon*,int> weapon: player->getWeapons()){
-                        Options.push_back(weapon.first->getStat());
-                    }
-                    Options.push_back("BackPack [" + to_string(player->getBackPackWeight()) + "/" + to_string(player->getBackPackCapacity()) + "]");
-                    Options.push_back("Back");
-                    
-                    int choice = Choose(Story + "\n\n" + getStat() + dialogue + "\n",
-                    Options);
-                    if(choice == Options.size()){
-                        break;
-                    }
-                    else if(choice == Options.size() - 1){
-                        if(UpgradesLeft<=0){
-                        clearScreen();
-                        cout << Story << "\n\n";
-                        cout << shopkeeper->UpgradeLimitDialogue();
-                        cout << "Press anything to continue";
-                        getch();
-                        break;
-                        }
-                        else if(player->getBackPackCapacity() >= 90){
-                            clearScreen();
-                            cout << Story << "\n\n" << shopkeeper->getName() << ": You already have the Best BackPack!!!\n";
-                            cout << "Press anything to continue\n";
-                            getch();
-                        }
-                        else if(player->getCoin() >= 30){
-                            choice = Choose(Story + "\n\n" + getStat() + dialogue + "\nUpgrade price is 30 coins\n" ,
-                            {"Upgrade" , "Back"});
-                            if(choice = 1){
-                                player->setBackPackCapacity(player->getBackPackCapacity() + 15);
-                                player->removeCoin(30);
+                while(UpgradesLeft > 0){
+                    choice = Choose(Story + "\n\n" + getStat() + dialogue + "\n" ,
+                                {"Weapons",           
+                                "BackPack",
+                                "Back"});
+                    switch (choice){
+                        case 1:
+                            while (UpgradesLeft > 0)
+                            {
+                                Weapon* ChosenWeapon = ShopWeapons("Upgrade");
+                                if(ChosenWeapon == nullptr)
+                                    break;
+                                
+                                if(ChosenWeapon->getUpgradeAmount() >= ChosenWeapon->getUpgradeLimit()){
+                                    clearScreen();
+                                    cout << Story << "\n\n";
+                                    cout << shopkeeper->UpgradeLimitDialogue(ChosenWeapon);
+                                    cout << "Press anything to continue";
+                                    getch();
+                                }else if(player->getCoin() < BaseUpgradePrice * pow(1.5 , ChosenWeapon->getUpgradeAmount())){
+                                    clearScreen();
+                                    cout << Story << "\n\n";
+                                    cout << shopkeeper->NoMoneyDialogue();
+                                    cout << "Press anything to continue";
+                                    getch();
+                                }else{
+                                    Upgrade(ChosenWeapon , dialogue);
+                                } 
+                            }
+                            continue;
+                        case 2:
+                            if(player->getBackPackCapacity() >= 90){
                                 clearScreen();
-                                cout << Story << "\n\n" << shopkeeper->getName() << ": Your backpack has been Upgraded.\n";
+                                cout << Story << "\n\n" << shopkeeper->getName() << ": You already have the Best BackPack!!!\n";
                                 cout << "Press anything to continue\n";
                                 getch();
                             }
-                        }
-                        else{
-                            clearScreen();
-                            cout << shopkeeper->NoMoneyDialogue();
-                            cout << "Press anything to continue\n";
-                            getch();
-                        }
-                        continue;
+                            else if(player->getCoin() >= 30){
+                                player->setBackPackCapacity(player->getBackPackCapacity() + 15);
+                                player->removeCoin(30);
+                                clearScreen();
+                                cout << Story << "\n\n" << shopkeeper->getName() << ": Your backpack has been Upgraded.(+15 capacity)\n";
+                                cout << "Press anything to continue\n";
+                                getch();
+                            }
+                            else{
+                                clearScreen();
+                                cout << shopkeeper->NoMoneyDialogue();
+                                cout << "Press anything to continue\n";
+                                getch();
+                            }
+                            continue;
+                        case 3:
+                            break;
+                        default:
+                            continue;
                     }
-                    Weapon* ChosenWeapon = player->getWeapons()[choice-1].first;
-                    
-                    if(UpgradesLeft<=0){
-                        clearScreen();
-                        cout << Story << "\n\n";
-                        cout << shopkeeper->UpgradeLimitDialogue();
-                        cout << "Press anything to continue";
-                        getch();
-                        break;
-                    }
-                    else if(ChosenWeapon->getUpgradeAmount() >= ChosenWeapon->getUpgradeLimit()){
-                        clearScreen();
-                        cout << Story << "\n\n";
-                        cout << shopkeeper->UpgradeLimitDialogue(ChosenWeapon);
-                        cout << "Press anything to continue";
-                        getch();
-                        continue;
-                    }
-                    else if(player->getCoin() < BaseUpgradePrice * pow(1.5 , ChosenWeapon->getUpgradeAmount())){
-                        clearScreen();
-                        cout << Story << "\n\n";
-                        cout << shopkeeper->NoMoneyDialogue();
-                        cout << "Press anything to continue";
-                        getch();
-                        continue;
-                    }
-                    else{
-                        Upgrade(ChosenWeapon , dialogue);
-                    }   
                 }
                 continue;
             case 4: // Player quits

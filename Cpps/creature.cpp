@@ -909,7 +909,7 @@ string Shopkeeper :: SellDialogue(Item* item){ // The shopkeeper sells sth to th
 } // items to be included
 
 string Shopkeeper :: BuyDialogue(Item* item){ // The shopkeeper buys sth from the player
-    return Name + ": " + "I'll buy that for " + to_string(item->getPrice()) + " coins.\n";
+    return Name + ": " + "I'll buy that for " + to_string(int(item->getPrice()*0.8)) + " coins.\n";
 } // items to be included
 
 string Shopkeeper::UpgradeLimitDialogue(Weapon* weapon){
