@@ -79,6 +79,7 @@ public:
 
 class Fight : public Encounter{
 private:
+    string Story;
     Player* player;
     //vector<Character*> players;
     int type; // 0 for normal fight, 1 for miniboss, 2 for boss
@@ -91,7 +92,7 @@ private:
     
     
 public:
-    Fight(Player* player, int type, vector<Character*> enemies, vector<Item*> items, int droppedCoins, vector<Relic*> relics);
+    Fight(string Story, Player* player, int type, vector<Character*> enemies, vector<Item*> items, int droppedCoins, vector<Relic*> relics);
     
     void start();
 };

@@ -657,7 +657,8 @@ void RandomEncounter :: Menu(Player* player, Map* map){
     }
 }
 
-Fight :: Fight(Player* player, int type, vector<Character*> enemies, vector<Item*> items, int droppedCoins, vector<Relic*> relics){
+Fight :: Fight(string Story, Player* player, int type, vector<Character*> enemies, vector<Item*> items, int droppedCoins, vector<Relic*> relics){
+    this -> Story = Story;
     this -> player = player;
     this -> type = type;
     this -> enemies = enemies;
