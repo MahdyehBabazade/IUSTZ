@@ -565,8 +565,6 @@ void View::FightView::showArmor(){
             amounts.push_back(0);
         }
     }
-    clearScreen();
-    cout << model->getStory() << "\n";
     cout << "[Head Gear]: " << amounts[0]<< endl;
     cout << "[Vest]: " << amounts[1] << endl;
     cout << "[Foot Wear]: " << amounts[2] << endl;
